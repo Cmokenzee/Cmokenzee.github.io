@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cmok.dev — Firmware Developer & Web Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portfolio.css">
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">cmok<span>.dev</span></a>
+  <button class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <div class="nav-links" id="navlinks">
+      <a href="#about" data-t="nav_about">About</a>
+      <a href="#stack">Stack</a>
+      <a href="#projects" data-t="nav_projects">Projects</a>
+      <a href="#experience" data-t="nav_experience">Experience</a>
+      <a href="#contact" data-t="nav_contact">Contact</a>
+    </div>
+    <button class="lang-toggle" id="langbtn" aria-label="Switch language">
+      <span id="lang-en" class="lang-active">EN</span>
+      <span class="lang-sep">/</span>
+      <span id="lang-cs">CZ</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span data-t="hero_badge">Open to new projects</span>
+      </div>
+      <h1 data-th="hero_title">Firmware developer<br><span class="muted">&amp; web developer.</span></h1>
+      <p class="hero-desc" data-th="hero_desc">I build things that run on <strong>microcontrollers</strong> and in the <strong>browser</strong>. Embedded systems, .NET backend, modern web &mdash; from hardware to cloud.</p>
+      <div class="hero-links">
+        <a href="#projects" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          <span data-t="hero_btn">Projects</span>
+        </a>
+        <a href="https://github.com/Cmokenzee" class="btn btn-ghost" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="mailto:matej.zednik2005@gmail.com" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-label fi" data-t="about_label">// about me</p>
+    <h2 class="section-title fi" data-t="about_title">Who I am</h2>
+    <p class="section-desc fi" data-t="about_desc">IT student from Czechia. Firmware by day, websites by night.</p>
+    <div class="about-grid">
+      <div class="about-card fi">
+        <div class="about-card-icon">&#9889;</div>
+        <h3 data-t="a1t">Embedded systems</h3>
+        <p data-t="a1d">I work with STM32, Nordic Semiconductor chips (nRF52/nRF91), and Zephyr RTOS. I write firmware that runs for months on a battery. Daily I deal with registers, interrupts and low-level communication.</p>
+      </div>
+      <div class="about-card fi">
+        <div class="about-card-icon">&#127760;</div>
+        <h3 data-t="a2t">Web development</h3>
+        <p data-t="a2d">Modern websites and web applications. React, Next.js, but also classic HTML/CSS. I build sites for businesses and personal projects &mdash; from landing pages to full-stack apps.</p>
+      </div>
+      <div class="about-card fi">
+        <div class="about-card-icon">&#128311;</div>
+        <h3 data-t="a3t">.NET ecosystem</h3>
+        <p data-t="a3d">C# is my main language. WPF desktop applications, .NET backend APIs, Entity Framework. I handle the full stack from database to UI.</p>
+      </div>
+      <div class="about-card fi">
+        <div class="about-card-icon">&#128295;</div>
+        <h3 data-t="a4t">Hardware prototypes</h3>
+        <p data-t="a4d">Arduino, ESP32, Raspberry Pi &mdash; I design and build IoT device prototypes. From sensors through WiFi/BLE communication to cloud dashboards.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="stack-section">
+  <div class="container">
+    <p class="section-label fi">// tech stack</p>
+    <h2 class="section-title fi" data-t="stack_title">What I work with</h2>
+    <p class="section-desc fi" data-t="stack_desc">Tools and technologies I use daily.</p>
+    <div class="stack-groups">
+      <div class="stack-group fi">
+        <h3 data-t="stack_langs">Languages</h3>
+        <div class="stack-tags">
+          <span class="tag hl">C</span>
+          <span class="tag hl">C#</span>
+          <span class="tag">C++</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Python</span>
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="stack-group fi">
+        <h3>Embedded &amp; Hardware</h3>
+        <div class="stack-tags">
+          <span class="tag hl">STM32</span>
+          <span class="tag hl">Zephyr RTOS</span>
+          <span class="tag hl">Nordic nRF52/nRF91</span>
+          <span class="tag">ESP32</span>
+          <span class="tag">Arduino</span>
+          <span class="tag">Raspberry Pi</span>
+          <span class="tag">LoRaWAN</span>
+          <span class="tag">MQTT</span>
+          <span class="tag">BLE</span>
+          <span class="tag">I2C / SPI / UART</span>
+          <span class="tag">FreeRTOS</span>
+        </div>
+      </div>
+      <div class="stack-group fi">
+        <h3>Web &amp; Backend</h3>
+        <div class="stack-tags">
+          <span class="tag hl">.NET</span>
+          <span class="tag hl">WPF</span>
+          <span class="tag">React</span>
+          <span class="tag">Next.js</span>
+          <span class="tag">Blazor</span>
+          <span class="tag">Entity Framework</span>
+          <span class="tag">REST API</span>
+          <span class="tag">WebSocket</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">SQLite</span>
+        </div>
+      </div>
+      <div class="stack-group fi">
+        <h3 data-t="stack_tools">Tools</h3>
+        <div class="stack-tags">
+          <span class="tag">Git</span>
+          <span class="tag">Docker</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">VS Code</span>
+          <span class="tag">PlatformIO</span>
+          <span class="tag">Linux</span>
+          <span class="tag">CMake</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects-section">
+  <div class="container">
+    <p class="section-label fi" data-t="proj_label">// projects</p>
+    <h2 class="section-title fi" data-t="proj_title">Selected projects</h2>
+    <p class="section-desc fi" data-t="proj_desc">Some things I've been working on.</p>
+    <div class="projects-grid">
+
+      <div class="project-card project-wip featured fi">
+        <div class="wip-body">
+          <div class="wip-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="wip-label" data-t="wip_label">// coming soon</span>
+          <p class="wip-desc" data-t="wip_desc">Working on something. Will be here soon.</p>
+        </div>
+      </div>
+
+      <div class="project-card project-wip fi">
+        <div class="wip-body">
+          <div class="wip-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <span class="wip-label">// coming soon</span>
+        </div>
+      </div>
+
+      <div class="project-card project-wip fi">
+        <div class="wip-body">
+          <div class="wip-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <span class="wip-label">// coming soon</span>
+        </div>
+      </div>
+
+      <div class="project-card project-wip fi">
+        <div class="wip-body">
+          <div class="wip-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <span class="wip-label">// coming soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="experience-section">
+  <div class="container">
+    <p class="section-label fi" data-t="exp_label">// experience</p>
+    <h2 class="section-title fi" data-t="exp_title">Where I've worked</h2>
+    <p class="section-desc fi"></p>
+    <div class="timeline">
+      <div class="timeline-item fi">
+        <div class="timeline-date" data-t="exp_d1">2025 &mdash; now</div>
+        <div class="timeline-content">
+          <h3>Firmware Developer</h3>
+          <p class="company" data-t="exp_c1">Part-time &mdash; Embedded</p>
+          <p data-t="exp_p1">Firmware development for IoT devices. Working with Nordic Semiconductor chips (nRF52/nRF91), STM32, Zephyr RTOS and LoRaWAN. Implementing low-level drivers, OTA updates, power consumption optimization.</p>
+        </div>
+      </div>
+      <div class="timeline-item fi">
+        <div class="timeline-date" data-t="exp_d2">2022 &mdash; now</div>
+        <div class="timeline-content">
+          <h3 data-t="exp_r2">Student</h3>
+          <p class="company" data-t="exp_c2">High school &mdash; IT</p>
+          <p data-t="exp_p2">Studying information technology. Programming, networking, databases. Alongside school, working on personal projects and learning embedded and web development.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <p class="section-label fi" data-t="contact_label">// contact</p>
+    <h2 class="section-title fi" data-t="contact_title">Let's work together</h2>
+    <p class="section-desc fi" data-t="contact_desc">Looking for a developer? Get in touch.</p>
+    <div class="contact-grid">
+      <a href="mailto:matej.zednik2005@gmail.com" class="contact-card fi">
+        <div class="contact-icon">&#9993;&#65039;</div>
+        <h3>Email</h3>
+        <p>matej.zednik2005@gmail.com</p>
+      </a>
+      <a href="https://github.com/Cmokenzee" target="_blank" rel="noopener" class="contact-card fi">
+        <div class="contact-icon">&#128025;</div>
+        <h3>GitHub</h3>
+        <p>github.com/Cmokenzee</p>
+      </a>
+      <a href="https://www.linkedin.com/in/mat%C4%9Bj-zedn%C3%ADk-5a6b243ab/" target="_blank" rel="noopener" class="contact-card fi">
+        <div class="contact-icon">&#128188;</div>
+        <h3>LinkedIn</h3>
+        <p>linkedin.com/in/matej-zednik</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p>&copy; 2026 cmok.dev</p>
+      <p data-th="footer">Handcrafted with <a href="#">&#9749;</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="portfolio.js"></script>
+</body>
+</html>
