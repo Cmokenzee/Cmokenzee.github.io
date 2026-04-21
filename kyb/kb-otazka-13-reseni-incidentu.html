@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 13: Řešení bezpečnostních incidentů</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#2e0f0f 40%,#0f172e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(248,113,113,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(96,165,250,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-5);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* IR lifecycle */
+.ir-flow{display:flex;gap:4px;margin:16px 0;flex-wrap:wrap;justify-content:center}
+.ir-step{text-align:center;padding:16px 10px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;min-width:110px;flex:1;max-width:190px;position:relative}
+.ir-step .is-num{font-size:22px;font-weight:700;display:block}.ir-step .is-name{font-weight:600;display:block;margin-top:2px;font-size:11px}
+.ir-step .is-desc{font-size:9px;font-family:'DM Sans',sans-serif;margin-top:4px;opacity:.8}
+/* Playbook card */
+.pb{position:relative;overflow:hidden;border-radius:10px;padding:16px 20px;margin:10px 0;background:var(--bg-card);border:1px solid var(--border)}
+.pb::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.pb-h{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.pb-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+.pb-tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px}
+/* SIEM pipeline */
+.siem-pipe{display:flex;gap:4px;margin:14px 0;flex-wrap:wrap;justify-content:center}
+.siem-stage{text-align:center;padding:10px 8px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;min-width:80px;flex:1;max-width:120px}
+.siem-stage .ss-icon{font-size:18px;display:block;margin-bottom:4px}
+.siem-stage .ss-name{font-weight:600;display:block;font-size:10px}
+/* DLP types */
+.dlp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:14px 0}
+.dlp-item{padding:14px 12px;border-radius:8px;font-size:12px;background:var(--bg-card-alt);border:1px solid var(--border)}
+.dlp-item strong{display:block;margin-bottom:3px;font-size:12px}
+.dlp-item p{font-size:11px;color:var(--text-muted);margin:0}
+/* DR strategies */
+.dr-bar{display:flex;gap:3px;margin:14px 0;flex-wrap:wrap}
+.dr-step{flex:1;min-width:100px;text-align:center;padding:12px 6px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.dr-step .ds-name{font-weight:700;display:block;font-size:11px}.dr-step .ds-rto{font-size:9px;opacity:.8;margin-top:2px}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.ir-flow{flex-direction:column;align-items:center}.siem-pipe{flex-direction:column;align-items:center}.dr-bar{flex-direction:column}.dlp-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 13</div>
+  <h1>Řešení bezpečnostních incidentů</h1>
+  <p>Incident Response • Impact Reduction • Disaster Recovery • Playbook • SIEM • DLP</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#lifecycle">IR Lifecycle (NIST 4 fáze)</a></li>
+  <li><a href="#prep">Preparation (Příprava)</a></li>
+  <li><a href="#detect">Detection & Analysis</a></li>
+  <li><a href="#contain">Containment, Eradication, Recovery</a></li>
+  <li><a href="#post">Post-Incident Activity</a></li>
+  <li><a href="#impact">Impact Reduction</a></li>
+  <li><a href="#dr">Disaster Recovery</a></li>
+  <li><a href="#playbook">Security Playbook</a></li>
+  <li><a href="#siem">SIEM</a></li>
+  <li><a href="#dlp">DLP</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 LIFECYCLE -->
+<section class="section" id="lifecycle">
+<div class="section-header"><span class="section-num">01</span><h2>IR Lifecycle (NIST SP 800-61)</h2></div>
+
+<p>Strukturovaný přístup k detekci, analýze, containmentu a obnově. <strong>Průměrná detekce breache: 207 dní. Průměrná cena: $4.45M. S IRP ušetříš ~$2M.</strong></p>
+
+<div class="ir-flow">
+  <div class="ir-step" style="background:rgba(96,165,250,.1);color:var(--accent-1)"><span class="is-num">1</span><span class="is-name">Preparation</span><span class="is-desc">Tým, plán, nástroje, školení</span></div>
+  <div class="ir-step" style="background:rgba(251,191,36,.1);color:var(--accent-4)"><span class="is-num">2</span><span class="is-name">Detection & Analysis</span><span class="is-desc">Identifikace, severity, scope</span></div>
+  <div class="ir-step" style="background:rgba(248,113,113,.1);color:var(--accent-5)"><span class="is-num">3</span><span class="is-name">Containment → Eradication → Recovery</span><span class="is-desc">Izolace, odstranění, obnova</span></div>
+  <div class="ir-step" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="is-num">4</span><span class="is-name">Post-Incident</span><span class="is-desc">Lessons learned, report</span></div>
+</div>
+</section>
+
+<!-- 02 PREP -->
+<section class="section" id="prep">
+<div class="section-header"><span class="section-num">02</span><h2>Preparation (Příprava)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">"Failing to prepare is preparing to fail"</div>
+  <ul>
+    <li><strong>IRT (Incident Response Team):</strong> Incident Commander, Security Analyst, Forensics, Legal, PR, Management. 24/7 on-call</li>
+    <li><strong>IRP (Incident Response Plan):</strong> Procedury, escalation, kontakty, komunikační šablony, playbooks</li>
+    <li><strong>Nástroje:</strong> SIEM, forensics (EnCase, Volatility), Wireshark, malware sandbox, backup/restore</li>
+    <li><strong>Training:</strong> Tabletop exercises, full-scale drills, purple team</li>
+    <li><strong>Prevence:</strong> Hardening, patching, security awareness, Defense in Depth</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 DETECT -->
+<section class="section" id="detect">
+<div class="section-header"><span class="section-num">03</span><h2>Detection & Analysis</h2></div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Zdroje alertů + IoC</div>
+  <p><strong>Zdroje:</strong> SIEM, IDS/IPS, AV/EDR, DLP, user reports, third-party notification.</p>
+  <p><strong>IoC (Indicators of Compromise):</strong> Unusual network traffic, unknown processes, suspicious file changes, unauthorized logins, file hash = known malware.</p>
+  <p><strong>Severity:</strong> P1 Critical (production down, data breach) → P2 High → P3 Medium → P4 Low.</p>
+  <p style="margin-bottom:0"><strong>Analýza:</strong> Scope (které systémy?), Root Cause (jak se dostal dovnitř?), Timeline. <strong>VŽDY dokumentuj vše!</strong> Screenshots, logy, chain of custody.</p>
+</div>
+</section>
+
+<!-- 04 CONTAIN -->
+<section class="section" id="contain">
+<div class="section-header"><span class="section-num">04</span><h2>Containment, Eradication, Recovery</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">🛑 Containment (Izolace)</h4>
+    <p><strong>Short-term:</strong> Network isolation, disable accounts, block IPs, shutdown (last resort). <strong>Long-term:</strong> Přesun na clean systémy, temp patches, enhanced monitoring. <strong>„Stop the bleeding!"</strong></p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">🗑️ Eradication (Odstranění)</h4>
+    <p>Remove malware, delete backdoors, patch vulnerabilities, <strong>reset VŠECHNA hesla!</strong> Často lepší: <strong>Nuke & Pave</strong> (kompletní reinstalace – zaručeně čisté).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">🔄 Recovery (Obnova)</h4>
+    <p>Restore from clean backups, rebuild, verify integrity, test, <strong>enhanced monitoring</strong> (watch for reinfection), gradual return to production. Může trvat <strong>týdny</strong>!</p>
+  </div>
+</div>
+</section>
+
+<!-- 05 POST -->
+<section class="section" id="post">
+<div class="section-header"><span class="section-num">05</span><h2>Post-Incident Activity</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Lessons Learned – NIKDY nepřeskakuj!</div>
+  <ul>
+    <li><strong>Meeting celého IRT.</strong> Bez blame culture. Co fungovalo? Co ne? Co zlepšit?</li>
+    <li><strong>Final Report:</strong> Executive summary, timeline, root cause, impact ($, downtime), actions, recommendations</li>
+    <li><strong>Update IRP</strong> na základě lessons learned (živý dokument!)</li>
+    <li><strong>Threat Intelligence Sharing:</strong> Sdílej IoCs s community (ISAC, MISP)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 IMPACT -->
+<section class="section" id="impact">
+<div class="section-header"><span class="section-num">06</span><h2>Impact Reduction</h2></div>
+
+<p>Strategie pro <strong>minimalizaci dopadu</strong> když incident nastane (100% prevence není možná).</p>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-1)">🔲 Segmentation</h4><p>Omezuje lateral movement. Malware v HR VLAN nemůže do Production.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-3)">🔐 Least Privilege</h4><p>Omezená práva = omezené škody. Regular user nemůže instalovat ransomware.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-4)">💾 Backups (3-2-1)</h4><p>3 kopie, 2 média, 1 offsite. <strong>Immutable backups</strong> – nelze smazat/šifrovat!</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-2)">⚡ Rapid Detection</h4><p>207 dní průměr → cíl <strong>&lt; 24 h</strong>. SIEM, IDS, EDR – continuous monitoring.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-6)">🤖 Automation (SOAR)</h4><p>IDS detekuje → auto-izoluje host → disable account. <strong>Rychlejší response = menší škody.</strong></p></div>
+  <div class="device-card"><h4 style="color:var(--accent-7)">📋 DLP + Insurance</h4><p>DLP brání exfiltraci dat. Cyber insurance pokryje finanční dopad (forensics, legal, notification).</p></div>
+</div>
+</section>
+
+<!-- 07 DR -->
+<section class="section" id="dr">
+<div class="section-header"><span class="section-num">07</span><h2>Disaster Recovery</h2></div>
+
+<p>Obnova IT infrastruktury po <strong>katastrofální události</strong> (datacenter fire, ransomware celé infrastruktury, zemětřesení).</p>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Klíčové metriky</div>
+  <p><strong>RTO (Recovery Time Objective):</strong> Jak dlouho můžeme být down? E-commerce = 1 h, wiki = 24 h.</p>
+  <p style="margin-bottom:0"><strong>RPO (Recovery Point Objective):</strong> Kolik dat můžeme ztratit? Finance = 0, email = 4 h. RPO určuje backup frequency!</p>
+</div>
+
+<h3>DR strategie (od nejlevnější po nejdražší)</h3>
+<div class="dr-bar">
+  <div class="dr-step" style="background:rgba(107,114,128,.1);color:var(--text)"><span class="ds-name">Backup & Restore</span><span class="ds-rto">RTO: hodiny–dny</span></div>
+  <div class="dr-step" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="ds-name">Pilot Light</span><span class="ds-rto">RTO: hodiny</span></div>
+  <div class="dr-step" style="background:rgba(251,191,36,.08);color:var(--accent-4)"><span class="ds-name">Warm Standby</span><span class="ds-rto">RTO: min–hodiny</span></div>
+  <div class="dr-step" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="ds-name">Hot Standby</span><span class="ds-rto">RTO: sekundy–min</span></div>
+</div>
+
+<details><summary>DR Site Types (Cold / Warm / Hot)</summary>
+<table class="compare-table">
+  <tr><th></th><th>Cold Site</th><th>Warm Site</th><th>Hot Site</th></tr>
+  <tr><td><strong>HW</strong></td><td>Prázdná budova</td><td>HW ready, periodic backup</td><td>Mirror production, real-time</td></tr>
+  <tr><td><strong>RTO</strong></td><td style="color:var(--accent-5)">Týdny</td><td>Dny</td><td style="color:var(--accent-3)"><strong>Hodiny</strong></td></tr>
+  <tr><td><strong>Cena</strong></td><td style="color:var(--accent-3)">Nejnižší</td><td>Střední</td><td style="color:var(--accent-5)">Nejvyšší</td></tr>
+</table>
+</details>
+
+<p style="font-size:13px;color:var(--accent-5)"><strong>DR plán BEZ testování je bezcenný!</strong> Tabletop exercise, parallel test, full interruption test – minimálně ročně.</p>
+</section>
+
+<!-- 08 PLAYBOOK -->
+<section class="section" id="playbook">
+<div class="section-header"><span class="section-num">08</span><h2>Security Playbook</h2></div>
+
+<p><strong>Dokumentované runbooks</strong> pro specifický typ incidentu. „If X happens, do Y." Standardizuje response, snižuje response time.</p>
+
+<div class="pb" style="border-color:rgba(248,113,113,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-5)"></div>
+  <div class="pb-h"><span class="pb-name" style="color:var(--accent-5)">🔐 Ransomware Playbook</span></div>
+  <p style="font-size:13px;margin-bottom:0"><strong>Detect:</strong> EDR alert, encrypted files, ransom note. <strong>Contain:</strong> Isolate machines, disable accounts, block C&C IPs. <strong>Investigate:</strong> Patient zero, variant, scope. <strong>Eradicate:</strong> Remove malware, check backdoors, wipe & reinstall. <strong>Recover:</strong> Restore from clean backups. <strong style="color:var(--accent-5)">DO NOT PAY!</strong></p>
+</div>
+
+<div class="pb" style="border-color:rgba(251,146,60,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-6)"></div>
+  <div class="pb-h"><span class="pb-name" style="color:var(--accent-6)">🎣 Phishing Playbook</span></div>
+  <p style="font-size:13px;margin-bottom:0"><strong>Detect:</strong> User report, email filter alert. <strong>Contain:</strong> If clicked → reset credentials, check malware. If entered creds → reset password NOW. Block sender domain, delete from all mailboxes. <strong>Alert all users.</strong></p>
+</div>
+
+<div class="pb" style="border-color:rgba(167,139,250,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-2)"></div>
+  <div class="pb-h"><span class="pb-name" style="color:var(--accent-2)">📊 Data Breach Playbook</span></div>
+  <p style="font-size:13px;margin-bottom:0"><strong>Detect:</strong> DLP alert, unusual transfer, third-party. <strong>Contain:</strong> Stop exfiltration, preserve evidence, engage legal. <strong>Investigate:</strong> What data? How much? Who? How? <strong>GDPR: 72 h notification!</strong></p>
+</div>
+
+<div class="pb" style="border-color:rgba(96,165,250,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-1)"></div>
+  <div class="pb-h"><span class="pb-name" style="color:var(--accent-1)">🌊 DDoS Playbook</span></div>
+  <p style="font-size:13px;margin-bottom:0"><strong>Detect:</strong> Service slowdown, bandwidth spike. <strong>Contain:</strong> Contact ISP, enable DDoS mitigation (Cloudflare, Akamai), rate limiting. <strong>Notify users.</strong></p>
+</div>
+</section>
+
+<!-- 09 SIEM -->
+<section class="section" id="siem">
+<div class="section-header"><span class="section-num">09</span><h2>SIEM</h2></div>
+
+<p><strong>SIEM</strong> = centrální platforma: agregace logů → normalizace → <strong>korelace</strong> → alerting → dashboards → forensics.</p>
+
+<div class="siem-pipe">
+  <div class="siem-stage" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="ss-icon">📥</span><span class="ss-name">Aggregation</span>Logy ze všech zdrojů</div>
+  <div class="siem-stage" style="background:rgba(167,139,250,.08);color:var(--accent-2)"><span class="ss-icon">🔄</span><span class="ss-name">Normalization</span>Jednotný formát</div>
+  <div class="siem-stage" style="background:rgba(248,113,113,.08);color:var(--accent-5)"><span class="ss-icon">🔗</span><span class="ss-name">Correlation</span>Propojení events!</div>
+  <div class="siem-stage" style="background:rgba(251,191,36,.08);color:var(--accent-4)"><span class="ss-icon">🚨</span><span class="ss-name">Alerting</span>Rules + ML + IoCs</div>
+  <div class="siem-stage" style="background:rgba(52,211,153,.08);color:var(--accent-3)"><span class="ss-icon">📊</span><span class="ss-name">Dashboards</span>SOC „single pane"</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-5)">Korelace = nejdůležitější funkce!</div>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)">Event 1: Failed login (firewall)<br>Event 2: Port scan z téže IP (IDS)<br>Event 3: SQL injection pokus (web server)<br><span style="color:var(--accent-5)">→ SIEM koreluje: Koordinovaný útok! HIGH PRIORITY ALERT!</span></p>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Platformy:</strong> Splunk (market leader), IBM QRadar, <strong>Microsoft Sentinel</strong> (cloud), ELK Stack (open-source). <strong>Výzvy:</strong> Alert fatigue, high cost, nutný tuning.</p>
+</div>
+</section>
+
+<!-- 10 DLP -->
+<section class="section" id="dlp">
+<div class="section-header"><span class="section-num">10</span><h2>DLP (Data Loss Prevention)</h2></div>
+
+<p>Prevence úniků citlivých dat. Detekuje a blokuje neoprávněné přenosy. <strong>GDPR penalty: až 4 % global revenue.</strong></p>
+
+<div class="dlp-grid">
+  <div class="dlp-item"><strong style="color:var(--accent-1)">🌐 Network DLP</strong><p>Data in motion. Email, web uploads, FTP. Inline na perimetru. Block/alert/encrypt.</p></div>
+  <div class="dlp-item"><strong style="color:var(--accent-3)">💻 Endpoint DLP</strong><p>Agent na PC. USB copy, print, screenshot. Device control – whitelist authorized USB.</p></div>
+  <div class="dlp-item"><strong style="color:var(--accent-4)">💾 Storage DLP</strong><p>Data at rest. Skenuje file servers, DB. Discovery + auto-classification + remediation.</p></div>
+  <div class="dlp-item"><strong style="color:var(--accent-2)">☁️ Cloud DLP</strong><p>O365, Google Workspace, Dropbox. API-based. File sharing monitoring.</p></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">Detekční metody</div>
+  <ul>
+    <li><strong>Content-based:</strong> Keywords („confidential"), regex (credit card: <code>\d{4}-\d{4}-\d{4}-\d{4}</code>), file fingerprinting</li>
+    <li><strong>Context-based:</strong> Classification tags, source location (HR folder), metadata</li>
+    <li><strong>Statistical/ML:</strong> Normal = 10 MB/day, najednou 10 GB → anomálie</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Actions:</strong> Block, quarantine, encrypt, redact (mask CC#), alert only, user notification. <strong>Best practice:</strong> Start s discovery → classify → <strong>monitor first</strong> (alert only) → pak blocking.</p>
+</div>
+</section>
+
+<!-- 11 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">11</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">IR LIFECYCLE (NIST 4 FÁZE)</p>
+<ul>
+  <li><strong>1. Preparation:</strong> IRT tým, IRP plán, nástroje (SIEM, forensics), training (tabletop), prevence</li>
+  <li><strong>2. Detection & Analysis:</strong> IoC, severity (P1–P4), scope, root cause. DOKUMENTUJ VŠE!</li>
+  <li><strong>3. Containment → Eradication → Recovery:</strong> Izoluj (odpoj ze sítě), odstraň (nuke & pave), obnov (clean backups). Enhanced monitoring!</li>
+  <li><strong>4. Post-Incident:</strong> Lessons learned (no blame!), final report, update IRP, share IoCs</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">IMPACT REDUCTION + DR</p>
+<ul>
+  <li><strong>Impact Reduction:</strong> Segmentation, Least Privilege, Backups 3-2-1 (immutable!), Rapid Detection (&lt;24 h), SOAR automation, DLP, cyber insurance</li>
+  <li><strong>DR metriky:</strong> <strong>RTO</strong> = jak dlouho down? <strong>RPO</strong> = kolik dat ztraceno? RPO určuje backup frequency</li>
+  <li><strong>DR strategie:</strong> Backup/Restore (dny) → Pilot Light (hodiny) → Warm (min–hodiny) → <strong>Hot Standby (sekundy)</strong></li>
+  <li><strong>DR sites:</strong> Cold (prázdná budova, týdny) → Warm (HW ready, dny) → Hot (mirror, hodiny). <strong>TESTUJ!</strong></li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">PLAYBOOK + SIEM + DLP</p>
+<ul>
+  <li><strong>Playbook:</strong> Runbook pro specifický incident. Ransomware (DO NOT PAY!), Phishing, Data Breach (GDPR 72 h!), DDoS</li>
+  <li><strong>SIEM:</strong> Aggregation → Normalization → <strong>Correlation</strong> (nejdůležitější!) → Alerting → Dashboards. Splunk, Sentinel, ELK</li>
+  <li><strong>DLP:</strong> Network (in motion), Endpoint (USB/print), Storage (at rest), Cloud. Content/Context/ML detekce. Block/encrypt/alert</li>
+  <li><strong>Není otázka JESTLI incident nastane, ale KDY.</strong> Příprava je klíčová! 207 dní detekce → cíl &lt; 24 h</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

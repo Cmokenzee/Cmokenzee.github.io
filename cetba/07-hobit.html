@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – J. R. R. Tolkien: Hobit aneb Cesta tam a zase zpátky</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=MedievalSharp&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a1510;
+  --bg-card:#231c14;
+  --bg-card-alt:#2a2218;
+  --border:#3e3224;
+  --text:#d4c9a8;
+  --text-muted:#8a7d5c;
+  --heading:#efe5c0;
+  --accent-1:#c49a4a;     /* trpasličí zlato */
+  --accent-2:#5c7a4a;     /* zelená Kraje */
+  --accent-3:#a8854a;     /* staré zlato */
+  --accent-4:#6b5a8c;     /* elfí fialová */
+  --accent-5:#c44a2a;     /* dračí oheň */
+  --accent-6:#8b4a2a;     /* spálené dřevo */
+  --accent-7:#3a5a7a;     /* elfí modř / jezero */
+  --accent-8:#5c4a3a;     /* hobití nora */
+  --gold:#c49a4a;         /* zlato pokladu */
+  --shire:#5c7a4a;        /* zeleň Kraje */
+  --fire:#c44a2a;         /* dračí oheň */
+  --ring:#e8b858;         /* prsten moci */
+  --parchment:#d4c9a8;    /* pergamen */
+  --shadow:#1a0e08;       /* stín */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(196,154,74,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(92,122,74,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — stará mapa s ohněm draka */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(26,21,16,.3) 0%,rgba(26,21,16,.85) 100%),
+    linear-gradient(135deg,#1a1208 0%,#3d2410 35%,#1e1410 70%,#120a08 100%);
+  border-bottom:2px solid var(--gold);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 30% 90%,rgba(196,74,42,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 10%,rgba(196,154,74,.08) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Horská silueta */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:40px;
+  background:
+    linear-gradient(transparent 0%,rgba(62,50,36,.4) 100%),
+    repeating-linear-gradient(45deg,
+      transparent 0,transparent 30px,
+      rgba(62,50,36,.15) 30px,rgba(62,50,36,.15) 32px);
+  pointer-events:none;
+  mask:linear-gradient(180deg,transparent 0%,black 100%);
+  -webkit-mask:linear-gradient(180deg,transparent 0%,black 100%);
+}
+.hero-ring{
+  display:inline-block;
+  margin-bottom:22px;
+  color:var(--ring);
+  font-size:48px;
+  opacity:.7;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(232,184,88,.4));
+  line-height:1;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:22px;position:relative;
+  opacity:.85;
+}
+.hero h1{
+  font-family:'MedievalSharp','Cormorant Garamond',serif;
+  font-size:clamp(40px,6.5vw,64px);
+  color:var(--heading);
+  font-weight:400;
+  line-height:1.05;
+  position:relative;
+  letter-spacing:2px;
+  text-shadow:0 2px 20px rgba(196,154,74,.3);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--parchment);
+  font-size:.32em;
+  letter-spacing:6px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  opacity:.75;
+}
+.hero h1 .subtitle-medieval{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.5em;
+  font-style:italic;
+  color:var(--gold);
+  letter-spacing:3px;
+  margin-top:14px;
+  opacity:.9;
+}
+.hero .author{
+  font-family:'MedievalSharp',serif;
+  color:var(--accent-3);
+  margin-top:28px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:3px;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:14px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:1.5px;
+}
+.hero-quote{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--ring);
+  font-size:18px;
+  margin-top:36px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:1px;
+  opacity:.85;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — jako stará mapa */
+.toc{
+  background:var(--bg-card);
+  border:2px solid var(--border);
+  border-top:3px double var(--gold);
+  border-bottom:3px double var(--gold);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before,.toc::after{
+  content:'✦';
+  position:absolute;
+  color:var(--gold);
+  font-size:18px;
+  top:-14px;
+  background:var(--bg);
+  padding:0 10px;
+  opacity:.7;
+}
+.toc::before{left:30px}
+.toc::after{right:30px}
+.toc h2{
+  font-family:'MedievalSharp',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;text-align:center;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,upper-roman) '. ';
+  font-family:'MedievalSharp',serif;
+  color:var(--gold);
+  font-size:13px;margin-right:6px;
+  font-weight:400;
+  opacity:.8;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--ring)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:100px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--fire));
+  opacity:.7;
+}
+.section-num{
+  font-family:'MedievalSharp',serif;
+  font-size:32px;color:var(--gold);
+  font-weight:400;
+  min-width:60px;opacity:.6;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'MedievalSharp',serif;
+  font-size:28px;color:var(--heading);
+  font-weight:400;
+  letter-spacing:1px;
+}
+
+h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'MedievalSharp',serif;
+  font-size:16px;font-weight:400;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1px;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--gold);background:rgba(196,154,74,.04)}
+.card.key{border-left:3px solid var(--accent-3);background:rgba(168,133,74,.05)}
+.card.warn{border-left:3px solid var(--fire);background:rgba(196,74,42,.05)}
+.card.green{border-left:3px solid var(--shire);background:rgba(92,122,74,.06)}
+.card.purple{border-left:3px solid var(--accent-4);background:rgba(107,90,140,.05)}
+.card.ring{border-left:3px solid var(--ring);background:rgba(232,184,88,.05)}
+
+.card-title{
+  font-family:'MedievalSharp',serif;
+  font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--gold)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(196,154,74,.1);
+  color:var(--gold);
+  padding:2px 7px;border-radius:2px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-3);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+/* Runový dělič */
+.rune-divider{
+  text-align:center;
+  margin:44px 0;
+  color:var(--gold);
+  font-size:16px;
+  letter-spacing:20px;
+  opacity:.4;
+  font-family:'MedievalSharp',serif;
+}
+.rune-divider::before,.rune-divider::after{
+  content:'';
+  display:inline-block;
+  width:50px;height:1px;
+  background:var(--gold);
+  vertical-align:middle;
+  margin:0 16px;
+  opacity:.5;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:15px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — portréty v rámečku */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--gold));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:62px;
+  opacity:.06;
+  pointer-events:none;
+  font-family:'MedievalSharp',serif;
+}
+.character .char-name{
+  font-family:'MedievalSharp',serif;
+  font-size:22px;font-weight:400;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:1px;
+}
+.character .char-name em{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  letter-spacing:0;
+  font-style:italic;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--gold));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--gold);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--gold);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* SCÉNA — pasáže z díla */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:10px;right:10px;
+  width:16px;height:16px;
+  border-top:1px solid var(--gold);
+  border-right:1px solid var(--gold);
+  opacity:.4;
+}
+.scene::after{
+  content:'';
+  position:absolute;
+  bottom:10px;left:10px;
+  width:16px;height:16px;
+  border-bottom:1px solid var(--gold);
+  border-left:1px solid var(--gold);
+  opacity:.4;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  background:rgba(196,154,74,.08);
+  padding:5px 12px;border-radius:2px;
+  margin-bottom:16px;
+  border:1px solid rgba(196,154,74,.2);
+}
+.scene-title{
+  font-family:'MedievalSharp',serif;
+  font-size:22px;font-weight:400;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1px;
+}
+.scene-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--gold);
+  background:rgba(196,154,74,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--accent-3)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(196,74,42,.05);
+  border-left:2px solid var(--fire);
+  border-radius:0 2px 2px 0;
+}
+.scene-meaning strong{color:var(--fire)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'MedievalSharp',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--gold);
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.trope-example{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* CESTA HRDINY — kruhová struktura */
+.journey{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:24px 28px;
+  margin:24px 0;
+  position:relative;
+}
+.journey-title{
+  font-family:'MedievalSharp',serif;
+  font-size:16px;
+  color:var(--gold);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  text-align:center;
+  margin-bottom:20px;
+}
+.journey-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.journey-step{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:14px 16px;
+  position:relative;
+}
+.journey-step-num{
+  font-family:'MedievalSharp',serif;
+  font-size:24px;
+  color:var(--gold);
+  line-height:1;
+  opacity:.5;
+  position:absolute;
+  top:10px;right:14px;
+}
+.journey-step-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;
+  color:var(--heading);
+  font-size:15px;
+  font-style:italic;
+  padding-right:30px;
+}
+.journey-step-desc{
+  color:var(--text-muted);
+  font-size:13px;
+  margin-top:4px;
+  padding-right:30px;
+}
+
+/* LOKACE — mapa Středozemě */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'MedievalSharp',serif;
+  font-size:14px;
+  color:var(--gold);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--gold));
+  border-radius:0 2px 2px 0;
+}
+.location-name{
+  font-family:'MedievalSharp',serif;
+  font-size:15px;
+  color:var(--heading);
+  letter-spacing:1px;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:3px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  background:var(--bg);
+}
+.timeline-step .ts-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-chapter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--gold);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.8;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--gold);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .journey-grid{grid-template-columns:1fr}
+  .locations-list{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-ring">◉</div>
+  <div class="hero-label">Maturitní rozbor · Světová literatura · Fantasy</div>
+  <h1><em>Fantasy román</em>Hobit<span class="subtitle-medieval">aneb Cesta tam a zase zpátky</span></h1>
+  <div class="author">J. R. R. Tolkien</div>
+  <div class="subtitle">1937 · Středozem · Zakladatel moderní fantasy</div>
+  <div class="hero-quote">„V zemi jménem Kraj, v norce v zemi, tam bydlel hobit."</div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Středozem</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#cesta">Cesta hrdiny</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Hobit</strong> je fantasy román publikovaný v roce <strong>1937</strong>. Dílo má chronologickou výstavbu s občasnými retrospektivními pasážemi. Tolkien knihu původně psal <strong>jako pohádku pro své čtyři děti</strong> — teprve náhodou se dostala k nakladateli Stanley Unwinovi, který ji dal přečíst svému desetiletému synovi. Ten ji vřele doporučil a kniha vyšla.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Úvod · Kapitoly 1–2</span> Kraj a rozhodnutí</div>
+    <div class="ts-desc">Bilbův pokojný život v Kraji, příchod trpaslíků a Gandalfa, rozhodnutí vydat se na cestu</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Střed · Kapitoly 3–13</span> Cesta tam</div>
+    <div class="ts-desc">Různá dobrodružství — trolové, skřeti, setkání s Glumem a získání prstenu, pavouci, elfové, jezerní město</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Vrchol · Kapitoly 12–17</span> Šmak a Bitva</div>
+    <div class="ts-desc">Rozhovor s drakem, Šmakova smrt, chamtivost Thorina, Bitva pěti armád</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Závěr · Kapitoly 18–19</span> Návrat</div>
+    <div class="ts-desc">Thorinova smrt a smíření s Bilbem, návrat domů, Bilbo jako proměněný hobit</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj se odehrává během přibližně <strong>jednoho roku cesty</strong>.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Cesta hrdiny, osobní růst a proměna, dobrodružství, boj dobra se zlem</strong>, síla přátelství a odvahy, <strong>pokušení mocí a bohatstvím</strong>, hledání domova a identity.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Hobit</strong> — malá bytost, symbol obyčejného člověka</li>
+  <li><strong>Trpaslíci</strong> — společníci, řemeslníci, hledající ztracený domov</li>
+  <li><strong>Kouzelník Gandalf</strong> — mentor, průvodce</li>
+  <li><strong>Drak Šmak</strong> — antagonista, symbol chamtivosti</li>
+  <li><strong>Prsten</strong> — jeden z prstenů moci (klíčový pro Pána prstenů)</li>
+  <li><strong>Osamělá hora (Erebor)</strong> — cíl cesty</li>
+  <li><strong>Poklad</strong> — lákadlo i prokletí</li>
+  <li><strong>Smíšek / Glum</strong> — tragická postava, předloha zla</li>
+  <li><strong>Elfové, skřeti, pavouci</strong> — obyvatelé Středozemě</li>
+  <li><strong>Cesta, magie, odvaha, chamtivost, přátelství, domov</strong></li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor · Středozem</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Čas</h4>
+    <p>Bájná minulost, <strong>Třetí věk Středozemě</strong> (fiktivní svět). Cesta trvá přibližně jeden rok, čas plyne přirozeně.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--shire)">
+    <h4 style="color:var(--shire)">Prostor</h4>
+    <p><strong>Středozem</strong> — fiktivní svět, kompletně vybudovaný Tolkienem s vlastní geografií, historií a kulturami.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa na cestě ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--shire)">
+      <div class="location-name">Kraj <em>(Shire)</em></div>
+      <div class="location-note">Domov hobita — počátek i konec cesty</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-4)">
+      <div class="location-name">Roklinka <em>(Rivendell)</em></div>
+      <div class="location-note">Elfské útočiště Elrondovo</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-8)">
+      <div class="location-name">Mlžné hory</div>
+      <div class="location-note">Jeskyně skřetů, setkání s Glumem</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-6)">
+      <div class="location-name">Beornův dům</div>
+      <div class="location-note">Útočiště kožoměnce Beorna</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--shire)">
+      <div class="location-name">Děsný hvozd <em>(Mirkwood)</em></div>
+      <div class="location-note">Temný les s pavouky a lesními elfy</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-7)">
+      <div class="location-name">Jezerní město <em>(Esgaroth)</em></div>
+      <div class="location-note">Město na jezeře u Osamělé hory</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--gold)">
+      <div class="location-name">Osamělá hora <em>(Erebor)</em></div>
+      <div class="location-note">Trpasličí království s pokladem a drakem</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--fire)">
+      <div class="location-name">Dol</div>
+      <div class="location-note">Zničené město lidí u hory</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — cesta tam a zpět, dobrodružství následují po sobě</li>
+  <li><strong>Rámcová kompozice</strong> — začátek i konec v Kraji (domov)</li>
+  <li><strong>Cestopisná struktura</strong> — série dobrodružství během putování</li>
+</ul>
+
+<h3>Části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Rozděleno na <strong>19 kapitol</strong></li>
+    <li>Každá kapitola obsahuje jedno nebo více dobrodružství</li>
+    <li><strong>Kapitoly mají názvy</strong> vystihující obsah (např. „Hádanky ve tmě")</li>
+    <li>Plynulý chronologický děj</li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Expozice</div>
+    <div class="ts-desc"><strong>Kapitoly 1–2</strong> — Bilbo v Kraji, příchod trpaslíků, rozhodnutí vydat se na cestu</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Cesta tam</div>
+    <div class="ts-desc"><strong>Kapitoly 3–13</strong> — Různá dobrodružství, setkání s Glumem, získání prstenu</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">3. U Osamělé hory</div>
+    <div class="ts-desc"><strong>Kapitoly 14–17</strong> — Drak Šmak, poklad, chamtivost Thorina</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">4. Bitva pěti armád</div>
+    <div class="ts-desc"><strong>Kapitola 17</strong> — Velká bitva proti skřetům, trpaslíci + elfové + lidé vs. skřeti + vlci</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">5. Návrat</div>
+    <div class="ts-desc"><strong>Kapitoly 18–19</strong> — Cesta domů, Bilbo se vrací změněný</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (fiktivní svět Středozemě).</p>
+</div>
+
+<h3>Literární žánr — vícenásobné žánrové zařazení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Fantasy román</h4>
+    <p>Příběh ve fiktivním světě s magií. <strong>Tolkien stojí u zrodu celého žánru.</strong></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--shire)">
+    <h4 style="color:var(--shire)">Cestopisný román</h4>
+    <p>Cesta jako hlavní kompoziční princip — „tam a zase zpátky".</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--fire)">
+    <h4 style="color:var(--fire)">Dobrodružný román</h4>
+    <p>Série vzrušujících událostí a zkoušek pro hrdinu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Pohádka pro dospělé</h4>
+    <p>Má prvky pohádky, ale hlubší mytologický a morální význam.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-3)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Odehrává se ve fantastickém světě (Středozem)</li>
+    <li>Obsahuje <strong>magické prvky</strong> (kouzelníci, draci, prsteny)</li>
+    <li>Má klasickou strukturu <strong>cesty hrdiny</strong></li>
+    <li>Dobrodružný charakter s happy endem</li>
+    <li>Prvky pohádky — dobro vítězí, kouzelné předměty</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Vševědoucí vypravěč</strong> — zná myšlenky postav, komentuje děj</li>
+  <li><strong>Osobní vypravěč</strong> — někdy se obrací přímo na čtenáře</li>
+  <li><strong>Pohádkový vypravěč</strong> — používá pohádkové formule („byla nebyla…")</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Přátelský, laskavý</strong> tón</li>
+    <li>Občas se obrací na čtenáře („jak uvidíte později")</li>
+    <li>Komentuje děj s <strong>humorem</strong></li>
+    <li>Sympatizuje s Bilbem</li>
+    <li>Vytváří atmosféru <strong>vyprávění u krbu</strong></li>
+    <li>Používá archaický, pohádkový jazyk</li>
+  </ul>
+</div>
+
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Rozdíl od Pána prstenů</div>
+  <p style="margin-bottom:0">Vypravěč Hobita je <strong>veselejší, dětštější</strong>. V Pánu prstenů Tolkien opouští přátelský tón a přechází k vážnému epickému stylu. Hobit si zachovává atmosféru pohádky vyprávěné dítěti.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy</h2></div>
+
+<div class="character" style="--character-color:var(--shire)" data-symbol="◉">
+  <div class="char-name">Bilbo Pytlík <em>(Bilbo Baggins)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Hrdina</div>
+  <ul style="margin:0">
+    <li><strong>Hobit z Kraje</strong> — malá bytost (cca 1 metr)</li>
+    <li><strong>Na začátku:</strong> pohodlný, bojácný, miluje klid a jídlo</li>
+    <li><strong>Během cesty:</strong> odvážný, vynalézavý, moudrý</li>
+    <li>Získá <strong>kouzelný prsten</strong> (dělá neviditelným)</li>
+    <li>Symbol obyčejného člověka, který objeví svou odvahu</li>
+    <li><strong>Vnitřní proměna</strong> — z pohodlného hobita na hrdinu</li>
+    <li>Na konci: zkušený, moudrý, ale stále hodný</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="✹">
+  <div class="char-name">Gandalf Šedý</div>
+  <div class="char-role">Hlavní postava · Kladná · Mentor</div>
+  <ul style="margin:0">
+    <li><strong>Mocný kouzelník</strong></li>
+    <li>Moudrý, laskavý, ale přísný</li>
+    <li><strong>Iniciátor</strong> celého dobrodružství</li>
+    <li>Pomáhá v klíčových momentech</li>
+    <li>Archetypální postava mentora</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-symbol="⚒">
+  <div class="char-name">Thorin Pavéza <em>(Thorin Oakenshield)</em></div>
+  <div class="char-role">Hlavní postava · Tragická · Vůdce trpaslíků</div>
+  <ul style="margin:0">
+    <li><strong>Vůdce trpaslíků, princ pod Horou</strong></li>
+    <li>Hrdý, statečný, vznešený</li>
+    <li>Touží získat zpět své království</li>
+    <li>Nakonec podlehne chamtivosti (<strong>„drakova nemoc"</strong>)</li>
+    <li>Před smrtí se usmíří s Bilbem — <strong>tragická postava</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="⚔">
+  <div class="char-name">Třináct trpaslíků</div>
+  <div class="char-role">Vedlejší · Kladné · Společníci</div>
+  <ul style="margin:0">
+    <li>Společníci na cestě</li>
+    <li>Každý má svůj charakter — <strong>Dwalin, Balin, Fili, Kili, Dori, Nori, Ori, Oin, Gloin, Bifur, Bofur, Bombur</strong></li>
+    <li><strong>Fili a Kili</strong> — nejmladší, nejodvážnější (padnou v bitvě)</li>
+    <li><strong>Bombur</strong> — nejtlustší, stále hladový</li>
+    <li><strong>Balin</strong> — starší, moudrý (objevuje se v Pánu prstenů v Morii)</li>
+    <li>Pomáhají Bilbovi růst</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="☾">
+  <div class="char-name">Smíšek / Glum <em>(Gollum)</em></div>
+  <div class="char-role">Vedlejší · Tragická · Bývalý hobit</div>
+  <ul style="margin:0">
+    <li><strong>Zvrácená bytost</strong> žijící v jeskyních</li>
+    <li>Posedlý prstenem — <em>„můj poklad"</em></li>
+    <li>Mluví sám se sebou (rozdvojená osobnost)</li>
+    <li>Odporný, ale i <strong>politováníhodný</strong></li>
+    <li>Ztratí prsten Bilbovi v hádankách</li>
+    <li><strong>Zásadní postava pro celý Pán prstenů</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--fire)" data-symbol="🜂">
+  <div class="char-name">Šmak <em>(Smaug)</em></div>
+  <div class="char-role">Hlavní antagonista · Drak</div>
+  <ul style="margin:0">
+    <li><strong>Obrovský ohnivý drak</strong></li>
+    <li>Obsadil Osamělou horu a uloupil poklad</li>
+    <li><strong>Chamtivý, krutý, inteligentní</strong></li>
+    <li>Mluví sofistikovaně — je to <em>mluvící drak</em>, ne jen bestie</li>
+    <li>Symbol chtivosti a zla</li>
+    <li>Zabit Bardem z Jezerního města</li>
+  </ul>
+</div>
+
+<h3>Další důležité postavy</h3>
+
+<div class="character" style="--character-color:var(--accent-7)" data-symbol="➹">
+  <div class="char-name">Bard Lučištník</div>
+  <div class="char-role">Vedlejší · Kladná · Drakobijce</div>
+  <ul style="margin:0">
+    <li>Člověk z Jezerního města</li>
+    <li><strong>Statečný lukostřelec</strong></li>
+    <li>Zabije draka Šmaka černým šípem</li>
+    <li>Spravedlivý vůdce, pozdější král obnoveného Dolu</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="🐻">
+  <div class="char-name">Beorn</div>
+  <div class="char-role">Vedlejší · Kladná · Kožoměnec</div>
+  <ul style="margin:0">
+    <li><strong>Kožoměnec</strong> — mění se v medvěda</li>
+    <li>Poskytuje útočiště společnosti</li>
+    <li>Pomáhá v Bitvě pěti armád</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="❦">
+  <div class="char-name">Elrond a král elfů</div>
+  <div class="char-role">Vedlejší · Kladné/neutrální · Elfové</div>
+  <ul style="margin:0">
+    <li><strong>Elrond</strong> — elfský pán z Rokliny, moudrý, laskavý. Poskytuje radu a útočiště</li>
+    <li><strong>Král elfů z Temného hvozdu</strong> (Thranduil) — uvězní trpaslíky, později pomáhá v bitvě</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">VIII</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card">
+  <div class="card-title" style="color:var(--gold)">Přímá řeč</div>
+  <p>Dialogy mezi postavami — nositel charakterizace.</p>
+  <div class="quote-block">„Můj poklad!" sykl Glum. „Kde je můj poklad?"</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--shire)">Nepřímá řeč</div>
+  <p>Vypravěč reprodukuje myšlenky postav vlastními slovy.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Bilbo si pomyslel, že by raději zůstal doma.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Polopřímá řeč</div>
+  <p>Prolínání myšlenek postavy s vyprávěním.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Bilbo seděl a přemýšlel. Ne, tohle nebyla dobrá myšlenka. Co tu vlastně dělal?</p>
+</div>
+
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Pásmo vypravěče</div>
+  <p>Popis událostí, komentáře — charakteristický pro pohádkový styl Hobita.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">A tak začalo to nejpodivnější dobrodružství, jaké kdy hobit zažil.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Pásmo vypravěče</h4><p>Převažující forma — pohádkový tón, obrácení se na čtenáře.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Monolog</h4><p>Vnitřní úvahy Bilba, Glumovy rozhovory sám se sebou (dvojí hlas).</p></div>
+  <div class="device-card" style="border-top:2px solid var(--fire)"><h4 style="color:var(--fire)">Dialog</h4><p>Rozhovory — Bilbo/Gandalf, Bilbo/Šmak, hádanky s Glumem.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--shire)"><h4 style="color:var(--shire)">Popis</h4><p>Detailní popisy krajin, bytostí, míst — Tolkienova síla.</p></div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">IX</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>cesta, hora, drak, meč</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>úsvit, záře, temno, odvaha</em></td></tr>
+  <tr><td><strong>Poetismy</strong></td><td><em>luna, hvězdy, svítání</em></td></tr>
+</table>
+
+<h3>Archaismy — pohádková atmosféra</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><em>„Hle!", „ejhle", „pravil"</em></li>
+    <li>Staroanglické prvky v názvech</li>
+    <li>Navození <strong>bájné, pohádkové atmosféry</strong></li>
+  </ul>
+</div>
+
+<h3>Neologismy — vlastní slovník</h3>
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Tolkien vytvořil vlastní slovník</div>
+  <ul style="margin:0">
+    <li><strong>„Hobit" (hobbit)</strong> — nový druh bytosti, Tolkienem vymyšlené slovo</li>
+    <li>Názvy míst: <em>Kraj, Osamělá hora, Děsný hvozd, Roklinka</em></li>
+    <li>Jména postav v <strong>elfštině</strong> (quenya, sindarština) a <strong>trpasličtině</strong> (khuzdul)</li>
+    <li>Runové písmo na Thorinově mapě</li>
+  </ul>
+</div>
+
+<h3>Další prostředky</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Poetické popisy</h4>
+    <p>Bohaté popisy přírody, lyrické pasáže, <strong>písně a básně</strong> vložené do textu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Zdrobněliny</h4>
+    <p><em>„hobítek"</em> — expresivní výrazy pro důvěrný tón.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Archaismy</strong> vytvářejí pohádkovou, bájnou atmosféru</li>
+    <li><strong>Poetický jazyk</strong> dodává dílu literární hodnotu</li>
+    <li><strong>Neologismy</strong> budují věrohodný fiktivní svět</li>
+    <li><strong>Bohaté popisy</strong> vytvářejí živý obraz Středozemě</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">X</span><h2>Tropy a figury</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Prsten = moc</div>
+    <div class="trope-note">Prsten = moc, pokušení. Drak = chamtivost, zlo. Cesta = životní pouť, dospívání.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Hora dýchá ohněm</div>
+    <div class="trope-note">Příroda má lidské vlastnosti. Osamělá hora „dýchá ohněm" (kvůli drakovi).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">„Moudrý Gandalf"</div>
+    <div class="trope-note">Básnický přívlastek — „moudrý Gandalf", „statečný Bilbo", „chamtivý Šmak".</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Myš mezi kočkami</div>
+    <div class="trope-note">Bilbo je „jako myš mezi kočkami" — obraz slabosti obklopené silou.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Dračí samochvála</div>
+    <div class="trope-note">Přehánění při popisu draků a monster — „můj pancíř je jako deset štítů".</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Prsten · Drak · Domov</div>
+    <div class="trope-note">Prsten = moc. Drak = chamtivost. Domov (Kraj) = bezpečí. Cesta = zkušenost.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Domov vs. dobrodružství</div>
+    <div class="trope-note">Protiklady: malý hobit vs. velký svět, dobro vs. zlo, skromnost vs. chamtivost.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Gradace</div>
+    <div class="trope-example">Růst odvahy</div>
+    <div class="trope-note">Bilbova odvaha postupně roste — každá zkouška ho posiluje.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Eufemismus</div>
+    <div class="trope-example">„Síně předků"</div>
+    <div class="trope-note">Smrt je popisována jemněji — „odešel do síní předků".</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--fire)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy vytvářejí <strong>poetickou atmosféru</strong>, budují <strong>symbolický rozměr příběhu</strong> a zdůrazňují témata díla — hlavně protiklad skromnosti a chamtivosti.</p>
+</div>
+</section>
+
+<!-- 11 CESTA HRDINY -->
+<section class="section" id="cesta">
+<div class="section-header"><span class="section-num">XI</span><h2>Cesta hrdiny · Hero's Journey</h2></div>
+
+<p>Hobit <strong>dokonale následuje archetyp „cesty hrdiny"</strong>, jak ho popsal mytolog <strong>Joseph Campbell</strong> v knize <em>Tisíc tváří hrdiny</em> (1949). Bilbo prochází všemi 12 fázemi:</p>
+
+<div class="journey">
+  <div class="journey-title">◆ 12 fází Bilbovy cesty ◆</div>
+  <div class="journey-grid">
+    <div class="journey-step">
+      <div class="journey-step-num">I</div>
+      <div class="journey-step-title">Obyčejný svět</div>
+      <div class="journey-step-desc">Kraj — pohodlný hobití život</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">II</div>
+      <div class="journey-step-title">Výzva k dobrodružství</div>
+      <div class="journey-step-desc">Gandalf přichází s nabídkou</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">III</div>
+      <div class="journey-step-title">Odmítnutí výzvy</div>
+      <div class="journey-step-desc">Bilbo nechce, má strach</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">IV</div>
+      <div class="journey-step-title">Setkání s mentorem</div>
+      <div class="journey-step-desc">Gandalf jako průvodce</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">V</div>
+      <div class="journey-step-title">Překročení prahu</div>
+      <div class="journey-step-desc">Opuštění Kraje</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">VI</div>
+      <div class="journey-step-title">Zkoušky, spojenci, nepřátelé</div>
+      <div class="journey-step-desc">Celá cesta tam</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">VII</div>
+      <div class="journey-step-title">Přiblížení k cíli</div>
+      <div class="journey-step-desc">Osamělá hora</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">VIII</div>
+      <div class="journey-step-title">Ordál</div>
+      <div class="journey-step-desc">Šmak, Bitva pěti armád</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">IX</div>
+      <div class="journey-step-title">Odměna</div>
+      <div class="journey-step-desc">Poklad, moudrost</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">X</div>
+      <div class="journey-step-title">Cesta zpět</div>
+      <div class="journey-step-desc">Návrat domů</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">XI</div>
+      <div class="journey-step-title">Vzkříšení</div>
+      <div class="journey-step-desc">Bilbo jako změněný hobit</div>
+    </div>
+    <div class="journey-step">
+      <div class="journey-step-num">XII</div>
+      <div class="journey-step-title">Návrat s elixírem</div>
+      <div class="journey-step-desc">Moudrost, prsten</div>
+    </div>
+  </div>
+</div>
+
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Proč to funguje dodnes</div>
+  <p style="margin-bottom:0">Struktura cesty hrdiny je <strong>archetypální</strong> — opakuje se v mytologii, pohádkách a moderních filmech (<em>Hvězdné války, Matrix, Harry Potter</em>). Tolkien ji ovládá mistrovsky a dává jí lidský rozměr — jeho hrdina není bojovník s mečem, ale nesmělý hobit.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">John Ronald Reuel Tolkien (1892–1973)</div>
+  <p>Britský spisovatel, filolog a profesor. Narozen v Jižní Africe, vychován v Anglii. <strong>Profesor staroanglické a středověké literatury na Oxfordu</strong>. Veterán 1. světové války — <strong>bojoval v bitvě na Sommě 1916</strong>, kde přišel o většinu nejbližších přátel. Tato zkušenost se promítla do jeho chápání zla a hrůz války. Byl horlivým <strong>katolíkem</strong> — víra je silně přítomna v jeho tvorbě, byť nepřímo. Oženil se s Edith Brattovou — podle ní je <em>Lúthien</em> z Silmarillionu, zatímco on je <em>Beren</em> (tyto dvě postavy jsou vytesány na jejich společném náhrobku). Byl součástí oxfordského literárního kroužku <strong>„Inklings"</strong>, kam patřil i C. S. Lewis (autor Narnie).</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>První publikované dílo o Středozemi</strong> (1937)</li>
+  <li>Původně napsáno <strong>pro Tolkienovy děti</strong></li>
+  <li>Předchůdce <em>Pána prstenů</em></li>
+  <li>Základní kámen celé mytologie Středozemě</li>
+</ul>
+
+<h3>Další Tolkienova díla</h3>
+
+<h4>Středozem</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Hobit</strong></td><td>1937</td><td>Vstup do Středozemě</td></tr>
+  <tr><td><strong>Pán prstenů</strong></td><td>1954–1955</td><td>Hlavní dílo, trilogie: Společenstvo prstenu, Dvě věže, Návrat krále</td></tr>
+  <tr><td><strong>Silmarillion</strong></td><td>1977 <em>(posmrtně)</em></td><td>Mytologie Středozemě, příběhy První věku</td></tr>
+  <tr><td><strong>Nedokončené příběhy</strong></td><td>1980 <em>(posmrtně)</em></td><td>Další texty o Středozemi, editoval syn Christopher</td></tr>
+</table>
+
+<h4>Akademická práce</h4>
+<ul>
+  <li>Odborník na starou a středověkou angličtinu</li>
+  <li>Překlady a studie <strong>Beowulfa</strong></li>
+  <li>Profesor na Oxfordu (Pembroke College, Merton College)</li>
+  <li>Esej <em>O pohádkách</em> (1947) — teorie fantasy</li>
+</ul>
+
+<h3>Tolkienův styl</h3>
+<ul>
+  <li><strong>Detailní worldbuilding</strong> (budování světa) — mapy, historie, kultury</li>
+  <li><strong>Vlastní jazyky</strong> (elfština, trpasličtina, černá řeč)</li>
+  <li>Mytologický přístup</li>
+  <li><strong>Křesťanská symbolika</strong> (byť skrytá)</li>
+  <li>Téma <strong>boje dobra se zlem</strong></li>
+  <li>Důraz na přátelství a odvahu</li>
+  <li><strong>Kritika modernizace a industrializace</strong> — skřeti kácející lesy</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Meziválečné období</strong> (publikováno 1937)</li>
+    <li>Anglie před 2. světovou válkou</li>
+    <li>Tolkien byl <strong>veteránem 1. světové války</strong> (Somme 1916)</li>
+    <li>Umělecký sloh: <strong>nelze jednoznačně zařadit</strong> — Tolkien stojí mimo hlavní proudy</li>
+  </ul>
+</div>
+
+<h3>Tolkien mezi proudy</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>Vytváří <strong>vlastní žánr</strong> — moderní fantasy</li>
+    <li>Inspirace středověkou literaturou</li>
+    <li>Prvky <strong>romantismu</strong> (příroda, cit, hrdinství)</li>
+    <li>Prvky <strong>mytologie</strong> (severská, keltská, germánská)</li>
+  </ul>
+</div>
+
+<h3>Charakteristika fantasy žánru</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Fiktivní svět</h4><p>S vlastními zákony a historií.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Magie</h4><p>Nadpřirozené prvky, kouzla.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--fire)"><h4 style="color:var(--fire)">Dobro vs. zlo</h4><p>Věčný boj, jasná morálka.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--shire)"><h4 style="color:var(--shire)">Hrdina na cestě</h4><p>Archetypální struktura.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Mýtická atmosféra</h4><p>Odkazy na staré pověsti.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Epický rozsah</h4><p>Velké téma, hluboký svět.</p></div>
+</div>
+
+<h3>Inspirační zdroje</h3>
+<ul>
+  <li><strong>Beowulf</strong> — staroanglický epos (Tolkien byl jeho předním odborníkem)</li>
+  <li><strong>Severská mytologie</strong> — Edda, Völsunga saga</li>
+  <li><strong>Artušovské legendy</strong></li>
+  <li>Středověká literatura, <strong>Sir Gawain a Zelený rytíř</strong></li>
+  <li>Finský epos <strong>Kalevala</strong> — inspirace pro elfštinu</li>
+  <li>1. světová válka — zkušenost s hrůzou (Sauron, Mordor, skřeti)</li>
+</ul>
+
+<h3>Vliv na další autory — fantasy literatura</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>C. S. Lewis</strong></td><td><em>Letopisy Narnie</em> (blízký Tolkienův přítel, člen Inklings)</td></tr>
+  <tr><td><strong>Ursula K. Le Guin</strong></td><td><em>Zeměmoří</em></td></tr>
+  <tr><td><strong>Terry Pratchett</strong></td><td><em>Úžasná Zeměplocha</em> (humorná fantasy)</td></tr>
+  <tr><td><strong>George R. R. Martin</strong></td><td><em>Píseň ledu a ohně</em> (Hra o trůny)</td></tr>
+  <tr><td><strong>J. K. Rowling</strong></td><td><em>Harry Potter</em></td></tr>
+  <tr><td><strong>Andrzej Sapkowski</strong></td><td><em>Zaklínač</em></td></tr>
+  <tr><td colspan="2"><strong>Prakticky všichni moderní fantasy autoři</strong> stojí na Tolkienových ramenou</td></tr>
+</table>
+</section>
+
+<div class="rune-divider">⟁ ⦿ ⟁</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--shire)">
+  <span class="scene-label" style="background:rgba(92,122,74,.1);border-color:var(--shire);color:var(--shire)">★ 01 · Kapitola 1 · ÚVODNÍ VĚTA ★</span>
+  <div class="scene-title">Představení hobita</div>
+  <div class="scene-text">V zemi jménem Kraj, v norce v zemi, tam bydlel hobit. Ne v nějaké špinavé, vlhké díře, kde by bylo plno červů a hnusného zápachu, ani ne v suché, holé, písčité díře, kde není co jíst: to byla hobití nora, a to znamená útulnou noru.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Slavný začátek knihy představující hobity a jejich způsob života.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Vytváří obraz <strong>pohodlného, mírného života</strong></li>
+      <li>Definuje hobity jako bytosti milující pohodlí</li>
+      <li>Kontrast s následujícím dobrodružstvím</li>
+      <li><strong>Pohádkový tón vyprávění</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Kapitola 1 · Gandalf</span>
+  <div class="scene-title">Příchod Gandalfa</div>
+  <div class="scene-text">„Dobré ráno!" řekl Bilbo.
+„Co tím myslíte?" pravil Gandalf. „Že mně přejete dobré ráno, nebo že je to dobré ráno, ať si to přeji nebo ne, nebo že dnes ráno cítíte dobře, nebo že je to ráno, kdy je třeba být dobrý?"</div>
+  <div class="scene-context"><strong>Kontext:</strong> První setkání Bilba s Gandalfem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Charakterizace Gandalfa — <strong>moudrý, trochu záhadný</strong></li>
+      <li>Slovní hříčka ukazuje Gandalfovu inteligenci</li>
+      <li>Začátek Bilbova dobrodružství</li>
+      <li>Humor Tolkienova stylu</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Kapitola 1 · Třináct hostů</span>
+  <div class="scene-title">Neočekávaná večeře</div>
+  <div class="scene-context">Bilbo otevřel dveře a trpaslíci začali přicházet jeden po druhém. A s každým přinesli více jídla a hluku, až Bilbova nora byla plná trpaslíků a Bilbo nevěděl, kam dřív skočit.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Komická situace — Bilbův šok</li>
+      <li>Kontrast: Bilbův uspořádaný život vs. chaotické dobrodružství</li>
+      <li>Představení trpaslíků</li>
+      <li>Začátek cesty</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Kapitola 1 · Thorinova píseň</span>
+  <div class="scene-title">Píseň trpaslíků</div>
+  <div class="scene-text">Daleko tam přes mlhu a chlad
+Do kobek hlubokých a jeskyň dávných
+Musíme dřív než svítání být na cestách
+Hledat zlato bledě žluté…</div>
+  <div class="scene-context"><strong>Kontext:</strong> Trpaslíci zpívají o svém ztraceném domově a pokladu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Poetická pasáž — typické pro Tolkiena</li>
+      <li>Vyvolává <strong>touhu po dobrodružství</strong> i v Bilbovi</li>
+      <li>Historické pozadí — drak Šmak ukradl trpasličí poklad</li>
+      <li>Motivace výpravy</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--accent-4)">
+  <span class="scene-label" style="background:rgba(107,90,140,.1);border-color:var(--accent-4);color:var(--accent-4)">★ 05 · Kapitola 5 · HÁDANKY VE TMĚ ★</span>
+  <div class="scene-title">Hádanky s Glumem</div>
+  <div class="scene-text">Co je to — kořeny nemá,
+vyšší je než stromy.
+Vzhůru roste, nahoru, nahoru,
+a přece nikdy neroste?</div>
+  <div class="scene-context"><strong>Kontext:</strong> Bilbo se v jeskyni setkává se Smíškem (Glumem) a hrají hádanky <strong>o život</strong>. Bilbo odpoví: „Hora!"</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Napínavá scéna</strong> — Bilbo hraje o život</li>
+      <li>Bilbo prokazuje chytrost</li>
+      <li><strong>Získání prstenu</strong> — zásadní pro Pána prstenů!</li>
+      <li>Představení Gluma — tragické, odporné stvoření</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · Kapitola 5 · Závěrečná hádanka</span>
+  <div class="scene-title">„Co mám v kapse?"</div>
+  <div class="scene-text">„Co mám v kapse?" zeptal se Bilbo.
+Glum neznal odpověď. To nebyla fér hádanka. Ale Bilbo byl zoufalý.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Bilbo podvádí v poslední hádance.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Morální ambivalence</strong> — Bilbo podvádí, aby přežil</li>
+      <li>Glum ztrácí prsten</li>
+      <li><em>„Můj poklad!"</em> — Glumova posedlost</li>
+      <li><strong>Klíčový moment pro celý příběh Středozemě</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--fire)">
+  <span class="scene-label" style="background:rgba(196,74,42,.1);border-color:var(--fire);color:var(--fire)">★ 07 · Kapitola 12 · ŠMAK ★</span>
+  <div class="scene-title">Rozhovor se Šmakem</div>
+  <div class="scene-text">„Jsem oheň, jsem smrt!" zahřímal drak.
+„Dobrý večer!" řekl Bilbo zdvořile. „Jsem zloděj sudu. Přicházím z jihu. Pocházím z místa pod kopcem, kde věci rostou."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Bilbo (neviditelný díky prstenu) mluví s drakem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Bilbova odvaha</strong> — mluví s drakem</li>
+      <li>Šmak je <strong>inteligentní</strong>, ne jen ničící bestie</li>
+      <li>Hádanková hra slov — Bilbo nesmí prozradit jméno</li>
+      <li>Napětí — každé slovo může znamenat smrt</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Kapitola 12 · Šmakova pýcha</span>
+  <div class="scene-title">Šmakova chamtivost</div>
+  <div class="scene-text">Můj pancíř je jako deset štítů, mé zuby jsou meče, mé drápy kopí, mé křídla vichr a můj dech… smrt!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Šmak se chlubí svou mocí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Drak jako ztělesnění pýchy a moci</li>
+      <li>Typická pohádková formule (přehánění)</li>
+      <li><strong>Předznamenání</strong> — Bilbo vidí slabé místo v pancíři</li>
+      <li>Tato informace povede k drakově smrti</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Kapitola 15 · Drakova nemoc</span>
+  <div class="scene-title">Thorinova drakova nemoc</div>
+  <div class="scene-context">Thorin seděl na hromadě zlata a nepustil by ani minci. Jeho oči plály zlatem a jeho srdce bylo tvrdé jako kámen.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>„Drakova nemoc"</strong> — chamtivost kazí i dobré lidi</li>
+      <li>Thorin se mění — nejsou mu důležití přátelé, jen zlato</li>
+      <li>Téma pokušení bohatstvím</li>
+      <li><strong>Tragický pád hrdiny</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">10 · Kapitola 16 · Arkenkamen</span>
+  <div class="scene-title">Bilbovo rozhodnutí — Dar kamene</div>
+  <div class="scene-context">Bilbo vzal Arkenkamen a odnesl jej elfskému králi. <em>„Toto dejte Bardovi a králi elfů,"</em> řekl. <em>„Ať s tím vyjednají s Thorinem."</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Bilbova odvaha</strong> — zrazuje Thorina pro vyšší dobro</li>
+      <li>Morální dilemata — co je správné?</li>
+      <li>Bilbo upřednostňuje <strong>mír před zlatem</strong></li>
+      <li>Proměna z hobita v hrdinu</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">11 · Kapitola 17 · Bitva</span>
+  <div class="scene-title">Bitva pěti armád</div>
+  <div class="scene-context">A pak přišli skřeti, davy a davy skřetů. A museli všichni spojit síly — trpaslíci, elfové, lidé — aby přežili.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Klasický prvek fantasy — <strong>epická bitva</strong></li>
+      <li>Dřívější nepřátelé se spojí proti zlu</li>
+      <li>Smrt Thorina a dalších (Fili, Kili)</li>
+      <li>Téma <strong>jednoty proti zlu</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(196,154,74,.12);border-color:var(--gold)">★ 12 · Kapitola 18 · THORINOVA SMRT ★</span>
+  <div class="scene-title">Thorinova smrt a smíření</div>
+  <div class="scene-text">Sbohem, dobrý zloději, řekl Thorin. Jdu odpočívat k mým předkům. Promiň mi mou tvrdost a chamtivost. Kdybych byl přijal tvou radu, všichni bychom nyní byli v radosti. Ale smutím, že musíme se loučit.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Umírající Thorin se loučí s Bilbem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tragická smrt</strong> — Thorin poznává svou chybu</li>
+      <li>Pokání před smrtí</li>
+      <li>Bilbo odpouští</li>
+      <li><strong>Emocionální vrchol</strong> příběhu</li>
+      <li>Téma <strong>ceny chamtivosti</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">13 · Kapitola 19 · Návrat</span>
+  <div class="scene-title">Návrat domů</div>
+  <div class="scene-context">Když Bilbo dorazil zpět do své nory, zjistil, že jeho příbuzní prodávají jeho majetek, protože ho prohlásili za mrtvého. Ale Bilbo se jen zasmál. Zlato a stříbro měl, ale důležitější bylo, že měl <strong>přátele a vzpomínky</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Rámcová kompozice</strong> — návrat do Kraje</li>
+      <li>Bilbo se změnil — už není „správný hobit"</li>
+      <li>Hodnoty se posunuly — <strong>přátelství důležitější než majetek</strong></li>
+      <li>Bilbo je outsider mezi hobity</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--ring)">
+  <span class="scene-label" style="background:rgba(232,184,88,.1);border-color:var(--ring);color:var(--ring)">★ 14 · Kapitola 19 · ZÁVĚREČNÁ MOUDROST ★</span>
+  <div class="scene-title">Gandalfova slova na závěr</div>
+  <div class="scene-text">„Můj milý Bilbo!" řekl Gandalf. „Něco jsi ztratil."
+„Co?" ptal se Bilbo.
+„Ztratil jsi pověst správného hobita. Ale získal jsi mnohem více."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Gandalf hodnotí Bilbovu cestu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Potvrzení proměny</li>
+      <li>Bilbo obětoval pohodlí pro zkušenost</li>
+      <li>Zisky jsou <strong>nehmotné</strong> — přátelství, odvaha, moudrost</li>
+      <li><strong>Poselství díla v jedné větě</strong></li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="rune-divider">⟁ ⦿ ⟁</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>I malá, nepatrná bytost může změnit běh dějin</strong>, pokud má odvahu. Skutečné bohatství není ve zlatě, ale v <strong>přátelství, zkušenostech a moudrosti</strong>. Cesta životem nás mění a učí. Chamtivost ničí i ty nejušlechtilejší.</p>
+</div>
+
+<h3>Bilbova proměna</h3>
+<table class="compare-table">
+  <tr><th>Na začátku</th><th>→</th><th>Na konci</th></tr>
+  <tr><td>Bojácný hobit</td><td>→</td><td>Odvážný hrdina</td></tr>
+  <tr><td>Milující pohodlí</td><td>→</td><td>Hledající dobrodružství</td></tr>
+  <tr><td>Nevinný</td><td>→</td><td>Zkušený</td></tr>
+  <tr><td>Materiální</td><td>→</td><td>Duchovní</td></tr>
+</table>
+
+<h3>Hlavní témata díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--shire)"><h4 style="color:var(--shire)">Odvaha</h4><p>I malá bytost může změnit svět.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Přátelství</h4><p>Důležitější než bohatství.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--fire)"><h4 style="color:var(--fire)">Pokušení</h4><p>Chamtivost ničí — Thorin, Šmak, Glum.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-8)"><h4 style="color:var(--accent-8)">Domov</h4><p>Cesta pomáhá ocenit domov.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Růst</h4><p>Zkušenosti nás mění.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Dobro vs. zlo</h4><p>Věčný boj.</p></div>
+</div>
+
+<h3>Worldbuilding (budování světa)</h3>
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Kompletní fiktivní svět</div>
+  <ul style="margin:0">
+    <li><strong>Vlastní jazyky</strong> — elfština (quenya, sindarština), trpasličtina (khuzdul), černá řeč</li>
+    <li><strong>Historie</strong> — tisíce let, tři věky</li>
+    <li><strong>Geografie</strong> — kompletní mapy Středozemě</li>
+    <li><strong>Rasy</strong> — hobiti, elfové, trpaslíci, lidé, skřeti, ohnivé bytosti</li>
+    <li>Kultury, tradice, písně, legendy, runová písma</li>
+  </ul>
+</div>
+
+<h3>Symbol díla</h3>
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Prsten moci</div>
+  <p style="margin-bottom:0">Prsten není jen kouzelný předmět, ale <strong>symbol moci a pokušení</strong>. I dobří lidé (Thorin, později Boromir v Pánu prstenů) podlehnou touze po moci. Jen ti <strong>nejpokornější</strong> (hobiti) dokážou odolat.</p>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <p style="margin-bottom:0">Dílo je <strong>nadčasové</strong> — mluví o odvaze, přátelství, nebezpečí chamtivosti, hodnotě domova. Téma <strong>malého člověka, který dokáže velké věci</strong>, rezonuje vždy. <strong>Kritika industrializace</strong> (skřeti ničící přírodu, továrny, dým) je aktuální dodnes — ekologické čtení Hobita je silné.</p>
+</div>
+
+<h3>Filmové adaptace</h3>
+<details>
+  <summary>Filmová trilogie Petera Jacksona (2012–2014)</summary>
+  <p><strong>Peter Jackson natočil Hobita jako trilogii</strong> — <em>Neočekávaná cesta</em> (2012), <em>Šmakova dračí poušť</em> (2013), <em>Bitva pěti armád</em> (2014). Rozšíření z <strong>jedné knihy na tři filmy</strong> bylo kritizováno za natahování děje a doplňování materiálu z příloh Pána prstenů. Vizuálně působivé, s Martinem Freemanem jako Bilbem a Benedictem Cumberbatchem jako Šmakem.</p>
+</details>
+<details>
+  <summary>Starší adaptace</summary>
+  <p><strong>Animovaný film z roku 1977</strong> od Rankin/Bass studia — kratší, věrnější předloze. Existují i různé <strong>rozhlasové adaptace</strong> a <strong>divadelní zpracování</strong>.</p>
+</details>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Jak vznikl Hobit</summary>
+  <p>Tolkien napsal první větu <em>„V zemi jménem Kraj v norce v zemi tam bydlel hobit"</em> na prázdný list studentské zkušební práce, kterou právě opravoval. Pak si uvědomil, že musí zjistit, <strong>co je vlastně hobit</strong> — a tak vznikl celý svět.</p>
+</details>
+<details>
+  <summary>Hobit pro Pána prstenů</summary>
+  <p>Vydavatel chtěl po úspěchu Hobita <strong>pokračování</strong>. Tolkien plánoval napsat Silmarillion, ale vydavatel ho přesvědčil, aby zůstal u hobitů. Tak vznikl <em>Pán prstenů</em> — místo kratičkého pokračování však psal 12 let a vytvořil jedno z nejvlivnějších děl 20. století.</p>
+</details>
+<details>
+  <summary>Tolkien jako ilustrátor</summary>
+  <p>Tolkien <strong>sám kreslil ilustrace</strong> ke svému dílu — první vydání Hobita obsahovalo jeho kresby a akvarely. Jeho obrazy Osamělé hory a Bilbovy nory jsou dodnes klasikou.</p>
+</details>
+<details>
+  <summary>Hobit v číslech</summary>
+  <p>Hobit byl <strong>přeložen do více než 50 jazyků</strong> a prodalo se přes <strong>100 milionů výtisků</strong>. Spolu s Pánem prstenů (150+ milionů) patří mezi <strong>nejprodávanější knihy 20. století</strong>.</p>
+</details>
+<details>
+  <summary>Proč byla 1. světová válka důležitá</summary>
+  <p>Tolkien <strong>bojoval na Sommě v roce 1916</strong> — jedné z nejkrvavějších bitev dějin (přes milion obětí). Většina jeho nejbližších přátel z univerzity zahynula. Zkušenost s <strong>mechanizovaným zabíjením, blátem zákopů, plynem, masivní destrukcí</strong> se promítla do obrazů Mordoru, do postav skřetů, do nenávisti k průmyslu a strojům. Mordor je <strong>zákop 1. světové války přeložený do fantasy</strong>.</p>
+</details>
+
+<h3>Kulturní vliv</h3>
+<ul>
+  <li><strong>Založení moderní fantasy</strong> jako samostatného žánru</li>
+  <li>Inspirace pro <strong>stolní hry</strong> (Dungeons &amp; Dragons)</li>
+  <li>Inspirace pro <strong>počítačové hry</strong> (World of Warcraft, Skyrim, Witcher)</li>
+  <li><strong>Heavy metal hudba</strong> (Led Zeppelin, Blind Guardian a mnoho dalších)</li>
+  <li>Generace čtenářů a fanoušků — <strong>Tolkien Society</strong>, konvence</li>
+  <li>LOTR jako <strong>kulturní fenomén</strong></li>
+</ul>
+
+<div class="quote-block" style="margin-top:40px;text-align:center">
+Ztratil jsi pověst správného hobita.<br>
+Ale získal jsi mnohem více.
+<span class="quote-source">Gandalf Bilbovi · Kapitola 19</span>
+</div>
+</section>
+
+<div class="rune-divider" style="margin-top:50px">⟁ ⦿ ⟁</div>
+
+</div>
+</body>
+</html>

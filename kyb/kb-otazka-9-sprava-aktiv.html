@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 9: Správa aktiv</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#0f2e1a 40%,#1a0f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(52,211,153,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(167,139,250,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-3);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Process flow */
+.proc-flow{display:flex;gap:4px;margin:16px 0;flex-wrap:wrap;justify-content:center}
+.proc-step{text-align:center;padding:12px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;min-width:100px;flex:1;max-width:160px}
+.proc-step .ps-num{font-size:18px;font-weight:700;display:block}.proc-step .ps-name{font-weight:600;display:block;margin-top:2px;font-size:10px}
+/* Risk matrix */
+.risk-matrix{margin:16px 0;overflow-x:auto}
+.rm-grid{display:grid;grid-template-columns:80px repeat(5,1fr);gap:2px;font-family:'JetBrains Mono',monospace;font-size:10px;min-width:400px}
+.rm-cell{padding:8px 4px;text-align:center;border-radius:3px;font-weight:600}
+.rm-header{color:var(--text-muted);font-size:9px;display:flex;align-items:center;justify-content:center}
+.rm-low{background:rgba(52,211,153,.12);color:var(--accent-3)}.rm-med{background:rgba(251,191,36,.12);color:var(--accent-4)}
+.rm-high{background:rgba(251,146,60,.15);color:var(--accent-6)}.rm-crit{background:rgba(248,113,113,.15);color:var(--accent-5)}
+/* Classification levels */
+.cls-levels{display:flex;flex-direction:column;gap:4px;margin:14px 0}
+.cls-lv{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:8px;font-size:13px}
+.cls-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;min-width:100px}
+/* SPOF visual */
+.spof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0}
+.spof-item{text-align:center;padding:12px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.spof-item .si-icon{font-size:22px;display:block;margin-bottom:4px}
+.spof-item .si-name{font-weight:700;font-size:11px;display:block}
+/* Risk treatment cards */
+.rt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.rt-card{padding:16px;border-radius:10px;font-size:13px}
+.rt-card .rt-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;display:block;margin-bottom:6px}
+.rt-card .rt-icon{font-size:20px;margin-right:6px}
+/* Redundancy types */
+.red-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:14px 0}
+.red-item{padding:14px;border-radius:8px;background:var(--bg-card-alt);border:1px solid var(--border)}
+.red-item strong{display:block;margin-bottom:3px;font-size:13px}
+.red-item p{font-size:12px;color:var(--text-muted);margin:0}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.rt-grid{grid-template-columns:1fr}.proc-flow{flex-direction:column;align-items:center}.red-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 9</div>
+  <h1>Správa aktiv</h1>
+  <p>Identifikace • Klasifikace • Hrozby • Analýza rizik • SPOF • Redundance</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#process">Proces správy aktiv</a></li>
+  <li><a href="#identify">Identifikace aktiv</a></li>
+  <li><a href="#classify">Klasifikace (Primární / Podpůrná)</a></li>
+  <li><a href="#sensitivity">Klasifikace podle citlivosti</a></li>
+  <li><a href="#threats">Identifikace hrozeb</a></li>
+  <li><a href="#risk">Analýza rizik (Risk Assessment)</a></li>
+  <li><a href="#treatment">Potlačení rizik (Risk Treatment)</a></li>
+  <li><a href="#spof">Single Point of Failure</a></li>
+  <li><a href="#redundancy">Redundance</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 PROCESS -->
+<section class="section" id="process">
+<div class="section-header"><span class="section-num">01</span><h2>Proces správy aktiv</h2></div>
+
+<p><strong>Nemůžeš chránit, co neznáš!</strong> Asset management = systematická identifikace, klasifikace a ochrana všeho, co má pro organizaci hodnotu.</p>
+
+<div class="proc-flow">
+  <div class="proc-step" style="background:rgba(96,165,250,.1);color:var(--accent-1)"><span class="ps-num">1</span><span class="ps-name">Identifikace</span>Co máme?</div>
+  <div class="proc-step" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="ps-num">2</span><span class="ps-name">Klasifikace</span>Jak důležité?</div>
+  <div class="proc-step" style="background:rgba(251,191,36,.1);color:var(--accent-4)"><span class="ps-num">3</span><span class="ps-name">Hrozby</span>Co nám hrozí?</div>
+  <div class="proc-step" style="background:rgba(251,146,60,.1);color:var(--accent-6)"><span class="ps-num">4</span><span class="ps-name">Analýza rizik</span>Jak velké je riziko?</div>
+  <div class="proc-step" style="background:rgba(248,113,113,.1);color:var(--accent-5)"><span class="ps-num">5</span><span class="ps-name">Potlačení</span>Jak riziko řešíme?</div>
+</div>
+</section>
+
+<!-- 02 IDENTIFY -->
+<section class="section" id="identify">
+<div class="section-header"><span class="section-num">02</span><h2>Identifikace aktiv</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)"><h4 style="color:var(--accent-1)">💾 Informační</h4><p>Databáze, dokumenty, source code, emaily, backupy</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">🖥️ Hardware</h4><p>Servery, PC, laptopy, mobily, routery, switche, IoT</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)"><h4 style="color:var(--accent-2)">📀 Software</h4><p>OS, business apps (ERP, CRM), licence, SaaS</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)"><h4 style="color:var(--accent-4)">🔧 Služby</h4><p>Email, web hosting, DNS, VPN, backup</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)"><h4 style="color:var(--accent-7)">👥 Lidská</h4><p>Zaměstnanci, klíčoví specialisté, IT tým (znalosti!)</p></div>
+  <div class="device-card" style="border-top:3px solid var(--kb)"><h4 style="color:var(--kb)">💡 Nehmotná</h4><p>Brand, customer trust, patenty, trade secrets</p></div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Asset Inventory – co zaznamenat</div>
+  <p style="margin-bottom:0">Asset ID, název, typ, <strong>vlastník</strong>, lokace, <strong>hodnota</strong>, klasifikace, status, <strong>závislosti</strong>. Nástroje: Nmap, ServiceNow, Lansweeper, CMDB.</p>
+</div>
+</section>
+
+<!-- 03 CLASSIFY -->
+<section class="section" id="classify">
+<div class="section-header"><span class="section-num">03</span><h2>Klasifikace (Primární / Podpůrná)</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Primární aktiva ⭐</h4>
+    <p><strong>PŘÍMO generují hodnotu</strong> nebo jsou NEZBYTNÁ pro core business. Výpadek = přímá ztráta revenue. RTO: minuty–hodiny.</p>
+    <p style="margin-top:6px"><strong>Příklady:</strong> Production DB, e-commerce web, ERP, payment gateway, source code.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Podpůrná aktiva</h4>
+    <p><strong>PODPORUJÍ</strong> primární aktiva, ale výpadek nezpůsobí okamžitý kolaps. RTO: hodiny–dny. Nižší priorita ochrany.</p>
+    <p style="margin-top:6px"><strong>Příklady:</strong> Email server, internal wiki, dev/test servery, monitoring, tiskárny.</p>
+  </div>
+</div>
+</section>
+
+<!-- 04 SENSITIVITY -->
+<section class="section" id="sensitivity">
+<div class="section-header"><span class="section-num">04</span><h2>Klasifikace podle citlivosti</h2></div>
+
+<div class="cls-levels">
+  <div class="cls-lv" style="background:rgba(52,211,153,.06)"><span class="cls-label" style="color:var(--accent-3)">🟢 Public</span><span>Veřejně dostupné (marketing, web). Ochrana: minimální.</span></div>
+  <div class="cls-lv" style="background:rgba(96,165,250,.06)"><span class="cls-label" style="color:var(--accent-1)">🔵 Internal</span><span>Interní (meeting notes, dokumentace). Dopad úniku: nízký. Ochrana: hesla, firemní síť.</span></div>
+  <div class="cls-lv" style="background:rgba(251,191,36,.06)"><span class="cls-label" style="color:var(--accent-4)">🟡 Confidential</span><span>Citlivá (finance, HR, smlouvy). Dopad: střední–vysoký. Ochrana: šifrování, RBAC, audit.</span></div>
+  <div class="cls-lv" style="background:rgba(248,113,113,.06)"><span class="cls-label" style="color:var(--accent-5)">🔴 Restricted</span><span>Přísně tajné (trade secrets, PII/PHI, M&A). Dopad: <strong>kritický</strong>. Ochrana: MFA, šifrování, DLP, privileged access.</span></div>
+</div>
+</section>
+
+<!-- 05 THREATS -->
+<section class="section" id="threats">
+<div class="section-header"><span class="section-num">05</span><h2>Identifikace hrozeb</h2></div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-5)">🌐 Kybernetické</h4><p>Malware, phishing, DDoS, zero-day, insider threats, APT</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-6)">🔧 Fyzické</h4><p>Krádež HW, neoprávněný přístup, vandalizmus</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-4)">🌊 Environmentální</h4><p>Požár, povodeň, zemětřesení, výpadek elektřiny</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-1)">⚙️ Technické</h4><p>HW selhání (disk crash), SW bugs, network outage, data corruption</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-2)">👤 Lidské chyby</h4><p>Smazaná data, misconfiguration, email špatnému příjemci, slabá hesla</p></div>
+</div>
+
+<p style="font-size:13px;color:var(--text-muted)"><strong>Threat Actors:</strong> Script kiddies, cybercriminals (peníze), hacktivists (politika), insiders, nation-state APT, competitors. <strong>Intel:</strong> MITRE ATT&CK, threat feeds, ISAC.</p>
+</section>
+
+<!-- 06 RISK -->
+<section class="section" id="risk">
+<div class="section-header"><span class="section-num">06</span><h2>Analýza rizik</h2></div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Vzorec rizika</div>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:16px;text-align:center;color:var(--accent-4);margin-bottom:10px"><strong>Risk = Threat × Vulnerability × Impact</strong></p>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Risk Score = <strong>Likelihood</strong> (1–5) × <strong>Impact</strong> (1–5) = 1–25</p>
+</div>
+
+<h3>Risk Matrix (Likelihood × Impact)</h3>
+<div class="risk-matrix">
+  <div class="rm-grid">
+    <div class="rm-header"></div><div class="rm-header">Impact 1</div><div class="rm-header">Impact 2</div><div class="rm-header">Impact 3</div><div class="rm-header">Impact 4</div><div class="rm-header">Impact 5</div>
+    <div class="rm-header">Likely 5</div><div class="rm-cell rm-med">5</div><div class="rm-cell rm-high">10</div><div class="rm-cell rm-high">15</div><div class="rm-cell rm-crit">20</div><div class="rm-cell rm-crit">25</div>
+    <div class="rm-header">Likely 4</div><div class="rm-cell rm-low">4</div><div class="rm-cell rm-med">8</div><div class="rm-cell rm-high">12</div><div class="rm-cell rm-high">16</div><div class="rm-cell rm-crit">20</div>
+    <div class="rm-header">Possible 3</div><div class="rm-cell rm-low">3</div><div class="rm-cell rm-med">6</div><div class="rm-cell rm-med">9</div><div class="rm-cell rm-high">12</div><div class="rm-cell rm-high">15</div>
+    <div class="rm-header">Unlikely 2</div><div class="rm-cell rm-low">2</div><div class="rm-cell rm-low">4</div><div class="rm-cell rm-med">6</div><div class="rm-cell rm-med">8</div><div class="rm-cell rm-high">10</div>
+    <div class="rm-header">Rare 1</div><div class="rm-cell rm-low">1</div><div class="rm-cell rm-low">2</div><div class="rm-cell rm-low">3</div><div class="rm-cell rm-low">4</div><div class="rm-cell rm-med">5</div>
+  </div>
+</div>
+<p style="font-size:11px;color:var(--text-muted)"><span style="color:var(--accent-3)">1–5 Low</span> (Accept) · <span style="color:var(--accent-4)">6–12 Medium</span> (Monitor) · <span style="color:var(--accent-6)">13–16 High</span> (Priority) · <span style="color:var(--accent-5)">17–25 Critical</span> (Immediate!)</p>
+
+<details><summary>Příklad výpočtu rizika</summary>
+<p><strong>Ransomware na production server:</strong> Likelihood = 4 (Likely – ransomware dnes velmi časté). Impact = 5 (Catastrophic – ztráta dat, výpadek byznysu). <strong>Risk = 4 × 5 = 20 → CRITICAL!</strong></p>
+</details>
+</section>
+
+<!-- 07 TREATMENT -->
+<section class="section" id="treatment">
+<div class="section-header"><span class="section-num">07</span><h2>Potlačení rizik (Risk Treatment)</h2></div>
+
+<div class="rt-grid">
+  <div class="rt-card" style="background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2)">
+    <span class="rt-name" style="color:var(--accent-5)"><span class="rt-icon">🚫</span>Avoidance (Vyhnutí)</span>
+    Úplně se vyhnout aktivitě. Příklad: nepoužívat cloud → eliminace cloud breach rizika. Když riziko je PŘÍLIŠ vysoké.
+  </div>
+  <div class="rt-card" style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2)">
+    <span class="rt-name" style="color:var(--accent-3)"><span class="rt-icon">🛡️</span>Mitigation (Zmírnění)</span>
+    <strong>Nejběžnější!</strong> Implementace kontrol. Příklad: backupy (↓dopad) + antivirus (↓pravděpodobnost) proti ransomware.
+  </div>
+  <div class="rt-card" style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2)">
+    <span class="rt-name" style="color:var(--accent-1)"><span class="rt-icon">📋</span>Transfer (Přenos)</span>
+    Přenesení na třetí stranu. Příklad: cyber insurance, cloud outsourcing. Riziko existuje, ale finanční dopad nese jiný.
+  </div>
+  <div class="rt-card" style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2)">
+    <span class="rt-name" style="color:var(--accent-4)"><span class="rt-icon">✅</span>Acceptance (Akceptace)</span>
+    Vědomě přijmout riziko. Příklad: tiskárna za 500 Kč → security kamery za 50K se nevyplatí. <strong>MUSÍ být dokumentováno + schváleno!</strong>
+  </div>
+</div>
+</section>
+
+<!-- 08 SPOF -->
+<section class="section" id="spof">
+<div class="section-header"><span class="section-num">08</span><h2>Single Point of Failure (SPOF)</h2></div>
+
+<p>Komponenta jejíž selhání způsobí <strong>CELKOVÝ výpadek</strong>. Žádná záloha – když selže, vše padne.</p>
+
+<div class="spof-grid">
+  <div class="spof-item" style="background:rgba(248,113,113,.08);color:var(--accent-5)"><span class="si-icon">🖥️</span><span class="si-name">Jediný server</span>Web down, zákazníci nenakupují</div>
+  <div class="spof-item" style="background:rgba(251,146,60,.08);color:var(--accent-6)"><span class="si-icon">💾</span><span class="si-name">Jediná DB</span>Disk crash = ztráta všech dat</div>
+  <div class="spof-item" style="background:rgba(251,191,36,.08);color:var(--accent-4)"><span class="si-icon">🌐</span><span class="si-name">Jedno ISP</span>ISP outage = firma offline</div>
+  <div class="spof-item" style="background:rgba(167,139,250,.08);color:var(--accent-2)"><span class="si-icon">⚡</span><span class="si-name">Jeden power</span>Výpadek elektřiny = vše off</div>
+  <div class="spof-item" style="background:rgba(244,114,182,.08);color:var(--accent-7)"><span class="si-icon">👤</span><span class="si-name">Klíčový člověk</span>Odejde = nikdo neví jak to funguje</div>
+  <div class="spof-item" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="si-icon">☁️</span><span class="si-name">Jeden vendor</span>AWS outage = vše down</div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Jak identifikovat SPOF</div>
+  <p style="margin-bottom:0">Nakresli architecture diagram. Pro každou komponentu se zeptej: <strong>„Co se stane když TOHLE selže?"</strong> Odpověď „všechno padne" = SPOF! → Řešení: <strong>REDUNDANCE.</strong></p>
+</div>
+</section>
+
+<!-- 09 REDUNDANCY -->
+<section class="section" id="redundancy">
+<div class="section-header"><span class="section-num">09</span><h2>Redundance</h2></div>
+
+<p>Duplikace kritických komponent → při selhání jedné existuje záloha. <strong>N+1 princip:</strong> N potřebuješ + 1 záloha.</p>
+
+<div class="red-grid">
+  <div class="red-item"><strong style="color:var(--accent-5)">💾 RAID (disky)</strong><p>RAID 1 (mirror, 2 disky). RAID 5 (3+ disky, parity). RAID 6 (4+, 2 mohou selhat). RAID 10 (mirror + stripe).</p></div>
+  <div class="red-item"><strong style="color:var(--accent-4)">⚡ Power</strong><p>Dual PSU (2 zdroje). UPS (baterie, minuty). Diesel generátor (hodiny–dny).</p></div>
+  <div class="red-item"><strong style="color:var(--accent-1)">🌐 Network</strong><p>Dual ISP (failover). Redundantní cesty (HSRP, VRRP). Multiple NIC (bonding/teaming).</p></div>
+  <div class="red-item"><strong style="color:var(--accent-3)">🖥️ Servery</strong><p><strong>Load Balancing</strong> (distribuce traffic). Clustering (active-active / active-passive). Hot/Warm/Cold standby.</p></div>
+  <div class="red-item"><strong style="color:var(--accent-2)">📊 Data</strong><p>DB Replication (master-slave, master-master). <strong>Backupy 3-2-1</strong> (3 kopie, 2 média, 1 offsite).</p></div>
+  <div class="red-item"><strong style="color:var(--accent-6)">🌍 Geo</strong><p>Multi-region deployment. DR site (disaster recovery). CDN (edge servery po světě).</p></div>
+  <div class="red-item"><strong style="color:var(--accent-7)">👥 Lidé</strong><p>Cross-training (více lidí zná systém). Dokumentace (runbooks). On-call rotace.</p></div>
+</div>
+
+<details><summary>Hot / Warm / Cold Standby</summary>
+<table class="compare-table">
+  <tr><th></th><th>Sync</th><th>Failover</th><th>Cena</th></tr>
+  <tr><td><strong>Hot</strong></td><td>Real-time</td><td style="color:var(--accent-3)"><strong>Sekundy</strong></td><td>Nejvyšší</td></tr>
+  <tr><td><strong>Warm</strong></td><td>Periodic</td><td>Minuty</td><td>Střední</td></tr>
+  <tr><td><strong>Cold</strong></td><td>Žádná (offline)</td><td style="color:var(--accent-5)">Hodiny</td><td>Nejnižší</td></tr>
+</table>
+</details>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Trade-offs redundance</div>
+  <p style="margin-bottom:0"><strong>Cost:</strong> 2× hardware, 2× licence. <strong>Complexity:</strong> Složitější správa. <strong>Testing:</strong> Musíš testovat failover! Investuj do redundance když <strong>cost of downtime > cost of redundancy</strong>.</p>
+</div>
+</section>
+
+<!-- 10 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">10</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">IDENTIFIKACE A KLASIFIKACE</p>
+<ul>
+  <li><strong>Nemůžeš chránit co neznáš!</strong> Asset inventory = základ (ID, vlastník, hodnota, závislosti)</li>
+  <li><strong>Primární:</strong> Business-critical, výpadek = ztráta revenue (DB, web, ERP). <strong>Podpůrná:</strong> Podporují, ale ne kritická (email, wiki)</li>
+  <li><strong>Citlivost:</strong> Public → Internal → Confidential → <strong>Restricted</strong> (trade secrets, PII)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">RIZIKA</p>
+<ul>
+  <li><strong>Risk = Threat × Vulnerability × Impact.</strong> Risk Score = Likelihood (1–5) × Impact (1–5)</li>
+  <li><strong>Risk Matrix:</strong> 1–5 Low (accept) · 6–12 Medium (monitor) · 13–16 High (priority) · 17–25 Critical (immediate!)</li>
+  <li><strong>4 strategie:</strong> 🚫 Avoidance (vyhni se) · 🛡️ <strong>Mitigation</strong> (nejběžnější, zmírni) · 📋 Transfer (pojištění) · ✅ Acceptance (akceptuj, dokumentuj!)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">SPOF & REDUNDANCE</p>
+<ul>
+  <li><strong>SPOF:</strong> Selhání 1 komponenty = celkový výpadek. „Co se stane když tohle selže?" → SPOF!</li>
+  <li><strong>Redundance (N+1):</strong> RAID (disky), Dual PSU + UPS + generátor (power), Dual ISP (network), Load Balancing + Clustering (servery), <strong>Zálohy 3-2-1</strong> (data), Multi-region + DR site (geo), Cross-training (lidé)</li>
+  <li><strong>Hot</strong> standby (sekundy) > <strong>Warm</strong> (minuty) > <strong>Cold</strong> (hodiny)</li>
+  <li>Investuj když <strong>cost of downtime > cost of redundancy</strong>. Testuj failover!</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

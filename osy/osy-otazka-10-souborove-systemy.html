@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 10: Souborové systémy</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Flow diagrams */
+.flow-diagram{display:flex;flex-direction:column;gap:4px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.flow-step{padding:12px 16px;border-radius:6px;text-align:center;font-weight:600;position:relative}
+.flow-step small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.flow-arrow{text-align:center;color:var(--text-muted);font-size:16px;line-height:1}
+.fl-hw{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.fl-cpu{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.fl-os{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.fl-done{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+.fl-err{background:rgba(248,113,113,.15);color:var(--accent-5);border:1px solid rgba(248,113,113,.3)}
+/* Partition layout */
+.partition-layout{margin:16px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.part-layer{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid rgba(0,0,0,.3)}
+.part-layer:last-child{border-bottom:none}
+.part-layer small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.7;margin-top:2px}
+.pl-boot{background:rgba(248,113,113,.2);color:var(--accent-5)}
+.pl-fat{background:rgba(251,191,36,.2);color:var(--accent-4)}
+.pl-dir{background:rgba(167,139,250,.2);color:var(--osy)}
+.pl-data{background:rgba(52,211,153,.2);color:var(--accent-3)}
+.pl-super{background:rgba(96,165,250,.2);color:var(--accent-1)}
+.pl-bitmap{background:rgba(244,114,182,.2);color:var(--accent-7)}
+.pl-inode{background:rgba(251,146,60,.2);color:var(--accent-6)}
+/* Code block */
+.code-block{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:var(--osy);overflow-x:auto;white-space:pre}
+.code-block .comment{color:var(--text-muted)}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 10</div>
+  <h1>Souborové systémy</h1>
+  <p>FS • Data a metadata • HDD / SSD / pásky • FAT / exFAT / NTFS / ext4 • Žurnálování • Fragmentace • Síťové FS</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#fs">Systém souborů (FS)</a></li>
+  <li><a href="#organizace">Organizace FS – data a metadata</a></li>
+  <li><a href="#pamet">Paměti pro FS (typy nevolatilních pamětí)</a></li>
+  <li><a href="#paska">Magnetická páska</a></li>
+  <li><a href="#fdd-hdd">Disketa (FDD) a pevný disk (HDD)</a></li>
+  <li><a href="#ssd">SSD (Solid State Drive)</a></li>
+  <li><a href="#mbr">MBR, GPT – tabulky rozdělení disku</a></li>
+  <li><a href="#adresace">Adresace – CHS, LBA, sektor, cluster</a></li>
+  <li><a href="#usb">USB Mass Storage, PTP, MTP</a></li>
+  <li><a href="#fat">FAT – File Allocation Table</a></li>
+  <li><a href="#fat-problemy">Problémy FAT – ztracené a překřížené soubory</a></li>
+  <li><a href="#exfat">exFAT</a></li>
+  <li><a href="#ntfs">NTFS</a></li>
+  <li><a href="#ext4">ext4</a></li>
+  <li><a href="#inode">I-uzel a adresář</a></li>
+  <li><a href="#vfs">VFS, mount, umount, fstab</a></li>
+  <li><a href="#fsck">fsck, mkfs, chkdsk</a></li>
+  <li><a href="#fragmentace">Fragmentace a tail merge</a></li>
+  <li><a href="#zurnalovani">Žurnálování</a></li>
+  <li><a href="#sparse">Děravé soubory (sparse files)</a></li>
+  <li><a href="#extenty">Extenty a rozsáhlé adresáře</a></li>
+  <li><a href="#sitove">Síťové souborové systémy</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 FS -->
+<section class="section" id="fs">
+<div class="section-header"><span class="section-num">01</span><h2>Systém souborů (FS)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p>Souborový systém (<em>filesystem</em>) je způsob <strong>organizace dat do souborů a adresářů</strong>. Data jsou uložena na vhodné paměti (HDD, SSD, flash…) a přístupná přímo v počítači nebo přes síť.</p>
+  <ul>
+    <li>Obsahuje <strong>data</strong> (samotný obsah souborů) a <strong>metadata</strong> (popisují organizaci dat)</li>
+    <li>Uloženo ve vhodném formátu: <strong>FAT, ext4, NTFS, iso9660, UDF…</strong></li>
+    <li>V jádře OS je <strong>ovladač souborového systému</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 ORGANIZACE -->
+<section class="section" id="organizace">
+<div class="section-header"><span class="section-num">02</span><h2>Organizace FS – data a metadata</h2></div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Dva pohledy na FS</div>
+  <ul>
+    <li><strong>Uživatel</strong> pracuje se <strong>soubory a adresáři</strong></li>
+    <li><strong>Jádro systému</strong> pracuje s <strong>metadaty a daty</strong></li>
+  </ul>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Metadata</h4>
+    <p>„Data o datech". Popisují <strong>umístění dat, přístupová oprávnění, časy změn</strong>. Každý FS má vlastní strukturu metadat.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Data</h4>
+    <p>Souvislý blok dat (ideál) nebo <strong>alokační jednotky</strong> (klasický přístup). V metadatech je zaznamenáno, které jednotky patří k souboru.</p>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Konzistence metadat</div>
+  <p>Při poškození metadat je FS nekonzistentní → nutno opravit pomocí <strong>fsck (Linux)</strong> nebo <strong>chkdsk (Windows)</strong>. Problém fragmentace dat – viz dále.</p>
+</div>
+</section>
+
+<!-- 03 PAMĚTI -->
+<section class="section" id="pamet">
+<div class="section-header"><span class="section-num">03</span><h2>Paměti pro FS</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Typicky nevolatilní RWM</div>
+  <p>Read-Write Memory – data lze <strong>zapisovat i číst</strong> a jsou <strong>zachována i při odpojení napájení</strong>.</p>
+  <ul>
+    <li><strong>Magnetické:</strong> pevný disk, disketa, magnetická páska (sekvenční i přímý přístup)</li>
+    <li><strong>Optické:</strong> CD, DVD, Blu-ray</li>
+    <li><strong>Polovodičové:</strong> Flash, SSD, RAM</li>
+    <li><strong>Výjimka:</strong> FS v RAM (<em>ramdisk</em>) – nejrychlejší, ale volatilní</li>
+  </ul>
+</div>
+
+<details><summary>Historický vývoj pamětí</summary>
+<div class="card">
+  <ul>
+    <li><strong>Písmo:</strong> kámen, hliněná tabulka, papyrus, pergamen</li>
+    <li><strong>Dřevěná destička s kolíčky</strong> – tkalcovský stav (1725)</li>
+    <li><strong>Děrný štítek, děrná páska</strong> – stroje na zpracování dat (1880–1945)</li>
+    <li><strong>Feritové paměti</strong> – malé cívky, refresh, dodnes v kosmických sondách</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 04 PÁSKA -->
+<section class="section" id="paska">
+<div class="section-header"><span class="section-num">04</span><h2>Magnetická páska</h2></div>
+
+<div class="card">
+  <ul>
+    <li>Předek disket i pevných disků – souvislý pás s magnetickou vrstvou</li>
+    <li>Vynalezeno <strong>1935</strong> firmami AEG a BASF, pro data <strong>1951 – UNIVAC I</strong></li>
+    <li>V 2. polovině 20. století <strong>symbolizovala „počítač"</strong></li>
+    <li>Data zaznamenána <strong>souvisle</strong>, lineární zápis (páska je vždy znovu celá přepsána)</li>
+    <li>„Soubory" a mezi nimi <strong>speciální značky</strong> – magnetickopásková jednotka je umí vyhledat</li>
+    <li><strong>Sekvenční přístup</strong> – relativně pomalé přesuny</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 FDD HDD -->
+<section class="section" id="fdd-hdd">
+<div class="section-header"><span class="section-num">05</span><h2>Disketa (FDD) a pevný disk (HDD)</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Disketa (FDD, 1971)</h4>
+    <p><strong>Blokové zařízení</strong> (512 B). Médium na kotoučku (pružný disk). Rozměry: 8", 5,25", 3,5". Kapacity: 160/360/720 kiB, 1,2/1,44/2,88 MiB. Snadný transport.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Pevný disk (HDD, 1956 – IBM)</h4>
+    <p><strong>Plovoucí hlava</strong>, bezkontaktní čtení/zápis. Typicky pevně vestavěn. Rozhraní: <strong>SCSI (1986), ATA (1986), SATA (2003), SAS (2005)</strong>.</p>
+  </div>
+</div>
+</section>
+
+<!-- 06 SSD -->
+<section class="section" id="ssd">
+<div class="section-header"><span class="section-num">06</span><h2>SSD (Solid State Drive)</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Nástupce HDD – flash paměť</div>
+  <ul>
+    <li><strong>Bez mechanických částí</strong> – minimální vybavovací doba</li>
+    <li>Odpadá přesun hlaviček (u HDD cca 10 ms)</li>
+    <li>Navýšení rychlosti čtení: 2× běžně, <strong>5× typicky (~500 MiB/s)</strong>, špičkově 1 400 MiB/s</li>
+    <li>Menší nárůst rychlosti u zápisu</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nevýhody</div>
+  <ul>
+    <li>Vyšší cena (~5–10× proti HDD za stejnou kapacitu)</li>
+    <li><strong>Omezená životnost</strong> – 1 000 až 100 000 přepisů na buňku</li>
+    <li>Rozklad zápisu zajišťuje <strong>FTL (Flash Translation Layer)</strong> – wear leveling</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 MBR GPT -->
+<section class="section" id="mbr">
+<div class="section-header"><span class="section-num">07</span><h2>MBR, GPT – tabulky rozdělení disku</h2></div>
+
+<h3>DOS MBR (Master Boot Record)</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">První sektor disku (LBA = 0)</div>
+  <ul>
+    <li>Velikost <strong>512 bajtů</strong></li>
+    <li><strong>Zavaděč</strong> (440 B)</li>
+    <li><strong>Tabulka dělení disku</strong> na oddíly (64 B) – MPT (Master Partition Table)
+      <ul>
+        <li>Max <strong>4 oddíly</strong>, ale rozšířený může obsahovat další logické</li>
+        <li>Začátek, konec, typ oddílu, příznak bootable</li>
+      </ul>
+    </li>
+    <li><strong>Signatura MBR</strong> (2 B): <code>0xAA55</code></li>
+    <li><strong>Limit: 2 TiB</strong></li>
+  </ul>
+</div>
+
+<h3>GPT (GUID Partition Table)</h3>
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Nástupce MBR, součást UEFI</div>
+  <ul>
+    <li>Odstraňuje limit 2 TiB – teoreticky až <strong>8 ZiB</strong></li>
+    <li>Pracuje pouze s <strong>LBA</strong></li>
+    <li>Umožňuje <strong>více oddílů</strong> (MBR jen 4 primární)</li>
+    <li><strong>Záložní kopie GPT</strong> umístěna na konci disku</li>
+    <li>Od <strong>2013</strong> standard pro PC. BIOS přítomen jen kvůli zpětné kompatibilitě</li>
+  </ul>
+</div>
+
+<details><summary>ID typů oddílů v MBR</summary>
+<table class="compare-table">
+  <tr><th>ID</th><th>Typ FS</th></tr>
+  <tr><td><code>0x07</code></td><td>NTFS</td></tr>
+  <tr><td><code>0x0C</code></td><td>FAT32</td></tr>
+  <tr><td><code>0x83</code></td><td>Linux (ext*)</td></tr>
+  <tr><td><code>0x05</code></td><td>Rozšířený oddíl</td></tr>
+</table>
+</details>
+</section>
+
+<!-- 08 ADRESACE -->
+<section class="section" id="adresace">
+<div class="section-header"><span class="section-num">08</span><h2>Adresace – CHS, LBA, sektor, cluster</h2></div>
+
+<h3>Metody adresace</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--text-muted)">
+    <h4 style="color:var(--text-muted)">CHS – Cylinder-Head-Sector</h4>
+    <p>Tři čísla: cylindr, hlava, sektor. <strong>Historická metoda</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">LBA – Logical Block Addressing</h4>
+    <p>Jedno číslo – <strong>lineární číslování</strong>. Současná metoda. ATA/100 → 48 bitů → 128 PiB. O vnitřní struktuře disk neví – přepočítá z LBA.</p>
+  </div>
+</div>
+
+<h3>Sektor vs. cluster</h3>
+<table class="compare-table">
+  <tr><th>Pojem</th><th>Popis</th><th>Typická velikost</th></tr>
+  <tr><td><strong>Sektor</strong></td><td>Nejmenší <strong>fyzicky adresovatelný</strong> blok disku</td><td>512 B (tradičně), 2 KiB (CD/DVD), 4 KiB (nové HDD)</td></tr>
+  <tr><td><strong>Cluster</strong> (alok. jednotka)</td><td>Nejmenší úsek dat <strong>na úrovni FS</strong></td><td>512 B, 1/2/4/8/16/32/64 KiB…</td></tr>
+</table>
+</section>
+
+<!-- 09 USB -->
+<section class="section" id="usb">
+<div class="section-header"><span class="section-num">09</span><h2>USB Mass Storage, PTP, MTP</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">USB Mass Storage (USB MSC)</div>
+  <ul>
+    <li>Univerzální řešení – inspirace <strong>SCSI příkazy</strong></li>
+    <li>Pracuje s <strong>lineárně adresovanými datovými bloky</strong> (přečti/zapiš blok)</li>
+    <li>Lze připojit flash, HDD, CD/DVD, floppy…</li>
+    <li>Interpretaci struktury (FAT…) řeší <strong>připojený počítač</strong></li>
+    <li>Podpora: Windows 2000+, Linux 2001+</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problém USB Mass Storage</div>
+  <ul>
+    <li><strong>Není možný konkurenční přístup</strong> (jen jeden systém pracuje s médiem)</li>
+    <li>Počítač <strong>musí rozumět struktuře FS</strong> (např. FAT)</li>
+    <li><strong>Ideální cesta pro šíření virů</strong> (AUTORUN.INF, Sality, Conficker)</li>
+    <li>Windows 7+ povoluje autorun jen pro CD/DVD</li>
+  </ul>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">PTP – Picture Transfer Protocol</h4>
+    <p>ISO standard, obdoba FTP. <strong>„Přečti soubor – změň – ulož zpět"</strong>. Umožňuje <strong>současný přístup</strong>. Nepodporuje přejmenování.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">MTP – Media Transfer Protocol</h4>
+    <p>Microsoft 2008, založeno na PTP, <strong>zpětně kompatibilní</strong>. Podpora <strong>TCP/IP, Bluetooth</strong>. Součást <strong>DRM</strong>. Android, fotoaparáty.</p>
+  </div>
+</div>
+</section>
+
+<!-- 10 FAT -->
+<section class="section" id="fat">
+<div class="section-header"><span class="section-num">10</span><h2>FAT – File Allocation Table</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">File Allocation Table</div>
+  <ul>
+    <li><strong>1986</strong> – použit v 86-DOS, koupil Microsoft → MS-DOS</li>
+    <li>ECMA a ISO/IEC standard, dlouhé názvy částečně <strong>patentovány Microsoftem</strong></li>
+    <li>Dnes hlavně pro <strong>flash disky</strong> a kompatibilitu</li>
+  </ul>
+</div>
+
+<h3>Struktura oddílu FAT</h3>
+<div class="partition-layout">
+  <div class="part-layer pl-boot">BOOT SEKTOR (512 B)<small>zavaděč, parametry FS</small></div>
+  <div class="part-layer pl-fat">FAT 1<small>File Allocation Table – spojový seznam</small></div>
+  <div class="part-layer pl-fat">FAT 2<small>záložní kopie FAT</small></div>
+  <div class="part-layer pl-dir">KOŘENOVÝ ADRESÁŘ<small>pevné umístění (FAT12/16), položky 32 B</small></div>
+  <div class="part-layer pl-data">DATOVÁ OBLAST<small>obsah souborů v datových blocích</small></div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Položka adresáře (32 B)</div>
+  <ul>
+    <li><strong>Jméno</strong> (8 B) + <strong>přípona</strong> (3 B) – klasické 8.3</li>
+    <li><strong>Délka souboru</strong> (4 B) → max 4 GiB</li>
+    <li><strong>Čas poslední změny</strong></li>
+    <li><strong>Atributy</strong> (ro, archive, …)</li>
+    <li><strong>První sektor dat</strong></li>
+  </ul>
+  <p>Dlouhé názvy → používají další (neplatné) položky v adresáři.</p>
+</div>
+
+<h3>Princip spojového seznamu</h3>
+<div class="card">
+  <p>Záznam v adresáři odkazuje na <strong>první datový blok</strong>. Každá položka FAT ukazuje na <strong>následující blok</strong> souboru. Konec označen speciální hodnotou (<code>FF</code>).</p>
+  <div class="code-block">
+<span class="comment">// Příklad: soubor.txt začíná na bloku 02</span>
+Adresář:  soubor.txt → 02
+FAT[02] = 06   <span class="comment">// další blok 06</span>
+FAT[06] = 04   <span class="comment">// další blok 04</span>
+FAT[04] = 07   <span class="comment">// další blok 07</span>
+FAT[07] = FF   <span class="comment">// konec souboru</span>
+  </div>
+</div>
+
+<h3>Velikosti položek FAT</h3>
+<table class="compare-table">
+  <tr><th>Verze</th><th>Bity/položka</th><th>Max. velikost</th></tr>
+  <tr><td><strong>FAT12</strong></td><td>12 bitů</td><td>Diskety</td></tr>
+  <tr><td><strong>FAT16</strong></td><td>16 bitů</td><td>Starší HDD</td></tr>
+  <tr><td><strong>FAT32</strong></td><td>32 bitů (reálně 28)</td><td>Max. oddíl 8 TiB (32 KiB cluster), soubor <strong>4 GiB − 1</strong></td></tr>
+</table>
+</section>
+
+<!-- 11 FAT PROBLÉMY -->
+<section class="section" id="fat-problemy">
+<div class="section-header"><span class="section-num">11</span><h2>Problémy FAT – ztracené a překřížené soubory</h2></div>
+
+<h3>Mazání na FAT</h3>
+<div class="card">
+  <ul>
+    <li>V adresáři se <strong>smaže první písmeno názvu</strong> (zbytek zůstane)</li>
+    <li>Ve FAT je <strong>spojový seznam vynulován</strong></li>
+    <li>Datové bloky zůstanou <strong>fyzicky zachovány</strong> → lze obnovit, pokud nebyl fragmentovaný</li>
+    <li>Pro <strong>bezpečné smazání</strong> je nutné data přepsat</li>
+  </ul>
+</div>
+
+<h3>Typické chyby (opravuje SCANDISK/CHKDSK)</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Překřížené soubory</h4>
+    <p>Více položek FAT má <strong>stejnou hodnotu</strong> → více souborů má společný konec.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Ztracené soubory (lost files)</h4>
+    <p>Na zřetězení ve FAT <strong>neodkazuje žádný název v adresáři</strong>. Nástroj vytvoří náhradní název v kořeni: <code>FILECHK.001</code>. Typicky nedokončená operace mazání/přesunu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Rozdílné kopie FAT</h4>
+    <p>FAT1 a FAT2 se liší → <strong>nelze rozhodnout, která je správná</strong> (používá se jen první).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--text-muted)">
+    <h4 style="color:var(--text-muted)">Neefektivita</h4>
+    <p>Přesuny hlaviček z FAT (začátek oddílu) do datové části a zpět.</p>
+  </div>
+</div>
+</section>
+
+<!-- 12 exFAT -->
+<section class="section" id="exfat">
+<div class="section-header"><span class="section-num">12</span><h2>exFAT (Extended FAT, FAT64)</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Microsoft 2006, patentováno 2009</div>
+  <ul>
+    <li>Pro Windows XP hotfix, <strong>nativně od Windows 7</strong></li>
+    <li>Linux/Android → přes <strong>FUSE</strong> (licence výrobců)</li>
+    <li>Používán pro flash paměti <strong>nad 32 GiB (SDXC)</strong></li>
+    <li>Max. velikost souboru: <strong>2<sup>64</sup>−1 = 16 EiB</strong></li>
+    <li>Tři časy (vytvoření, poslední zápis, přístup)</li>
+    <li>Volitelně transakce, ACL. <strong>Nemá žurnálování</strong></li>
+    <li>Snaha výrobců vyhnout se poplatkům → MTP, PTP</li>
+  </ul>
+</div>
+</section>
+
+<!-- 13 NTFS -->
+<section class="section" id="ntfs">
+<div class="section-header"><span class="section-num">13</span><h2>NTFS (NT File System)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Microsoft, pro Windows NT 3.1 (1993)</div>
+  <ul>
+    <li>Windows NT nejprve používaly <strong>HPFS</strong> (High Performance File System, původně z OS/2)</li>
+    <li>Dnes v3.1 (od Windows XP), subverze 5.1, 5.2, 6.0</li>
+    <li>Struktura <strong>chráněna patenty</strong>, detailní popis není k dispozici</li>
+  </ul>
+</div>
+
+<h3>Dvouvrstvá struktura</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>Skutečný FS</strong> – několik souborů v kořeni (základ obří databáze):
+      <ul>
+        <li><code>$MFT</code> – metadata</li>
+        <li><code>$Secure</code> – seznam oprávnění</li>
+        <li><code>file.ext</code> – obsah souborů (datové proudy)</li>
+      </ul>
+    </li>
+    <li><strong>Uživatelská vrstva</strong> nad první – soubory a adresáře pro programy</li>
+  </ul>
+</div>
+
+<h3>$MFT – Master File Table</h3>
+<div class="card">
+  <ul>
+    <li>Obsahuje <strong>metadata pro NTFS</strong></li>
+    <li>Při formátování zabere <strong>15 % kapacity</strong></li>
+    <li>Může obsahovat <strong>i data</strong> (malé soubory → tail-merge)</li>
+    <li>Obsazuje se až při nedostatku místa → způsobuje <strong>fragmentaci dat</strong></li>
+  </ul>
+</div>
+
+<h3>Vlastnosti NTFS</h3>
+<table class="compare-table">
+  <tr><th>Parametr</th><th>Hodnota</th></tr>
+  <tr><td><strong>Max. velikost svazku</strong></td><td>2 PB (při alok. jednotce 64 KiB)</td></tr>
+  <tr><td><strong>Max. velikost souboru</strong></td><td>256 TiB</td></tr>
+  <tr><td><strong>Max. délka názvu</strong></td><td>255 znaků UTF-16</td></tr>
+  <tr><td><strong>Alternativní datové proudy</strong></td><td>ano (při kopírování se tiše ztratí)</td></tr>
+  <tr><td><strong>Fragmentace</strong></td><td>trpí – defragmentace na pozadí od Visty</td></tr>
+</table>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Alternativní datové proudy</div>
+  <p>Jeden soubor má <strong>více proudů</strong> – jeden hlavní (běžný obsah) + alternativní. <strong>Většina programů používá jen hlavní</strong>, při kopírování na cizí FS se ostatní <strong>tiše ztratí</strong>. V praxi se neujalo.</p>
+</div>
+</section>
+
+<!-- 14 ext4 -->
+<section class="section" id="ext4">
+<div class="section-header"><span class="section-num">14</span><h2>ext4 (Linux, Android, Unix)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Extended Filesystem – 4. generace</h4>
+  <p>Řada: <strong>ext → ext2 → ext3 → ext4</strong>. Vychází z UFS (Unix File System).</p>
+</div>
+
+<h3>Struktura ext4</h3>
+<div class="partition-layout">
+  <div class="part-layer pl-boot">BOOT BLOK (512 B)</div>
+  <div class="part-layer pl-super">SKUPINA 0: superblok + deskriptory<small>metadata popisující FS</small></div>
+  <div class="part-layer pl-bitmap">Bitmapa datových bloků + bitmapa i-uzlů</div>
+  <div class="part-layer pl-inode">I-UZLY (metadata jednotlivých souborů)</div>
+  <div class="part-layer pl-data">DATOVÉ BLOKY (obsah souborů, adresáře)</div>
+  <div class="part-layer pl-super">SKUPINA 1, 2, … N (opakuje se)<small>sparse-super: kopie jen u některých</small></div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Proč skupiny</div>
+  <ul>
+    <li>Data a metadata <strong>pohromadě ve skupinách</strong> → rychlejší přístup</li>
+    <li>Metadata rozprostřena <strong>po celém disku</strong> → ochrana při havárii</li>
+    <li>Superblok a bitmapy = vždy 1 blok. Ostatní jsou násobky bloků.</li>
+  </ul>
+</div>
+
+<h3>Superblok</h3>
+<div class="card purple">
+  <ul>
+    <li>Metadata o <strong>celém FS</strong>, opakuje se na začátku skupiny (pro redundanci)</li>
+    <li><strong>sparse-super</strong> – kopie jen u některých skupin (zrychlení)</li>
+    <li>Obsahuje: <strong>stav FS (clean/dirty)</strong>, počet připojení, poslední fsck, velikosti částí</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Stav souborového systému</div>
+  <ul>
+    <li>Při <strong>připojení</strong> → nastaven na <strong>„NENÍ ČISTÝ"</strong> (dirty)</li>
+    <li>Při <strong>řádném odpojení</strong> → <strong>„JE ČISTÝ"</strong> (clean)</li>
+    <li>Při startu: „čistý" → přeskočení automatické kontroly</li>
+    <li>Podporují: ext*, ReiserFS, btrfs, ZFS, NTFS. <strong>FAT nepodporuje!</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 15 I-uzel -->
+<section class="section" id="inode">
+<div class="section-header"><span class="section-num">15</span><h2>I-uzel a adresář</h2></div>
+
+<h3>Struktura i-uzlu (i-node)</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Metadata jednoho souboru</div>
+  <ul>
+    <li><strong>Typ souboru</strong> a přístupová oprávnění</li>
+    <li><strong>Počet odkazů</strong> (pevné linky, adresáře)</li>
+    <li><strong>Vlastník, skupina, velikost</strong></li>
+    <li>Časové značky: <strong>atime</strong> (přístup), <strong>mtime</strong> (změna dat), <strong>ctime</strong> (změna metadat)</li>
+    <li><strong>12 přímých odkazů</strong> na datové bloky</li>
+    <li><strong>1 nepřímý odkaz</strong> na datové bloky (1. úrovně)</li>
+    <li><strong>1 nepřímý odkaz 2. úrovně</strong></li>
+    <li><strong>1 nepřímý odkaz 3. úrovně</strong></li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Vlastnosti i-uzlů</div>
+  <ul>
+    <li>I-uzel <strong>není součástí adresáře</strong> → lze vytvářet pevné a symbolické odkazy</li>
+    <li>I-uzlů je <strong>konečné množství</strong> (definováno při formátování)</li>
+    <li>Zbytečně mnoho i-uzlů <strong>prodlužuje fsck</strong> (ext3 a starší; ext4 řeší)</li>
+  </ul>
+</div>
+
+<h3>Struktura adresáře</h3>
+<div class="card">
+  <ul>
+    <li>Adresář je <strong>speciální soubor</strong> – pole s pevnou délkou položek</li>
+    <li><strong>Lineární seznam</strong>, smazané položky = neobsazené</li>
+    <li>Obvykle <strong>není řazeno</strong> (ne podle abecedy)</li>
+    <li>Položka obsahuje jen:
+      <ul>
+        <li><strong>Název</strong> (128/256 B, UTF-8)</li>
+        <li><strong>Číslo i-uzlu</strong> → odkaz na metadata</li>
+      </ul>
+    </li>
+    <li>Každý FS čísluje i-uzly <strong>vždy znovu od nuly</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 16 VFS -->
+<section class="section" id="vfs">
+<div class="section-header"><span class="section-num">16</span><h2>VFS, mount, umount, fstab</h2></div>
+
+<h3>VFS – Virtual Filesystem</h3>
+<div class="card highlight">
+  <ul>
+    <li>VFS implementuje <strong>jádro OS</strong> (Linux i Windows)</li>
+    <li>Shora <strong>sjednocuje přístup ke všem FS</strong> přes jednotné API</li>
+    <li>Dle situace volá <strong>„ovladač" konkrétního FS</strong> (NTFS, ext4, FAT…)</li>
+    <li>Řeší <strong>cache pro soubory a adresáře</strong></li>
+    <li>Další FS se připojují do existujících adresářů</li>
+  </ul>
+</div>
+
+<h3>mount a umount</h3>
+<div class="code-block">
+<span class="comment"># Připojení oddílu ext4 do /home</span>
+mount /dev/sda3 /home
+mount -t ext4 /dev/sda3 /home
+
+<span class="comment"># Připojení NTFS přes FUSE (Userspace FS)</span>
+ntfs-3g /dev/sda1 /mnt
+
+<span class="comment"># Odpojení FS</span>
+umount /home
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Pravidla</div>
+  <ul>
+    <li>Lze připojit jen <strong>„čistý" FS</strong> (bez chyb)</li>
+    <li>FS <strong>nelze připojit dvakrát</strong> (v Linuxu je možný <strong>bind</strong> – zrcadlení)</li>
+    <li>Při <strong>umount</strong> nesmí být FS používán (otevřené soubory, aktuální adresář)</li>
+    <li>Nástroje: <strong>lsof, fuser</strong> (Linux), <strong>Process Explorer</strong> (Windows)</li>
+  </ul>
+</div>
+
+<h3>/etc/fstab – seznam FS pro automatické připojení</h3>
+<div class="code-block">
+<span class="comment"># zařízení        bod       typ   volby           dump fsck</span>
+/dev/md0         /         ext3  defaults        1    1
+tmpfs            /dev/shm  tmpfs defaults        0    0
+proc             /proc     proc  defaults        0    0
+LABEL=SWAP1      swap      swap  pri=1           0    0
+LABEL=Home       /home     ext3  usrquota,acl    1    2
+</div>
+</section>
+
+<!-- 17 FSCK -->
+<section class="section" id="fsck">
+<div class="section-header"><span class="section-num">17</span><h2>fsck, mkfs, chkdsk</h2></div>
+
+<h3>fsck – kontrola konzistence metadat</h3>
+<div class="card">
+  <ul>
+    <li>Změny dat probíhají <strong>v několika krocích</strong> – při havárii nejsou konzistentní</li>
+    <li>Např. zrušíme název v adresáři, ale ne i-node a datové bloky → <strong>/lost+found</strong></li>
+    <li>Využívá záznamy v <strong>superbloku</strong> (počet připojení, poslední fsck)</li>
+    <li><strong>Plná kontrola trvá extrémně dlouho</strong> (ext4 řeší – kontroluje jen použité i-nody)</li>
+    <li>Preventivní kontroly je nutné <strong>plánovat</strong>!</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Automatická kontrola při startu</div>
+  <ul>
+    <li>Spuštěna, když FS <strong>není „čistý"</strong>, nebo je překročen počet připojení / čas od poslední kontroly</li>
+    <li>Opravuje jen <strong>méně závažné chyby</strong></li>
+    <li>Závažné chyby → <strong>nutno ručně potvrdit</strong></li>
+    <li>Linux: <code>fsck -pa</code>, Windows: <code>chkdsk</code></li>
+  </ul>
+</div>
+
+<h3>mkfs – vytváření FS</h3>
+<div class="code-block">
+mkfs -t ext4 /dev/sda3              <span class="comment"># základní</span>
+mkfs -t ext4 -N 100000 /dev/sda3    <span class="comment"># s určitým počtem i-nodů</span>
+mkfs -t ext4 -n /dev/sda3           <span class="comment"># "dry run" (nic nezapíše)</span>
+mkfs.ext4, mkfs.ntfs, mkfs.vfat     <span class="comment"># specifické nástroje</span>
+</div>
+
+<details><summary>Další nástroje pro ext*</summary>
+<div class="card">
+  <ul>
+    <li><code>dumpe2fs /dev/sda2</code> – vypíše informace ze superbloku</li>
+    <li><code>tune2fs -l /dev/sda2</code> – výpis a nastavování parametrů FS</li>
+    <li><code>e2label /dev/sda3 Home</code> – jmenovka FS (viz LABEL v fstab)</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 18 FRAGMENTACE -->
+<section class="section" id="fragmentace">
+<div class="section-header"><span class="section-num">18</span><h2>Fragmentace a tail merge</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Vnější fragmentace</div>
+  <ul>
+    <li>Nově přidělené alokační jednotky <strong>spolu nesousedí</strong></li>
+    <li>Pohyb hlaviček disku je pomalý: <strong>náhodná stopa 10 ms</strong>, sousední 1 ms</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Řešení fragmentace</div>
+  <ul>
+    <li><strong>Preventivně:</strong> ukládat data tak, aby se omezila (ext4)</li>
+    <li><strong>Dodatečně:</strong> defragmentovat (NTFS)</li>
+    <li><strong>HW:</strong> použít flash paměť místo HDD (SSD) – hlavičky nejsou</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Vnitřní fragmentace</div>
+  <p>Poslední alokační jednotka není zcela obsazena (zbylé místo je nevyužité). Řeší se pomocí <strong>„tail merge"</strong> (subalokace bloků) – více malých souborů sdílí jeden cluster.</p>
+</div>
+</section>
+
+<!-- 19 ŽURNÁLOVÁNÍ -->
+<section class="section" id="zurnalovani">
+<div class="section-header"><span class="section-num">19</span><h2>Žurnálování</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Ochrana konzistence metadat</div>
+  <p>Po pádu systému opravujeme <strong>jen nekonzistence</strong> – není nutné prohlížet všechna metadata. V žurnálu jsou zaznamenány všechny <strong>možné nedokončené operace</strong>.</p>
+</div>
+
+<h3>Princip žurnálování</h3>
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">1. Plánovanou operaci zapíšeme do žurnálu<small>zaznamenáme co chceme udělat</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">2. Provedeme změny v souborovém systému<small>vlastní zápis dat/metadat</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">3. Zapíšeme záznam o dokončení operace<small>žurnál potvrdí dokončení</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">4. Zrušíme platnost záznamu v žurnálu<small>místo v žurnálu lze přepsat jiným záznamem</small></div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Při přerušení zápisu (pád, restart)</div>
+  <ul>
+    <li><strong>Přehrání žurnálu</strong> (fsck, chkdsk)</li>
+    <li>Lze <strong>odvolat</strong> operaci (návrat k původnímu stavu)</li>
+    <li>Nebo lze <strong>dokončit</strong> operaci</li>
+  </ul>
+</div>
+
+<h3>Úrovně žurnálování</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Žurnálování metadat</h4>
+    <p><strong>Implicitní</strong> (NTFS, ext4). Urychluje opětovné připojení FS. Není to záruka, že se zapíší všechna data.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Žurnálování metadat i dat</h4>
+    <p>Pomalejší – chrání před nekonzistencí i data. <strong>Vše se zapisuje dvakrát</strong> → ~2× pomalejší zápis. Logové FS tento problém odstraňují.</p>
+  </div>
+</div>
+</section>
+
+<!-- 20 DĚRAVÉ SOUBORY -->
+<section class="section" id="sparse">
+<div class="section-header"><span class="section-num">20</span><h2>Děravé soubory (sparse files)</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Princip</div>
+  <ul>
+    <li>Soubor obsahuje <strong>prázdná místa</strong> – ukládat nuly je zbytečné</li>
+    <li>Do metadat se zapíše: <strong>odkud a jak dlouhý</strong> je prázdný úsek</li>
+    <li>Při čtení systém vrací <strong>nuly</strong>, jako by je skutečně četl</li>
+    <li>Využití: <strong>databáze, logy, řídká pole, FS pro virtuální stroje</strong></li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Podpora</div>
+  <ul>
+    <li><strong>Podporují:</strong> většina unixových FS (ext4…), NTFS</li>
+    <li><strong>Nepodporují:</strong> FAT, HFS+ (Apple)</li>
+  </ul>
+</div>
+
+<details><summary>Ukázka – vytvoření děravého souboru</summary>
+<div class="code-block">
+$ dd if=/dev/zero of=pokus.txt bs=1 count=1 seek=1T
+$ ls -l pokus.txt
+-rw-rw-r-- 1 user user 1099511627777  pokus.txt   <span class="comment"># "velikost" 1 TiB+1</span>
+
+$ stat pokus.txt
+  Size: 1099511627777     Blocks: 48
+
+$ du -h pokus.txt
+24K     pokus.txt                                  <span class="comment"># skutečně zabírá jen 24 KiB!</span>
+</div>
+<p>Zapíše se jen 1 bajt, ale ukazatel je nastaven na 1 TiB → vznikne 1 TiB „díra" popsaná metadaty. Soubor „má" 1 TiB, ale fyzicky zabírá jen 24 KiB.</p>
+</details>
+</section>
+
+<!-- 21 EXTENTY -->
+<section class="section" id="extenty">
+<div class="section-header"><span class="section-num">21</span><h2>Extenty a rozsáhlé adresáře</h2></div>
+
+<h3>Extenty</h3>
+<div class="card green">
+  <ul>
+    <li>Souvislý větší úsek alokovaný pro data – <strong>spojení více alokačních jednotek v řadě</strong></li>
+    <li><strong>Snižuje režii</strong> – zaznamenáme jen <strong>číslo prvního bloku + počet</strong> (místo seznamu všech bloků)</li>
+    <li><strong>Snižuje fragmentaci</strong></li>
+    <li>Podpora: ext4, Reiser4, XFS, JFS, HPFS (OS/2), NTFS</li>
+  </ul>
+</div>
+
+<h3>Rozsáhlé adresáře</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problém lineárního seznamu</div>
+  <ul>
+    <li>Prohledávání má <strong>složitost počet/2</strong> – pomalé při tisících souborů</li>
+    <li>Při rušení/přidávání vznikají <strong>„díry"</strong> – adresář se nezkrátí</li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Řešení – binární strom / B-strom</div>
+  <ul>
+    <li><strong>Logaritmická složitost</strong> vyhledávání (je-li vyvážený)</li>
+    <li>Nevýhoda: <strong>vyvažování</strong> je pomalé (rekurzivní průchod)</li>
+    <li><strong>ext3/ext4:</strong> htree – specializovaný B-strom + pole, hashe jmen jako indexy, nepotřebuje vyvažování</li>
+    <li><strong>NTFS:</strong> též používá binární strom</li>
+  </ul>
+</div>
+
+<details><summary>Specifické FS</summary>
+<div class="card">
+  <ul>
+    <li><strong>Generační FS</strong> – cloud, zachovávání minulých verzí (<code>název;1, název;2</code>). Staré verze se automaticky odmazávají. Vlastnost ISO9660.</li>
+    <li><strong>Logové FS</strong> – nová data se zapisují za poslední zápis, existující se nepřepisují. Médium se cyklicky přepisuje → pro flash paměti. <strong>jffs2, f2fs</strong> (Samsung). Android paradoxně ext4 (kvůli spolehlivější kontrole konzistence).</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 22 SÍŤOVÉ FS -->
+<section class="section" id="sitove">
+<div class="section-header"><span class="section-num">22</span><h2>Síťové souborové systémy</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Zpřístupněny pomocí počítačové sítě</div>
+  <p>Vlastní data uložena v <strong>klasickém FS</strong> (ext, NTFS…). Různé vlastnosti: clusterové, fail-over, LAN, globální (přes Internet).</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">SMB / CIFS</h4>
+    <p>Síťové sdílení ve <strong>Windows</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">NFS (Network Filesystem)</h4>
+    <p>1984, Sun (RFC 1094). Dnes <strong>NFSv4 (IETF)</strong>. Unixové systémy. Využívá <strong>RPC</strong> (Remote Procedure Call). NFSv4: bezpečnost, stavový protokol, clustery.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">GFS (Global File System)</h4>
+    <p>Sdílený diskový FS. Více počítačů nabízí prostor, vystupuje jako <strong>jeden celek</strong>. Peer-to-peer, distribuovaný správce zámků. 2004 → Red Hat, GPL.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">AFS (Andrew File System)</h4>
+    <p><strong>Distribuovaný</strong> FS pro desetitisíce klientů. Svazky (volumes). <strong>Lokální cache</strong>, operace nad lokální kopií. Callback při změně. <strong>OpenAFS</strong> (IBM, 2000) – multiplatformní.</p>
+  </div>
+</div>
+
+<h3>Limity FS (srovnání)</h3>
+<table class="compare-table">
+  <tr><th>FS</th><th>Max. velikost FS</th><th>Max. velikost souboru</th></tr>
+  <tr><td><strong>XFS</strong></td><td>1 PB</td><td>8 EiB</td></tr>
+  <tr><td><strong>ext4</strong></td><td>1 EB</td><td>16 TiB</td></tr>
+  <tr><td><strong>ext3</strong></td><td>16 TiB</td><td>2 TiB</td></tr>
+  <tr><td><strong>GFS2</strong></td><td>100 TB</td><td>100 TB</td></tr>
+  <tr><td><strong>NTFS</strong></td><td>2 PB</td><td>256 TiB</td></tr>
+  <tr><td><strong>FAT32</strong></td><td>8 TiB</td><td>4 GiB − 1</td></tr>
+  <tr><td><strong>exFAT</strong></td><td>obrovské</td><td>16 EiB</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- 23 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">23</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">ZÁKLADY FS</p>
+<ul>
+  <li><strong>FS:</strong> organizace dat do souborů/adresářů. Obsahuje <strong>data</strong> (obsah) a <strong>metadata</strong> (o datech – oprávnění, umístění, čas)</li>
+  <li><strong>Nevolatilní paměti:</strong> magnetické (páska, HDD), optické (CD/DVD), polovodičové (Flash, SSD). RAM = volatilní (ramdisk)</li>
+  <li><strong>HDD:</strong> plovoucí hlava, ~10 ms, 100 MB/s seq. × <strong>SSD:</strong> flash, ~5× rychlejší, FTL, omezená životnost</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ROZDĚLENÍ DISKU A ADRESACE</p>
+<ul>
+  <li><strong>MBR:</strong> 512 B, zavaděč (440 B) + MPT (64 B) + signatura 0xAA55. Max 4 oddíly, limit 2 TiB</li>
+  <li><strong>GPT:</strong> nástupce, UEFI, pouze LBA, až 8 ZiB, záložní kopie na konci disku. Od 2013 standard</li>
+  <li><strong>Adresace:</strong> CHS (historické) × <strong>LBA</strong> (dnes, lineární). Sektor = fyzická jednotka (512 B/4 KiB), cluster = FS jednotka</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-4);margin-bottom:8px">FAT, exFAT, NTFS</p>
+<ul>
+  <li><strong>FAT:</strong> spojový seznam v tabulce. Položka adresáře 32 B (jméno 8.3, délka, čas, atributy, 1. sektor). FAT12/16/32. Max soubor 4 GiB (FAT32)</li>
+  <li><strong>Problémy FAT:</strong> překřížené soubory (stejná hodnota v FAT), ztracené soubory (FILECHK.001 v kořeni), rozdílné kopie FAT</li>
+  <li><strong>exFAT (FAT64):</strong> MS 2006, flash &gt; 32 GiB (SDXC), max soubor 16 EiB, 3 časy, <strong>bez žurnálu</strong></li>
+  <li><strong>NTFS:</strong> MS 1993, dvě vrstvy. <strong>$MFT</strong> (15 % kapacity, metadata + malé soubory). Max soubor 256 TiB. Alternativní datové proudy. Fragmentace</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">ext4 A UNIX</p>
+<ul>
+  <li><strong>Struktura ext4:</strong> boot blok + skupiny (opakující se). Ve skupině: superblok, deskriptory, bitmapy, i-uzly, datové bloky</li>
+  <li><strong>Superblok:</strong> metadata celého FS, stav (clean/dirty), počet připojení, poslední fsck. Sparse-super = kopie jen u některých</li>
+  <li><strong>I-uzel:</strong> typ + oprávnění, vlastník, velikost, atime/mtime/ctime, 12 přímých + 3 nepřímé odkazy. <strong>Není součástí adresáře</strong> (linky)</li>
+  <li><strong>Adresář:</strong> lineární seznam položek (název + č. i-uzlu). Nerazeno. Pomalé u tisíců souborů → htree (ext3+), B-strom (NTFS)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SPRÁVA FS – VFS, MOUNT, FSCK</p>
+<ul>
+  <li><strong>VFS:</strong> virtualizuje přístup ke všem FS v jádře, sjednocuje API, řeší cache</li>
+  <li><strong>mount/umount:</strong> připojení/odpojení. FS musí být „čistý", nelze připojit 2×. Linux: bind (zrcadlení)</li>
+  <li><strong>/etc/fstab:</strong> zařízení, bod, typ, volby, dump, fsck. <code>mount -a</code> při startu</li>
+  <li><strong>fsck/chkdsk:</strong> kontrola konzistence metadat. Využívá superblok. Plná kontrola pomalá (ext4 řeší). Ztracené soubory → /lost+found</li>
+  <li><strong>mkfs:</strong> vytvoření FS (<code>mkfs.ext4, mkfs.ntfs, mkfs.vfat</code>)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">POKROČILÉ VLASTNOSTI</p>
+<ul>
+  <li><strong>Fragmentace:</strong> vnější (nesousedící bloky) × vnitřní (poslední cluster neobsazen → tail merge). Řešení: ext4 (prevence), NTFS (defrag), SSD</li>
+  <li><strong>Žurnálování:</strong> zapíšeme plán → provedeme → zapíšeme dokončení → zrušíme. Chrání jen metadata (NTFS, ext4) nebo i data (2× pomalejší)</li>
+  <li><strong>Děravé soubory (sparse):</strong> prázdná místa v metadatech. Podporují ext4, NTFS. Nepodporují FAT, HFS+</li>
+  <li><strong>Extenty:</strong> souvislý úsek = první blok + počet. Snižuje režii a fragmentaci (ext4, NTFS, XFS)</li>
+  <li><strong>Síťové FS:</strong> SMB/CIFS (Windows), <strong>NFS</strong> (Unix, Sun 1984, RPC), GFS (sdílený, peer-to-peer), AFS (distribuovaný, callback, svazky)</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

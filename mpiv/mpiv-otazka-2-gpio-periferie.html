@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 2: Paralelní porty a připojování periferií</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a2e0f 40%, #0f2e2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 25% 50%, rgba(52,211,153,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(251,191,36,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-3); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(24px, 5vw, 40px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+  .cli .kw { color: var(--accent-4); }
+  .cli .val { color: var(--accent-6); }
+
+  /* Register visualization */
+  .reg-row { display: flex; gap: 16px; align-items: center; margin: 10px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .reg-name { min-width: 60px; font-weight: 700; font-size: 13px; }
+  .reg-bits { display: flex; gap: 2px; }
+  .reg-bit { width: 36px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: 600; font-size: 11px; }
+
+  /* Circuit diagrams (ASCII-style) */
+  .circuit {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 14px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* GPIO internal structure */
+  .gpio-struct {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .gpio-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .gpio-layer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 6px;
+  }
+  .gpio-label { min-width: 80px; font-weight: 600; font-size: 12px; }
+  .gpio-desc { font-size: 11px; color: var(--text-muted); font-family: 'DM Sans', sans-serif; }
+  .gpio-arrow { text-align: center; color: var(--text-muted); font-size: 14px; padding: 0 0 0 40px; }
+
+  /* 7-segment visual */
+  .seg7 {
+    display: inline-block;
+    width: 80px;
+    height: 120px;
+    position: relative;
+    margin: 10px 16px;
+  }
+  .seg7 .seg {
+    position: absolute;
+    background: var(--accent-5);
+    border-radius: 2px;
+    opacity: 0.15;
+  }
+  .seg7 .seg.on { opacity: 1; }
+  .seg7 .seg-h { width: 36px; height: 6px; left: 22px; }
+  .seg7 .seg-v { width: 6px; height: 32px; }
+  .seg-a { top: 4px; }
+  .seg-b { top: 14px; left: 56px; }
+  .seg-c { top: 54px; left: 56px; }
+  .seg-d { top: 88px; }
+  .seg-e { top: 54px; left: 14px; }
+  .seg-f { top: 14px; left: 14px; }
+  .seg-g { top: 46px; }
+
+  /* Matrix grid */
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(4, 50px);
+    gap: 4px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .matrix-cell {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .matrix-header { color: var(--text-muted); font-size: 10px; }
+  .matrix-key { background: var(--bg-card-alt); border: 1px solid var(--border); color: var(--heading); cursor: default; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .reg-row { flex-direction: column; gap: 6px; }
+    .matrix-grid { grid-template-columns: 40px repeat(4, 40px); font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 2</div>
+  <h1>Paralelní porty a<br>připojování periferií</h1>
+  <p>GPIO • Řídící registry • Elektrické vlastnosti • Tlačítka • Klávesnice • LED • Displeje</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#gpio">GPIO piny a organizace</a></li>
+    <li><a href="#registers">Řídící registry (DDR, PORT, PIN)</a></li>
+    <li><a href="#gpio-struct">Interní struktura GPIO pinu</a></li>
+    <li><a href="#config">Konfigurace GPIO režimů</a></li>
+    <li><a href="#electrical">Elektrické vlastnosti MCU</a></li>
+    <li><a href="#current">Proudové limity</a></li>
+    <li><a href="#buttons">Připojování tlačítek</a></li>
+    <li><a href="#debounce">Debouncing</a></li>
+    <li><a href="#matrix">Matrix klávesnice</a></li>
+    <li><a href="#led">Připojování LED</a></li>
+    <li><a href="#displays">Displeje (7-seg, LCD, OLED)</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 GPIO -->
+<section class="section" id="gpio">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>GPIO piny a organizace</h2>
+  </div>
+
+  <p><strong>GPIO</strong> (General Purpose Input/Output) = programovatelné digitální piny MCU. Konfigurovatelné jako vstup nebo výstup. Organizovány do <strong>portů</strong> (skupina 8 nebo 16 pinů).</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Příklad ATmega328 (Arduino Uno)</div>
+    <ul>
+      <li><strong>PORTB</strong> – piny PB0 až PB7 (8 pinů)</li>
+      <li><strong>PORTC</strong> – piny PC0 až PC5 (6 pinů)</li>
+      <li><strong>PORTD</strong> – piny PD0 až PD7 (8 pinů)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 REGISTERS -->
+<section class="section" id="registers">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Řídící registry (DDR, PORT, PIN)</h2>
+  </div>
+
+  <p>Každý GPIO port je řízen <strong>třemi registry</strong>:</p>
+
+  <!-- DDR -->
+  <div class="card" style="border-left:3px solid var(--accent-5)">
+    <div class="card-title" style="color: var(--accent-5);">DDRx – Data Direction Register</div>
+    <p>Určuje směr pinu: <strong>0 = INPUT</strong>, <strong>1 = OUTPUT</strong>. 1 bit na pin.</p>
+    <div class="reg-row">
+      <span class="reg-name" style="color:var(--accent-5)">DDRB</span>
+      <div class="reg-bits">
+        <div class="reg-bit" style="background:rgba(52,211,153,0.2);color:var(--accent-3)">1</div>
+        <div class="reg-bit" style="background:rgba(248,113,113,0.15);color:var(--accent-5)">0</div>
+        <div class="reg-bit" style="background:rgba(52,211,153,0.2);color:var(--accent-3)">1</div>
+        <div class="reg-bit" style="background:rgba(248,113,113,0.15);color:var(--accent-5)">0</div>
+        <div class="reg-bit" style="background:rgba(52,211,153,0.2);color:var(--accent-3)">1</div>
+        <div class="reg-bit" style="background:rgba(248,113,113,0.15);color:var(--accent-5)">0</div>
+        <div class="reg-bit" style="background:rgba(248,113,113,0.15);color:var(--accent-5)">0</div>
+        <div class="reg-bit" style="background:rgba(52,211,153,0.2);color:var(--accent-3)">1</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:0"><span style="color:var(--accent-3)">1=OUT</span> &nbsp; <span style="color:var(--accent-5)">0=IN</span></p>
+  </div>
+
+  <!-- PORT -->
+  <div class="card" style="border-left:3px solid var(--accent-4)">
+    <div class="card-title" style="color: var(--accent-4);">PORTx – Port Output Register</div>
+    <p><strong>Když OUTPUT:</strong> určuje logickou úroveň (1=HIGH/Vcc, 0=LOW/GND).</p>
+    <p style="margin-bottom:0"><strong>Když INPUT:</strong> 1 = pull-up enabled, 0 = High-Z (plovoucí).</p>
+  </div>
+
+  <!-- PIN -->
+  <div class="card" style="border-left:3px solid var(--accent-1)">
+    <div class="card-title" style="color: var(--accent-1);">PINx – Port Input Register</div>
+    <p style="margin-bottom:0"><strong>Read-only.</strong> Čtení aktuálního stavu pinu. Vrací 1 (HIGH) nebo 0 (LOW) – skutečná logická úroveň na pinu.</p>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Registr</th><th>Funkce</th><th>Bit = 0</th><th>Bit = 1</th></tr>
+    <tr><td><strong>DDRx</strong></td><td>Směr</td><td>INPUT</td><td>OUTPUT</td></tr>
+    <tr><td><strong>PORTx</strong> (out)</td><td>Úroveň výstupu</td><td>LOW (GND)</td><td>HIGH (Vcc)</td></tr>
+    <tr><td><strong>PORTx</strong> (in)</td><td>Pull-up</td><td>High-Z (plovoucí)</td><td>Pull-up ON</td></tr>
+    <tr><td><strong>PINx</strong></td><td>Čtení stavu</td><td>Pin je LOW</td><td>Pin je HIGH</td></tr>
+  </table>
+</section>
+
+<!-- 03 GPIO STRUCT -->
+<section class="section" id="gpio-struct">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Interní struktura GPIO pinu</h2>
+  </div>
+
+  <div class="gpio-struct">
+    <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:14px">INTERNÍ SCHÉMA GPIO PINU</div>
+    <div class="gpio-layers">
+      <div class="gpio-layer" style="background:rgba(248,113,113,0.1)">
+        <span class="gpio-label" style="color:var(--accent-5)">DDRx bit</span>
+        <span class="gpio-desc">→ Multiplexer (rozhoduje směr: INPUT / OUTPUT)</span>
+      </div>
+      <div class="gpio-arrow">↓</div>
+      <div class="gpio-layer" style="background:rgba(251,191,36,0.1)">
+        <span class="gpio-label" style="color:var(--accent-4)">PORTx bit</span>
+        <span class="gpio-desc">→ Output Driver (P-MOS pro HIGH, N-MOS pro LOW)</span>
+      </div>
+      <div class="gpio-arrow">↓</div>
+      <div class="gpio-layer" style="background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.3)">
+        <span class="gpio-label" style="color:var(--accent-3)">Fyzický Pin</span>
+        <span class="gpio-desc">← Pull-up rezistor (20–50 kΩ, zapnutý přes PORTx v INPUT mode)</span>
+      </div>
+      <div class="gpio-arrow">↓</div>
+      <div class="gpio-layer" style="background:rgba(96,165,250,0.1)">
+        <span class="gpio-label" style="color:var(--accent-1)">PINx bit</span>
+        <span class="gpio-desc">← Input Buffer (čtení aktuální logické úrovně)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 CONFIG -->
+<section class="section" id="config">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Konfigurace GPIO režimů</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">OUTPUT Push-Pull</h4>
+      <p><code style="font-size:11px">DDR=1, PORT=0/1</code><br>Pin aktivně řídí HIGH (P-MOS → Vcc) nebo LOW (N-MOS → GND). Source i sink current.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">INPUT s Pull-up</h4>
+      <p><code style="font-size:11px">DDR=0, PORT=1</code><br>Interní pull-up (20–50 kΩ). Default HIGH. Vhodné pro tlačítka (na GND). Šetří komponenty.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">INPUT High-Z (plovoucí)</h4>
+      <p><code style="font-size:11px">DDR=0, PORT=0</code><br>Bez pull-up. Vysoká impedance. Úroveň neurčitá! Pouze když ext. obvod má vlastní pull-up/down.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Příklad konfigurace (AVR C kód)</summary>
+    <div class="cli">
+      <span class="comment">// PB5 jako OUTPUT (LED)</span><br>
+      <span class="cmd">DDRB</span> <span class="kw">|=</span> (<span class="val">1</span> <span class="kw">&lt;&lt;</span> <span class="val">PB5</span>);    <span class="comment">// DDR bit 5 = 1</span><br>
+      <span class="cmd">PORTB</span> <span class="kw">|=</span> (<span class="val">1</span> <span class="kw">&lt;&lt;</span> <span class="val">PB5</span>);   <span class="comment">// Nastav HIGH</span><br><br>
+      <span class="comment">// PD2 jako INPUT s pull-up (tlačítko)</span><br>
+      <span class="cmd">DDRD</span> <span class="kw">&amp;= ~</span>(<span class="val">1</span> <span class="kw">&lt;&lt;</span> <span class="val">PD2</span>);  <span class="comment">// DDR bit 2 = 0</span><br>
+      <span class="cmd">PORTD</span> <span class="kw">|=</span> (<span class="val">1</span> <span class="kw">&lt;&lt;</span> <span class="val">PD2</span>);  <span class="comment">// Enable pull-up</span><br><br>
+      <span class="comment">// Čtení stavu PD2</span><br>
+      <span class="kw">if</span> (<span class="cmd">PIND</span> <span class="kw">&amp;</span> (<span class="val">1</span> <span class="kw">&lt;&lt;</span> <span class="val">PD2</span>)) { <span class="comment">/* HIGH */</span> }
+    </div>
+  </details>
+</section>
+
+<!-- 05 ELECTRICAL -->
+<section class="section" id="electrical">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Elektrické vlastnosti MCU</h2>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Logické úrovně (pro Vcc = 5 V)</div>
+    <table class="compare-table">
+      <tr><th>Parametr</th><th>Popis</th><th>Hodnota (5 V)</th></tr>
+      <tr><td><strong>V<sub>IH</sub></strong></td><td>Input HIGH min</td><td>> 0.6 × Vcc = <strong>> 3 V</strong></td></tr>
+      <tr><td><strong>V<sub>IL</sub></strong></td><td>Input LOW max</td><td>< 0.3 × Vcc = <strong>< 1.5 V</strong></td></tr>
+      <tr><td><strong>V<sub>OH</sub></strong></td><td>Output HIGH min</td><td>> 0.7 × Vcc = <strong>> 3.5 V</strong></td></tr>
+      <tr><td><strong>V<sub>OL</sub></strong></td><td>Output LOW max</td><td><strong>< 0.5 V</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Napájecí napětí (Vcc)</div>
+    <ul>
+      <li><strong>ATmega328:</strong> 1.8–5.5 V</li>
+      <li><strong>STM32F4:</strong> 1.8–3.6 V</li>
+      <li><strong>ESP32:</strong> 2.3–3.6 V</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 CURRENT -->
+<section class="section" id="current">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Proudové limity</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Kritické limity – překročení = zničení MCU!</div>
+    <table class="compare-table">
+      <tr><th>Limit</th><th>ATmega328</th><th>Poznámka</th></tr>
+      <tr><td><strong>Per-pin (source/sink)</strong></td><td><strong>20 mA</strong> (40 mA abs. max)</td><td>Překročení → poškození pinu!</td></tr>
+      <tr><td><strong>Per-port</strong></td><td><strong>100 mA</strong></td><td>8 pinů × 20 mA = 160 mA → překročeno!</td></tr>
+      <tr><td><strong>Total MCU</strong></td><td><strong>200 mA</strong></td><td>Všechny GPIO dohromady</td></tr>
+    </table>
+    <p style="margin-bottom:0;font-size:13px;color:var(--accent-4)">Praktické pravidlo: drž se <strong>50 % max ratingu</strong> pro spolehlivost (max 10 mA per pin).</p>
+  </div>
+
+  <details>
+    <summary>Spotřeba MCU (Active vs Sleep)</summary>
+    <table class="compare-table">
+      <tr><th>MCU</th><th>Active</th><th>Sleep</th></tr>
+      <tr><td>ATmega328 @ 16 MHz, 5 V</td><td>~15 mA</td><td>0.1 μA (power-down)</td></tr>
+      <tr><td>STM32F4 @ 168 MHz, 3.3 V</td><td>~90 mA</td><td>~2 μA</td></tr>
+      <tr><td>ESP32 @ 240 MHz</td><td>~160 mA</td><td>10 μA (deep sleep)</td></tr>
+    </table>
+  </details>
+</section>
+
+<!-- 07 BUTTONS -->
+<section class="section" id="buttons">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Připojování tlačítek</h2>
+  </div>
+
+  <h3>Pull-up + tlačítko na GND (doporučeno)</h3>
+
+  <div class="circuit"><span style="color:var(--accent-5)">Vcc (+5V)</span>
+    │
+<span style="color:var(--accent-4)">[Pull-up 10kΩ]</span>  ← interní nebo externí
+    │
+    ├──── <span style="color:var(--accent-3)">MCU Pin</span> (INPUT s pull-up)
+    │
+<span style="color:var(--accent-1)">[Tlačítko]</span>
+    │
+<span style="color:var(--text-muted)">GND</span></div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Nepřitisknuto</h4>
+      <p>Pull-up drží pin na <strong>HIGH</strong> (5 V). Tlačítko otevřené → proud nemá kam téct.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Přitisknuto</h4>
+      <p>Tlačítko spojí pin se zemí → pin = <strong>LOW</strong> (0 V). Proud z pull-upu teče do GND (silnější cesta).</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Proč pull-up?</div>
+    <p style="margin-bottom:0">Bez pull-up by pin byl <strong>plovoucí</strong> → nestabilní, šum. Interní pull-up v MCU → žádné extra komponenty. Detekce: <code>if (!(PIND & (1 << btn))) { /* pressed */ }</code></p>
+  </div>
+
+  <details>
+    <summary>Varianta 2: Pull-down + tlačítko na Vcc</summary>
+    <p>Nepřitisknuto = LOW, přitisknuto = HIGH. <strong>Nevýhoda:</strong> MCU typicky nemají interní pull-down → musí být externí rezistor.</p>
+  </details>
+</section>
+
+<!-- 08 DEBOUNCE -->
+<section class="section" id="debounce">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Debouncing (odstranění zákmitů)</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém: Button Bounce</div>
+    <p>Mechanické tlačítko při stisku/puštění několikrát zapne/vypne (zákmity) během <strong>5–50 ms</strong>. MCU to vidí jako více stisků!</p>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:8px">
+      <span style="color:var(--accent-3)">Očekávaný:</span> ____|‾‾‾‾‾‾|____<br>
+      <span style="color:var(--accent-5)">Reálný:</span>&nbsp;&nbsp;&nbsp;&nbsp; ____|‾|_|‾‾|_|‾‾‾‾|____
+    </div>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">HW Debouncing</h4>
+      <p>RC filtr: kondenzátor 100 nF paralelně s tlačítkem. Zpomaluje přechody → filtruje zákmity. Přidává komponenty.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">SW Debouncing (doporučeno)</h4>
+      <p>Žádné extra komponenty. Simple delay (50 ms) nebo state machine. Volej v timer ISR každou 1 ms.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>SW debouncing – příklady kódu</summary>
+    <div class="cli">
+      <span class="comment">// Metoda 1: Simple delay</span><br>
+      <span class="kw">if</span> (button_pressed) {<br>
+      &nbsp;&nbsp;<span class="cmd">_delay_ms</span>(<span class="val">50</span>);  <span class="comment">// Počkej 50ms</span><br>
+      &nbsp;&nbsp;<span class="kw">if</span> (button_pressed) { <span class="comment">/* Validní stisk */</span> }<br>
+      }<br><br>
+      <span class="comment">// Metoda 2: State machine (v timer ISR, volej každou 1ms)</span><br>
+      <span class="kw">if</span> (button_pressed) {<br>
+      &nbsp;&nbsp;<span class="kw">if</span> (counter < <span class="val">50</span>) counter++;<br>
+      } <span class="kw">else</span> { counter = <span class="val">0</span>; }<br>
+      <span class="kw">if</span> (counter == <span class="val">50</span> && state == <span class="val">0</span>) { state = <span class="val">1</span>; <span class="comment">/* Validní */</span> }
+    </div>
+  </details>
+</section>
+
+<!-- 09 MATRIX -->
+<section class="section" id="matrix">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Matrix klávesnice</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Problém → řešení</div>
+    <p>16 tlačítek = 16 GPIO pinů → plýtvání! <strong>Matrix:</strong> 4×4 = 16 tlačítek, ale jen <strong>8 pinů</strong> (4 řádky + 4 sloupce).</p>
+  </div>
+
+  <!-- Matrix visual -->
+  <div class="matrix-grid">
+    <div class="matrix-cell matrix-header"></div>
+    <div class="matrix-cell matrix-header" style="color:var(--accent-1)">COL0</div>
+    <div class="matrix-cell matrix-header" style="color:var(--accent-1)">COL1</div>
+    <div class="matrix-cell matrix-header" style="color:var(--accent-1)">COL2</div>
+    <div class="matrix-cell matrix-header" style="color:var(--accent-1)">COL3</div>
+
+    <div class="matrix-cell matrix-header" style="color:var(--accent-6)">ROW0</div>
+    <div class="matrix-cell matrix-key">1</div>
+    <div class="matrix-cell matrix-key">2</div>
+    <div class="matrix-cell matrix-key">3</div>
+    <div class="matrix-cell matrix-key">A</div>
+
+    <div class="matrix-cell matrix-header" style="color:var(--accent-6)">ROW1</div>
+    <div class="matrix-cell matrix-key">4</div>
+    <div class="matrix-cell matrix-key">5</div>
+    <div class="matrix-cell matrix-key">6</div>
+    <div class="matrix-cell matrix-key">B</div>
+
+    <div class="matrix-cell matrix-header" style="color:var(--accent-6)">ROW2</div>
+    <div class="matrix-cell matrix-key">7</div>
+    <div class="matrix-cell matrix-key">8</div>
+    <div class="matrix-cell matrix-key">9</div>
+    <div class="matrix-cell matrix-key">C</div>
+
+    <div class="matrix-cell matrix-header" style="color:var(--accent-6)">ROW3</div>
+    <div class="matrix-cell matrix-key">*</div>
+    <div class="matrix-cell matrix-key">0</div>
+    <div class="matrix-cell matrix-key">#</div>
+    <div class="matrix-cell matrix-key">D</div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)"><span style="color:var(--accent-6)">Řádky = OUTPUT</span> &nbsp; <span style="color:var(--accent-1)">Sloupce = INPUT (pull-up)</span></p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Scanning algoritmus</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Nastav všechny řádky na HIGH</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Aktivuj jeden řádek (nastav LOW)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Čti sloupce – pokud sloupec LOW → tlačítko stisknuté</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Opakuj pro všechny řádky</div></div></div>
+    </div>
+  </div>
+
+  <p><strong>Úspora:</strong> N×M matrix = N+M pinů místo N×M. 8×8 = 16 pinů místo 64! <strong>Ghosting:</strong> 3 současné stisky → ghost key. Řešení: diody 1N4148.</p>
+</section>
+
+<!-- 10 LED -->
+<section class="section" id="led">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Připojování LED</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">LED vždy s odporem! Přímé připojení = zničení!</div>
+    <p><strong>Forward voltage (V<sub>F</sub>):</strong> Červená ~2.0 V, Zelená ~2.2 V, Modrá/Bílá ~3.3 V. <strong>Forward current (I<sub>F</sub>):</strong> typicky 20 mA.</p>
+    <p style="margin-bottom:0"><strong>Výpočet odporu: R = (Vcc − V<sub>F</sub>) / I<sub>F</sub></strong><br>Příklad: červená LED (2 V), Vcc=5 V, 20 mA → R = (5−2)/0.02 = <strong>150 Ω</strong></p>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Active HIGH (Source)</h4>
+      <p><code style="font-size:11px">Pin → [R] → LED → GND</code><br>Pin HIGH = svítí. MCU source current. Intuitivnější.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">Active LOW (Sink)</h4>
+      <p><code style="font-size:11px">Vcc → [R] → LED → Pin</code><br>Pin LOW = svítí. MCU sink current (často vyšší).</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Řízení více LED</h3>
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">LED Driver IC</h4>
+      <p>MAX7219, TLC5940. Constant current outputs. Komunikace přes SPI/I2C → šetří piny.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">Tranzistory/MOSFETy</h4>
+      <p>Pro high-power LED (>100 mA). MCU → base NPN → LED. Odděluje zatížení od MCU.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-7)">Charlieplexing</h4>
+      <p>N pinů → N×(N−1) LED. 3 piny = 6 LED, 4 piny = 12 LED. Složité, ale šetří piny.</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">PWM Dimming</div>
+    <p style="margin-bottom:0">Nelze měnit jas odporem. <strong>PWM</strong> mění duty cycle → průměrná intenzita. 100% = plný jas, 50% = poloviční, 0% = zhasnuto. Frekvence min 100 Hz (ideálně 1 kHz+).</p>
+  </div>
+</section>
+
+<!-- 11 DISPLAYS -->
+<section class="section" id="displays">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Displeje</h2>
+  </div>
+
+  <h3>7-segmentový displej</h3>
+  <p>7 LED segmentů (a–g) + desetinná tečka. Zobrazuje 0–9 a některá písmena.</p>
+
+  <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:16px 0">
+    <!-- 7-seg visual showing "8" -->
+    <div class="seg7">
+      <div class="seg seg-h seg-a on"></div>
+      <div class="seg seg-v seg-b on"></div>
+      <div class="seg seg-v seg-c on"></div>
+      <div class="seg seg-h seg-d on"></div>
+      <div class="seg seg-v seg-e on"></div>
+      <div class="seg seg-v seg-f on"></div>
+      <div class="seg seg-h seg-g on"></div>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);line-height:2">
+      <span style="color:var(--accent-5)">a</span> = horní<br>
+      <span style="color:var(--accent-5)">b</span> = pravý horní<br>
+      <span style="color:var(--accent-5)">c</span> = pravý dolní<br>
+      <span style="color:var(--accent-5)">d</span> = dolní<br>
+      <span style="color:var(--accent-5)">e</span> = levý dolní<br>
+      <span style="color:var(--accent-5)">f</span> = levý horní<br>
+      <span style="color:var(--accent-5)">g</span> = středový
+    </div>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Common Cathode</h4>
+      <p>Katody → GND. Anody na MCU přes odpory. Active HIGH (pin HIGH = segment ON).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Common Anode</h4>
+      <p>Anody → Vcc. Katody na MCU přes odpory. Active LOW (pin LOW = segment ON).</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Multi-digit multiplexing</div>
+    <p>4-digit = 32 LED, ale jen <strong>12 pinů</strong> (8 segment + 4 digit select). Zobrazuj jeden digit najednou, rychle přepínej → oko vidí všechny současně. Refresh rate: 50 Hz (4 digits × 5 ms = 20 ms).</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>LCD a OLED</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">LCD 16×2 (HD44780)</h4>
+      <p>4-bit mode: 6 pinů (RS, E, D4–D7). Nebo <strong>I2C backpack</strong> (PCF8574) → jen 2 piny (SDA, SCL)! Inicializace: wait 15 ms → function set → display ON → clear → entry mode.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">OLED (SSD1306)</h4>
+      <p>128×64 px. I2C nebo SPI. Krásný kontrast, nízká spotřeba. Knihovny: Adafruit_SSD1306, u8g2.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-7)">
+      <h4 style="color:var(--accent-7)">TFT LCD (ILI9341)</h4>
+      <p>240×320 px, barevný. SPI. Touchscreen varianty. Vyšší spotřeba, více RAM.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">GPIO REGISTRY</p>
+    <ul>
+      <li><strong>DDR</strong> = směr (0=IN, 1=OUT). <strong>PORT</strong> = výstup/pull-up. <strong>PIN</strong> = čtení stavu (read-only)</li>
+      <li>OUTPUT Push-Pull: DDR=1. INPUT s pull-up: DDR=0, PORT=1. High-Z: DDR=0, PORT=0</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">ELEKTRICKÉ LIMITY</p>
+    <ul>
+      <li>Per-pin: <strong>20 mA</strong> (ATmega328). Per-port: 100 mA. Total MCU: 200 mA</li>
+      <li>Prakticky: drž se <strong>50 % max</strong>. Překročení → zničení!</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">TLAČÍTKA A KLÁVESNICE</p>
+    <ul>
+      <li><strong>Pull-up + tlačítko na GND</strong> (doporučeno). Interní pull-up šetří komponenty</li>
+      <li><strong>Debouncing nutný!</strong> SW: delay 50 ms nebo state machine. HW: RC filtr 100 nF</li>
+      <li><strong>Matrix:</strong> N×M tlačítek = N+M pinů. Řádky=OUT, sloupce=IN (pull-up). Scanning po řádcích</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">LED A DISPLEJE</p>
+    <ul>
+      <li><strong>Vždy s odporem!</strong> R = (Vcc − V<sub>F</sub>) / I<sub>F</sub>. Červená ~150 Ω @ 5 V</li>
+      <li>Active HIGH (source) nebo Active LOW (sink). <strong>PWM</strong> pro dimming (min 100 Hz)</li>
+      <li><strong>7-segment:</strong> Common Cathode/Anode. Multi-digit = multiplexing (50 Hz refresh)</li>
+      <li><strong>LCD 16×2:</strong> HD44780, 4-bit mode nebo <strong>I2C backpack</strong> (jen 2 piny!)</li>
+      <li><strong>OLED SSD1306:</strong> I2C/SPI, nízká spotřeba, krásný kontrast</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

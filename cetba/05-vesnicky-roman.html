@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Karolína Světlá: Vesnický román</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Infant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a1e1a;
+  --bg-card:#222722;
+  --bg-card-alt:#2a2f2a;
+  --border:#3a4238;
+  --text:#c8ccc0;
+  --text-muted:#7a8275;
+  --heading:#e8ebe0;
+  --accent-1:#8b6b4a;     /* hlína */
+  --accent-2:#5c7a6b;     /* mechová zeleň */
+  --accent-3:#a8937c;     /* len/pšenice */
+  --accent-4:#7a6a8c;     /* tlumená fialová - vřes */
+  --accent-5:#8b4a4a;     /* krev / rudá výšivka */
+  --accent-6:#b89360;     /* stará sláma */
+  --accent-7:#4a6a7a;     /* říční modř */
+  --accent-8:#6b5a4a;     /* kůra */
+  --river:#4a6a7a;        /* řeka */
+  --earth:#8b6b4a;        /* země */
+  --embroidery:#8b4a4a;   /* výšivka */
+  --wheat:#b89360;        /* obilí */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(92,122,107,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(74,106,122,.05) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — venkovská idyla s temným podtónem */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(26,30,26,.3) 0%,rgba(26,30,26,.85) 100%),
+    linear-gradient(135deg,#1e2420 0%,#2d3628 35%,#1a201e 70%,#181d1a 100%);
+  border-bottom:1px solid var(--border);
+  padding:80px 24px 70px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 30% 30%,rgba(184,147,96,.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 70%,rgba(74,106,122,.05) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Lidová výšivka - dekorativní pruh */
+.hero-embroidery{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:20px;
+  position:relative;
+  color:var(--embroidery);
+  font-size:18px;
+  opacity:.6;
+  letter-spacing:8px;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--wheat);
+  margin-bottom:22px;position:relative;
+  opacity:.85;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,6vw,56px);
+  color:var(--heading);
+  font-weight:500;
+  line-height:1.1;
+  position:relative;
+  letter-spacing:1px;
+  font-style:italic;
+}
+.hero h1 em{
+  display:block;
+  font-style:normal;
+  font-weight:400;
+  color:var(--accent-3);
+  font-size:.38em;
+  letter-spacing:6px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  opacity:.8;
+}
+.hero .author{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--accent-3);
+  margin-top:22px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:2px;
+  font-style:italic;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:14px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:1.5px;
+}
+.hero-quote{
+  font-family:'Cormorant Infant',serif;
+  color:var(--accent-5);
+  font-size:18px;
+  margin-top:36px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  opacity:.85;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:repeating-linear-gradient(90deg,
+    var(--embroidery) 0,var(--embroidery) 8px,
+    transparent 8px,transparent 14px,
+    var(--wheat) 14px,var(--wheat) 22px,
+    transparent 22px,transparent 28px);
+  opacity:.4;
+}
+.toc::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:repeating-linear-gradient(90deg,
+    var(--embroidery) 0,var(--embroidery) 8px,
+    transparent 8px,transparent 14px,
+    var(--wheat) 14px,var(--wheat) 22px,
+    transparent 22px,transparent 28px);
+  opacity:.4;
+}
+.toc h2{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--wheat);
+  margin-bottom:20px;text-align:center;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,upper-roman) '. ';
+  font-family:'Cormorant Garamond',serif;
+  color:var(--wheat);
+  font-size:13px;margin-right:6px;
+  font-style:italic;font-weight:600;
+  opacity:.8;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--wheat)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:80px;height:2px;
+  background:linear-gradient(90deg,var(--embroidery),var(--wheat));
+  opacity:.6;
+}
+.section-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px;color:var(--wheat);
+  font-style:italic;font-weight:500;
+  min-width:50px;opacity:.6;
+  line-height:1;
+}
+.section-header h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;color:var(--heading);
+  font-weight:600;font-style:italic;
+}
+
+h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-weight:600;
+  color:var(--heading);margin:20px 0 10px;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--wheat);background:rgba(184,147,96,.04)}
+.card.key{border-left:3px solid var(--accent-3);background:rgba(168,147,124,.04)}
+.card.warn{border-left:3px solid var(--embroidery);background:rgba(139,74,74,.05)}
+.card.green{border-left:3px solid var(--accent-2);background:rgba(92,122,107,.05)}
+.card.river{border-left:3px solid var(--river);background:rgba(74,106,122,.05)}
+.card.earth{border-left:3px solid var(--earth);background:rgba(139,107,74,.05)}
+
+.card-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--wheat)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(184,147,96,.08);
+  color:var(--wheat);
+  padding:2px 7px;border-radius:2px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-3);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+/* Výšivkový dělič */
+.embroidery-divider{
+  text-align:center;
+  margin:44px 0;
+  font-family:serif;
+  color:var(--embroidery);
+  font-size:14px;
+  letter-spacing:12px;
+  opacity:.5;
+}
+.embroidery-divider::before,
+.embroidery-divider::after{
+  content:'';
+  display:inline-block;
+  width:60px;height:1px;
+  background:var(--embroidery);
+  vertical-align:middle;
+  margin:0 20px;
+  opacity:.4;
+}
+
+.ornament{
+  text-align:center;
+  color:var(--wheat);
+  font-size:16px;
+  margin:40px 0;
+  opacity:.4;
+  letter-spacing:18px;
+  font-family:serif;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:16px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — vesnické portréty */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--wheat));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:20px;
+  transform:translateY(-50%);
+  font-size:56px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:serif;
+}
+.character .char-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;font-style:italic;
+}
+.character .char-name em{
+  font-size:15px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--wheat));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--wheat);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Cormorant Infant',serif;
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--wheat);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:8px;left:8px;right:8px;bottom:8px;
+  border:1px solid rgba(184,147,96,.06);
+  pointer-events:none;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--wheat);
+  background:rgba(184,147,96,.06);
+  padding:5px 12px;border-radius:2px;
+  margin-bottom:16px;
+  border:1px solid rgba(184,147,96,.15);
+  position:relative;
+}
+.scene-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:23px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+  position:relative;
+}
+.scene-text{
+  font-family:'Cormorant Infant',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--wheat);
+  background:rgba(184,147,96,.03);
+  line-height:1.85;
+  position:relative;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+  position:relative;
+}
+.scene-context strong{color:var(--accent-3)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(139,74,74,.05);
+  border-left:2px solid var(--embroidery);
+  border-radius:0 2px 2px 0;
+  position:relative;
+}
+.scene-meaning strong{color:var(--accent-5)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--wheat);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--wheat);
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--embroidery),var(--wheat));
+  opacity:.5;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--wheat);margin-bottom:8px;
+}
+.trope-example{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* TIMELINE — osudová cesta Anči */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--wheat);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--embroidery);
+  background:rgba(139,74,74,.3);
+}
+.timeline-step .ts-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-phase{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--wheat);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.8;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--wheat);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+/* KONTRAST: LÁSKA vs MAJETEK */
+.contrast-compare{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:20px;
+  align-items:stretch;
+  margin:24px 0;
+}
+.contrast-side{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 24px;
+  border-radius:2px;
+  position:relative;
+}
+.contrast-side.heart{border-top:3px solid var(--accent-5)}
+.contrast-side.money{border-top:3px solid var(--wheat)}
+.contrast-side h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  margin-bottom:12px;
+  font-style:italic;
+}
+.contrast-side.heart h4{color:var(--accent-5)}
+.contrast-side.money h4{color:var(--wheat)}
+.contrast-vs{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--text-muted);
+  font-size:14px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:0 4px;
+}
+.contrast-side ul{margin:0;padding-left:18px}
+.contrast-side ul li{font-size:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+  .contrast-compare{grid-template-columns:1fr;gap:10px}
+  .contrast-vs{padding:8px 0;transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-embroidery">✿ ❦ ✿ ❦ ✿</div>
+  <div class="hero-label">Maturitní rozbor · Česká literatura</div>
+  <h1><em>První česká psychologická próza z venkova</em>Vesnický román</h1>
+  <div class="author">Karolína Světlá</div>
+  <div class="subtitle">1867 · Podkrkonoší · Český realismus</div>
+  <div class="hero-quote">„Teď mám všechno — a přesto nemám nic."</div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby a promluvy</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#kontrast">Láska vs. majetek</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Vesnický román</strong> je <strong>první česká psychologická próza z venkovského prostředí</strong>, vydaná v roce <strong>1867</strong>. Dílo má chronologickou výstavbu s retrospektivními pasážemi (vzpomínky postav na minulost). Dílo vycházelo nejprve <strong>na pokračování v časopise</strong> a teprve později knižně — způsob publikace typický pro 19. století.</p>
+
+<p>Typický výňatek může pocházet z různých částí dramatické Aničiny cesty:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-phase">Úvod</span> Dětství a mládí</div>
+    <div class="ts-desc">Formování charakteru Anči — chytrá, citlivá, vzdělaná venkovanka</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-phase">I. dějství</span> Láska k Václavovi</div>
+    <div class="ts-desc">První opravdová láska — chudý, ale upřímný chlapec</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-phase">II. dějství</span> Konflikt s rodinou</div>
+    <div class="ts-desc">Otec prosazuje bohatého Ondřeje — „dobrou partii"</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-phase">III. dějství</span> Nucené manželství</div>
+    <div class="ts-desc">Anča se podřídí tlaku, vdává se za Ondřeje — oběť pro rodinu</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-phase">IV. dějství</span> Nešťastné soužití</div>
+    <div class="ts-desc">Vnitřní trápení, prázdnota, setkání s Václavem po letech</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-phase">Závěr</span> Tragický konec</div>
+    <div class="ts-desc">Sebevražda Anči — utopení v řece jako únik od utrpení</div>
+  </div>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--wheat)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Generační konflikt, společenská nerovnost, láska versus rozum, postavení ženy ve společnosti</strong>, tragédie nešťastného manželství, psychologická analýza ženské duše, venkovská morálka, čest a hanba.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Nešťastná láska</strong> — Anča a Václav</li>
+  <li><strong>Nucené manželství</strong> — sňatek z rozumu</li>
+  <li><strong>Společenský tlak</strong> — síla vesnického mínění</li>
+  <li><strong>Mateřství</strong> — a jeho omezená útěcha</li>
+  <li><strong>Čest rodiny</strong> — nad štěstím jednotlivce</li>
+  <li><strong>Venkovská komunita</strong> — dohled i útlak</li>
+  <li><strong>Předsudky, generační rozdíly</strong></li>
+  <li><strong>Sebevražda</strong> — jako tragické vyústění</li>
+  <li><strong>Upřímnost vs. přetvářka, vnitřní konflikt</strong></li>
+  <li><strong>Oběť pro rodinu</strong> — ústřední motiv</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--wheat)">
+    <h4 style="color:var(--wheat)">Čas</h4>
+    <p><strong>Polovina 19. století</strong> — doba národního obrození. Příběh se odehrává během několika let, vzpomínky sahají až do dětství Anči.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Prostor</h4>
+    <p>České venkovské prostředí v <strong>Podkrkonoší</strong> (konkrétně Ráby u Svojšic). Venkovská krajina, pole, lesy, <strong>řeka</strong>, vesnický dům, chalupa, hospoda, hřbitov.</p>
+  </div>
+</div>
+
+<div class="card river">
+  <div class="card-title" style="color:var(--river)">Řeka jako osudový prostor</div>
+  <p style="margin-bottom:0">Řeka zaujímá v díle zvláštní postavení — doprovází Anču po celý život, je symbolem přírody, plynutí času, a nakonec <strong>místem její smrti</strong>. Voda je prostor osvobození i zkázy.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — děj plyne od dětství Anči po její smrt</li>
+  <li><strong>Retrospektivní pasáže</strong> — vzpomínky na minulost (dětství, první láska)</li>
+  <li><strong>Psychologická analýza</strong> — důraz na vnitřní prožívání postav</li>
+</ul>
+
+<h3>Části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Román je rozdělen na <strong>kapitoly</strong> (není pevně stanovený počet)</li>
+    <li>Každá kapitola zachycuje určité období života Anči</li>
+    <li><strong>Plynulé přechody</strong> mezi časovými rovinami</li>
+    <li>Střídání pásma vyprávění, dialogů a psychologické introspekce</li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura — osudová cesta Anči</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Dětství a mládí</div>
+    <div class="ts-desc">Formování charakteru – Anča je jiná než vrstevnice, touží po vzdělání</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Láska k Václavovi</div>
+    <div class="ts-desc">Konflikt s rodinou – otec nesouhlasí s chudým chlapcem</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">3. Nucené manželství s Ondřejem</div>
+    <div class="ts-desc">Oběť pro rodinu – Anča podléhá tlaku</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">4. Nešťastné soužití</div>
+    <div class="ts-desc">Vnitřní trápení – mateřství nepřináší útěchu</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">5. Tragický konec</div>
+    <div class="ts-desc">Sebevražda Anči – utopení v řece</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--wheat)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> – má děj, popisuje skutečnost.</p>
+</div>
+
+<h3>Literární žánr — trojí žánrová charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Psychologický román</h4>
+    <p>Důraz na vnitřní prožívání postav, hloubková analýza Aničiny duše.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--embroidery)">
+    <h4 style="color:var(--accent-5)">Sociální román</h4>
+    <p>Kritika společenských poměrů – patriarchát, nucené sňatky, postavení ženy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Venkovská povídka</h4>
+    <p>Rozšířená do románu – prostředí českého venkova, lidové reálie.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-3)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Rozsáhlé epické dílo s mnoha postavami</li>
+    <li><strong>Psychologická hloubka</strong> – analýza vnitřního světa Anči</li>
+    <li><strong>Sociální kritika</strong> – postavení ženy, generační konflikt</li>
+    <li>Realistické zobrazení venkovského života</li>
+    <li><strong>Tragický konec</strong> typický pro psychologický román</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--wheat)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Vševědoucí vypravěč</strong> — vidí do nitra postav, komentuje jejich myšlenky a city</li>
+  <li><strong>Subjektivní vypravěč</strong> — sympatizuje s Anči, často zaujímá její úhel pohledu</li>
+  <li>Vypravěč <strong>hodnotí společenské poměry</strong> a kritizuje nespravedlnost</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Empatický</strong> k hlavní postavě</li>
+    <li><strong>Kritický</strong> k venkovské morálce a předsudkům</li>
+    <li><strong>Psychologicky pronikavý</strong></li>
+    <li><strong>Lyrický tón</strong> při popisu přírody a citů</li>
+    <li>Příroda jako zrcadlo Aničiny duše — <em>pathetic fallacy</em></li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy</h2></div>
+
+<div class="character" style="--character-color:var(--accent-5)" data-symbol="❀">
+  <div class="char-name">Anča <em>(Anna)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Tragická hrdinka</div>
+  <ul style="margin:0">
+    <li><strong>Chytrá, vzdělaná, citlivá</strong> venkovská dívka</li>
+    <li>Má vyšší nároky než ostatní vesničanky</li>
+    <li>Upřímná, čestná, hrdá</li>
+    <li>Miluje Václava, ale <strong>podlehne tlaku rodiny</strong></li>
+    <li>Provdá se za Ondřeje, kterého nemiluje</li>
+    <li>Nešťastná v manželství, trpí vnitřním konfliktem</li>
+    <li>Nakonec <strong>spáchá sebevraždu</strong> — utopí se v řece</li>
+    <li>Symbol ženy, která je obětí společenských konvencí</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-2)" data-symbol="♥">
+  <div class="char-name">Václav</div>
+  <div class="char-role">Hlavní postava · Kladná · Pravá láska</div>
+  <ul style="margin:0">
+    <li><strong>Chudý</strong> venkovský chlapec</li>
+    <li>Upřímně miluje Anču</li>
+    <li>Čestný, pracovitý, skromný</li>
+    <li>Není „dobrá partie" z hlediska Aničina otce</li>
+    <li>Po odmítnutí trpí, ale žije dál</li>
+    <li>Reprezentuje <strong>pravou lásku bez materiálních zájmů</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--wheat)" data-symbol="⚒">
+  <div class="char-name">Ondřej</div>
+  <div class="char-role">Hlavní postava · Záporná/neutrální · Manžel</div>
+  <ul style="margin:0">
+    <li><strong>Bohatý sedlák</strong>, „dobrá partie"</li>
+    <li>Starší než Anča</li>
+    <li>Hrubý, materialistický, necitlivý</li>
+    <li>Nebere ohled na Aničiny city</li>
+    <li>Chce ji <strong>pro majetek a potomky</strong></li>
+    <li>Nevnímá její neštěstí</li>
+    <li>Symbol <strong>manželství z rozumu bez lásky</strong></li>
+  </ul>
+</div>
+
+<h3>Vedlejší postavy</h3>
+
+<div class="character" style="--character-color:var(--earth)" data-symbol="⚖">
+  <div class="char-name">Otec Anči</div>
+  <div class="char-role">Vedlejší · Záporná · Patriarcha</div>
+  <ul style="margin:0">
+    <li><strong>Autoritářský</strong> venkovský hospodář</li>
+    <li>Rozhoduje o osudu dcery bez ohledu na její city</li>
+    <li>Cení si <strong>majetku více než štěstí dcery</strong></li>
+    <li>Nutí Anču k sňatku s Ondřejem</li>
+    <li>Symbol patriarchální moci a generačního útlaku</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="◐">
+  <div class="char-name">Matka Anči</div>
+  <div class="char-role">Vedlejší · Neutrální · Submisivní</div>
+  <ul style="margin:0">
+    <li><strong>Podřizuje se manželovi</strong></li>
+    <li>Sympatizuje s dcerou, ale nemá odvahu jí pomoci</li>
+    <li>Symbol <strong>slabé, utlačené ženy</strong></li>
+    <li>Reprezentuje tradiční roli ženy na venkově</li>
+    <li>Tragická figura — vidí dceřino neštěstí, ale mlčí</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-symbol="☾">
+  <div class="char-name">Babička</div>
+  <div class="char-role">Vedlejší · Kladná · Lidová moudrost</div>
+  <ul style="margin:0">
+    <li>Moudrá stará žena</li>
+    <li>Rozumí Anči a <strong>soucítí s ní</strong></li>
+    <li>Reprezentuje lidskou moudrost a empatii</li>
+    <li>Nemůže však změnit společenský řád</li>
+    <li>Kontrast s otcem — empatie proti autoritě</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">VIII</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card">
+  <div class="card-title" style="color:var(--wheat)">Přímá řeč</div>
+  <p>Dialogy mezi postavami — silný emocionální náboj.</p>
+  <div class="quote-block">„Nechci si ho vzít, otče! Nemiluji ho!" pravila Anča s pláčem.</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-2)">Nepřímá řeč</div>
+  <p>Vypravěč reprodukuje myšlenky postav vlastními slovy.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Otec řekl, že se Anča provdá za Ondřeje, a že o tom nebude diskutovat.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Polopřímá řeč</div>
+  <p>Prolínání myšlenek postavy s vyprávěním — bez uvozovek, ale zachovává postavovu perspektivu.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Anča myslela na Václava. Ne, nemůže si vzít jiného. Jak by mohla žít s mužem, kterého nemiluje?</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--embroidery)">Nevlastní přímá řeč · Vnitřní monolog</div>
+  <p>Vnitřní monolog bez formálního označení — klíč k psychologickému realismu.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Anča seděla u okna. Copak ji to čeká? Manželství bez lásky. Život bez štěstí.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--wheat)"><h4 style="color:var(--wheat)">Pásmo vypravěče</h4><p>Převažující forma – vypravěč popisuje události a analyzuje psychologii postav.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Monolog</h4><p>Vnitřní úvahy Anči o svém osudu – podstata psychologismu.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--embroidery)"><h4 style="color:var(--accent-5)">Dialog</h4><p>Rozhovory: Anča a otec, Anča a Václav, Anča a Ondřej.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-2)"><h4 style="color:var(--accent-2)">Popis</h4><p>Detailní popisy venkovského prostředí, přírody, postav.</p></div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">IX</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>dům, pole, láska, slzy</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>zármutek, úzkost, osud, povinnost</em></td></tr>
+  <tr><td><strong>Poetismy</strong></td><td><em>luna, zora</em> — při popisu přírody</td></tr>
+</table>
+
+<h3>Nářeční výrazy</h3>
+<div class="card earth">
+  <div class="card-title" style="color:var(--earth)">Podkrkonošská nářečí</div>
+  <ul style="margin:0">
+    <li><em>„tatíček, mamička"</em> — lidové zdrobněliny</li>
+    <li>Dialektismy pro <strong>autentičnost venkovského prostředí</strong></li>
+    <li><em>„Holoubku můj"</em> — laskavá oslovení</li>
+  </ul>
+</div>
+
+<h3>Další lexikum</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--wheat)">
+    <h4 style="color:var(--wheat)">Venkovské termíny</h4>
+    <p><em>hospoda, grunt, pole, žně</em> — pro vytvoření atmosféry venkova.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Archaismy</h4>
+    <p>Zastaralé výrazy typické pro 19. století. <em>„Chasa"</em> (mládež).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Zdrobněliny</h4>
+    <p><em>synáček, holčička</em> — vyjádření něhy i empatie vypravěče.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--embroidery)">
+    <h4 style="color:var(--accent-5)">Přechodníky</h4>
+    <p><em>„Plačíc, přijímala návštěvy"</em> — archaické tvary pro literární působení.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--wheat)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Nářečí</strong> vytváří autentické venkovské prostředí</li>
+    <li><strong>Knižní výrazy</strong> zdůrazňují psychologickou hloubku</li>
+    <li><strong>Poetismy</strong> při popisu přírody vytvářejí lyrickou atmosféru</li>
+    <li><strong>Citově zabarvená slova</strong> vyjadřují empatii k Anči</li>
+    <li>Jazyk kombinuje <strong>lidovou autentičnost s literární jemností</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">X</span><h2>Tropy a figury</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Příroda = duše</div>
+    <div class="trope-note">Příroda jako zrcadlo Aničiny duše. Manželství = vězení, pouto.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Pták v kleci</div>
+    <div class="trope-note">Anča je jako pták v kleci — touží létat, ale je uvězněna.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Soucítící příroda</div>
+    <div class="trope-note">Příroda cítí s Anči, sdílí její smutek – romantický/realistický motiv.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">„Ubohá Anča"</div>
+    <div class="trope-note">Básnický přívlastek — „ubohá Anča", „chudý Václav" — ukazuje empatii vypravěče.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Přehánění utrpení</div>
+    <div class="trope-note">Přehánění utrpení pro emotivní účinek — žal je absolutní.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Řeka · Příroda</div>
+    <div class="trope-note">Řeka = smrt, konec utrpení. Příroda = svoboda, útěcha.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Láska vs. povinnost</div>
+    <div class="trope-note">Protiklad: štěstí vs. majetek, mládí vs. stáří, upřímnost vs. přetvářka.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Gradace</div>
+    <div class="trope-example">Cesta k sebevraždě</div>
+    <div class="trope-note">Aničino utrpení graduje od neštěstí po zoufalství a sebevraždu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">„Dobrá partie"</div>
+    <div class="trope-note">„Dobrá partie" (bohatý manžel) ve skutečnosti přináší neštěstí.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy <strong>zdůrazňují psychologickou hloubku</strong>, vyjadřují city hlavní hrdinky, vytvářejí lyrickou atmosféru a zesilují tragičnost příběhu. Každý obraz slouží emocionálnímu prožitku čtenáře.</p>
+</div>
+</section>
+
+<!-- 11 KONTRAST -->
+<section class="section" id="kontrast">
+<div class="section-header"><span class="section-num">XI</span><h2>Ústřední kontrast · Láska vs. majetek</h2></div>
+
+<p>Celé dílo je postaveno na <strong>ostrém protikladu</strong> dvou životních modelů — dvou mužů, dvou hodnotových systémů, dvou budoucností pro Anču.</p>
+
+<div class="contrast-compare">
+  <div class="contrast-side heart">
+    <h4>❤ Václav · Srdce</h4>
+    <ul>
+      <li>Chudý, ale upřímný</li>
+      <li>Pravá láska</li>
+      <li>Duševní spřízněnost</li>
+      <li>Chápe Anču</li>
+      <li>Věrnost až za hrob</li>
+      <li>Štěstí bez majetku</li>
+    </ul>
+  </div>
+  <div class="contrast-vs">vs.</div>
+  <div class="contrast-side money">
+    <h4>⚒ Ondřej · Majetek</h4>
+    <ul>
+      <li>Bohatý sedlák</li>
+      <li>Kalkul, rozum</li>
+      <li>„Dobrá partie"</li>
+      <li>Nechápe Aničiny city</li>
+      <li>Chce ji jako vlastnictví</li>
+      <li>Majetek bez štěstí</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Poselství</div>
+  <p style="margin-bottom:0">Anča si vybere <strong>Ondřeje pod tlakem rodiny</strong> — a zaplatí za to životem. Světlá ukazuje, že <strong>majetek bez lásky je prázdnota</strong>, která vede k duševní záhubě. Jedno z prvních jasných feministických poselství v české literatuře.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--wheat)">Karolína Světlá (1830–1899)</div>
+  <p>Vlastním jménem <strong>Johanna Rottová</strong>. Narozena v Praze v česko-německé měšťanské rodině. <strong>Pseudonym „Světlá"</strong> si vzala podle vesnice <em>Světlá pod Ještědem</em>, kam jezdívala k příbuzným a zamilovala si tamní lid a krajinu. Provdala se za pedagoga a vlastence <strong>Petra Mužáka</strong>. Ztratila jedinou dceru, což ji hluboce poznamenalo — navíc prožila tragickou platonickou lásku s Janem Nerudou. Stala se <strong>mluvčí ženské emancipace</strong>, zakladatelkou <em>Ženského výrobního spolku</em>. Dožila se téměř 70 let — zemřela téměř oslepená.</p>
+</div>
+
+<h3>Zařazení v autorčině tvorbě</h3>
+<ul>
+  <li>Autorčin <strong>literární debut</strong> (1867)</li>
+  <li>Vrcholné dílo Karolíny Světlé</li>
+  <li><strong>První česká psychologická próza z venkovského prostředí</strong></li>
+  <li>Založení nového typu české prózy – venkovské povídky / románu z Ještědí</li>
+</ul>
+
+<h3>Další díla Karolíny Světlé</h3>
+
+<h4>Tzv. ještědský cyklus (venkovské povídky a romány)</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Vesnický román</strong></td><td>1867</td><td>Aničin osud, první próza cyklu</td></tr>
+  <tr><td><strong>Kříž u potoka</strong></td><td>1868</td><td>Nejznámější — Eva, oběť pro rodinu</td></tr>
+  <tr><td><strong>Černý Petříček</strong></td><td>1871</td><td>Venkovský příběh</td></tr>
+  <tr><td><strong>Nemodlenec</strong></td><td>1873</td><td>Pokračování venkovských témat</td></tr>
+  <tr><td><strong>Frantina</strong></td><td>1870</td><td>Silná ženská hrdinka z Ještědí</td></tr>
+</table>
+
+<h3>Charakteristika tvorby</h3>
+<ul>
+  <li><strong>Psychologická hloubka</strong></li>
+  <li>Venkovské prostředí — především Ještědí a Podkrkonoší</li>
+  <li><strong>Ženské hrdinky</strong> — silné, ale obětující se</li>
+  <li>Sociální kritika</li>
+  <li>Realistické zobrazení</li>
+  <li><strong>Emancipační prvky</strong> — obhajoba práv žen</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Polovina 19. století</strong> (1830–1899 život Světlé)</li>
+    <li>Období národního obrození</li>
+    <li>Doba <strong>Bachovského absolutismu</strong> a jeho konce (1859)</li>
+    <li><strong>Emancipační hnutí žen</strong> — Světlá je jeho průkopnicí</li>
+    <li>Umělecký sloh: <strong>REALISMUS</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy realismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--wheat)"><h4 style="color:var(--wheat)">Věrnost</h4><p>Věrné zobrazení skutečnosti.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Psychologie</h4><p>Psychologická hloubka postav.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--embroidery)"><h4 style="color:var(--accent-5)">Kritika</h4><p>Sociální kritika společnosti.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-2)"><h4 style="color:var(--accent-2)">Typizace</h4><p>Typické postavy v typickém prostředí.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--earth)"><h4 style="color:var(--earth)">Objektivita</h4><p>Objektivní přístup ke skutečnosti.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Aktuálnost</h4><p>Aktuální témata současnosti.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Srozumitelnost</h4><p>Prostý, srozumitelný jazyk.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--river)"><h4 style="color:var(--river)">Analýza</h4><p>Analýza společenských vztahů.</p></div>
+</div>
+
+<h3>Specifika Světlé</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Psychologický realismus</strong> — hluboká analýza duše</li>
+    <li>Důraz na <strong>vnitřní svět postav</strong></li>
+    <li><strong>Ženská perspektiva</strong> — dosud netypická v české literatuře</li>
+    <li>Venkovské prostředí — Ještědí, Podkrkonoší</li>
+    <li>Sociální kritika <strong>postavení ženy</strong></li>
+  </ul>
+</div>
+
+<h3>Další zástupci českého realismu</h3>
+
+<h4>Generace Májovců (60.–70. léta)</h4>
+<ul>
+  <li><strong>Jan Neruda</strong> — <em>Povídky malostranské</em></li>
+  <li><strong>Vítězslav Hálek</strong> — básník a prozaik</li>
+  <li><strong>Adolf Heyduk</strong> — básník</li>
+</ul>
+
+<h4>Ruchovci a lumírovci</h4>
+<ul>
+  <li><strong>Svatopluk Čech</strong> — <em>Nový epochální výlet pana Broučka</em></li>
+  <li><strong>Alois Jirásek</strong> — historické romány</li>
+</ul>
+
+<h4>Venkovská próza (tradice založená Světlou)</h4>
+<ul>
+  <li><strong>Božena Němcová</strong> — <em>Babička</em> (předchůdkyně)</li>
+  <li><strong>Tereza Nováková</strong> — venkovské povídky</li>
+  <li><strong>Gabriela Preissová</strong> — <em>Gazdina roba, Její pastorkyňa</em> — dramata z venkova</li>
+</ul>
+
+<h3>Světový realismus</h3>
+<table class="compare-table">
+  <tr><th>Země</th><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>Francie</strong></td><td>Gustave Flaubert</td><td><em>Paní Bovaryová</em> — blízká paralela k Anči!</td></tr>
+  <tr><td rowspan="2"><strong>Rusko</strong></td><td>Lev Nikolajevič Tolstoj</td><td><em>Anna Karenina</em> — další nešťastná manželka</td></tr>
+  <tr><td>Fjodor Dostojevskij</td><td><em>Zločin a trest</em></td></tr>
+  <tr><td><strong>Anglie</strong></td><td>George Eliot</td><td><em>Mlýn na Flosse</em> — ženská hrdinka na venkově</td></tr>
+</table>
+
+<div class="card river">
+  <div class="card-title" style="color:var(--river)">Světový kontext</div>
+  <p style="margin-bottom:0">Anča patří do <strong>generace literárních hrdinek nešťastného manželství</strong> — Emma Bovary (Flaubert, 1857), Anna Karenina (Tolstoj, 1877), Nora (Ibsenův <em>Domeček pro panenky</em>, 1879). Světlá je se svou Anči (1867) mezi prvními v Evropě.</p>
+</div>
+</section>
+
+<div class="embroidery-divider">✿ ❦ ✿</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene">
+  <span class="scene-label">01 · Úvod · Výjimečná dívka</span>
+  <div class="scene-title">Charakteristika Anči</div>
+  <div class="scene-text">Anča byla jiná než ostatní děvčata na vsi. Četla knihy, toužila po vzdělání, měla jemnější city. Nebyla spokojená s prostým venkovským životem, jaký vedly její vrstevnice.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Úvodní charakteristika hlavní hrdinky.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Anča je <strong>výjimečná</strong> — má vyšší nároky na život než její prostředí. To je zdrojem jejího konfliktu se společností. Předznamenává tragédii — vzdělaná, citlivá žena v hrubém venkovském prostředí.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · První láska</span>
+  <div class="scene-title">První setkání s Václavem</div>
+  <div class="scene-text">Václav byl chudý, ale upřímný a pracovitý. Když se jeho oči setkaly s Aničinýma, oba pocítili, že našli spřízněnou duši. Nebyl to rozum, co je spojovalo — byla to pravá láska.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča se zamiluje do chudého Václava.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Láska je autentická, založená na vzájemném porozumění, ne na majetku. Kontrast s pozdějším sňatkem z rozumu.</div>
+</div>
+
+<div class="scene" style="border:2px solid var(--earth)">
+  <span class="scene-label" style="background:rgba(139,107,74,.12);border-color:var(--earth);color:var(--earth)">★ 03 · Generační konflikt ★</span>
+  <div class="scene-title">Otcovo rozhodnutí</div>
+  <div class="scene-text">Otec bouchl pěstí do stolu: „Nebudeš si vybírat! Vezmeš si Ondřeje, má grunt, má majetek. S tím chudákem Václavem bys umřela hlady. Já rozhodnu, co je pro tebe dobré!"</div>
+  <div class="scene-context"><strong>Kontext:</strong> Otec autoritativně rozhodne o Aničině osudu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Generační konflikt</strong> — stará generace rozhoduje za mladou</li>
+      <li><strong>Patriarchální moc</strong> — otec má absolutní autoritu</li>
+      <li><strong>Materialismus</strong> — majetek je důležitější než láska</li>
+      <li>Anča nemá právo volby — symbol postavení ženy v 19. století</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Kapitulace</span>
+  <div class="scene-title">Aničino vzdor a kapitulace</div>
+  <div class="scene-text">„Nechci! Nechci si ho vzít! Nemiluji ho!" křičela Anča.
+Ale matka jí tiše pravila: „Dcero, musíš poslechnout. Tak to bylo vždycky. Žena se musí podřídit."
+A Anča pochopila, že nemá na vybranou. Společnost byla silnější než její vůle.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča se vzpírá, ale nakonec se podvolí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tragédie</strong> — Anča je obětí společenských konvencí</li>
+      <li>Matka reprezentuje <strong>resignaci žen</strong></li>
+      <li><em>„Tak to bylo vždycky"</em> — síla tradice, zákon tisíciletí</li>
+      <li>Protiklad: Aničina individualita vs. společenský tlak</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Loučení</span>
+  <div class="scene-title">Loučení s Václavem</div>
+  <div class="scene-text">„Nemohu si tě vzít, Václave. Otec to nedovolí. Odpusť mi."
+Václav se na ni díval se slzami v očích: „Ty jsi jediná, kterou budu milovat. Nikdy na tebe nezapomenu."
+A Anča věděla, že ztratila to nejcennější, co měla.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča se musí rozloučit se svou láskou.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Emocionální vrchol — ztráta pravé lásky</li>
+      <li>Václav zůstane věrný — kontrast s Ondřejem</li>
+      <li>Anča obětuje své štěstí</li>
+      <li><strong>Předznamenání tragédie</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--embroidery)">
+  <span class="scene-label" style="background:rgba(139,74,74,.1);border-color:var(--embroidery);color:var(--embroidery)">★ 06 · Svatební ironie ★</span>
+  <div class="scene-title">Svatba bez lásky</div>
+  <div class="scene-text">Stála v bílých šatech, ale srdce měla černé jako noc. Všichni ji blahopřáli k „dobré partii", ale nikdo neviděl její slzy. Provdala se, ale duše zůstala svobodná — a nešťastná.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Popis Aničiny svatby s Ondřejem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Ironický kontrast</strong> — bílé šaty vs. černé srdce</li>
+      <li><em>„Dobrá partie"</em> = bohatý manžel, ale nešťastné manželství</li>
+      <li>Společnost vidí jen vnějšek, ne vnitřní utrpení</li>
+      <li>Tělo podřízeno, duše svobodná = <strong>vnitřní konflikt</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Manželství</span>
+  <div class="scene-title">Nešťastné manželství</div>
+  <div class="scene-text">Ondřej byl dobrý hospodář, ale špatný manžel. Staral se o pole, o dobytek, o majetek — ale o Aničino srdce se nestaral. Nedokázal pochopit, proč není šťastná. Vždyť má všechno — dům, jídlo, oblečení. Co víc by mohla chtít?</div>
+  <div class="scene-context"><strong>Kontext:</strong> Popis manželského soužití.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Ondřej představuje <strong>materialistické pojetí manželství</strong></li>
+      <li>Nechápe citové potřeby ženy</li>
+      <li>Anča má „všechno", ale nemá lásku</li>
+      <li>Kritika manželství bez lásky</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--accent-4)">
+  <span class="scene-label" style="background:rgba(122,106,140,.1);border-color:var(--accent-4);color:var(--accent-4)">★ 08 · Vnitřní monolog ★</span>
+  <div class="scene-title">Aničino trápení</div>
+  <div class="scene-text">Proč jsem poslechla? Proč jsem neposlouchala své srdce? Mohla jsem žít chudě s Václavem, ale šťastně. Teď mám všechno — a přesto nemám nic. Život bez lásky není život. Je to jen přežívání.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča přemýšlí o svém osudu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Psychologická hloubka</strong> — vhled do Aničiny duše</li>
+      <li>Sebeobvinění — lituje, že poslechla</li>
+      <li>Pochopení — bohatství bez lásky je prázdné</li>
+      <li><strong>Existenciální úzkost</strong> — „přežívání" vs. „život"</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Mateřství</span>
+  <div class="scene-title">Mateřství nepřináší útěchu</div>
+  <div class="scene-text">Porodila syna. Všichni se radovali. Ale Anča v dítěti viděla jen další pouto, které ji poutá k muži, kterého nemiluje. Milovala syna, ale mateřství ji neosvobodilo od smutku.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča porodila dítě, ale není šťastná.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Mateřství není spásou</strong> — protiklad romantické představy</li>
+      <li>Realismus — dítě neřeší manželské problémy</li>
+      <li>Syn = další pouto k nežádoucímu manželství</li>
+      <li>Anča miluje dítě, ale trpí dál — <strong>dodnes odvážný motiv</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">10 · Setkání</span>
+  <div class="scene-title">Setkání s Václavem po letech</div>
+  <div class="scene-text">Jednou ho potkala na cestě. Václav zestárl, ale oči měl stále stejné. Podívali se na sebe a oba věděli, že láska nezanikla. Ale bylo příliš pozdě. Byli oba vězni svých osudů.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča potká Václava po letech.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Láska přetrvala — ale je marná</li>
+      <li><em>„Příliš pozdě"</em> — tragická nápověď</li>
+      <li>Oba jsou vězni — společnost je rozdělila</li>
+      <li>Osud nelze změnit</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">11 · Rozhodnutí</span>
+  <div class="scene-title">Rozhodnutí o smrti</div>
+  <div class="scene-text">Nemohla už žít v lži. Nemohla už předstírat. Její duše byla unavená. Možná smrt přinese klid, který život nedal.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča se rozhodne ukončit život.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Sebevražda jako únik</strong> od utrpení</li>
+      <li><em>„Život v lži"</em> = nucené manželství</li>
+      <li>Únava duše — psychologicky věrohodné</li>
+      <li>Smrt jako osvobození</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--river)">
+  <span class="scene-label" style="background:rgba(74,106,122,.12);border-color:var(--river);color:var(--river)">★ 12 · TRAGICKÝ KONEC ★</span>
+  <div class="scene-title">Smrt v řece</div>
+  <div class="scene-text">Našli ji ráno v řece. Ležela v mírné vodě, tvář měla klidnou, jako by konečně nalezla pokoj. Všichni byli šokováni. „Proč to udělala? Měla přece všechno!" říkali. Ale nikdo nepochopil, že právě to, co neměla — lásku — bylo důležitější než všechno ostatní.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anča se utopila v řece. Vesnice je v šoku.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Sebevražda jako tragické vyústění</li>
+      <li>Řeka = symbol smrti, ale i <strong>osvobození</strong></li>
+      <li><em>„Klidná tvář"</em> = našla mír ve smrti</li>
+      <li>Společnost nechápe — <em>„měla všechno"</em></li>
+      <li><strong>Závěrečná pointa:</strong> láska je důležitější než majetek</li>
+      <li>Kritika společnosti, která nedokázala Anču pochopit</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">13 · Epilog</span>
+  <div class="scene-title">Václavův smutek</div>
+  <div class="scene-text">Václav přišel k jejímu hrobu. Položil květiny a tiše plakal. „Odpusť mi, Ančo, že jsem tě nezachránil. Měl jsem bojovat víc." Ale oba věděli, že proti celé společnosti byl bezmocný.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Václav truchlí nad Aničiným hrobem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Václav zůstal věrný až do konce</li>
+      <li>Pocit viny — <em>„měl jsem bojovat"</em></li>
+      <li>Realistické poznání — jedinec je bezmocný proti společnosti</li>
+      <li>Tragédie obou — Anča mrtvá, Václav žije v smutku</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="embroidery-divider">✿ ❦ ✿</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--wheat)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0">Člověk má <strong>právo na svobodnou volbu partnera</strong>. Nucené manželství bez lásky je neštěstí a může vést k tragédii. Majetek a společenský status nejsou zárukou štěstí. <strong>Žena není majetek otce nebo manžela</strong>, ale samostatná bytost s vlastními city a právy.</p>
+</div>
+
+<h3>Poselství díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--embroidery)">
+    <h4 style="color:var(--accent-5)">Společenská kritika</h4>
+    <p>Nucené sňatky = neštěstí. Materialismus = prázdnota. Patriarchát = útlak žen. Generační konflikt = nepochopení.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Psychologický rozměr</h4>
+    <p>Vnitřní konflikt je destruktivní. Potlačování citů sebezničující. Individualita vs. konvence = tragický střet.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--wheat)">
+    <h4 style="color:var(--wheat)">Aktuální poselství</h4>
+    <p>Právo na svobodnou volbu. Nebezpečí nucených sňatků. Důležitost lásky nad majetkem. Emancipace žen.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Symbol díla</h4>
+    <p>Řeka = smrt, ale také osvobození od utrpení. Voda odnáší Aničino utrpení.</p>
+  </div>
+</div>
+
+<h3>Feministický rozměr</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Průkopnické dílo</div>
+  <ul style="margin:0">
+    <li><strong>První česká próza</strong> systematicky kritizující postavení ženy</li>
+    <li>Anča jako symbol utlačované ženy</li>
+    <li>Kritika patriarchátu</li>
+    <li>Obhajoba práva ženy na vlastní rozhodování</li>
+    <li><strong>Karolína Světlá = průkopnice české emancipace</strong></li>
+  </ul>
+</div>
+
+<h3>Vliv na českou literaturu</h3>
+<ul>
+  <li>Založení tradice <strong>venkovské povídky/románu</strong></li>
+  <li>Psychologická hloubka jako standard české prózy</li>
+  <li>Inspirace pro další autory (<strong>Tereza Nováková, Gabriela Preissová</strong>)</li>
+  <li>Etablování tématu <strong>emancipace žen</strong> v české literatuře</li>
+</ul>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Skutečné jméno a pseudonym</summary>
+  <p>Karolína Světlá se ve skutečnosti jmenovala <strong>Johanna Rottová</strong>. Pseudonym <em>„Světlá"</em> si vzala podle <strong>vesnice Světlá pod Ještědem</strong> v severních Čechách, kam jezdívala na prázdniny a kde čerpala materiál pro své venkovské prózy.</p>
+</details>
+<details>
+  <summary>Platonická láska s Nerudou</summary>
+  <p>Karolína Světlá prožila dramatickou <strong>platonickou lásku s Janem Nerudou</strong> — dvěma velikány generace Májovců. Vztah nemohl kvůli jejímu manželství nikdy naplnit, což se promítlo do témat jejích knih. Její vlastní zkušenost s „nemožnou láskou" rezonuje v osudu Anči.</p>
+</details>
+<details>
+  <summary>Publikace na pokračování</summary>
+  <p>Dílo vyšlo <strong>nejprve na pokračování v časopise</strong> — teprve poté knižně. Bylo velmi úspěšné a diskutované. Způsob publikace typický pro 19. století — podobně vycházely i romány Dickense nebo Dostojevského.</p>
+</details>
+<details>
+  <summary>Mluvčí ženské emancipace</summary>
+  <p>Světlá se stala <strong>mluvčí ženské emancipace</strong> — zakládala <em>Americký klub dam</em> (první český ženský spolek), <em>Ženský výrobní spolek</em> pro zaměstnávání žen. Její literární tvorba je neoddělitelná od jejího společenského aktivismu.</p>
+</details>
+<details>
+  <summary>Tragický osobní život</summary>
+  <p>Autorka <strong>žila téměř 70 let (1830–1899)</strong>, ale její život nebyl šťastný. Ztratila jedinou dceru v raném věku, což ji hluboce poznamenalo. Ke konci života téměř <strong>oslepla</strong>, ale přesto neustále diktovala své dílo. Její úcta k trpícím ženám je autobiografická.</p>
+</details>
+<details>
+  <summary>Anča v kontextu světové literatury</summary>
+  <p>Aničin osud má řadu paralel ve světové literatuře: <strong>Emma Bovary</strong> (Flaubert, 1857), <strong>Anna Karenina</strong> (Tolstoj, 1877), <strong>Nora</strong> (Ibsen, 1879), <strong>Maggie Tulliver</strong> (Eliot, 1860). Všechny tyto hrdinky zápasí s patriarchální společností — a často končí tragicky. Světlá je mezi nimi jednou z prvních.</p>
+</details>
+
+<div class="quote-block" style="margin-top:40px;text-align:center">
+Teď mám všechno — a přesto nemám nic.<br>
+Život bez lásky není život. Je to jen přežívání.
+<span class="quote-source">Anča · Vnitřní monolog</span>
+</div>
+</section>
+
+<div class="embroidery-divider" style="margin-top:50px">✿ ❦ ✿</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Erich Maria Remarque: Na západní frontě klid</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Special+Elite&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14120e;
+  --bg-card:#1c1a14;
+  --bg-card-alt:#23201a;
+  --border:#332e24;
+  --text:#b8b0a0;
+  --text-muted:#6a6456;
+  --heading:#dcd4c0;
+  --accent-1:#8a7a4a;     /* khaki / polní šeď */
+  --accent-2:#5c5247;     /* blátivě hnědá */
+  --accent-3:#6e4a2a;     /* rez */
+  --accent-4:#8b2418;     /* sušená krev */
+  --accent-5:#3c4a3a;     /* olivová */
+  --accent-6:#4a4e5a;     /* ocelová modř */
+  --accent-7:#2a2826;     /* sazí černá */
+  --accent-8:#7a7060;     /* popel */
+  --mud:#4a3e2a;          /* bláto */
+  --blood:#8b2418;        /* krev */
+  --rust:#6e4a2a;         /* rez */
+  --ash:#7a7060;          /* popel */
+  --khaki:#8a7a4a;        /* khaki */
+  --steel:#4a4e5a;        /* ocel */
+  --barbed:#5a4e3a;       /* ostnatý drát */
+  --stamp:#8b2418;        /* razítko */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    /* dekorativní „zrnitost" pergamenu */
+    radial-gradient(circle at 20% 30%,rgba(110,74,42,.04) 0%,transparent 40%),
+    radial-gradient(circle at 80% 70%,rgba(74,62,42,.05) 0%,transparent 40%),
+    radial-gradient(circle at 50% 50%,rgba(139,36,24,.02) 0%,transparent 50%);
+  background-attachment:fixed;
+}
+
+/* HERO — válečný deník / úvodní strana */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(20,18,14,.3) 0%,rgba(20,18,14,.95) 100%),
+    linear-gradient(135deg,#1a1712 0%,#2a2318 35%,#1a1510 70%,#100e0a 100%);
+  border-bottom:2px solid var(--khaki);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 80%,rgba(139,36,24,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(110,74,42,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* „Ostnatý drát" — dekorativní linka */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:4px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--barbed) 0,var(--barbed) 12px,
+      transparent 12px,transparent 14px,
+      var(--barbed) 14px,var(--barbed) 26px,
+      transparent 26px,transparent 32px);
+  opacity:.4;
+}
+.hero-stamp{
+  display:inline-block;
+  color:var(--stamp);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:6px;
+  padding:6px 18px;
+  border:2px solid var(--stamp);
+  opacity:.6;
+  margin-bottom:26px;
+  transform:rotate(-2deg);
+  font-weight:500;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--khaki);
+  margin-bottom:22px;position:relative;
+  opacity:.85;
+}
+.hero h1{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(40px,7vw,72px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1;
+  position:relative;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  text-shadow:0 2px 20px rgba(139,36,24,.2);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--ash);
+  font-size:.28em;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  opacity:.75;
+}
+.hero h1 .subtitle-original{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.35em;
+  font-style:italic;
+  color:var(--khaki);
+  letter-spacing:3px;
+  margin-top:16px;
+  font-weight:400;
+  text-transform:none;
+}
+.hero .author{
+  font-family:'Oswald',sans-serif;
+  color:var(--ash);
+  margin-top:30px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:4px;
+  font-weight:400;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Special Elite',monospace;
+  color:var(--text);
+  font-size:14px;
+  margin:36px auto 0;
+  max-width:560px;
+  font-style:normal;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.7;
+  opacity:.8;
+  padding:18px 24px;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.hero-quote em{
+  display:block;
+  font-size:.75em;
+  color:var(--text-muted);
+  margin-top:10px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — stylizovaný jako vojenský formulář */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--khaki);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'OBSAH';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--khaki);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:500;
+}
+.toc h2{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--khaki);
+  margin-bottom:20px;text-align:center;
+  font-weight:500;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:'§' counter(toc,decimal-leading-zero) ' ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--khaki);
+  font-size:11px;margin-right:8px;
+  font-weight:500;
+  opacity:.8;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--blood)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--khaki),var(--blood));
+  opacity:.6;
+}
+.section-num{
+  font-family:'Oswald',sans-serif;
+  font-size:36px;color:var(--khaki);
+  font-weight:600;
+  min-width:70px;opacity:.5;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'Oswald',sans-serif;
+  font-size:26px;color:var(--heading);
+  font-weight:500;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+h3{
+  font-family:'Oswald',sans-serif;
+  font-size:19px;font-weight:500;
+  color:var(--heading);
+  margin:32px 0 14px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+h4{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--khaki);background:rgba(138,122,74,.04)}
+.card.key{border-left:3px solid var(--ash);background:rgba(122,112,96,.04)}
+.card.warn{border-left:3px solid var(--blood);background:rgba(139,36,24,.05)}
+.card.steel{border-left:3px solid var(--steel);background:rgba(74,78,90,.05)}
+.card.rust{border-left:3px solid var(--rust);background:rgba(110,74,42,.06)}
+.card.olive{border-left:3px solid var(--accent-5);background:rgba(60,74,58,.06)}
+
+.card-title{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:500;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--khaki)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(138,122,74,.1);
+  color:var(--khaki);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-1);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+/* Ostnatý drát dělič */
+.barbed-divider{
+  position:relative;
+  margin:48px 0;
+  height:4px;
+  background:repeating-linear-gradient(90deg,
+    var(--barbed) 0,var(--barbed) 12px,
+    transparent 12px,transparent 14px,
+    var(--barbed) 14px,var(--barbed) 26px,
+    transparent 26px,transparent 32px);
+  opacity:.4;
+}
+.barbed-divider::before,.barbed-divider::after{
+  content:'✕';
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:var(--bg);
+  color:var(--barbed);
+  padding:0 12px;
+  font-size:14px;
+  opacity:.6;
+}
+.barbed-divider::before{left:calc(50% - 40px)}
+.barbed-divider::after{left:calc(50% + 20px)}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:12px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — jako vojenská identifikační karta */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--khaki));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:54px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+}
+.character .char-name{
+  font-family:'Oswald',sans-serif;
+  font-size:19px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+  text-transform:none;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--khaki));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--khaki);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Crimson Pro',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--khaki);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* Válečný deník - motto */
+.war-diary{
+  background:var(--bg-card-alt);
+  border:1px solid var(--khaki);
+  padding:28px 34px;
+  margin:28px 0;
+  position:relative;
+  font-family:'Special Elite',monospace;
+  color:var(--heading);
+  font-size:15.5px;
+  line-height:1.7;
+  letter-spacing:.3px;
+  white-space:pre-line;
+}
+.war-diary::before{
+  content:'≡';
+  position:absolute;
+  top:-14px;left:20px;
+  background:var(--bg);
+  color:var(--khaki);
+  padding:0 12px;
+  font-size:24px;
+  line-height:1;
+}
+.war-diary-source{
+  display:block;
+  margin-top:16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--khaki),var(--blood),var(--khaki));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--khaki);
+  background:rgba(138,122,74,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(138,122,74,.25);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--khaki);
+  background:rgba(138,122,74,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--ash)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(139,36,24,.05);
+  border-left:2px solid var(--blood);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--blood)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--khaki);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--khaki);
+  font-weight:500;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--khaki),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--khaki);margin-bottom:8px;
+  font-weight:500;
+}
+.trope-example{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* Protiklad Propaganda vs Realita */
+.prop-real{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:0;
+  margin:28px 0;
+  align-items:stretch;
+}
+.prop-side{
+  padding:24px 26px;
+  border:1px solid var(--border);
+}
+.prop-side.prop{
+  background:rgba(138,122,74,.05);
+  border-right:none;
+  border-top:3px solid var(--khaki);
+}
+.prop-side.real{
+  background:rgba(139,36,24,.05);
+  border-left:none;
+  border-top:3px solid var(--blood);
+}
+.prop-side h4{
+  margin-top:0;
+  margin-bottom:14px;
+  font-size:14px;
+}
+.prop-side.prop h4{color:var(--khaki)}
+.prop-side.real h4{color:var(--blood)}
+.prop-vs{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  background:var(--bg);
+  border-top:3px solid var(--border);
+  border-bottom:1px solid var(--border);
+  color:var(--text-muted);
+  font-family:'Oswald',sans-serif;
+  letter-spacing:3px;
+  font-size:11px;
+  text-transform:uppercase;
+  min-width:60px;
+}
+.prop-side ul{margin:0;padding-left:18px}
+.prop-side ul li{font-size:14px;margin-bottom:5px}
+
+/* 12 KAPITOL vizualizace */
+.chapters-viz{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:3px;
+  margin:24px 0;
+  padding:14px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+}
+.chapter-block{
+  height:40px;
+  background:var(--block-color,var(--khaki));
+  position:relative;
+  opacity:.8;
+  cursor:help;
+  transition:opacity .2s;
+}
+.chapter-block:hover{opacity:1}
+.chapter-block::after{
+  content:attr(data-num);
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  color:var(--bg);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  font-weight:700;
+}
+.chapters-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:12px;
+  font-size:12px;
+  color:var(--text-muted);
+}
+.chapters-legend-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.chapters-legend-swatch{
+  width:12px;height:12px;
+  background:var(--swatch-color,var(--khaki));
+  opacity:.8;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--khaki);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:500;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--khaki));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  color:var(--heading);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--khaki);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--blood);
+  background:rgba(139,36,24,.3);
+}
+.timeline-step .ts-title{
+  font-family:'Crimson Pro',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-chapter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--khaki);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.8;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--khaki);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .prop-real{grid-template-columns:1fr}
+  .prop-side.prop{border-right:1px solid var(--border)}
+  .prop-side.real{border-left:1px solid var(--border)}
+  .prop-vs{padding:8px 0;min-width:auto}
+  .locations-list{grid-template-columns:1fr}
+  .chapters-viz{grid-template-columns:repeat(6,1fr)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-stamp">Im Westen nichts Neues</div>
+  <div class="hero-label">Maturitní rozbor · Protiválečný román</div>
+  <h1><em>Protiválečný román · 1929</em>Na západní<br>frontě klid<span class="subtitle-original">aneb Hlas ztracené generace</span></h1>
+  <div class="author">Erich Maria Remarque</div>
+  <div class="subtitle">Západní fronta · 1917–1918 · Ztracená generace</div>
+  <div class="hero-quote">Tato kniha nemá být ani obžalobou, ani vyznáním. Je to pokus vypravovat o generaci, kterou zničila válka — i když unikla jejím granátům.<em>— Úvodní věnování</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Zákopy</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč · Paul Bäumer</a></li>
+  <li><a href="#postavy">Postavy · Čtvrtá rota</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a ironie</a></li>
+  <li><a href="#propaganda">Propaganda vs. realita</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Na západní frontě klid</strong> <em>(Im Westen nichts Neues)</em> je protiválečný román publikovaný v roce <strong>1929</strong> — jedenáct let po skončení 1. světové války. Dílo má chronologickou výstavbu s občasnými retrospektivními pasážemi. Kniha se stala <strong>okamžitým bestsellerem</strong> — během roku se prodaly <strong>miliony výtisků</strong> a dílo bylo přeloženo do 50+ jazyků.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Kap. 1–3</span> Úvod</div>
+    <div class="ts-desc">Výcvik, příchod na frontu, první zkušenosti, Kemmerichova smrt</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Kap. 4–6</span> Fronta</div>
+    <div class="ts-desc">Zákopová válka, boje, smrt kamarádů, všudypřítomný strach</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Kap. 7–8</span> Dovolená</div>
+    <div class="ts-desc">Návrat domů — naprosté odcizení od civilního života</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Kap. 9–11</span> Návrat</div>
+    <div class="ts-desc">Paul zabije Gerarda Duvala, Katova smrt, postupná izolace</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-chapter">Kap. 12</span> Konec</div>
+    <div class="ts-desc">Paulova smrt v den, kdy hlášení zní: „Na západní frontě klid"</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>přibližně dva roky na frontě</strong> (1917–1918). Román končí Paulovou smrtí v <strong>říjnu 1918</strong> — pouhý měsíc před příměřím (11. listopadu 1918).</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Hrůza 1. světové války, ztracená generace, (ne)smysl války, destrukce mládeže, kamarádství ve válce, odcizení od civilního života, trauma, smrt, fyzické i psychické utrpení, absurdita války.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Zákopy</strong> — hlavní dějiště, symbol hrobu i domova</li>
+  <li><strong>Smrt, hlad, strach</strong> — trojice všudypřítomných frontových stavů</li>
+  <li><strong>Kamarádství</strong> — jediná hodnota uprostřed chaosu</li>
+  <li><strong>Uniforma</strong> — ztráta individuality</li>
+  <li><strong>Granáty, plyn, ostnatý drát</strong> — moderní průmyslová vražda</li>
+  <li><strong>Hospital a lazaret</strong> — místo umírání</li>
+  <li><strong>Dovolená (návrat domů)</strong> — odcizení</li>
+  <li><strong>Učitel Kantorek</strong> — propagandista války</li>
+  <li><strong>Generační propast, ztráta nevinnosti</strong></li>
+  <li><strong>Ticho</strong> — ironicky, neboť titul je výsměchem Paulově smrti</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor · Zákopy</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--khaki)">
+    <h4 style="color:var(--khaki)">Čas</h4>
+    <p><strong>1. světová válka</strong> (1914–1918), konkrétně poslední roky (1917–1918). Příběh trvá přibližně <strong>dva roky</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Prostor</h4>
+    <p><strong>Západní fronta</strong> — Francie a Belgie. Zákopy jsou hlavním dějištěm, ale román se přesouvá mezi frontou, lazaretem a domovem.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa románu ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--mud)">
+      <div class="location-name">Zákopy</div>
+      <div class="location-note">Hlavní dějiště — bláto, krysy, smrt</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--blood)">
+      <div class="location-name">No man's land</div>
+      <div class="location-note">Bojiště mezi zákopy — ostnatý drát, kráteři</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--khaki)">
+      <div class="location-name">Kasárny</div>
+      <div class="location-note">Výcvikové tábory — Himmelstoss</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--steel)">
+      <div class="location-name">Polní nemocnice</div>
+      <div class="location-note">Hospital — místo amputací a smrti</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--ash)">
+      <div class="location-name">Domov v Německu</div>
+      <div class="location-note">Dovolená — paradox odcizení</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--rust)">
+      <div class="location-name">Krátér</div>
+      <div class="location-note">Místo setkání s Gerardem Duvalem</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — od příchodu na frontu k Paulově smrti</li>
+  <li><strong>Epizodická struktura</strong> — série válečných epizod</li>
+  <li><strong>Retrospektivní pasáže</strong> — vzpomínky na mír, dětství, školní léta</li>
+</ul>
+
+<h3>Části díla — 12 kapitol</h3>
+<div class="chapters-viz">
+  <div class="chapter-block" style="--block-color:var(--khaki)" data-num="1" title="Výcvik, představení postav"></div>
+  <div class="chapter-block" style="--block-color:var(--khaki)" data-num="2" title="Kemmerichova smrt"></div>
+  <div class="chapter-block" style="--block-color:var(--khaki)" data-num="3" title="Představení Kata"></div>
+  <div class="chapter-block" style="--block-color:var(--blood)" data-num="4" title="První velká bitva"></div>
+  <div class="chapter-block" style="--block-color:var(--blood)" data-num="5" title="Ztráty kamarádů"></div>
+  <div class="chapter-block" style="--block-color:var(--blood)" data-num="6" title="Zoufalství fronty"></div>
+  <div class="chapter-block" style="--block-color:var(--ash)" data-num="7" title="Dovolená — odcizení"></div>
+  <div class="chapter-block" style="--block-color:var(--ash)" data-num="8" title="Zajatecký tábor"></div>
+  <div class="chapter-block" style="--block-color:var(--rust)" data-num="9" title="Gerard Duval v krátéru"></div>
+  <div class="chapter-block" style="--block-color:var(--rust)" data-num="10" title="Hospital"></div>
+  <div class="chapter-block" style="--block-color:var(--blood)" data-num="11" title="Katova smrt"></div>
+  <div class="chapter-block" style="--block-color:var(--accent-7)" data-num="12" title="Paulova smrt"></div>
+</div>
+<div class="chapters-legend">
+  <div class="chapters-legend-item"><div class="chapters-legend-swatch" style="--swatch-color:var(--khaki)"></div>Výcvik a příchod</div>
+  <div class="chapters-legend-item"><div class="chapters-legend-swatch" style="--swatch-color:var(--blood)"></div>Boje a ztráty</div>
+  <div class="chapters-legend-item"><div class="chapters-legend-swatch" style="--swatch-color:var(--ash)"></div>Dovolená a odcizení</div>
+  <div class="chapters-legend-item"><div class="chapters-legend-swatch" style="--swatch-color:var(--rust)"></div>Humanita a vina</div>
+  <div class="chapters-legend-item"><div class="chapters-legend-swatch" style="--swatch-color:var(--accent-7)"></div>Smrt</div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--ash)">Charakteristika kompozice</div>
+  <ul style="margin:0">
+    <li><strong>12 číslovaných kapitol</strong></li>
+    <li>Každá kapitola zachycuje určité období nebo událost</li>
+    <li><strong>Bez tradičního gradačního oblouku</strong> — válka je monotónní hrůza, ne dramatický vzestup</li>
+    <li><strong>Konec je náhlý</strong> — Paulova smrt v jediném odstavci</li>
+    <li>Změna vypravěče v posledním odstavci (z 1. do 3. osoby)</li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Představení <span class="ts-chapter">Kap. 1–3</span></div>
+    <div class="ts-desc">Postavy, život v zákopu, první zkušenosti, Kemmerichova smrt</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Boje a ztráty <span class="ts-chapter">Kap. 4–6</span></div>
+    <div class="ts-desc">Boje, smrt kamarádů, strach, plynový útok</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">3. Dovolená doma <span class="ts-chapter">Kap. 7–8</span></div>
+    <div class="ts-desc">Paradox — domov už není domov. Odcizení.</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">4. Návrat na frontu <span class="ts-chapter">Kap. 9–11</span></div>
+    <div class="ts-desc">Další ztráty, Gerard Duval, Katova smrt</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">5. Paulova smrt <span class="ts-chapter">Kap. 12</span></div>
+    <div class="ts-desc">Říjen 1918 — „Na západní frontě klid"</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (válku).</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Protiválečný román</h4>
+    <p>Kritika války a militarismu. <strong>Nejslavnější protiválečný román vůbec.</strong></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Psychologický román</h4>
+    <p>Analýza válečné traumy, otupělosti, odcizení.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--khaki)">
+    <h4 style="color:var(--khaki)">Autobiografický román</h4>
+    <p>Založeno na autorových zkušenostech — Remarque bojoval na západní frontě.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--ash)">
+    <h4 style="color:var(--ash)">Generační román</h4>
+    <p>Hlas celé <strong>ztracené generace</strong>.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--ash)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Rozsáhlé epické dílo</li>
+    <li><strong>Protiválečné poselství</strong> — válka je zbytečná a destruktivní</li>
+    <li><strong>Psychologická hloubka</strong> — trauma, strach, odcizení</li>
+    <li>Autobiografické prvky — Remarque bojoval v 1. sv. válce</li>
+    <li>Zobrazuje <strong>celou generaci zničenou válkou</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč · Paul Bäumer</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Typ</div>
+  <p style="margin-bottom:0"><strong>Ich-forma</strong> — vypravěč hovoří v 1. osobě. <strong>Paul Bäumer</strong> je zároveň vypravěč i hlavní postava.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Personální vypravěč</strong> — Paul vypráví vlastní zkušenost</li>
+  <li><strong>Účastnický vypravěč</strong> — Paul je přímým účastníkem událostí</li>
+  <li><strong>Subjektivní perspektiva</strong> — vidíme válku očima mladého vojáka</li>
+</ul>
+
+<h3>Charakteristika Paula Bäumera</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>19letý německý voják</strong></li>
+    <li>Citlivý, reflektující, inteligentní</li>
+    <li>Před válkou student, píše básně</li>
+    <li>Postupně <strong>ztrácí iluze a naději</strong></li>
+    <li>Cynický, ale soucitný</li>
+    <li>V <strong>epilogu</strong>: anonymní vypravěč oznamuje Paulovu smrt</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Klíčová poznámka k závěru</div>
+  <ul style="margin:0">
+    <li>Poslední odstavec je ve <strong>3. osobě</strong> — Paul už nemůže vypravovat</li>
+    <li>Oznamuje jeho smrt v den, kdy <em>„na západní frontě klid"</em></li>
+    <li>Tato změna vypravěče je jeden z nejsilnějších literárních efektů románu</li>
+    <li><strong>Čtenář si uvědomí smrt vypravěče</strong> — příběh skončil, protože skončil i Paul</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy · Čtvrtá rota</h2></div>
+
+<div class="character" style="--character-color:var(--khaki)" data-symbol="I">
+  <div class="char-name">Paul Bäumer</div>
+  <div class="char-role">Hlavní postava · Kladná · Vypravěč · 19 let</div>
+  <ul style="margin:0">
+    <li><strong>19letý německý voják</strong>, vypravěč</li>
+    <li>Citlivý, myslící mladík</li>
+    <li>Před válkou student gymnázia</li>
+    <li>Postupně <strong>ztrácí iluze o válce</strong></li>
+    <li>Stává se cynickým, ale lidským</li>
+    <li><strong>Cítí vinu za zabíjení</strong> (Gerard Duval)</li>
+    <li>Odcizen od civilního života</li>
+    <li>Umírá krátko před koncem války (říjen 1918)</li>
+    <li><strong>Symbol ztracené generace</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--ash)" data-symbol="II">
+  <div class="char-name">Stanislav Katczinsky <em>(Kat)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Nejlepší přítel · 40 let</div>
+  <ul style="margin:0">
+    <li><strong>40letý vojín</strong>, Paulův nejlepší přítel</li>
+    <li>Zkušený, praktický, vynalézavý</li>
+    <li><strong>„Otcovská" postava</strong> pro mladé vojáky</li>
+    <li>Umí sehnat jídlo i v nemožných situacích</li>
+    <li><strong>Umírá těsně před koncem</strong> — zraněn, Paul ho nese do lazaretu</li>
+    <li>Jeho smrt je pro Paula největší ranou</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--steel)" data-symbol="III">
+  <div class="char-name">Albert Kropp</div>
+  <div class="char-role">Hlavní postava · Kladná · Spolužák</div>
+  <ul style="margin:0">
+    <li>Paulův spolužák a přítel</li>
+    <li>Inteligentní, skeptický, filozofuje o válce</li>
+    <li><strong>Zraněn, přijde o nohu</strong></li>
+    <li>Chce spáchat sebevraždu</li>
+    <li>Symbol <strong>fyzického i psychického mrzačení</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-1)" data-symbol="IV">
+  <div class="char-name">Müller</div>
+  <div class="char-role">Vedlejší · Kladná · Spolužák · Pragmatik</div>
+  <ul style="margin:0">
+    <li>Paulův spolužák</li>
+    <li>Pragmatický, praktický — nosí ve vaku školní učebnice</li>
+    <li><strong>Fascinován Kemmerichovými botami</strong></li>
+    <li>Zajímá se o budoucnost po válce</li>
+    <li>Umírá ve válce — boty přebírá Paul</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-symbol="V">
+  <div class="char-name">Tjaden</div>
+  <div class="char-role">Vedlejší · Kladná · Věčně hladový</div>
+  <ul style="margin:0">
+    <li>Hubeňour, stále hladový</li>
+    <li>Poskytuje <strong>komickou úlevu</strong></li>
+    <li>Bývalý zámečník</li>
+    <li><strong>Nenávidí seržanta Himmelstosse</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-symbol="VI">
+  <div class="char-name">Haie Westhus</div>
+  <div class="char-role">Vedlejší · Kladná · Rašelinář</div>
+  <ul style="margin:0">
+    <li>Velký, silný rašelinář</li>
+    <li>Optimistický, plánuje zůstat v armádě i po válce</li>
+    <li><strong>Umírá na zranění</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mud)" data-symbol="VII">
+  <div class="char-name">Detering</div>
+  <div class="char-role">Vedlejší · Tragická · Farmář</div>
+  <ul style="margin:0">
+    <li>Farmář, touží domů ke své půdě a ženě</li>
+    <li><strong>Dezertuje</strong>, je chycen</li>
+    <li><strong>Popraven za dezerci</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="VIII">
+  <div class="char-name">Franz Kemmerich</div>
+  <div class="char-role">Vedlejší · Tragická · První mrtvý spolužák</div>
+  <ul style="margin:0">
+    <li>Paulův spolužák</li>
+    <li><strong>Umírá na začátku románu</strong> — amputace nohy</li>
+    <li>Jeho smrt šokuje Paula</li>
+    <li><strong>Jeho boty jsou symbol</strong> — vojáci se hádají, kdo je dostane (Müller → Paul → Tjaden)</li>
+  </ul>
+</div>
+
+<h3>Záporné postavy · Propagandisté a sadisté</h3>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="✕">
+  <div class="char-name">Kantorek</div>
+  <div class="char-role">Vedlejší · Záporná · Učitel · Propagandista</div>
+  <ul style="margin:0">
+    <li><strong>Učitel</strong>, který poslal studenty do války</li>
+    <li>Vlastenecká propaganda — mluvil o cti, slávě, vlasti</li>
+    <li><strong>Později sám povolán</strong>, zesměšněn</li>
+    <li>Symbol <strong>starší generace, která poslala mladé na smrt</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="✕">
+  <div class="char-name">Seržant Himmelstoss</div>
+  <div class="char-role">Vedlejší · Záporná · Sadistický instruktor</div>
+  <ul style="margin:0">
+    <li><strong>Sadistický seržant při výcviku</strong></li>
+    <li>Týrá rekruty — v civilu byl listonoš</li>
+    <li>Na frontě <strong>zbabělý</strong></li>
+    <li>Později se trochu změní</li>
+    <li>Symbol <strong>vojenské autority a krutosti</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--rust)" data-symbol="○">
+  <div class="char-name">Gerard Duval</div>
+  <div class="char-role">Vedlejší · Tragická · Francouzský nepřítel</div>
+  <ul style="margin:0">
+    <li><strong>Francouzský voják</strong> — tiskař v civilu</li>
+    <li>Paul ho zabije v krátéru bodákem</li>
+    <li>Paul u něj <strong>stráví celou noc, lituje</strong></li>
+    <li>Najde fotografie jeho rodiny</li>
+    <li>Symbol <strong>nepřítele, který je také člověk</strong></li>
+    <li>Klíčová scéna humanizace nepřítele</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">08</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card">
+  <div class="card-title" style="color:var(--khaki)">Přímá řeč</div>
+  <div class="quote-block" style="margin:0">„Kat," šeptal jsem, „vrátíme se zpátky."<br>„Ano, Paule," odpověděl tiše.<span class="quote-source">Dialog s Katem</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--ash)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Kat mi řekl, že válka je peklo a že nikdo z nás by neměl být tady.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--rust)">Polopřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Ležel jsem v zákopě. Co tady dělám? Proč jsme tady? Kdo z toho má prospěch?</p>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Vnitřní monolog · Paulovy úvahy</div>
+  <p style="font-style:italic;color:var(--heading);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Jsem mladý, mně je teprve devatenáct, ale já už neznám nic jiného než zoufalství, smrt, strach a spojení povrchní existence s propastí utrpení.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--khaki)"><h4 style="color:var(--khaki)">Pásmo vypravěče</h4><p>Paul popisuje válečné události v 1. osobě, retrospektivně.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--steel)"><h4 style="color:var(--steel)">Monolog</h4><p>Paulovy <strong>filozofické úvahy</strong> o válce, smrti, generaci.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Dialog</h4><p>Rozhovory mezi vojáky — kamarádství, diskuse o smyslu války.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-5)"><h4 style="color:var(--accent-5)">Popis</h4><p><strong>Naturalistické popisy</strong> bitev, zákopů, ran, smrti.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--ash)"><h4 style="color:var(--ash)">Reflexe</h4><p>Paulovo hodnocení války, společnosti, budoucnosti.</p></div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">09</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>válka, smrt, strach, hlad</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>utrpení, zoufalství, marnost</em></td></tr>
+</table>
+
+<h3>Vojenská terminologie</h3>
+<div class="card steel">
+  <ul style="margin:0">
+    <li><strong>Granáty, bajonet, přilba, maska proti plynu</strong></li>
+    <li><strong>Zákop, krátér, no man's land</strong></li>
+    <li>Vytváří <strong>autentickou atmosféru</strong></li>
+    <li>Remarque jako voják sám tyto výrazy používal</li>
+  </ul>
+</div>
+
+<h3>Naturalistické popisy</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Brutální pravda o válce</div>
+  <ul style="margin:0">
+    <li>Brutálně detailní popisy <strong>ran, smrti, rozkladu</strong></li>
+    <li>Ničím nezakrytá hrůza</li>
+    <li>Příklady: <em>„střeva visící na plotě", „amputované končetiny", „kůň s vytrženým břichem"</em></li>
+    <li>Remarque <strong>záměrně šokuje</strong> — aby zničil romantickou představu války</li>
+  </ul>
+</div>
+
+<h3>Prosté, strohé věty</h3>
+<div class="card ash" style="border-left:3px solid var(--ash);background:rgba(122,112,96,.04)">
+  <ul style="margin:0">
+    <li><strong>Krátké, věcné věty</strong></li>
+    <li>Odpovídá vyčerpání a otupělosti vojáků</li>
+    <li>Příklad: <em>„Kemmerich je mrtvý. Müller má jeho boty."</em></li>
+    <li>Styl připomíná <strong>válečný deník</strong>, záznam, hlášení</li>
+  </ul>
+</div>
+
+<h3>Ironie</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Název románu</strong> — „Na západní frontě klid" = den Paulovy smrti</li>
+    <li>Kontrast mezi <strong>realitou a oficiálními hlášeními</strong></li>
+    <li>„Klid" znamená, že nikdo důležitý neumřel — jen obyčejný voják</li>
+  </ul>
+</div>
+
+<h3>Kontrast</h3>
+<ul>
+  <li>Krutá realita vs. vlastenecká propaganda</li>
+  <li>Fronťáci vs. civilisté</li>
+  <li>Mladost vs. smrt</li>
+  <li>Kantorkova velká slova vs. bahno zákopů</li>
+</ul>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Naturalistické popisy</strong> šokují čtenáře, ukazují pravdu</li>
+    <li><strong>Vojenská terminologie</strong> vytváří autenticitu</li>
+    <li><strong>Prosté věty</strong> vyjadřují vyčerpání a otupělost</li>
+    <li><strong>Ironie</strong> odhaluje absurditu války</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">10</span><h2>Tropy, figury a ironie</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Zákop = hrob</div>
+    <div class="trope-note">Zákop jako hrob. Válka jako <em>mlýn na maso</em>. Vojáci jako zvířata přežívající instinktem.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Kemmerichovy boty</div>
+    <div class="trope-note">Boty = pragmatismus války, callousness. Uniforma = ztráta individuality. „Klid" = lhostejnost.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Jako mrtvý strom</div>
+    <div class="trope-note"><em>„Jsme jako mrtvý strom — bez listů, bez života."</em> Obraz duševní smrti generace.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Smrt čeká</div>
+    <div class="trope-note">Smrt jako přítomná bytost — „stojí vedle mě". Válka jako živé monstrum.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Nadsázka… nebo pravda?</div>
+    <div class="trope-note">Přehánění hrůz pro zdůraznění — paradoxně <strong>často není nadsázka, ale pravda</strong>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">„Klid" = smrt</div>
+    <div class="trope-note">Název díla. „Válka, aby skončily všechny války" (ale pokračuje). Kantorek v uniformě.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Mládí vs. smrt</div>
+    <div class="trope-note">Propaganda vs. realita. Domov vs. fronta. Předválečný život vs. válečné peklo.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Naturalistický detail</div>
+    <div class="trope-example">Brutální hrůza</div>
+    <div class="trope-note">Neskrývané popisy fyzické hrůzy — amputace, vyhřezlá střeva, zuhelnatělé tváře.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy <strong>odhalují absurditu a hrůzu války</strong>, ironie kritizuje propagandu, naturalistické detaily šokují a nutí čtenáře konfrontovat realitu. Remarque <strong>odmítá jakoukoli romantiku války</strong> — jeho jazyk je jako skalpel, který řeže přes vrstvy propagandistických lží.</p>
+</div>
+</section>
+
+<!-- 11 PROPAGANDA vs REALITA -->
+<section class="section" id="propaganda">
+<div class="section-header"><span class="section-num">11</span><h2>Propaganda vs. Realita</h2></div>
+
+<p>Jedním z ústředních motivů románu je <strong>kontrast mezi domácí propagandou a hrůznou frontovou realitou</strong>. Remarque systematicky odhaluje každou velkou frázi jako lež.</p>
+
+<div class="prop-real">
+  <div class="prop-side prop">
+    <h4>◆ Propaganda (Doma) ◆</h4>
+    <ul>
+      <li>Sláva</li>
+      <li>Čest</li>
+      <li>Vlastenectví</li>
+      <li>Hrdinství</li>
+      <li>Obrana vlasti</li>
+      <li>„Věčná sláva padlým"</li>
+      <li>„Za císaře a vlast"</li>
+      <li>„Válka skončí do Vánoc"</li>
+    </ul>
+  </div>
+  <div class="prop-vs">vs</div>
+  <div class="prop-side real">
+    <h4>◆ Realita (Fronta) ◆</h4>
+    <ul>
+      <li>Smrt</li>
+      <li>Bahno</li>
+      <li>Hlad</li>
+      <li>Strach</li>
+      <li>Krev a mrtvoly</li>
+      <li>Anonymní granáty</li>
+      <li>Plyn, krysy, vši</li>
+      <li>Roky bez konce</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Kantorek — tvář propagandy</div>
+  <p style="margin-bottom:0">Učitel Kantorek je <strong>symbolem celé propagandistické mašinérie</strong>. Mluvil o cti a slávě, ale sám se ulil. Paul a spolužáci ho jako mladí obdivovali. Na frontě pochopili, že byli <strong>podvedeni</strong>. Ironií je, že když je Kantorek sám později povolán, ukáže se jako zbabělec. <em>„Muž, který nás poslal do války s krásnými slovy, se teď třese strachy."</em></p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">12</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Erich Maria Remarque (1898–1970)</div>
+  <p>Vlastním jménem <strong>Erich Paul Remark</strong> — jméno „Maria" přidal na počest své matky, příjmení počeštil (původně francouzské <em>Remarque</em>) na projev odporu ke germánské propagandě. Narozen v <strong>Osnabrücku</strong> v chudé rodině. <strong>Narukován v 18 letech (1916)</strong>, bojoval na západní frontě, <strong>zraněn úlomkem granátu</strong> v několika kusech — zbytek války strávil v lazaretu. Po válce pracoval jako <strong>učitel, obchodník, novinář</strong>. V roce 1929 <strong>vydal Na západní frontě klid</strong> a stal se světovou hvězdou. V roce <strong>1933 nacisté jeho knihy veřejně pálili</strong> při velké říšské akci — Remarque byl tou dobou už ve Švýcarsku. Nacisté <strong>mu odebrali občanství</strong> (1938) a prohlásili, že je Žid (nebyl — byla to součást propagandy). <strong>Jeho sestru Elfriede popravili v roce 1943</strong> jako pomstu za bratra, kterého nemohli dostat. Remarque emigroval do USA, stal se americkým občanem. Měl romantický vztah s <strong>Marlene Dietrich</strong>, později se oženil s herečkou Paulette Goddard. <strong>Zemřel v roce 1970 ve Švýcarsku.</strong></p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Remarquovo nejslavnější dílo</strong> (1929)</li>
+  <li>První publikovaný úspěšný román</li>
+  <li>Obrovský úspěch — <strong>miliony výtisků</strong></li>
+  <li>Autobiografické prvky — Remarque bojoval v 1. sv. válce</li>
+</ul>
+
+<h3>Další Remarquova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Cesta zpátky</strong></td><td>1931</td><td>Pokračování — poválečné trauma veteránů</td></tr>
+  <tr><td><strong>Tři kamarádi</strong></td><td>1936</td><td>Přátelství po válce, Výmarská republika</td></tr>
+  <tr><td><strong>Miluj bližního svého</strong></td><td>1941</td><td>Uprchlíci z nacistického Německa</td></tr>
+  <tr><td><strong>Vítězný oblouk</strong></td><td>1945</td><td>Emigrant v Paříži před 2. sv. válkou</td></tr>
+  <tr><td><strong>Jiskra života</strong></td><td>1952</td><td>Koncentrační tábor — inspirováno smrtí sestry</td></tr>
+  <tr><td><strong>Čas žít, čas umírat</strong></td><td>1954</td><td>Německý voják v 2. světové válce</td></tr>
+  <tr><td><strong>Černý obelisk</strong></td><td>1956</td><td>Poválečné Německo, inflace 20. let</td></tr>
+  <tr><td><strong>Noc v Lisabonu</strong></td><td>1962</td><td>Uprchlík před nacismem</td></tr>
+</table>
+
+<h3>Remarquův styl</h3>
+<ul>
+  <li><strong>Protiválečné zaměření</strong> (ústřední téma celé tvorby)</li>
+  <li><strong>Autobiografické prvky</strong></li>
+  <li><strong>Naturalistické popisy</strong></li>
+  <li>Psychologická hloubka</li>
+  <li>Prostý, působivý jazyk</li>
+  <li><strong>Humanismus</strong> — víra v lidskou důstojnost navzdory všemu</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">13</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Meziválečné období</strong> (publikováno 1929)</li>
+    <li><strong>11 let po konci 1. světové války</strong></li>
+    <li>Rok <strong>Velké hospodářské krize</strong> (Černý čtvrtek 24. 10. 1929)</li>
+    <li><strong>Vzestup fašismu v Německu</strong> — Hitler dosáhne moci 1933</li>
+    <li>Umělecký sloh: <strong>REALISMUS / NATURALISMUS</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy realismu a naturalismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--khaki)"><h4 style="color:var(--khaki)">Věrné zobrazení</h4><p>Skutečnosti bez idealizace.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Naturalistické detaily</h4><p>I odporné — krev, rozklad.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--steel)"><h4 style="color:var(--steel)">Psychologická pravdivost</h4><p>Přesný popis traumat.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--ash)"><h4 style="color:var(--ash)">Sociální kritika</h4><p>Kritika militarismu, politiky.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--mud)"><h4 style="color:var(--mud)">Biologický determinismus</h4><p>Člověk jako instinktivní tvor.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-7)"><h4 style="color:var(--accent-7)">Pesimistický tón</h4><p>Bez naděje, bez světla na konci.</p></div>
+</div>
+
+<h3>Ztracená generace <em>(Lost Generation)</em></h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Generace narozená kolem 1900</strong></li>
+    <li>Poslána do války v <strong>18–20 letech</strong></li>
+    <li>Ti, kdo přežili, byli <strong>psychicky zničeni</strong></li>
+    <li>Neschopni začlenit se do mírového života</li>
+    <li>Alkoholismus, sebevraždy, bezdomovectví</li>
+    <li>Trauma — dnes <strong>PTSD</strong> (posttraumatická stresová porucha)</li>
+    <li>Termín vytvořila <strong>Gertrude Stein</strong> — o Hemingwayovi a jeho generaci</li>
+  </ul>
+</div>
+
+<h3>Další protiválečná díla</h3>
+<table class="compare-table">
+  <tr><th>Země</th><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>Německo</strong></td><td>Arnold Zweig</td><td><em>Spor o seržanta Grišu</em></td></tr>
+  <tr><td><strong>Německo</strong></td><td>Ludwig Renn</td><td><em>Válka</em></td></tr>
+  <tr><td><strong>USA</strong></td><td>Ernest Hemingway</td><td><em>Sbohem, armádo</em></td></tr>
+  <tr><td><strong>USA</strong></td><td>John Dos Passos</td><td><em>Tři vojáci</em></td></tr>
+  <tr><td><strong>Anglie</strong></td><td>Robert Graves</td><td><em>Sbohem všemu tomu</em></td></tr>
+  <tr><td><strong>Anglie</strong></td><td>Siegfried Sassoon</td><td>Poezie z války</td></tr>
+  <tr><td><strong>Francie</strong></td><td>Henri Barbusse</td><td><em>Oheň</em> (už 1916!)</td></tr>
+  <tr><td><strong>Česko</strong></td><td>Jaroslav Hašek</td><td><em>Osudy dobrého vojáka Švejka</em> (satira)</td></tr>
+</table>
+
+<h3>Kontext 1. světové války</h3>
+<details>
+  <summary>Mechanizovaná jatka 1914–1918</summary>
+  <p><strong>1914–1918</strong> — 4 roky konfliktu. <strong>Zákopová válka</strong> na západní frontě vytvořila statické fronty, kde se tisíce mužů zabíjelo za metry území. Nové zbraně: <strong>tanky, letadla, bojové plyny</strong> (chlór, fosgén, yperit), kulomety, ostnatý drát. <strong>Cca 17 milionů mrtvých.</strong> Bitva o Verdun, Somma, Ypres — symboly nesmyslného masakru. <em>„Válka, aby skončily všechny války"</em> — věta, která se stala nejkrutější ironií, když za 21 let začala 2. světová.</p>
+</details>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Nacistická reakce</div>
+  <ul style="margin:0">
+    <li><strong>Nacisté knihu zakázali (1933)</strong></li>
+    <li><strong>Veřejné pálení knih</strong> na berlínském Opernplatzu 10. května 1933</li>
+    <li>Remarque <strong>ztratil německé občanství</strong> (1938)</li>
+    <li>Kniha označena jako <em>„zrada vojáků"</em></li>
+    <li>Film z roku 1930 byl v Německu zakázán — narušoval propagandistickou mytologii hrdinské války</li>
+    <li><strong>Remarquova sestra Elfriede popravena</strong> (1943) — mstou za bratra</li>
+  </ul>
+</div>
+</section>
+
+<div class="barbed-divider"></div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">14</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="war-diary">Tato kniha nemá být ani obžalobou, ani vyznáním. Je to pokus vypravovat o generaci, kterou zničila válka — i když unikla jejím granátům.
+<span class="war-diary-source">Úvodní věnování · Motto románu</span></div>
+
+<div class="scene" style="border:2px solid var(--khaki)">
+  <span class="scene-label" style="background:rgba(138,122,74,.12);border-color:var(--khaki)">★ 01 · Úvod · ZTRACENÁ GENERACE ★</span>
+  <div class="scene-title">Úvodní věnování</div>
+  <div class="scene-context"><strong>Kontext:</strong> Úvodní věnování knihy — epigraf, který dává smysl celému románu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Definice ztracené generace</strong></li>
+      <li>Nejen fyzická, ale <strong>psychická destrukce</strong></li>
+      <li>Protiválečné poselství v jedné větě</li>
+      <li><em>„Unikla granátům"</em> — ale byla zničena psychicky</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(139,36,24,.1);border-color:var(--blood);color:var(--blood)">★ 02 · Kap. 2 · KEMMERICHOVY BOTY ★</span>
+  <div class="scene-title">Kemmerichova smrt</div>
+  <div class="scene-text">Kemmerich ležel v posteli, bez pravé nohy. Věděl jsem, že umírá. Müller se ptal: „Až umřeš, můžu dostat tvoje boty?" Kemmerich přikývl. O hodinu později byl mrtvý.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Smrt prvního kamaráda, Müller chce jeho boty.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Brutální pragmatismus války</strong></li>
+      <li>Ztráta sentimentu — boty důležitější než pieta</li>
+      <li><strong>Přivyknutí smrti</strong></li>
+      <li>Šok pro čtenáře i Paula</li>
+      <li>Symbol otupělosti</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Kap. 1 · Propaganda</span>
+  <div class="scene-title">Kantorekova propaganda</div>
+  <div class="scene-text">Váš učitel Kantorek vás tu všechny přesvědčil, abyste šli do války. Mluvil o vlastenectví, cti, slávě. A teď jste tady, v tomto pekle. A on je bezpečně doma.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Vzpomínka na učitele, který nadchl studenty pro válku.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kritika starší generace</strong></li>
+      <li>Propaganda vs. realita</li>
+      <li>Naivita mládeže</li>
+      <li>Odpovědnost těch, kdo poslali mladé na smrt</li>
+      <li>Generační propast</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Kap. 3 · Katova moudrost</span>
+  <div class="scene-title">Katova filozofie</div>
+  <div class="scene-text">Válka nás naučila jednu věc, řekl Kat. Všechno záleží na štěstí. Nejlepší muž může být zabit náhodným granátem. A největší zbabělec může přežít.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Náhoda, ne hrdinství rozhoduje</strong></li>
+      <li>Absurdita války</li>
+      <li>Ztráta smyslu</li>
+      <li>Kritika „hrdinství"</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Kap. 4, 6, 9 · Peklo</span>
+  <div class="scene-title">Popis bitvy</div>
+  <div class="scene-text">Granáty padaly jako déšť. Země se třásla. Vzduch byl plný dýmu a křiku. Viděl jsem muže běžet bez hlavy. Viděl jsem střeva visící na ostnatém drátu. To nebyla válka. To bylo peklo.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Naturalistický, brutální popis</strong></li>
+      <li>Pravda o válce (ne romantika)</li>
+      <li>Šokuje čtenáře</li>
+      <li>Hrůza vizualizována</li>
+      <li>Protiválečné poselství</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--rust)">
+  <span class="scene-label" style="background:rgba(110,74,42,.1);border-color:var(--rust);color:var(--rust)">★ 06 · Kap. 9 · GERARD DUVAL ★</span>
+  <div class="scene-title">Paul zabije Francouze — Gerard Duval</div>
+  <div class="scene-text">Skočil jsem do krátéru. Tam byl francouzský voják. Bodl jsem ho. Celou noc jsem ležel vedle něj, jak umíral. Prosil o vodu. Díval jsem se do jeho tváře. Měl rodinu — našel jsem fotky. Plakal jsem. „Odpusť mi, kamaráde. Nejsme nepřátelé. Jsme všichni jen vojáci."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Paul zabije nepřátelského vojáka v boji zblízka, stráví s ním noc v krátéru.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Humanizace nepřítele</strong></li>
+      <li>Vina zabíjení</li>
+      <li>Nepřátelé jsou také lidé, otcové, synové</li>
+      <li>Absurdita války — zabíjet „kamarády"</li>
+      <li><strong>Nejsilnější emocionální scéna románu</strong></li>
+      <li>Paulova ztráta nevinnosti</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--ash)">
+  <span class="scene-label" style="background:rgba(122,112,96,.08);border-color:var(--ash);color:var(--ash)">★ 07 · Kap. 7 · ODCIZENÍ ★</span>
+  <div class="scene-title">Dovolená doma — odcizení</div>
+  <div class="scene-text">Vrátil jsem se domů. Ale to už nebyl můj domov. Matka plakala, otec se ptal na válku. Ale já jsem nemohl mluvit. Nemohli pochopit. Byl jsem cizinec ve vlastním domě. Patřil jsem už jen na frontu, k mrtvým.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Odcizení od civilního života</strong></li>
+      <li>Nemožnost komunikovat hrůzu</li>
+      <li>Generační propast</li>
+      <li>Paul už nepatří nikam — ani domů, ani na frontu</li>
+      <li><strong>Ztracená generace</strong> — nemají místo v mírovém světě</li>
+      <li>Tragická izolace</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Kap. 7 · Ironie</span>
+  <div class="scene-title">Setkání s Kantorekem v uniformě</div>
+  <div class="scene-context">Kantorek byl povolán. Teď nosil uniformu, jako my. Viděl jsem ho cvičit. Byl nešikovný, vyděšený. Ten muž, který nás poslal do války s krásnými slovy, <strong>se teď třásl strachy</strong>. Smál jsem se.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Ironie</strong> — propagandista se stává vojákem</li>
+      <li>Odhalení pokrytectví</li>
+      <li>Jistá forma spravedlnosti</li>
+      <li>Kontrast: velká slova vs. realita</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(139,36,24,.1);border-color:var(--blood);color:var(--blood)">★ 09 · Kap. 11 · KATOVA SMRT ★</span>
+  <div class="scene-title">Katova smrt</div>
+  <div class="scene-text">Kat byl zraněn. Nesl jsem ho na zádech, kilometr za kilometrem. „Vydržíš, Kat," říkal jsem. „Jsme skoro tam." Když jsem došel k lazaretu, lékař se podíval a řekl: „Je mrtvý. Dostal úlomek do hlavy cestou." Kat byl mrtvý. Můj nejlepší přítel. Co mi zbývá?</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tragická ironie</strong> — Paul ho nesl „do bezpečí", ale byl už mrtvý</li>
+      <li>Ztráta poslední opory</li>
+      <li>Paul zůstal sám</li>
+      <li>Symbol rozpadu kamarádství</li>
+      <li><strong>Emocionální lom</strong> pro Paula — po této smrti už nezáleží na ničem</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--accent-7);background:rgba(42,40,38,.3)">
+  <span class="scene-label" style="background:rgba(42,40,38,.5);border-color:var(--accent-7);color:var(--text)">★ 10 · Kap. 12 · ZÁVĚR · PAULOVA SMRT ★</span>
+  <div class="scene-title">Paulova smrt — závěr</div>
+  <div class="scene-text">Padl v říjnu 1918, v den, kdy bylo na celé frontě tak ticho a klidno, že se vojenské hlášení omezilo pouze na větu: Na západní frontě klid.
+Převrátili ho. Vypadal, jako by spal. Když ho našli, měl na tváři výraz, jako by byl téměř rád, že je konec.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Poslední odstavec románu — Paulova smrt, oznámená <strong>anonymním vypravěčem ve 3. osobě</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Změna vypravěče</strong> (ze 1. na 3. osobu) — Paul už nemůže vypravovat</li>
+      <li><strong>Ironie názvu</strong> — „klid" = smrt jediného člověka</li>
+      <li>Paul umírá <strong>měsíc před koncem války</strong></li>
+      <li>Tragická marnost</li>
+      <li><em>„Jako by byl rád"</em> — válka byla horší než smrt</li>
+      <li><strong>Konec individuálního příběhu = konec celé generace</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">11 · Celé dílo · Kamarádství</span>
+  <div class="scene-title">Kamarádství jako jediná hodnota</div>
+  <div class="scene-text">Jediné, co nás drží při životě, je kamarádství. Ne vlastenectví, ne povinnost. Jen naši přátelé. Jeden pro druhého. To je jediné, co má smysl.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kamarádství jako jediná hodnota</strong></li>
+      <li>Kritika abstrakcí (vlast, čest, sláva)</li>
+      <li>Konkrétní lidské vztahy vs. ideologie</li>
+      <li>Humanistické poselství</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">12 · Celé dílo · Absurdita</span>
+  <div class="scene-title">Absurdita války</div>
+  <div class="scene-text">Proč válčíme? Kdo z toho má prospěch? Ne my. Ne Francouzi. Jenom generálové daleko vzadu. Jenom politici. Jenom ti, kdo nemusí umírat.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Otázka po smyslu</li>
+      <li>Kritika militarismu</li>
+      <li>Prostí vojáci jako oběti</li>
+      <li>Protiválečná kritika</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="barbed-divider"></div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">15</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Válka je zbytečná, destruktivní hrůza</strong>, která ničí celé generace. Mladí muži jsou posláni na smrt starší generací, která romantizuje konflikt z bezpečné vzdálenosti. <strong>Není sláva, čest ani smysl</strong> — jen smrt, utrpení a ztráta lidskosti. Jediná hodnota je <strong>kamarádství</strong> mezi vojáky. Ztracená generace nemá místo ani ve válce, ani v míru.</p>
+</div>
+
+<h3>Klíčové symboly díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Kemmerichovy boty</h4>
+    <p>Pragmatismus a otupělost války. Přežívají všechny své majitele.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mud)">
+    <h4 style="color:var(--mud)">Zákopy</h4>
+    <p>Hrob pro živé. Peklo, kde se život i smrt staly monotónními.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">„Na západní frontě klid"</h4>
+    <p>Ironie nejvyšší — lhostejnost hlášení k individuální smrti.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--ash)">
+    <h4 style="color:var(--ash)">Kat</h4>
+    <p>Otcovská postava, stabilita. Jeho smrt = konečný rozpad.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--khaki)">
+    <h4 style="color:var(--khaki)">Domov</h4>
+    <p>Nedosažitelný ráj — pro Paula už jen ztracené místo.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--rust)">
+    <h4 style="color:var(--rust)">Uniforma</h4>
+    <p>Ztráta individuality. Vojáci jako anonymní masa.</p>
+  </div>
+</div>
+
+<h3>Remarquův osobní kontext</h3>
+<details>
+  <summary>Autobiografické kořeny románu</summary>
+  <p>Remarque se narodil <strong>1898</strong>, <strong>narukoval v 18 letech (1916)</strong>, stejně jako Paul. Byl <strong>zraněn úlomkem granátu</strong> — úlomky ho zasáhly do krku, levé nohy a pravé paže. Zbytek války strávil v <strong>lazaretu v Duisburgu</strong>. Po válce se pokoušel vést „normální" život — byl učitelem, obchodníkem s pomníky, redaktorem sportovního časopisu — ale trauma z války ho provázelo celý život. <strong>Román psal jako terapii</strong> a potřebu vypovědět hrůzu, kterou prožil. Mnoho postav románu je <strong>kombinací skutečných Remarquových kamarádů</strong> z fronty.</p>
+</details>
+
+<h3>Filmové adaptace</h3>
+<details>
+  <summary>Film 1930 — Oscar, Lewis Milestone</summary>
+  <p><strong>Lewis Milestone, Universal Pictures.</strong> Získal <strong>Oscara za nejlepší film</strong> a <strong>Oscara za režii</strong>. <strong>V Německu byl zakázán</strong> — nacisté narušovali promítání křikem a výbušninami. Považován za <strong>jeden z nejlepších protiválečných filmů vůbec</strong>, natočen pouze dva roky po vydání knihy.</p>
+</details>
+<details>
+  <summary>Film 2022 — Edward Berger, Netflix</summary>
+  <p><strong>Německá adaptace z roku 2022</strong>, režie <strong>Edward Berger</strong>. Nominován na <strong>9 Oscarů</strong> — vyhrál <strong>4 Oscary</strong> (nejlepší zahraniční film, hudba, kamera, výprava). Nejvěrnější zobrazení hrůzy zákopové války v moderním filmu. Zdůrazňuje <strong>zbytečnost Paulovy smrti v posledních hodinách války</strong> — nová scéna, která není v knize, ale podtrhuje její smysl.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Varování před válkou</strong> — stále aktuální</li>
+    <li>Téma <strong>PTSD veteránů</strong></li>
+    <li>Kritika militarismu a propagandy</li>
+    <li>Humanistické poselství</li>
+    <li>Mladí jako oběti rozhodnutí starších</li>
+    <li>Absurdita konfliktu</li>
+    <li>V době nových válek <strong>román ožívá s každým konfliktem</strong></li>
+  </ul>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Rychlá sláva</summary>
+  <p>Kniha vyšla v lednu 1929. Během <strong>prvních 3 měsíců se prodalo 500 000 výtisků jen v Německu</strong>. Do konce roku <strong>1,5 milionu</strong>. Byla okamžitě přeložena do desítek jazyků. <strong>Remarque se ze dne na den stal světovou celebritou.</strong></p>
+</details>
+<details>
+  <summary>Nacistická zášť</summary>
+  <p>Nacisté nenáviděli knihu, protože narušovala mytologii <strong>„Frontgemeinschaft"</strong> (frontového společenství) a hrdinské německé vojácké kultury. Kniha byla <strong>veřejně spálena 10. května 1933</strong> na berlínském Opernplatzu spolu s Einsteinem, Thomasem Mannem, Sigmundem Freudem. Nacisté tvrdili, že Remarque je Žid a jeho pravé jméno je <em>Kramer</em> (anagram Remark) — obojí byla lež.</p>
+</details>
+<details>
+  <summary>Poprava sestry Elfriede</summary>
+  <p>Když se nacistům nepodařilo Remarqua dopadnout, <strong>popravili jeho sestru Elfriede</strong> (1943). Roland Freisler, předseda Lidového soudního dvora, při rozsudku prohlásil: <em>„Váš bratr nám utekl. Vy ne."</em> Elfriede byla popravena gilotinou. Remarque se to dozvěděl až po válce.</p>
+</details>
+<details>
+  <summary>Marlene Dietrich</summary>
+  <p>Remarque měl od roku 1937 <strong>dlouholetý vztah s Marlene Dietrich</strong>. Jejich korespondence patří k nejkrásnějším milostným dopisům 20. století. Nikdy se nevzali — později se Remarque oženil s americkou herečkou <strong>Paulette Goddard</strong>, bývalou manželkou Charlieho Chaplina.</p>
+</details>
+
+<div class="war-diary" style="margin-top:40px">Padl v říjnu 1918, v den, kdy bylo na celé frontě tak ticho a klidno, že se vojenské hlášení omezilo pouze na větu: Na západní frontě klid.
+<span class="war-diary-source">Erich Maria Remarque · Závěrečný odstavec · Kapitola 12</span></div>
+</section>
+
+<div class="barbed-divider" style="margin-top:50px"></div>
+
+</div>
+</body>
+</html>

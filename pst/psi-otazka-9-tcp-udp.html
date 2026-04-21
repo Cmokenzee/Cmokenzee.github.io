@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 9: Protokoly TCP a UDP</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1e2e 50%, #2e1a24 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(167,139,250,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(248,113,113,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-2); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(28px, 5vw, 44px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+  .tag-tcp { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+  .tag-udp { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+
+  /* Handshake visual */
+  .hs-visual { margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .hs-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+  .hs-side { min-width: 70px; text-align: center; font-weight: 600; }
+  .hs-arrow { flex: 1; height: 2px; position: relative; }
+  .hs-arrow::after { content: ''; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; }
+  .hs-arrow-r { background: linear-gradient(to right, transparent, var(--accent-3)); }
+  .hs-arrow-r::after { border-left-color: var(--accent-3); }
+  .hs-arrow-l { background: linear-gradient(to left, transparent, var(--accent-2)); }
+  .hs-arrow-l::before { content: ''; position: absolute; left: -1px; top: -4px; border: 5px solid transparent; border-right-color: var(--accent-2); }
+  .hs-label { min-width: 200px; font-size: 11px; }
+
+  /* Header visual */
+  .header-visual { display: flex; flex-wrap: wrap; gap: 3px; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .hv-block { padding: 10px 10px; border-radius: 6px; text-align: center; min-width: 50px; }
+  .hv-block .hv-label { font-size: 9px; opacity: 0.7; margin-bottom: 3px; }
+  .hv-block .hv-size { font-weight: 600; font-size: 12px; }
+
+  /* Window visual */
+  .window-bar { display: flex; margin: 14px 0; border-radius: 6px; overflow: hidden; font-family: 'JetBrains Mono', monospace; font-size: 10px; height: 32px; }
+  .window-seg { display: flex; align-items: center; justify-content: center; font-weight: 600; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .hs-label { min-width: 140px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 9</div>
+  <h1>Protokoly TCP a UDP</h1>
+  <p>Přepínání • Segmentace • Handshake • Sliding Window • Spolehlivost • Porty</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#transport">Transportní vrstva (L4)</a></li>
+    <li><a href="#switching">Přepínání obvodů vs. datagramů</a></li>
+    <li><a href="#tcp-overview">TCP – přehled a vlastnosti</a></li>
+    <li><a href="#tcp-header">TCP Header (formát segmentu)</a></li>
+    <li><a href="#segmentation">Segmentace a multiplexování</a></li>
+    <li><a href="#3way">Navázání spojení – 3-way handshake</a></li>
+    <li><a href="#4way">Ukončení spojení – 4-way handshake</a></li>
+    <li><a href="#sliding-window">Řízení toku – Sliding Window</a></li>
+    <li><a href="#reliability">Spolehlivost – ACK, Retransmission, SACK</a></li>
+    <li><a href="#congestion">Congestion Control</a></li>
+    <li><a href="#udp">UDP – přehled a header</a></li>
+    <li><a href="#comparison">TCP vs UDP – porovnání</a></li>
+    <li><a href="#rtp">RTP a RTCP (bonus)</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 TRANSPORT -->
+<section class="section" id="transport">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Transportní vrstva (L4)</h2>
+  </div>
+
+  <p>Transportní vrstva poskytuje <strong>end-to-end komunikaci mezi aplikacemi</strong>. Hlavní funkce: segmentace, multiplexování (porty), error detection, flow control, connection management.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4><span class="tag tag-tcp">TCP</span> Spolehlivý</h4>
+      <p>Connection-oriented. Garantované doručení, správné pořadí, flow control. HTTP, FTP, SSH, Email.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4><span class="tag tag-udp">UDP</span> Rychlý</h4>
+      <p>Connectionless. Žádné ACK, žádné retransmission. Minimální overhead. DNS, VoIP, streaming, gaming.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 SWITCHING -->
+<section class="section" id="switching">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Přepínání obvodů vs. datagramů</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Circuit Switching (obvodů)</h4>
+      <p>Pevná cesta vytvořena PŘED přenosem. Rezervovaný bandwidth po celou dobu spojení. Konstantní delay. Příklad: <strong>telefonie (PSTN)</strong>. Nevýhoda: plýtvání (i při mlčení).</p>
+    </div>
+    <div class="device-card" style="border:1px solid rgba(52,211,153,0.3)">
+      <h4 style="color:var(--accent-3)">Packet Switching (datagramů)</h4>
+      <p>Data rozdělena na pakety, každý směrován nezávisle. Sdílený bandwidth. Variable delay. Příklad: <strong>Internet (TCP/IP)</strong>. Efektivní, škálovatelné, robustní.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <p style="margin-bottom:0"><strong>TCP/IP používá packet switching.</strong> IP (L3) je nespolehlivý (best effort). TCP (L4) přidává spolehlivost NAD nespolehlivý IP.</p>
+  </div>
+</section>
+
+<!-- 03 TCP OVERVIEW -->
+<section class="section" id="tcp-overview">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>TCP – přehled a vlastnosti</h2>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Klíčové vlastnosti TCP</div>
+    <ul>
+      <li><strong>Connection-oriented</strong> – spojení navázáno PŘED přenosem (3-way handshake)</li>
+      <li><strong>Reliable</strong> – garantované doručení (ACK, retransmission)</li>
+      <li><strong>Ordered delivery</strong> – data v původním pořadí (sequence numbers)</li>
+      <li><strong>Flow control</strong> – řízení rychlosti (sliding window)</li>
+      <li><strong>Congestion control</strong> – detekce přetížení sítě (slow start, congestion avoidance)</li>
+      <li><strong>Full-duplex</strong> – data oběma směry současně</li>
+      <li><strong>Byte-stream oriented</strong> – TCP vidí data jako proud bytů (ne zprávy)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Použití: HTTP, HTTPS, FTP, SSH, SMTP, POP3, IMAP – vše co vyžaduje spolehlivost.</p>
+  </div>
+</section>
+
+<!-- 04 TCP HEADER -->
+<section class="section" id="tcp-header">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>TCP Header (formát segmentu)</h2>
+  </div>
+
+  <p>TCP segment = TCP header (<strong>20–60 B</strong>) + Data.</p>
+
+  <div class="header-visual">
+    <div class="hv-block" style="background:rgba(96,165,250,0.15);color:var(--accent-1);flex:1">
+      <div class="hv-label">Source Port</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(167,139,250,0.15);color:var(--accent-2);flex:1">
+      <div class="hv-label">Dest Port</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(52,211,153,0.12);color:var(--accent-3);flex:2;min-width:140px">
+      <div class="hv-label">Sequence Number</div><div class="hv-size">32 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(251,191,36,0.12);color:var(--accent-4);flex:2;min-width:140px">
+      <div class="hv-label">Acknowledgment Number</div><div class="hv-size">32 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(244,114,182,0.12);color:var(--accent-7);">
+      <div class="hv-label">Flags</div><div class="hv-size">9 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(251,146,60,0.12);color:var(--accent-6);">
+      <div class="hv-label">Window</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(248,113,113,0.12);color:var(--accent-5);">
+      <div class="hv-label">Checksum</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(107,114,128,0.12);color:var(--text-muted);">
+      <div class="hv-label">Options</div><div class="hv-size">0–40 B</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Klíčová pole</div>
+    <ul>
+      <li><strong>Source / Destination Port</strong> (16 b) – identifikace aplikací</li>
+      <li><strong>Sequence Number</strong> (32 b) – číslo prvního byte dat v segmentu</li>
+      <li><strong>Acknowledgment Number</strong> (32 b) – číslo dalšího očekávaného byte</li>
+      <li><strong>Flags</strong> (9 b) – <code>SYN</code> (handshake), <code>ACK</code> (potvrzení), <code>FIN</code> (ukončení), <code>RST</code> (reset), <code>PSH</code> (push), <code>URG</code> (urgent)</li>
+      <li><strong>Window Size</strong> (16 b) – velikost receive window (flow control, 0–65535 B)</li>
+      <li><strong>Checksum</strong> (16 b) – error detection (header + data)</li>
+      <li><strong>Options</strong> (0–40 B) – MSS, Window Scale, SACK, Timestamps</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 05 SEGMENTATION -->
+<section class="section" id="segmentation">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Segmentace a multiplexování</h2>
+  </div>
+
+  <h3>Segmentace</h3>
+  <p>Aplikace pošle data → TCP rozdělí na <strong>segmenty</strong>. Důvod: MTU limit (Ethernet MTU = 1500 B).</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">MSS (Maximum Segment Size)</div>
+    <p><strong>MSS = MTU − IP header − TCP header = 1500 − 20 − 20 = 1460 B</strong></p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">MSS vyjednán během 3-way handshake (TCP Options). Každá strana oznamuje své MSS.</p>
+  </div>
+
+  <h3>Multiplexování (Porty)</h3>
+  <p><strong>Port numbers</strong> (16 bit, 0–65535) identifikují aplikace na jednom zařízení.</p>
+
+  <table class="compare-table">
+    <tr><th>Rozsah</th><th>Název</th><th>Příklady</th></tr>
+    <tr><td>0–1023</td><td><strong>Well-known</strong></td><td>HTTP 80, HTTPS 443, SSH 22, FTP 21, DNS 53, SMTP 25</td></tr>
+    <tr><td>1024–49151</td><td>Registered</td><td>MySQL 3306, RDP 3389, PostgreSQL 5432</td></tr>
+    <tr><td>49152–65535</td><td>Dynamic / Ephemeral</td><td>Dočasné porty (klient při navazování spojení)</td></tr>
+  </table>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Socket a spojení</div>
+    <p><strong>Socket</strong> = IP adresa : Port (např. 192.168.1.5:443)</p>
+    <p style="margin-bottom:0"><strong>TCP spojení</strong> = 4-tuple: Source IP + Source Port + Dest IP + Dest Port (unikátně identifikuje spojení)</p>
+  </div>
+</section>
+
+<!-- 06 3-WAY -->
+<section class="section" id="3way">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Navázání spojení – 3-way handshake</h2>
+  </div>
+
+  <p>TCP je connection-oriented → spojení <strong>musí být navázáno</strong> před přenosem dat.</p>
+
+  <div class="hs-visual">
+    <div style="display:flex;justify-content:space-between;padding:0 20px;margin-bottom:8px">
+      <span style="font-weight:700;color:var(--accent-1)">KLIENT</span>
+      <span style="font-weight:700;color:var(--accent-2)">SERVER</span>
+    </div>
+    <div class="hs-row">
+      <span class="hs-side" style="color:var(--accent-1)">SYN</span>
+      <div class="hs-arrow hs-arrow-r"></div>
+      <span class="hs-label" style="color:var(--accent-3)">SYN=1, SEQ=1000 (ISN)</span>
+    </div>
+    <div class="hs-row">
+      <span class="hs-label" style="color:var(--accent-2);text-align:right">SYN=1, ACK=1, SEQ=5000, ACK#=1001</span>
+      <div class="hs-arrow hs-arrow-l"></div>
+      <span class="hs-side" style="color:var(--accent-2)">SYN-ACK</span>
+    </div>
+    <div class="hs-row">
+      <span class="hs-side" style="color:var(--accent-1)">ACK</span>
+      <div class="hs-arrow hs-arrow-r"></div>
+      <span class="hs-label" style="color:var(--accent-3)">ACK=1, SEQ=1001, ACK#=5001</span>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-4)">→ ESTABLISHED ←</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-3);">Tři fáze</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">SYN</div><div class="step-content"><div class="step-label">Klient → Server</div><div class="step-desc">SYN=1, SEQ = Initial Sequence Number (ISN, náhodné). „Chci navázat spojení, moje SEQ=1000."</div></div></div>
+      <div class="step"><div class="step-num">S-A</div><div class="step-content"><div class="step-label">Server → Klient</div><div class="step-desc">SYN=1, ACK=1, SEQ=5000, ACK#=1001 (ISN_klient+1). „Souhlasím, moje SEQ=5000, potvrzuji tvůj SYN."</div></div></div>
+      <div class="step"><div class="step-num">ACK</div><div class="step-content"><div class="step-label">Klient → Server</div><div class="step-desc">ACK=1, SEQ=1001, ACK#=5001. „Potvrzuji, spojení navázáno!" → ESTABLISHED.</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Proč 3-way (ne 2-way)?</div>
+    <ul>
+      <li><strong>Synchronizace ISN</strong> – obě strany znají ISN partnera</li>
+      <li><strong>Ověření partnera</strong> – prevence starých duplicitních SYN</li>
+      <li><strong>Prevence SYN flood</strong> – server potvrdí až po obdržení finálního ACK</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 4-WAY -->
+<section class="section" id="4way">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Ukončení spojení – 4-way handshake</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-5);">Čtyři fáze ukončení</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">FIN → (Klient → Server)</div><div class="step-desc">FIN=1, SEQ=3000. „Ukončuji odesílání dat."</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">ACK ← (Server → Klient)</div><div class="step-desc">ACK#=3001. „Rozumím. Ale já můžu ještě posílat!" (half-close)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">FIN ← (Server → Klient)</div><div class="step-desc">FIN=1, SEQ=7000. „Teď i já končím."</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">ACK → (Klient → Server)</div><div class="step-desc">ACK#=7001. „OK, ukončeno!" → TIME_WAIT → CLOSED</div></div></div>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Proč 4-way (ne 2-way)?</div>
+    <p><strong>Full-duplex</strong> → každý směr ukončen samostatně. <strong>Half-close</strong> možný (klient FIN → server stále posílá → server FIN).</p>
+    <p style="margin-bottom:0"><strong>TIME_WAIT:</strong> 2×MSL (typicky 4 min) po finálním ACK. Pokud finální ACK ztracen → server re-transmit FIN → klient musí odpovědět. Zajistí expiraci starých segmentů.</p>
+  </div>
+</section>
+
+<!-- 08 SLIDING WINDOW -->
+<section class="section" id="sliding-window">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Řízení toku – Sliding Window</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém</div>
+    <p style="margin-bottom:0">Odesílatel může vysílat rychleji než příjemce zpracovává → <strong>buffer overflow!</strong></p>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Řešení: Plovoucí okno (Sliding Window)</div>
+    <p>Příjemce má receive buffer. V ACK posílá <strong>Window Size</strong> = kolik bytů může odesílatel poslat BEZ čekání na další ACK.</p>
+    <ul>
+      <li>Aplikace čte data → buffer se uvolňuje → Window roste</li>
+      <li>Buffer plný → <strong>Window = 0</strong> → odesílatel MUSÍ čekat!</li>
+      <li>Okno „pluje" dopředu s každým ACK</li>
+    </ul>
+  </div>
+
+  <!-- Window visualization -->
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:4px">Příklad: Window = 4 KB, SEQ start = 1000</p>
+  <div class="window-bar">
+    <div class="window-seg" style="background:rgba(52,211,153,0.3);color:var(--accent-3);flex:3">ACKed ✓</div>
+    <div class="window-seg" style="background:rgba(251,191,36,0.3);color:var(--accent-4);flex:4;border:2px solid var(--accent-4)">← Okno (lze poslat) →</div>
+    <div class="window-seg" style="background:rgba(107,114,128,0.15);color:var(--text-muted);flex:5">Čeká (mimo okno)</div>
+  </div>
+
+  <details>
+    <summary>Window Size 0 a Persist Timer</summary>
+    <p>Buffer plný → Window=0 → odesílatel nesmí posílat data. <strong>Persist Timer</strong>: odesílatel periodicky posílá <strong>Window Probe</strong> (1 B) → příjemce odpoví aktuálním Window. Zabraňuje deadlocku (oba čekají).</p>
+  </details>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Window Scale Option (RFC 1323)</div>
+    <p>Window Size = 16 bitů → max 65535 B (64 KB) → <strong>málo pro Gigabit sítě!</strong></p>
+    <p style="margin-bottom:0"><strong>Window Scale</strong>: faktor 0–14 → Window × 2<sup>scale</sup>. Max: 65535 × 2<sup>14</sup> ≈ <strong>1 GB</strong>! Vyjednán při handshake.</p>
+  </div>
+</section>
+
+<!-- 09 RELIABILITY -->
+<section class="section" id="reliability">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Spolehlivost – ACK, Retransmission, SACK</h2>
+  </div>
+
+  <h3>Cumulative ACK</h3>
+  <p>ACK číslo = „Přijal jsem všechny byty <strong>PŘED</strong> tímto číslem."</p>
+  <p style="font-size:13px;color:var(--text-muted)">Příklad: Segmenty SEQ=1000, 2000, 3000 dorazí → <strong>ACK=4000</strong> (jeden ACK potvrdí všechny 3).</p>
+
+  <div class="divider"></div>
+
+  <h3>Retransmission (znovuodeslání)</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">RTO Timeout</h4>
+      <p>Odesílatel čeká na ACK. Timeout (200 ms–1 s) → retransmit. RTO počítán z RTT. <strong>Exponential backoff</strong>: 1s → 2s → 4s → 8s… (max 64 s).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Fast Retransmit</h4>
+      <p><strong>3 duplicate ACKs</strong> (stejný ACK 3×) → okamžitě retransmit, nemusí čekat RTO! Seg 2000 ztracen, 3000+4000 dorazí → 3× ACK=2000 → retransmit 2000 ihned.</p>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">SACK (Selective Acknowledgment)</div>
+    <p><strong>Problém cumulative ACK:</strong> Segment 2 ztracen, ale 3, 4, 5 dorazily → ACK=2 nepotvrdí 3, 4, 5 → odesílatel neví co má!</p>
+    <p style="margin-bottom:0"><strong>SACK řešení:</strong> Příjemce pošle ACK=2 + „Mám 3, 4, 5" → odesílatel retransmit <strong>pouze segment 2</strong> (ne všechny). Vyjednán při handshake (TCP Options).</p>
+  </div>
+</section>
+
+<!-- 10 CONGESTION -->
+<section class="section" id="congestion">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Congestion Control</h2>
+  </div>
+
+  <p>Řízení přetížení sítě – TCP detekuje congestion (ztráta paketů, zvýšený RTT) a zpomalí.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Fáze Congestion Control</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Slow Start</div><div class="step-desc">Congestion Window (cwnd) začíná na 1 MSS. Každý ACK → cwnd se <strong>zdvojnásobí</strong> (exponenciální růst: 1→2→4→8→16…). Dokud nedosáhne <strong>ssthresh</strong> (slow start threshold).</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Congestion Avoidance</div><div class="step-desc">Po dosažení ssthresh: cwnd roste <strong>lineárně</strong> (+1 MSS per RTT). Opatrné zvyšování → detekce limitu sítě.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Detekce ztráty (congestion)</div><div class="step-desc"><strong>Timeout:</strong> ssthresh = cwnd/2, cwnd = 1 MSS → zpět na Slow Start. <strong>3 dup ACK (Fast Recovery):</strong> ssthresh = cwnd/2, cwnd = ssthresh → Congestion Avoidance (mírnější).</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Efektivní okno</div>
+    <p style="margin-bottom:0">Odesílatel posílá minimum z: <strong>Receiver Window</strong> (flow control) a <strong>Congestion Window</strong> (congestion control). Effective Window = min(rwnd, cwnd).</p>
+  </div>
+
+  <details>
+    <summary>Moderní TCP varianty</summary>
+    <ul>
+      <li><strong>TCP Reno</strong> – klasický, Fast Retransmit + Fast Recovery</li>
+      <li><strong>TCP Cubic</strong> – default v Linuxu, agresivnější růst cwnd (cubic function)</li>
+      <li><strong>TCP BBR</strong> (Google) – model-based, měří bandwidth a RTT → optimální rate</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 11 UDP -->
+<section class="section" id="udp">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>UDP – přehled a header</h2>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Klíčové vlastnosti UDP</div>
+    <ul>
+      <li><strong>Connectionless</strong> – žádný handshake, data odesílána okamžitě</li>
+      <li><strong>Unreliable</strong> – žádné ACK, žádné retransmission → ztracené pakety neobnoveny</li>
+      <li><strong>Unordered</strong> – datagramy mohou dorazit v jiném pořadí</li>
+      <li><strong>No flow/congestion control</strong> – žádné sliding window</li>
+      <li><strong>Message-oriented</strong> – datagramy (ne byte stream jako TCP)</li>
+      <li><strong>Minimální overhead</strong> – header pouze <strong>8 B</strong> (vs TCP 20+ B)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Použití: DNS, DHCP, VoIP (RTP), streaming, gaming, SNMP, TFTP, NTP.</p>
+  </div>
+
+  <h3>UDP Header (8 B)</h3>
+
+  <div class="header-visual">
+    <div class="hv-block" style="background:rgba(96,165,250,0.15);color:var(--accent-1);flex:1">
+      <div class="hv-label">Source Port</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(167,139,250,0.15);color:var(--accent-2);flex:1">
+      <div class="hv-label">Dest Port</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(251,191,36,0.15);color:var(--accent-4);flex:1">
+      <div class="hv-label">Length</div><div class="hv-size">16 b</div>
+    </div>
+    <div class="hv-block" style="background:rgba(248,113,113,0.15);color:var(--accent-5);flex:1">
+      <div class="hv-label">Checksum</div><div class="hv-size">16 b</div>
+    </div>
+  </div>
+
+  <ul>
+    <li><strong>Source Port</strong> – volitelný (může být 0)</li>
+    <li><strong>Destination Port</strong> – port příjemce</li>
+    <li><strong>Length</strong> – délka celého datagramu (header + data, min 8 B)</li>
+    <li><strong>Checksum</strong> – error detection (volitelný v IPv4, <strong>povinný v IPv6</strong>)</li>
+  </ul>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Overhead porovnání</div>
+    <p style="margin-bottom:0">Pro DNS dotaz (50 B data): UDP overhead = 8 B (14 %). TCP overhead = 20 B (29 %) + 3-way handshake (3 pakety navíc!). <strong>UDP je 2× efektivnější pro malé zprávy.</strong></p>
+  </div>
+</section>
+
+<!-- 12 COMPARISON -->
+<section class="section" id="comparison">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>TCP vs UDP – porovnání</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th><span class="tag tag-tcp">TCP</span></th><th><span class="tag tag-udp">UDP</span></th></tr>
+    <tr><td><strong>Spojení</strong></td><td>Connection-oriented (handshake)</td><td>Connectionless</td></tr>
+    <tr><td><strong>Spolehlivost</strong></td><td>Reliable (ACK, retransmission)</td><td>Unreliable (best effort)</td></tr>
+    <tr><td><strong>Pořadí</strong></td><td>Ordered (sequence numbers)</td><td>Unordered</td></tr>
+    <tr><td><strong>Flow control</strong></td><td>Sliding window</td><td>Žádný</td></tr>
+    <tr><td><strong>Congestion control</strong></td><td>Slow start, CA</td><td>Žádný</td></tr>
+    <tr><td><strong>Header</strong></td><td>20–60 B</td><td><strong>8 B</strong></td></tr>
+    <tr><td><strong>Orientace</strong></td><td>Byte stream</td><td>Message (datagramy)</td></tr>
+    <tr><td><strong>Duplex</strong></td><td>Full-duplex</td><td>—</td></tr>
+    <tr><td><strong>Broadcast/Multicast</strong></td><td>Nepodporuje</td><td><strong>Podporuje</strong></td></tr>
+    <tr><td><strong>Použití</strong></td><td>HTTP, FTP, SSH, Email</td><td>DNS, VoIP, streaming, gaming</td></tr>
+  </table>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Kdy použít co?</div>
+    <div class="device-grid" style="margin-top:10px">
+      <div class="device-card">
+        <h4 style="color:var(--accent-3)">TCP když:</h4>
+        <p>Data musí dorazit kompletní a bez chyb. Pořadí kritické. Latence není kritická (web, email, soubory).</p>
+      </div>
+      <div class="device-card">
+        <h4 style="color:var(--accent-1)">UDP když:</h4>
+        <p>Nízká latence kritická (VoIP, gaming). Ztráta pár packetů OK (video glitch > freeze). Malé zprávy (DNS). Broadcast/Multicast.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 RTP -->
+<section class="section" id="rtp">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>RTP a RTCP (bonus)</h2>
+  </div>
+
+  <p>Otázka zmiňuje <strong>RTP/RTCP</strong> – protokoly pro real-time přenos médií nad UDP.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">RTP (Real-time Transport Protocol)</h4>
+      <p>Přenos audio/video dat v reálném čase. Běží <strong>nad UDP</strong> (nízká latence). Přidává: sequence numbers (pořadí), timestamps (synchronizace), payload type (kodek). <strong>Není spolehlivý</strong> – žádné retransmission (ztracený frame = přeskočený). Použití: VoIP (SIP + RTP), video konference, IPTV.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">RTCP (RTP Control Protocol)</h4>
+      <p>Companion protokol pro RTP. Monitoruje kvalitu přenosu: packet loss, jitter, RTT. <strong>Sender Reports (SR)</strong> a <strong>Receiver Reports (RR)</strong> → feedback o kvalitě. Umožňuje adaptivní bitrate (pokud špatná kvalita → sníží rozlišení).</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Proč RTP nad UDP (ne TCP)?</div>
+    <p style="margin-bottom:0">TCP retransmission by způsobil <strong>zpoždění</strong> (čekání na ztracený packet) → u VoIP/videa horší než přeskočení framu. UDP + RTP = rychlý přenos s timestampy pro synchronizaci, bez čekání na retransmit.</p>
+  </div>
+</section>
+
+<!-- 14 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">14</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">PŘEPÍNÁNÍ</p>
+    <ul>
+      <li><strong>Circuit switching</strong> = pevná cesta, rezervovaný BW (telefonie). <strong>Packet switching</strong> = datagramy nezávisle, sdílený BW (Internet)</li>
+      <li>TCP/IP = packet switching. IP nespolehlivý → TCP přidává spolehlivost</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">TCP</p>
+    <ul>
+      <li><strong>Connection-oriented</strong>: 3-way handshake (<strong>SYN → SYN-ACK → ACK</strong>), 4-way termination (FIN → ACK → FIN → ACK)</li>
+      <li><strong>Reliable</strong>: Cumulative ACK, retransmission (RTO timeout, <strong>Fast Retransmit po 3 duplicate ACKs</strong>), SACK</li>
+      <li><strong>Flow control</strong>: <strong>Sliding Window</strong> (plovoucí okno). Window=0 → stop. Window Scale → až 1 GB</li>
+      <li><strong>Congestion control</strong>: Slow Start (exponenciální) → Congestion Avoidance (lineární). Effective = min(rwnd, cwnd)</li>
+      <li><strong>MSS = 1460 B</strong> (MTU 1500 − IP 20 − TCP 20). Header 20–60 B</li>
+      <li><strong>Flags</strong>: SYN, ACK, FIN, RST, PSH, URG</li>
+      <li>Použití: HTTP, HTTPS, FTP, SSH, SMTP, POP3, IMAP</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">UDP</p>
+    <ul>
+      <li><strong>Connectionless, unreliable</strong>: žádný handshake, žádné ACK/retransmission</li>
+      <li><strong>Header 8 B</strong> (Source Port, Dest Port, Length, Checksum)</li>
+      <li><strong>Podporuje broadcast/multicast</strong> (TCP ne!)</li>
+      <li>Použití: DNS, DHCP, VoIP (RTP), streaming, gaming, NTP, SNMP, TFTP</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">PORTY A RTP</p>
+    <ul>
+      <li><strong>Porty</strong>: Well-known 0–1023 (HTTP 80, HTTPS 443, SSH 22). Registered 1024–49151. Dynamic 49152–65535</li>
+      <li><strong>Socket</strong> = IP:Port. TCP spojení = 4-tuple (src IP + src port + dst IP + dst port)</li>
+      <li><strong>RTP</strong> = real-time media nad UDP (sequence #, timestamps). <strong>RTCP</strong> = monitoring kvality (packet loss, jitter)</li>
+      <li>TCP pro přesnost (web, soubory). <strong>UDP pro rychlost</strong> (VoIP, DNS, gaming)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Norman Mailer: Nazí a mrtví</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1210;
+  --bg-card:#141814;
+  --bg-card-alt:#1a1f1a;
+  --border:#2c322a;
+  --text:#a8b0a0;
+  --text-muted:#606858;
+  --heading:#d0d6c4;
+  --accent-1:#3a4a2a;     /* tmavá džungle */
+  --accent-2:#6a7248;     /* khaki / polní zeleň */
+  --accent-3:#8a4628;     /* rezavá krev */
+  --accent-4:#5a4838;     /* blato */
+  --accent-5:#2a2620;     /* noc v džungli */
+  --accent-6:#4a5a3a;     /* mladá zeleň */
+  --accent-7:#a88a48;     /* kožené opasky */
+  --accent-8:#6a2818;     /* krev */
+  --jungle:#3a4a2a;       /* džungle */
+  --khaki:#6a7248;        /* armádní khaki */
+  --rust:#8a4628;         /* rez */
+  --mud:#5a4838;          /* bláto */
+  --blood:#6a2818;        /* krev */
+  --moss:#4a5a3a;         /* mech */
+  --leather:#a88a48;      /* kůže */
+  --steel:#4a4a48;        /* ocel zbraní */
+  --flesh:#a87058;        /* kůže vojáka */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(58,74,42,.08) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(138,70,40,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — mapový štítek vojenské operace */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(14,18,16,.3) 0%,rgba(14,18,16,.92) 100%),
+    linear-gradient(135deg,#101612 0%,#1a2218 30%,#0e1410 65%,#0a0e0a 100%);
+  border-bottom:3px solid var(--khaki);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 80%,rgba(106,114,72,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(138,70,40,.07) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Mapový pásek */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--khaki) 0,var(--khaki) 14px,
+      transparent 14px,transparent 18px,
+      var(--khaki) 18px,var(--khaki) 32px,
+      transparent 32px,transparent 40px);
+  opacity:.5;
+}
+.hero-classified{
+  display:inline-block;
+  background:var(--blood);
+  color:var(--heading);
+  padding:6px 20px;
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:5px;
+  font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:26px;
+  transform:rotate(-1.5deg);
+  position:relative;
+  border:1px solid var(--blood);
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--khaki);
+  margin-bottom:22px;position:relative;
+  opacity:.85;
+}
+.hero h1{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(42px,7.5vw,76px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1;
+  position:relative;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  text-shadow:0 2px 30px rgba(106,114,72,.2);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--leather);
+  font-size:.28em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.75;
+}
+.hero h1 .sub-orig{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.32em;
+  font-style:italic;
+  color:var(--khaki);
+  letter-spacing:3px;
+  margin-top:18px;
+  font-weight:500;
+  text-transform:none;
+}
+.hero .author{
+  font-family:'Oswald',sans-serif;
+  color:var(--leather);
+  margin-top:30px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:4px;
+  font-weight:400;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Special Elite',monospace;
+  color:var(--text);
+  font-size:14.5px;
+  margin:38px auto 0;
+  max-width:580px;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.75;
+  opacity:.85;
+  padding:20px 26px;
+  border:1px solid var(--border);
+  background:rgba(14,18,16,.4);
+}
+.hero-quote em{
+  display:block;
+  font-size:.75em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — polní hlášení */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--khaki);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'OPERAČNÍ PLÁN';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--khaki);
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  letter-spacing:4px;
+  font-weight:600;
+}
+.toc::after{
+  content:'ANOPOPEI · 1944';
+  position:absolute;
+  top:-10px;right:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--leather);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+}
+.toc h2{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--leather);
+  margin-bottom:20px;text-align:center;
+  font-weight:500;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:'■ ' counter(toc,decimal-leading-zero) ' ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--khaki);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--rust)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--khaki),var(--rust));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Oswald',sans-serif;
+  font-size:36px;color:var(--khaki);
+  font-weight:700;
+  min-width:70px;opacity:.55;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'Oswald',sans-serif;
+  font-size:26px;color:var(--heading);
+  font-weight:500;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+h3{
+  font-family:'Oswald',sans-serif;
+  font-size:19px;font-weight:500;
+  color:var(--heading);
+  margin:32px 0 14px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+h4{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--khaki);background:rgba(106,114,72,.05)}
+.card.key{border-left:3px solid var(--leather);background:rgba(168,138,72,.04)}
+.card.warn{border-left:3px solid var(--blood);background:rgba(106,40,24,.05)}
+.card.jungle{border-left:3px solid var(--jungle);background:rgba(58,74,42,.06)}
+.card.mud{border-left:3px solid var(--mud);background:rgba(90,72,56,.05)}
+.card.steel{border-left:3px solid var(--steel);background:rgba(74,74,72,.05)}
+
+.card-title{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:600;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--khaki)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(106,114,72,.1);
+  color:var(--khaki);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--leather);font-style:italic}
+
+/* Bojový dělič — ostnatý drát */
+.battle-divider{
+  position:relative;
+  margin:48px 0;
+  height:3px;
+  background:repeating-linear-gradient(90deg,
+    var(--khaki) 0,var(--khaki) 14px,
+    transparent 14px,transparent 18px,
+    var(--khaki) 18px,var(--khaki) 32px,
+    transparent 32px,transparent 40px);
+  opacity:.4;
+}
+.battle-divider::before{
+  content:'▲';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:var(--bg);
+  color:var(--khaki);
+  padding:0 16px;
+  font-size:14px;
+  opacity:.7;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:12px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — vojenské ID karty */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--khaki));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+}
+.character .char-name{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+  text-transform:none;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--khaki));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--khaki);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Crimson Pro',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--khaki);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--khaki),var(--rust),var(--khaki));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--khaki);
+  background:rgba(106,114,72,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(106,114,72,.3);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--khaki);
+  background:rgba(106,114,72,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--leather)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(106,40,24,.05);
+  border-left:2px solid var(--blood);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--blood)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--khaki);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--khaki);
+  font-weight:600;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--khaki),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--khaki);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* CUMMINGS vs HEARN — ideologický souboj */
+.ideology-duel{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:0;
+  margin:28px 0;
+  align-items:stretch;
+}
+.ideology-side{
+  padding:24px 26px;
+  border:1px solid var(--border);
+}
+.ideology-side.cummings{
+  background:rgba(106,40,24,.05);
+  border-right:none;
+  border-top:3px solid var(--blood);
+}
+.ideology-side.hearn{
+  background:rgba(106,114,72,.04);
+  border-left:none;
+  border-top:3px solid var(--moss);
+}
+.ideology-side h4{
+  margin-top:0;
+  margin-bottom:14px;
+  font-size:14px;
+}
+.ideology-side.cummings h4{color:var(--blood)}
+.ideology-side.hearn h4{color:var(--moss)}
+.ideology-vs{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  background:var(--bg);
+  border-top:3px solid var(--border);
+  border-bottom:1px solid var(--border);
+  color:var(--text-muted);
+  font-family:'Oswald',sans-serif;
+  letter-spacing:3px;
+  font-size:11px;
+  text-transform:uppercase;
+  min-width:60px;
+}
+.ideology-side ul{margin:0;padding-left:18px}
+.ideology-side ul li{font-size:14px;margin-bottom:5px}
+
+/* 4 ČÁSTI vizualizace */
+.parts-viz{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin:20px 0;
+  padding:14px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+}
+.part-block{
+  padding:14px 10px;
+  text-align:center;
+  background:var(--part-bg,var(--bg-card-alt));
+  border:1px solid var(--border);
+  border-top:3px solid var(--part-color,var(--khaki));
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--text);
+  letter-spacing:1px;
+  min-height:80px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.part-num{
+  font-family:'Oswald',sans-serif;
+  font-size:18px;
+  color:var(--part-color,var(--khaki));
+  font-weight:700;
+  letter-spacing:2px;
+}
+.part-label{
+  text-transform:uppercase;
+  font-weight:600;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--khaki);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:600;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--khaki));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  color:var(--heading);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--khaki);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--blood);
+  background:rgba(106,40,24,.4);
+}
+.timeline-step.power::before{
+  border-color:var(--rust);
+  background:rgba(138,70,40,.3);
+}
+.timeline-step .ts-title{
+  font-family:'Crimson Pro',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-part{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--khaki);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* ČAS-STROJ — retrospektivní rámec */
+.time-machine{
+  background:var(--bg-card-alt);
+  border:1px solid var(--leather);
+  border-left:4px solid var(--leather);
+  padding:22px 28px;
+  margin:20px 0;
+  position:relative;
+  font-family:'Special Elite',monospace;
+  color:var(--heading);
+  font-size:14.5px;
+  line-height:1.75;
+}
+.time-machine::before{
+  content:'⌛ ČAS-STROJ';
+  position:absolute;
+  top:-10px;left:16px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--leather);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:3px;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--khaki);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .locations-list{grid-template-columns:1fr}
+  .ideology-duel{grid-template-columns:1fr}
+  .ideology-side.cummings{border-right:1px solid var(--border)}
+  .ideology-side.hearn{border-left:1px solid var(--border)}
+  .ideology-vs{padding:8px 0;min-width:auto}
+  .parts-viz{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-classified">The Naked and the Dead</div>
+  <div class="hero-label">Maturitní rozbor · Americká válečná próza · Naturalismus</div>
+  <h1><em>Válečný román · 1948</em>Nazí<br>a mrtví<span class="sub-orig">aneb Pacifická džungle a diagram moci</span></h1>
+  <div class="author">Norman Mailer</div>
+  <div class="subtitle">Pacifik · Ostrov Anopopei · 1944</div>
+  <div class="hero-quote">Vidíš to, Hearne? Strach. To je základ všeho. Moderní doba vyžaduje moc. A moc vyžaduje strach.<em>— Generál Cummings</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Anopopei</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Čas-stroj</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy · Průzkumný oddíl</a></li>
+  <li><a href="#ideologie">Cummings vs. Hearn · Ideologický souboj</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a symbolika</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Klíčová témata a pasáže</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Nazí a mrtví</strong> <em>(The Naked and the Dead)</em> je válečný román publikovaný v roce <strong>1948</strong> — pouhé <strong>tři roky po konci války</strong>. Dílo má složitou kompozici střídající přítomný děj s retrospektivními pasážemi. Mailer ho napsal <strong>ve věku 25 let</strong> na základě <strong>vlastní válečné zkušenosti</strong> z Filipín (Luzon), kde sloužil v průzkumné jednotce. Kniha se stala <strong>okamžitým bestsellerem</strong> (přes 200 000 výtisků během prvního roku) a <strong>definovala Mailerovu kariéru</strong>.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-part">Část I</span> Výsadek</div>
+    <div class="ts-desc">Představení postav, začátek konfliktu Cummings–Hearn</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-part">Část II</span> Boje a retrospektivy</div>
+    <div class="ts-desc">Prohlubování konfliktů, „Čas-stroj" kapitoly o minulosti vojáků</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-part">Část III</span> Průzkumná mise</div>
+    <div class="ts-desc">Smrt Hearna, Croftova obsese horou, krize</div>
+  </div>
+  <div class="timeline-step power">
+    <div class="ts-title"><span class="ts-part">Část IV</span> Ironické vítězství</div>
+    <div class="ts-desc">Dobytí ostrova náhodou, ne strategií</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>několik týdnů bojů</strong> na fiktivním tichomořském ostrově <strong>Anopopei</strong>. Retrospektivní kapitoly <strong>„Čas-stroj"</strong> sahají do předválečné Ameriky 20. a 30. let.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Hrůza 2. světové války na Pacifiku, vliv války na lidskou psychiku, moc a její korupce, fašismus vs. demokracie, absurdita války, ztráta lidskosti, strach, smrt, vojenská hierarchie, totalita v demokracii.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Anopopei</strong> — fiktivní tichomořský ostrov jako izolovaný mikrokosmos</li>
+  <li><strong>Džungle</strong> — tropické peklo, nepřátelská příroda</li>
+  <li><strong>Výsadek, boj, smrt</strong> — vojenská rutina</li>
+  <li><strong>Strach</strong> — základ moci podle Cummingse</li>
+  <li><strong>Generál Cummings</strong> — moc, fašistická ideologie</li>
+  <li><strong>Poručík Hearn</strong> — idealismus, vzpoura</li>
+  <li><strong>Vojáci</strong> — různé osudy, různí Američané</li>
+  <li><strong>„Čas-stroj" retrospektivy</strong> — minulost postav</li>
+  <li><strong>Sexualita, násilí, teplo, hmyz, vyčerpání</strong></li>
+  <li><strong>Hierarchie, poslušnost, vzpoura</strong></li>
+  <li><strong>Hora</strong> — Croftova obsese</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor · Anopopei</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--khaki)">
+    <h4 style="color:var(--khaki)">Čas</h4>
+    <p><strong>2. světová válka, Pacifik, přibližně 1944.</strong> Retrospektivy — předválečné období (20.–30. léta). Děj trvá několik týdnů.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--jungle)">
+    <h4 style="color:var(--jungle)">Prostor</h4>
+    <p><strong>Anopopei</strong> — fiktivní tichomořský ostrov. Džungle, vojenský tábor, frontové linie, hora. Retrospektivy — různá místa v Americe.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--jungle)">
+      <div class="location-name">Džungle</div>
+      <div class="location-note">Tropické peklo — horko, pijavice, komáři</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--steel)">
+      <div class="location-name">Vojenský tábor</div>
+      <div class="location-note">Cummingsův stan — centrum moci</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--blood)">
+      <div class="location-name">Frontové linie</div>
+      <div class="location-note">Přímé boje s Japonci</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--rust)">
+      <div class="location-name">Hora Anaka</div>
+      <div class="location-note">Cíl průzkumu — Croftova obsese</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--mud)">
+      <div class="location-name">Pláž</div>
+      <div class="location-note">Místo vylodění</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--leather)">
+      <div class="location-name">Retrospektivy</div>
+      <div class="location-note">Amerika před válkou — různá města</div>
+    </div>
+  </div>
+</div>
+
+<div class="card jungle">
+  <div class="card-title" style="color:var(--jungle)">Džungle jako postava</div>
+  <p style="margin-bottom:0">Džungle není jen kulisa — je <strong>aktivním nepřítelem</strong>. <strong>Horko, hmyz, pijavice, bahno, zápach rozkladu</strong>. Požírá vojáky stejně jako Japonci. Příroda se postavila proti civilizaci. Mailer ji popisuje naturalisticky — jako <em>„živou, hladovou bytost"</em>.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba · Čas-stroj</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Paralelní struktura</strong> — střídání přítomného děje a retrospektiv</li>
+  <li><strong>Mozaiková kompozice</strong> — různé postavy, různé příběhy</li>
+  <li><strong>„Čas-stroj" kapitoly</strong> (<em>The Time Machine</em>) — retrospektivy o minulosti postav</li>
+  <li><strong>Tři dějové linie</strong>: vojenská kampaň, Cummings–Hearn konflikt, osudy vojáků</li>
+</ul>
+
+<h3>4 části díla</h3>
+<div class="parts-viz">
+  <div class="part-block" style="--part-color:var(--khaki)">
+    <div class="part-num">I</div>
+    <div class="part-label">Vlny</div>
+    <div>Výsadek</div>
+  </div>
+  <div class="part-block" style="--part-color:var(--rust);--part-bg:rgba(138,70,40,.05)">
+    <div class="part-num">II</div>
+    <div class="part-label">Hlína a jíl</div>
+    <div>Retrospektivy</div>
+  </div>
+  <div class="part-block" style="--part-color:var(--blood);--part-bg:rgba(106,40,24,.05)">
+    <div class="part-num">III</div>
+    <div class="part-label">Rostlina a duch</div>
+    <div>Smrt Hearna</div>
+  </div>
+  <div class="part-block" style="--part-color:var(--leather);--part-bg:rgba(168,138,72,.05)">
+    <div class="part-num">IV</div>
+    <div class="part-label">Brázda</div>
+    <div>Ironické vítězství</div>
+  </div>
+</div>
+<p style="text-align:center;font-size:12px;color:var(--text-muted);font-style:italic;margin-top:8px">Každá část má svůj vlastní tematický název (v originále: Wave · Argil and Mold · Plant and Phantom · Wake).</p>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--leather)">„Čas-stroj" — literární novátorství</div>
+  <p style="margin-bottom:0"><strong>Time Machine kapitoly</strong> jsou Mailerův charakteristický kompoziční postup. Uprostřed bojové akce se vypravěč zastaví a <strong>vrací se do minulosti konkrétní postavy</strong> — ukazuje její dětství, rodinu, práci, lásky, zklamání před válkou. Díky tomu <strong>vojáci nejsou anonymní</strong> — každý má minulost, identitu, lidskost. Mailer tím odmítá dehumanizaci, kterou válka vyžaduje.</p>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">I. Výsadek <span class="ts-part">Kap. 1</span></div>
+    <div class="ts-desc">Představení postav, začátek konfliktu Cummings–Hearn</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">II. Boje a retrospektivy</div>
+    <div class="ts-desc">Prohlubování konfliktů, Čas-stroj kapitoly</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">III. Průzkumná mise</div>
+    <div class="ts-desc">Smrt Hearna, Croftova obsese, krize</div>
+  </div>
+  <div class="timeline-step power">
+    <div class="ts-title">IV. Dobytí ostrova</div>
+    <div class="ts-desc">Ironické vítězství — náhodou, ne strategií</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (válku).</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Válečný román</h4>
+    <p>Zobrazení 2. světové války — specificky <strong>méně známé pacifické fronty</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Psychologický román</h4>
+    <p>Analýza lidské psychiky ve válce — strach, moc, trauma.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--leather)">
+    <h4 style="color:var(--leather)">Filozofický román</h4>
+    <p>Otázky moci, fašismu, lidství — zejména v dialozích Cummings–Hearn.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--jungle)">
+    <h4 style="color:var(--jungle)">Naturalistický román</h4>
+    <p>Brutální realita bez příkras — biologický determinismus.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--leather)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Rozsáhlé epické dílo</li>
+    <li>Detailní zobrazení <strong>války na Pacifiku</strong></li>
+    <li>Psychologická hloubka — motivace, strach, trauma</li>
+    <li><strong>Filozofické dialogy</strong> o moci (Cummings–Hearn)</li>
+    <li>Naturalistické popisy hrůz</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Vševědoucí vypravěč</strong> — vidí do myšlenek všech postav</li>
+  <li><strong>Objektivní pozorovatel</strong> — střídá se s vnitřními monology</li>
+  <li><strong>Střídání perspektiv</strong> — každá kapitola může sledovat jinou postavu</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Nezúčastněný kronikář</strong></li>
+    <li>Naturalistický přístup — <strong>brutálně pravdivý</strong></li>
+    <li>Psychologicky pronikavý</li>
+    <li>Střídá vnější akci s vnitřními stavy</li>
+    <li>Filozoficky uvažující (zejména v dialozích Cummings–Hearn)</li>
+  </ul>
+</div>
+
+<div class="card mud">
+  <div class="card-title" style="color:var(--mud)">Střídání perspektiv</div>
+  <p style="margin-bottom:0">Vypravěč je schopen <strong>vstoupit do mysli kteréhokoli vojáka</strong> — od generála Cummingse přes Hearna po prostého vojína. Každá kapitola může být pohledem jiné postavy. Díky tomu kniha <strong>nemá jednoho hrdinu</strong> — hrdinou je celá rota, celá válka, celá generace.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy · Průzkumný oddíl</h2></div>
+
+<h3>Hlavní trojice</h3>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="✕">
+  <div class="char-name">Generál Cummings</div>
+  <div class="char-role">Hlavní postava · Záporná · Velitel divize</div>
+  <ul style="margin:0">
+    <li><strong>Velitel divize, ambiciózní</strong></li>
+    <li>Inteligentní, vzdělaný, cynik</li>
+    <li><strong>Fašistické sklony</strong></li>
+    <li>Věří v moc, hierarchii, totalitu</li>
+    <li>Manipulativní</li>
+    <li><strong>Homosexuální tendence</strong> (potlačované) — předčasná psychologická analýza pro rok 1948</li>
+    <li>Symbol <strong>autoritářství</strong></li>
+    <li>Filozofuje o <em>„nutnosti"</em> fašismu</li>
+    <li>Varování: fašismus v americké armádě</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--moss)" data-symbol="♟">
+  <div class="char-name">Poručík Hearn</div>
+  <div class="char-role">Hlavní postava · Tragická · Idealista</div>
+  <ul style="margin:0">
+    <li><strong>Harvardský absolvent</strong>, idealista</li>
+    <li>Cummingsův pobočník</li>
+    <li><strong>Bouří se proti autoritě</strong></li>
+    <li>Liberální hodnoty</li>
+    <li>Konflikt s Cummingsem</li>
+    <li><strong>Poslán na sebevražednou misi</strong></li>
+    <li>Zabit — možná vlastními muži (Croftem?)</li>
+    <li>Symbol <strong>idealismu zničeného válkou</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--rust)" data-symbol="▲">
+  <div class="char-name">Seržant Croft</div>
+  <div class="char-role">Hlavní postava · Záporná · Vůdce oddílu</div>
+  <ul style="margin:0">
+    <li><strong>Vůdce průzkumného oddílu</strong></li>
+    <li>Brutální, <strong>sadistický</strong></li>
+    <li>Žízní po moci</li>
+    <li>Vynikající voják, ale bezcitný</li>
+    <li><strong>Chce dobýt horu</strong> — iracionální obsese</li>
+    <li>Symbol <strong>primitivní krutosti</strong></li>
+    <li>Nakonec v obsese zabije Hearna (pasivně)</li>
+  </ul>
+</div>
+
+<h3>Vojáci průzkumného oddílu</h3>
+
+<div class="character" style="--character-color:var(--khaki)" data-symbol="R">
+  <div class="char-name">Red Valsen</div>
+  <div class="char-role">Vedlejší · Rebel · Cynik</div>
+  <ul style="margin:0">
+    <li>Rebel, <strong>nesouhlasí s autoritou</strong></li>
+    <li>Cynik, tulák, horník z Montany</li>
+    <li>Symbol americké nezávislosti</li>
+    <li><strong>Přežije</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--leather)" data-symbol="✡">
+  <div class="char-name">Goldstein</div>
+  <div class="char-role">Vedlejší · Kladná · Žid</div>
+  <ul style="margin:0">
+    <li><strong>Žid, trpí antisemitismem</strong> ostatních</li>
+    <li>Citlivý, lidský</li>
+    <li><strong>Nese těžce raněného kamaráda</strong> (Wilsona) hodiny džunglí</li>
+    <li>Symbol lidskosti uprostřed nenávisti</li>
+    <li>Mailer byl sám Žid — osobní prvek</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--flesh)" data-symbol="W">
+  <div class="char-name">Wilson</div>
+  <div class="char-role">Vedlejší · Texasan · Obyčejný chlap</div>
+  <ul style="margin:0">
+    <li>Texasan, obyčejný chlap</li>
+    <li>Miluje ženy, alkohol, jídlo</li>
+    <li><strong>Raněn, ale přežije</strong> — zásluhou Goldsteina</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mud)" data-symbol="M">
+  <div class="char-name">Martinez</div>
+  <div class="char-role">Vedlejší · Mexičan · Zvěd</div>
+  <ul style="margin:0">
+    <li><strong>Mexičan</strong>, vynikající zvěd</li>
+    <li>Tichý, efektivní</li>
+    <li>Bojuje za uznání jako „pravý Američan"</li>
+    <li>Vidí nejhorší hrůzy</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="G">
+  <div class="char-name">Gallagher</div>
+  <div class="char-role">Vedlejší · Ir · Zatrpklý</div>
+  <ul style="margin:0">
+    <li>Ir z Bostonu, zatrpklý</li>
+    <li><strong>Nenávidí Židy</strong> (a Goldsteina specificky)</li>
+    <li>Agresivní</li>
+    <li>Jeho žena během jeho pobytu na frontě umírá</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--moss)" data-symbol="D">
+  <div class="char-name">Ridges</div>
+  <div class="char-role">Vedlejší · Sedlák z jihu</div>
+  <ul style="margin:0">
+    <li>Sedlák z jižanské chudoby</li>
+    <li>Prostý, poslušný, zbožný</li>
+    <li>Zvyklý na tvrdou práci</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--steel)" data-symbol="B">
+  <div class="char-name">Brown</div>
+  <div class="char-role">Vedlejší · Kariérista</div>
+  <ul style="margin:0">
+    <li>Kariérista, <strong>prospěchář</strong></li>
+    <li>Chce přežít a postoupit</li>
+    <li>Symbol amerického pragmatismu</li>
+  </ul>
+</div>
+
+<div class="card jungle">
+  <div class="card-title" style="color:var(--jungle)">„Amerika v miniatuře"</div>
+  <p style="margin-bottom:0">Mailer záměrně složil průzkumný oddíl tak, aby reprezentoval <strong>Ameriku v miniatuře</strong> — Ir, Žid, Mexičan, Texasan, jižanský sedlák, tulák ze Západu, absolvent prestižní univerzity. Každý má svůj <strong>„Čas-stroj"</strong> — retrospektivní kapitolu. Oddíl je <strong>mikrokosmem americké společnosti 40. let</strong> se všemi jejími napětími.</p>
+</div>
+</section>
+
+<!-- 08 IDEOLOGICKÝ SOUBOJ -->
+<section class="section" id="ideologie">
+<div class="section-header"><span class="section-num">08</span><h2>Cummings vs. Hearn · Ideologický souboj</h2></div>
+
+<p>Ústředním konfliktem románu není boj s Japonci, ale <strong>filozofický spor mezi generálem Cummingsem a poručíkem Hearnem</strong>. Je to spor dvou pohledů na moc, společnost a budoucnost Ameriky.</p>
+
+<div class="ideology-duel">
+  <div class="ideology-side cummings">
+    <h4>◆ Cummings · Autoritářství ◆</h4>
+    <ul>
+      <li>Moc je základ všeho</li>
+      <li>Strach udržuje pořádek</li>
+      <li>Hierarchie je přirozená</li>
+      <li>Fašismus = budoucnost</li>
+      <li>Demokracie je slabá</li>
+      <li>Člověk je od přírody zvíře</li>
+      <li>Morálka je slabost</li>
+      <li>Historie patří silným</li>
+    </ul>
+  </div>
+  <div class="ideology-vs">vs</div>
+  <div class="ideology-side hearn">
+    <h4>◆ Hearn · Liberalismus ◆</h4>
+    <ul>
+      <li>Svoboda je hodnota</li>
+      <li>Důstojnost člověka</li>
+      <li>Rovnost před právem</li>
+      <li>Demokracie = budoucnost</li>
+      <li>Fašismus je nemorální</li>
+      <li>Člověk je schopen dobra</li>
+      <li>Etika je podstatná</li>
+      <li>Moc musí být kontrolována</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Kdo v románu „vyhrává"?</div>
+  <p style="margin-bottom:0"><strong>Cummings vítězí</strong> — Hearn je zabit, idealismus je zničen. <strong>Ale Mailer vítězství autoritářství zobrazuje jako hrůzu</strong>, ne oslavu. Dílo je <strong>varováním před fašismem v Americe</strong> — Mailer tvrdí, že americká armáda je zárodkem totalitní společnosti. Napsáno 3 roky po porážce Hitlera — fašismus mohl prohrát válku, ale mohl vyhrát mír.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--leather)">Hearnova „vzpoura" — Symbolický moment</div>
+  <p style="margin-bottom:0">Hearn udělá <strong>jediné malé gesto</strong> — <strong>šlápne na Cummingsovu cigaretu, kterou generál hodil na zem jako rozkaz „zvedni ji"</strong>. Malé, ale symbolické gesto vzdoru. <strong>Cummings to vidí a Hearn ví, že právě podepsal svůj rozsudek.</strong> Cummings ho krátce poté pošle na sebevražednou průzkumnou misi.</p>
+</div>
+</section>
+
+<!-- 09 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">09</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Přímá řeč · Cummingsova filozofie</div>
+  <div class="quote-block" style="margin:0">„Chápeš to, Hearne? Budoucnost patří…" řekl Cummings.<span class="quote-source">Filozofický rozhovor</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--khaki)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Hearn věděl, že generál ho testuje.</p>
+</div>
+
+<div class="card mud">
+  <div class="card-title" style="color:var(--mud)">Vnitřní monolog · Croftova obsese</div>
+  <p style="font-style:italic;color:var(--heading);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Croft myslel na horu. Musel ji dobýt. Musel dokázat svou moc.</p>
+</div>
+
+<div class="time-machine">Retrospektivní „Čas-stroj" kapitoly — Mailer se uprostřed přítomné akce vrací do minulosti postav. Ukazuje jejich dětství, rodinu, lásky, zklamání. Vojáci přestávají být anonymními čísly. Jsou to Američané s minulostí.</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--khaki)"><h4 style="color:var(--khaki)">Pásmo vypravěče</h4><p>Převažující forma — popis války, bitev, džungle.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--mud)"><h4 style="color:var(--mud)">Monolog</h4><p>Vnitřní úvahy postav — strach, vzpomínky, touhy.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--leather)"><h4 style="color:var(--leather)">Dialog</h4><p>Rozhovory vojáků, <strong>filozofické diskuse</strong> Cummings–Hearn.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Retrospektivní vyprávění</h4><p>„Čas-stroj" — minulost postav.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--jungle)"><h4 style="color:var(--jungle)">Popis</h4><p>Džungle, bitvy, podmínky — <strong>naturalistické</strong>.</p></div>
+</div>
+</section>
+
+<!-- 10 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">10</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Vulgarismy a slang</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Autentická řeč vojáků</strong></li>
+    <li>Nadávky, hrubý jazyk</li>
+    <li>Pro tehdejší dobu <strong>šokující</strong> (1948)</li>
+    <li>Mailer musel používat eufemismy — <em>„fug"</em> místo <em>„fuck"</em> — aby knihu mohli vydat</li>
+    <li>Dnes známá historka: po vydání knihy prý Mailerovi herečka Tallulah Bankhead řekla: <em>„Ach, vy jste ten mladík, který neumí hláskovat fuck."</em></li>
+  </ul>
+</div>
+
+<h3>Naturalistické popisy</h3>
+<div class="card jungle">
+  <div class="card-title" style="color:var(--jungle)">Brutální pravda</div>
+  <ul style="margin:0">
+    <li>Brutální detaily <strong>smrti, ran, rozkladu</strong></li>
+    <li><strong>Hmyz, horko, pot, výkaly</strong></li>
+    <li>Nic není vynecháno</li>
+    <li>Styl navazuje na Emila Zolu, Stephena Cranea</li>
+  </ul>
+</div>
+
+<h3>Filozofický jazyk</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>V dialozích <strong>Cummings–Hearn</strong></li>
+    <li>Abstraktní pojmy: <strong>moc, fašismus, historie, strach</strong></li>
+    <li>Kontrast s vulgárním jazykem vojáků</li>
+  </ul>
+</div>
+
+<h3>Různé registry</h3>
+<ul>
+  <li>Podle postav — <strong>vzdělaní vs. prostí</strong></li>
+  <li>Cummings a Hearn mluví knižně, vzdělaně</li>
+  <li>Croft, Red Valsen — brutální slang</li>
+  <li>Podle situace — bitva vs. filozofování</li>
+</ul>
+
+<h3>Vnitřní monolog</h3>
+<div class="card mud">
+  <ul style="margin:0">
+    <li><strong>Proud vědomí</strong> (stream of consciousness)</li>
+    <li>Strach, vzpomínky, touhy</li>
+    <li>Odhaluje skutečné motivace postav</li>
+  </ul>
+</div>
+
+<h3>Symbolický jazyk</h3>
+<ul>
+  <li><strong>Hora</strong> = obsese moci (Croft)</li>
+  <li><strong>Džungle</strong> = chaos, příroda vs. civilizace</li>
+  <li>Jednoduchá slova s hlubokým významem</li>
+</ul>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Vulgarismy</strong> vytváří autenticitu</li>
+    <li><strong>Naturalistické popisy</strong> šokují, ukazují pravdu</li>
+    <li><strong>Filozofický jazyk</strong> přidává hloubku</li>
+    <li><strong>Různé registry</strong> charakterizují postavy</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">11</span><h2>Tropy, figury a symbolika</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Hora Anaka</div>
+    <div class="trope-note"><strong>Hora = moc, obsese, nedosažitelný cíl.</strong> Cummings = fašismus. Hearn = zničený liberalismus. Džungle = chaos.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Válka = stroj</div>
+    <div class="trope-note">Válka = obří stroj (<em>time machine</em> = stroj času i smrti). Vojáci = součástky stroje.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Naturalistický determinismus</div>
+    <div class="trope-example">Člověk = produkt</div>
+    <div class="trope-note">Lidé jsou produkty prostředí a dědičnosti. Válka odhaluje pravou zvířecí povahu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Náhoda vítězí</div>
+    <div class="trope-note">Ostrov dobyt náhodou, ne strategií. Cummingsovo plánování marné. Vítězství prázdné.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Cummings vs. Hearn</div>
+    <div class="trope-note">Fašismus vs. liberalismus. Moc vs. svoboda. Civilizace vs. barbarství. Ideál vs. realita.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Živá džungle</div>
+    <div class="trope-note">Džungle jako živý nepřítel, který chce pohltit vojáky. Stroj války.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Hrůza = pravda</div>
+    <div class="trope-note">Přehánění hrůz — ale není to nadsázka, je to pravda. Realita byla horší než fikce.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Alegorie</div>
+    <div class="trope-example">Oddíl = USA</div>
+    <div class="trope-note">Průzkumný oddíl = mikrokosmos Ameriky. Anopopei = izolovaný svět, kde se zjevuje pravda.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Symboly</strong> nesou filozofický význam, <strong>naturalismus</strong> šokuje, <strong>ironie</strong> odhaluje absurditu války. Mailer kombinuje brutální pravdu s filozofickou reflexí — tím se liší od méně intelektuálních válečných románů své doby.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">12</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Norman Mailer (1923–2007)</div>
+  <p>Americký spisovatel, novinář, dramatik, režisér a politický aktivista. Narozen v <strong>New Jersey</strong>, vyrůstal v Brooklynu v <strong>židovské rodině</strong>. <strong>Harvardský absolvent</strong> (inženýrské letectví). V roce 1944 narukoval do armády, <strong>sloužil na Filipínách (Luzon)</strong> v průzkumné jednotce — zkušenost, která se stala základem románu <em>Nazí a mrtví</em>. Knihu napsal ve <strong>věku 25 let</strong> — okamžitě se stal celebritou. Po zbytek života <strong>nikdy tento úspěch nepřekonal</strong> a tento tlak ho celý život pronásledoval. Byl <strong>6× ženatý</strong> — druhou ženu Adele Moralesovou <strong>pobodal v opilosti</strong> (1960) — přežila. V 60. letech patřil k <strong>hnutí Nové žurnalistiky</strong> — psal reportáže románovou formou. Kandidoval na <strong>starostu New Yorku</strong> (1969). Dvakrát získal <strong>Pulitzerovu cenu</strong> — za <em>Armády noci</em> (1968) a <em>Popravčí píseň</em> (1979). Byl <strong>extrémně kontroverzní</strong> — provokatér, feministky ho nenáviděly, kritik obdivoval i kritizoval. Zemřel v roce <strong>2007</strong> v 84 letech.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Mailerův debut (1948)</strong></li>
+  <li>Napsáno ve <strong>25 letech</strong></li>
+  <li>Založeno na vlastní válečné zkušenosti</li>
+  <li>Okamžitý úspěch — přes <strong>200 000 výtisků</strong> první rok</li>
+  <li>Srovnáván s Hemingwayem</li>
+</ul>
+
+<h3>Další Mailerova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Nazí a mrtví</strong></td><td>1948</td><td>Debut, válečný román</td></tr>
+  <tr><td><strong>Barbary Shores</strong></td><td>1951</td><td>Politický román</td></tr>
+  <tr><td><strong>Jelení park</strong></td><td>1955</td><td>Hollywood a McCarthyismus</td></tr>
+  <tr><td><strong>Armády noci</strong></td><td>1968</td><td>Protest proti válce ve Vietnamu — <strong>Pulitzer</strong></td></tr>
+  <tr><td><strong>Popravčí píseň</strong></td><td>1979</td><td>Vrah Gary Gilmore — <strong>Pulitzer</strong></td></tr>
+  <tr><td><strong>Tvrdí chlapi netančí</strong></td><td>1984</td><td>Thriller</td></tr>
+  <tr><td><strong>Harlotův duch</strong></td><td>1991</td><td>Obsáhlý román o CIA</td></tr>
+  <tr><td colspan="3">Plus rozsáhlá <strong>novinářská a esejistická tvorba</strong></td></tr>
+</table>
+
+<h3>Mailerův styl</h3>
+<ul>
+  <li><strong>Naturalistická próza</strong></li>
+  <li>Filozofické otázky</li>
+  <li><strong>Kontroverze</strong> (sex, násilí)</li>
+  <li>Mužský pohled — <strong>kritizován feministkami</strong></li>
+  <li>Experimentální techniky (v pozdějších dílech)</li>
+  <li><strong>Angažovanost</strong> — politická, kulturní</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">13</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>1948</strong> — 3 roky po válce</li>
+    <li><strong>Studená válka</strong> začíná</li>
+    <li>Vzpomínky na válku čerstvé</li>
+    <li><strong>McCarthyismus</strong> (50. léta)</li>
+    <li>Umělecký sloh: <strong>NATURALISMUS / MODERNÍ REALISMUS</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy naturalismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Brutální pravda</h4><p>Bez příkras, bez idealizace.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--jungle)"><h4 style="color:var(--jungle)">Biologický determinismus</h4><p>Člověk je produkt genetiky a prostředí.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--mud)"><h4 style="color:var(--mud)">Vliv prostředí</h4><p>Džungle, armáda, chudoba — vše formuje člověka.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--steel)"><h4 style="color:var(--steel)">Vědecký přístup</h4><p>Pozorování, analýza — jako sociolog.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-5)"><h4 style="color:var(--accent-5)">Pesimismus</h4><p>Člověk je bezmocný před osudem.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--rust)"><h4 style="color:var(--rust)">Sexualita a násilí</h4><p>Nic není cenzurováno.</p></div>
+</div>
+
+<h3>Válka na Pacifiku</h3>
+<details>
+  <summary>Pacifická fronta — zapomenutá válka</summary>
+  <p>Evropská fronta 2. sv. války je známější, <strong>Pacifik je méně zmapován v literatuře</strong>. Mailer byl jedním z prvních, kdo ji popsal. Válka na Pacifiku měla zcela <strong>jiný charakter</strong>: <strong>tropické podnebí, džungle, malárie, horečka dengue, pijavice, jedovatý hmyz</strong>. Boj probíhal <strong>ostrov za ostrovem</strong> — Guadalcanal, Tarawa, Iwodžima, Okinawa. Japonci bojovali do posledního muže — <strong>kamikadze, bandoty, banzai</strong> útoky. Americké ztráty byly ohromné — ale méně než japonské. Mailer popsal <strong>Luzon na Filipínách</strong> (leden–červen 1945), kde sám sloužil.</p>
+</details>
+
+<h3>Poválečná americká válečná literatura</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Rok</th></tr>
+  <tr><td><strong>Norman Mailer</strong></td><td><em>Nazí a mrtví</em> (Pacifik)</td><td>1948</td></tr>
+  <tr><td><strong>James Jones</strong></td><td><em>Odtud až na věčnost</em> (Pearl Harbor)</td><td>1951</td></tr>
+  <tr><td><strong>Herman Wouk</strong></td><td><em>Caine byla jejich osud</em></td><td>1951</td></tr>
+  <tr><td><strong>Joseph Heller</strong></td><td><em>Hlava XXII</em> (satira)</td><td>1961</td></tr>
+  <tr><td><strong>Kurt Vonnegut</strong></td><td><em>Jatka číslo pět</em> (Drážďany)</td><td>1969</td></tr>
+  <tr><td><strong>Erich Maria Remarque</strong></td><td><em>Čas žít, čas umírat</em></td><td>1954</td></tr>
+  <tr><td><strong>Primo Levi</strong></td><td><em>Je-li toto člověk</em> (holocaust)</td><td>1947</td></tr>
+</table>
+
+<h3>Témata poválečné literatury</h3>
+<ul>
+  <li><strong>Trauma z války</strong></li>
+  <li><strong>PTSD</strong> (tehdy bez názvu)</li>
+  <li>Kritika militarismu</li>
+  <li>Absurdita války</li>
+  <li>Ztráta nevinnosti</li>
+  <li><strong>Varování před fašismem v demokratických společnostech</strong></li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--leather)">Srovnání s dalšími válečnými romány</div>
+  <ul style="margin:0">
+    <li><strong>Realističtější než Hemingway</strong></li>
+    <li>Brutálnější než Jones</li>
+    <li><strong>Filozofičtější než většina</strong></li>
+    <li>Naturalistický jako Zola</li>
+    <li>Panoramatický jako Tolstoj (<em>Válka a mír</em>)</li>
+  </ul>
+</div>
+</section>
+
+<div class="battle-divider"></div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">14</span><h2>Klíčová témata a pasáže</h2></div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(106,40,24,.08);border-color:var(--blood);color:var(--blood)">★ 01 · NÁZEV · NAZÍ A MRTVÍ ★</span>
+  <div class="scene-title">Název — „Nazí a mrtví"</div>
+  <div class="scene-context"><strong>Kontext:</strong> <em>„The Naked and the Dead"</em> — nahý a mrtvý. <strong>Všichni vojáci jsou nazí</strong> (zbavení důstojnosti, zranitelní) a potenciálně mrtví.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Válka svléká člověka z humanity</strong></li>
+      <li>Všichni jsou rovni před smrtí</li>
+      <li>Fyzická i duchovní nahota</li>
+      <li>Zároveň název přejímá rytmus biblického jazyka</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(106,40,24,.1);border-color:var(--blood);color:var(--blood)">★ 02 · CUMMINGS · FILOZOFIE MOCI ★</span>
+  <div class="scene-title">Generál Cummings o moci</div>
+  <div class="scene-text">Vidíš to, Hearne? Strach. To je základ všeho. Moderní doba vyžaduje moc. A moc vyžaduje strach. Fašismus je budoucnost. Demokracie je slabá. Jen silná ruka může vládnout.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Cummingsovy filozofické úvahy.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Cummings jako <strong>předzvěst amerického fašismu</strong></li>
+      <li>Kritika autoritářství</li>
+      <li>Varování</li>
+      <li><strong>Filozofický střed díla</strong></li>
+      <li>Napsáno 3 roky po porážce Hitlera — stále aktuální</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Hearnova vzpoura</span>
+  <div class="scene-title">Hearn šlápne na cigaretu</div>
+  <div class="scene-context">Hearn udělal něco neuvěřitelného. <strong>Šlápl na Cummingsovu cigaretu</strong>, kterou generál hodil na zem. Bylo to gesto vzdoru. Malé, ale důležité. Cummings to viděl. A Hearn věděl, že právě podepsal svůj rozsudek.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Symbolický akt odporu</strong></li>
+      <li>Malé gesto = velká vzpoura</li>
+      <li>Předznamenání Hearnova osudu</li>
+      <li>Konflikt ideologií</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Sebevražedná mise</span>
+  <div class="scene-title">Průzkumná mise</div>
+  <div class="scene-context">Cummings poslal Hearna vést průzkumnou misi. <strong>Všichni věděli, že je to sebevražda.</strong> Croft to věděl. Hearn to věděl. Ale rozkaz je rozkaz.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Moc zabíjí odpor</strong></li>
+      <li>Vojenská hierarchie = nástroj eliminace</li>
+      <li>Předznamenání tragédie</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(106,40,24,.08);border-color:var(--blood);color:var(--blood)">★ 05 · SMRT HEARNA ★</span>
+  <div class="scene-title">Smrt Hearna</div>
+  <div class="scene-text">Výstřel přišel zezadu. Hearn klesl. Nikdy se nedozvěděl, kdo střílel. Možná nepřítel. Možná vlastní muž. Croft stál a díval se. Nezasáhl.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Možná vražda vlastními</strong> (Croft?)</li>
+      <li>Symbolická smrt idealismu</li>
+      <li>Absurdita — nevíme, kdo střílel</li>
+      <li><strong>Moc vítězí</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--rust)">
+  <span class="scene-label" style="background:rgba(138,70,40,.1);border-color:var(--rust);color:var(--rust)">★ 06 · CROFTOVA OBSESE ★</span>
+  <div class="scene-title">Croft a hora Anaka</div>
+  <div class="scene-context">Croft se díval na horu. <strong>Musel ji dobýt.</strong> Ne pro taktické důvody. Pro sebe. Aby dokázal svou moc. Aby porazil přírodu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Iracionální obsese mocí</strong></li>
+      <li>Hora = symbol dominance</li>
+      <li>Oběti pro ego jednoho muže</li>
+      <li>Kritika megalomanie</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--jungle)">
+  <span class="scene-label" style="background:rgba(58,74,42,.1);border-color:var(--jungle);color:var(--jungle)">★ 07 · NATURALISTICKÁ DŽUNGLE ★</span>
+  <div class="scene-title">Naturalistické popisy džungle</div>
+  <div class="scene-text">Horko bylo nesnesitelné. Pot tekl proudem. Hmyz všude. Komáři, mouchy, pijavice. Bahno až po kolena. Zápach rozkladu. Mrtvá těla. Džungle je živá a chce je pohltit.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Naturalistická brutalita</strong></li>
+      <li>Příroda jako nepřítel</li>
+      <li>Fyzické utrpení</li>
+      <li>Válka na Pacifiku = džungle</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Retrospektivy</span>
+  <div class="scene-title">„Čas-stroj" kapitoly</div>
+  <div class="scene-context"><em>„The Time Machine"</em> kapitoly ukazují <strong>minulost každé postavy před válkou</strong>. Dětství, rodina, práce, lásky, zklamání — všechno, co udělalo z chlapce vojáka.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Vojáci jsou <strong>lidé s minulostí</strong></li>
+      <li>Různé americké osudy</li>
+      <li>Sociální komentář</li>
+      <li><strong>Válka mění všechny</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--leather)">
+  <span class="scene-label" style="background:rgba(168,138,72,.08);border-color:var(--leather);color:var(--leather)">★ 09 · LIDSKOST · GOLDSTEIN ★</span>
+  <div class="scene-title">Goldstein nese raněného</div>
+  <div class="scene-context">Goldstein nesl Wilsona na nosítkách. Byl vyčerpaný. Ale nesmí ho opustit. <strong>Antisemitské poznámky jiných.</strong> Ale on pokračoval. <strong>Lidskost navzdory nenávisti.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Lidskost uprostřed války</strong></li>
+      <li>Boj proti předsudkům</li>
+      <li>Fyzická i morální síla</li>
+      <li>Židovská postava jako kladný hrdina — osobní pro Mailera (sám Žid)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--accent-5);background:rgba(42,38,32,.3)">
+  <span class="scene-label" style="background:rgba(42,38,32,.5);border-color:var(--accent-5);color:var(--text)">★ 10 · ZÁVĚR · IRONICKÉ VÍTĚZSTVÍ ★</span>
+  <div class="scene-title">Dobytí ostrova</div>
+  <div class="scene-context">Ostrov byl dobyt. <strong>Ale ne Cummingsovou strategií.</strong> Prostý seržant provedl náhodný útok a Japonci uprchli. <strong>Všechno plánování bylo marné. Náhoda rozhodla.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Ironie</strong> — strategie marná</li>
+      <li>Náhoda vs. plánování</li>
+      <li>Cummingsovo ego uraženo</li>
+      <li><strong>Absurdita války</strong></li>
+      <li>Kritika vojenské mytologie</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Hlavní témata díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Moc a korupce</h4>
+    <p>Moc kazí (Cummings, Croft).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--rust)">
+    <h4 style="color:var(--rust)">Fašismus vs. demokracie</h4>
+    <p>Může demokracie sklouznout k fašismu?</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--jungle)">
+    <h4 style="color:var(--jungle)">Válka a lidskost</h4>
+    <p>Válka odhaluje zvíře v člověku.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Hierarchie</h4>
+    <p>Vojenská, ale i společenská.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--khaki)">
+    <h4 style="color:var(--khaki)">Strach</h4>
+    <p>Základ moci a kontroly.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mud)">
+    <h4 style="color:var(--mud)">Determinismus</h4>
+    <p>Lidé — produkty prostředí.</p>
+  </div>
+</div>
+</section>
+
+<div class="battle-divider"></div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">15</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--khaki)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Válka odhaluje pravou povahu člověka</strong> — často brutální a sobeckou. <strong>Moc korumpuje a může vést k fašismu i v demokracii.</strong> Ideály jsou zničeny realitou. Hierarchie slouží k útlaku. Lidskost je vzácná a křehká.</p>
+</div>
+
+<h3>Filozofické otázky románu</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>Je člověk v jádru <strong>dobrý nebo zlý</strong>?</li>
+    <li>Je <strong>fašismus přirozenější než demokracie</strong>?</li>
+    <li>Může <strong>moc existovat bez korupce</strong>?</li>
+    <li>Je <strong>válka odhalením pravé lidské přirozenosti</strong>?</li>
+    <li>Je americká armáda zárodkem totalitní společnosti?</li>
+  </ul>
+</div>
+
+<h3>Poselství díla</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Varování před fašismem v Americe</strong></li>
+    <li>Kritika militarismu</li>
+    <li>Válka ničí ideály</li>
+    <li>Moc korumpuje absolutně</li>
+    <li>Lidskost je křehká</li>
+    <li>Hierarchie je nástroj útlaku</li>
+  </ul>
+</div>
+
+<h3>Mailerova válečná zkušenost</h3>
+<details>
+  <summary>Autobiografické kořeny</summary>
+  <p>Mailer sloužil na <strong>Filipínách (Luzon)</strong> v roce 1945 v <strong>průzkumné jednotce 112. kavalerie</strong>. Viděl boje, smrt, džungli. Dílo je <strong>částečně autobiografické</strong> — postavy jsou založeny na skutečných vojácích, které Mailer znal. Mailer zdokumentoval své zkušenosti v poznámkách, které pak zpracoval v románu. Napsal ho v roce 1947–48 za <strong>15 měsíců</strong>.</p>
+</details>
+
+<h3>Kontroverze</h3>
+<details>
+  <summary>Vulgarismy a cenzura (1948)</summary>
+  <p>Mailer chtěl zachytit <strong>autentický jazyk vojáků</strong> — plný vulgarismů. Ale v roce 1948 by to bylo <strong>necenzurovatelné</strong>. Vydavatel ho donutil nahradit <em>„fuck"</em> za <em>„fug"</em> po celé knize. Tato kompromisní forma šokovala veřejnost a vyvolala diskuse — <strong>mnozí Američané se s takovou drsnou vojenskou řečí setkali poprvé v literatuře</strong>. Tallulah Bankhead prý po setkání s Mailerem řekla: <em>„Ach, vy jste ten mladík, který neumí hláskovat fuck."</em></p>
+</details>
+<details>
+  <summary>Předzvěst fašismu v Americe</summary>
+  <p>V době, kdy byla Amerika vítězem nad fašismem, Mailer tvrdil, že <strong>americká armáda je sama zárodkem fašistické společnosti</strong>. To bylo kontroverzní — a v době McCarthyismu přímo nebezpečné. Cummings jako postava říká, že <em>„Amerika potřebuje fašismus, aby přežila"</em>. Někteří veteráni se cítili uraženi — kniha byla kritizována jako antiamerická.</p>
+</details>
+
+<h3>Literární technika</h3>
+<div class="card steel">
+  <ul style="margin:0">
+    <li><strong>Naturalistický determinismus</strong></li>
+    <li>Mozaiková struktura</li>
+    <li>Retrospektivy („Čas-stroj")</li>
+    <li>Střídání perspektiv</li>
+    <li>Vnitřní monolog</li>
+    <li>Filozofické dialogy</li>
+    <li>Symbolismus</li>
+  </ul>
+</div>
+
+<h3>Filmová adaptace</h3>
+<details>
+  <summary>Film 1958 — Raoul Walsh</summary>
+  <p><strong>Režie Raoul Walsh, 1958</strong>. V hlavních rolích <strong>Aldo Ray (Croft)</strong> a <strong>Cliff Robertson (Hearn)</strong>. Film byl <strong>silně zmírněn cenzurou</strong> 50. let — vulgarismy odstraněny, filozofie potlačena. <strong>Méně filozofický než kniha</strong>, ale přesto zachycující brutalitu džungle a vojenské hierarchie. Mailer byl s adaptací nespokojen.</p>
+</details>
+
+<h3>Vliv na Mailera</h3>
+<details>
+  <summary>Břemeno rané slávy</summary>
+  <p>Okamžitá sláva ve <strong>25 letech</strong> definovala Mailerovu kariéru — ale byla to i <strong>zátěž</strong>. Srovnáván s Hemingwayem. Každé další dílo bylo vnímáno v kontextu <em>Nazí a mrtví</em>. <strong>Mailer nikdy nepřekonal úspěch debutu</strong> — ačkoli později získal dvě Pulitzerovy ceny. Tento tlak vedl k jeho provokativním postojem, kontroverzím a osobním krizím po celý život.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>Varování před autoritářstvím</strong> — stále aktuální</li>
+    <li>Militarismus a jeho nebezpečí</li>
+    <li><strong>Fašistické tendence v demokraciích</strong></li>
+    <li>Moc a její zneužití</li>
+    <li>Válka a trauma</li>
+    <li>Lidskost vs. brutalita</li>
+    <li>Kritika vojensko-průmyslového komplexu</li>
+  </ul>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Rychlý bestseller</summary>
+  <p>Napsáno za <strong>15 měsíců</strong>. Bestseller — <strong>přes 200 000 výtisků</strong> první rok. Přeloženo do mnoha jazyků. Etablovalo Mailera jako hlavní hlas generace. Kontroverzní dodnes. Studováno na univerzitách po celém světě.</p>
+</details>
+<details>
+  <summary>Kulturní dědictví</summary>
+  <p>Jeden z <strong>definičních válečných románů 20. století</strong>. Ovlivnil pohled na válku na Pacifiku. Inspirace pro další autory (James Jones, Joseph Heller, Tim O'Brien). <strong>Varování před fašismem.</strong> Symbol naturalistické prózy. Klasika americké literatury 20. století. Pravidelně vychází na seznamu <em>100 nejlepších anglicky psaných románů</em>.</p>
+</details>
+
+<div class="card warn" style="margin-top:36px;border:2px solid var(--blood);background:rgba(106,40,24,.05)">
+  <div class="card-title" style="color:var(--blood);text-align:center;font-size:12px">Finální varování</div>
+  <p style="margin:0;text-align:center;font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:2px;color:var(--blood);font-weight:600;text-transform:uppercase">Fašismus mohl prohrát válku<br>ale může vyhrát mír</p>
+  <p style="margin:12px 0 0;text-align:center;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">Norman Mailer · Nazí a mrtví · 1948</p>
+</div>
+</section>
+
+<div class="battle-divider" style="margin-top:50px"></div>
+
+</div>
+</body>
+</html>

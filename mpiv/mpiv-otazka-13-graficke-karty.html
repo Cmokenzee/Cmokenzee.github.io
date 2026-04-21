@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 13: Grafické karty</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8}
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .hero{background:linear-gradient(135deg,#0f1117 0%,#2e0f2e 40%,#0f2e0f 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(52,211,153,.06) 0%,transparent 50%);pointer-events:none}
+  .hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-3);margin-bottom:16px;position:relative}
+  .hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+  .hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+  .container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+  .toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px}
+  .toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+  .toc li::before{content:counter(toc,decimal-leading-zero)' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+  .toc a{color:var(--text);text-decoration:none;transition:color .2s}.toc a:hover{color:var(--accent-8)}
+  .section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+  .section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+  h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+  .card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+  .card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+  .card.purple{border-left:3px solid var(--accent-2);background:rgba(167,139,250,.04)}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+  ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(96,165,250,.1);color:var(--accent-1);padding:2px 6px;border-radius:4px}
+  strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+  .compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+  .compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+  .device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
+  .device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+  .device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+  .steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}.step:last-child{border-bottom:none}
+  .step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--accent-3);min-width:24px;padding-top:2px}
+  .step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+  .formula{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:14px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;color:var(--accent-1);font-weight:600}
+  .formula .f-small{font-size:11px;color:var(--text-muted);font-weight:400;margin-top:6px}
+  /* SM block visual */
+  .sm-visual{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:11px;overflow-x:auto}
+  .sm-label{font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:12px;text-align:center}
+  /* Speed bars */
+  .speed-bars{margin:16px 0}.speed-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .sb-label{min-width:100px;color:var(--text-muted);font-size:11px}
+  .sb-fill{height:22px;border-radius:4px;display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:600}
+  .sb-value{min-width:100px;text-align:right;font-size:11px}
+  /* Pipeline flow */
+  .pipe-flow{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:11px;overflow-x:auto}
+  .pipe-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
+  .pipe-box{padding:10px 12px;border-radius:6px;font-weight:600;text-align:center;min-width:70px}
+  .pipe-arrow{color:var(--text-muted);font-size:16px}
+  @media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.pipe-row{flex-direction:column}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 13</div>
+  <h1>Grafické karty</h1>
+  <p>NVIDIA • AMD • Intel Arc • Mikroarchitektura • CUDA / Tensor / RT Cores • HDMI • DisplayPort</p>
+</div>
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2><ol>
+  <li><a href="#uvod">GPU – úvod a CPU vs GPU</a></li>
+  <li><a href="#nvidia">NVIDIA GeForce RTX 40</a></li>
+  <li><a href="#amd">AMD Radeon RX 7000</a></li>
+  <li><a href="#intel-igpu">Intel Arc, iGPU a profesionální GPU</a></li>
+  <li><a href="#mikroarch">Mikroarchitektura GPU – SM, CUDA, Warp</a></li>
+  <li><a href="#tensor-rt">Tensor Cores, RT Cores, DLSS</a></li>
+  <li><a href="#pamet-gpu">Paměťová hierarchie GPU – GDDR vs HBM</a></li>
+  <li><a href="#rendering">Rendering pipeline – rasterizace a ray tracing</a></li>
+  <li><a href="#hdmi">HDMI</a></li>
+  <li><a href="#dp">DisplayPort</a></li>
+  <li><a href="#usbc-tb">USB-C Alt Mode a Thunderbolt</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol></nav>
+
+<!-- 01 -->
+<section class="section" id="uvod">
+  <div class="section-header"><span class="section-num">01</span><h2>GPU – úvod a CPU vs GPU</h2></div>
+  <p><strong>GPU</strong> (Graphics Processing Unit) = specializovaný procesor pro <strong>PARALELNÍ zpracování</strong>. Na rozdíl od CPU (několik silných jader) má GPU <strong>TISÍCE menších jader</strong> optimalizovaných pro floating-point matematiku.</p>
+
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">CPU vs GPU filosofie</div>
+    <table class="compare-table">
+      <tr><th></th><th style="color:var(--accent-1)">CPU</th><th style="color:var(--accent-3)">GPU</th></tr>
+      <tr><td>Jádra</td><td>Několik rychlých (4–24)</td><td><strong>Tisíce pomalých (5000–20000+)</strong></td></tr>
+      <tr><td>Zaměření</td><td>Sekvenční úlohy</td><td><strong>Masivní paralelismus</strong></td></tr>
+      <tr><td>Optimalizace</td><td>Nízká latence</td><td>Vysoká propustnost</td></tr>
+    </table>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-6)">Použití GPU</div>
+    <ul>
+      <li><strong>Gaming</strong> – 3D grafika v reálném čase</li>
+      <li><strong>3D rendering</strong> – Blender, Maya, Cinema 4D</li>
+      <li><strong>Video editing</strong> – Premiere, DaVinci Resolve</li>
+      <li><strong>Machine Learning / AI</strong> – CUDA, TensorFlow, PyTorch</li>
+      <li><strong>Scientific computing</strong> – simulace, kryptografie</li>
+    </ul>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Integrated GPU (iGPU)</h4>
+      <p>Zabudované v CPU. Sdílí RAM. Light gaming, video. Intel Iris Xe, AMD Radeon Graphics.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Discrete GPU (dGPU)</h4>
+      <p>Samostatná karta v PCIe slotu. Vlastní VRAM. Gaming, profesionální, AI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="section" id="nvidia">
+  <div class="section-header"><span class="section-num">02</span><h2>NVIDIA GeForce RTX 40</h2></div>
+  <p><strong>NVIDIA</strong> = lídr GPU trhu (~80% podíl). <strong>Ada Lovelace</strong> architektura (2022+).</p>
+
+  <table class="compare-table">
+    <tr><th>Model</th><th>CUDA Cores</th><th>VRAM</th><th>TDP</th><th>Výkon</th><th>Cena</th></tr>
+    <tr><td><strong style="color:var(--accent-5)">RTX 4090</strong></td><td style="color:var(--accent-3)"><strong>16 384</strong></td><td>24 GB GDDR6X</td><td>450W</td><td>4K 120+ FPS</td><td>~$1 600</td></tr>
+    <tr><td><strong>RTX 4080</strong></td><td>9 728</td><td>16 GB GDDR6X</td><td>320W</td><td>4K 100+ FPS</td><td>~$1 200</td></tr>
+    <tr><td><strong>RTX 4070 Ti</strong></td><td>7 680</td><td>12 GB GDDR6X</td><td>285W</td><td>1440p 144+ FPS</td><td>~$800</td></tr>
+    <tr><td><strong>RTX 4070</strong></td><td>5 888</td><td>12 GB GDDR6X</td><td>200W</td><td>1440p/entry 4K</td><td>~$600</td></tr>
+    <tr><td>RTX 4060</td><td>3 072</td><td>8 GB GDDR6</td><td>115W</td><td>1080p/1440p</td><td>~$300</td></tr>
+  </table>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Klíčové technologie NVIDIA</div>
+    <ul>
+      <li><strong>DLSS 3.5</strong> (Deep Learning Super Sampling) – AI upscaling + Frame Generation</li>
+      <li><strong>Ray Tracing</strong> – RT Cores pro realistické osvětlení, stíny, odrazy</li>
+      <li><strong>Reflex</strong> – snížení input lag</li>
+      <li><strong>CUDA</strong> – parallel computing platform (ML/AI, scientific)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="section" id="amd">
+  <div class="section-header"><span class="section-num">03</span><h2>AMD Radeon RX 7000</h2></div>
+  <p><strong>AMD</strong> = druhý hráč (~20%). Často <strong>lepší cena/výkon</strong>, ale slabší ray tracing a AI features. <strong>RDNA 3</strong> architektura.</p>
+
+  <table class="compare-table">
+    <tr><th>Model</th><th>Stream Proc.</th><th>VRAM</th><th>TDP</th><th>Poznámka</th></tr>
+    <tr><td><strong style="color:var(--accent-5)">RX 7900 XTX</strong></td><td>6 144</td><td>24 GB GDDR6</td><td>355W</td><td>Konkurent RTX 4080, <strong>$900</strong></td></tr>
+    <tr><td><strong>RX 7900 XT</strong></td><td>5 376</td><td>20 GB GDDR6</td><td>315W</td><td>High-end</td></tr>
+    <tr><td><strong>RX 7800 XT</strong></td><td>3 840</td><td>16 GB GDDR6</td><td>263W</td><td>1440p sweet spot</td></tr>
+    <tr><td>RX 7700 XT</td><td>3 456</td><td>12 GB GDDR6</td><td>245W</td><td>1440p, skvělá cena</td></tr>
+  </table>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-5)">AMD technologie</div>
+    <ul>
+      <li><strong>FSR 3</strong> (FidelityFX Super Resolution) – open-source upscaling, <strong>ne AI-based</strong> (běží na jakékoli GPU)</li>
+      <li><strong>Ray Accelerators</strong> – RT hardware (ale slabší než NVIDIA RT Cores)</li>
+      <li><strong>Infinity Cache</strong> – velká L3 cache (96 MB) redukuje memory bandwidth požadavky</li>
+      <li><strong>Chiplet design</strong> – TSMC 5 nm + 6 nm chiplets (Navi 31)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="section" id="intel-igpu">
+  <div class="section-header"><span class="section-num">04</span><h2>Intel Arc, iGPU a profesionální GPU</h2></div>
+
+  <h3>Intel Arc (nový hráč, 2022)</h3>
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">Intel Arc A770 / A750</div>
+    <ul>
+      <li>Xe Cores, A770: <strong>16 GB GDDR6</strong>, konkuruje RTX 4060</li>
+      <li>Slušný výkon za cenu, <strong>driver problémy</strong> (zlepšuje se)</li>
+      <li><strong>XeSS</strong> – AI upscaling (Intel ekvivalent DLSS)</li>
+    </ul>
+  </div>
+
+  <h3>Integrované GPU</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Intel Iris Xe / UHD</h4>
+      <p>V Intel CPU (12th–14th Gen). Sdílí RAM. Light gaming (esports), video playback.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">AMD Radeon (APU)</h4>
+      <p>V Ryzen CPU (7000G). RDNA 2/3 – <strong>lepší než Intel iGPU</strong>. Medium settings 1080p.</p>
+    </div>
+  </div>
+
+  <h3>Profesionální a Datacenter GPU</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">NVIDIA RTX 6000 Ada</h4>
+      <p>48 GB VRAM, certified drivers, ECC memory. CAD, 3D rendering. <strong>$6 000+</strong></p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">NVIDIA H100 (Hopper)</h4>
+      <p>80 GB HBM3, Transformer Engine. <strong>AI dominance.</strong> $10 000–30 000+</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="section" id="mikroarch">
+  <div class="section-header"><span class="section-num">05</span><h2>Mikroarchitektura GPU – SM, CUDA, Warp</h2></div>
+  <p>GPU = masivně paralelní. Tisíce jader vykonávají <strong>STEJNOU operaci na různých datech</strong> (SIMD – Single Instruction Multiple Data).</p>
+
+  <h3>NVIDIA: Streaming Multiprocessor (SM)</h3>
+  <div class="sm-visual">
+    <div class="sm-label">STREAMING MULTIPROCESSOR (SM) – BUILDING BLOCK</div>
+    <div style="text-align:center;font-size:11px;line-height:2.2">
+      <span style="color:var(--accent-3)">CUDA Cores</span><span style="color:var(--text-muted)"> – integer/float ALU (stovky per SM)</span><br>
+      <span style="color:var(--accent-4)">Tensor Cores</span><span style="color:var(--text-muted)"> – matrix multiply (AI/ML)</span><br>
+      <span style="color:var(--accent-5)">RT Cores</span><span style="color:var(--text-muted)"> – ray tracing acceleration</span><br>
+      <span style="color:var(--accent-2)">Warp Scheduler</span><span style="color:var(--text-muted)"> – řídí 32-thread warps</span><br>
+      <span style="color:var(--accent-1)">Register File</span><span style="color:var(--text-muted)"> + </span><span style="color:var(--accent-6)">Shared Memory / L1 Cache</span>
+    </div>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">CUDA Core</div>
+    <p style="margin-bottom:0">Nejmenší výpočetní jednotka. Provádí <strong>jednu FP nebo INT operaci per clock</strong>. RTX 4090 = 16 384 CUDA cores!</p>
+  </div>
+
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">Warp (32 threads)</div>
+    <p>Skupina <strong>32 vláken</strong> vykonávaných SOUČASNĚ na SM. Všechna vlákna provádějí <strong>STEJNOU instrukci</strong> (SIMT – Single Instruction Multiple Thread).</p>
+    <p style="margin-bottom:0">Příklad: 32 vláken, každé zpracovává 1 pixel → všechny současně ADD operace.</p>
+  </div>
+
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Divergence problém</div>
+    <p>Když vlákna ve warp berou <strong>RŮZNÉ cesty</strong> (if/else), warp musí vykonat OBOJE sekvenčně → pomalé!</p>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:8px;color:var(--text-muted)">
+      <span style="color:var(--accent-4)">if</span> (threadId % 2 == 0) { A } <span style="color:var(--accent-4)">else</span> { B }<br>
+      <span style="color:var(--accent-5)">→ 50% warp čeká při A, 50% při B → 50% efektivita!</span>
+    </div>
+  </div>
+
+  <h3>AMD: Compute Unit (CU)</h3>
+  <div class="card"><div class="card-title" style="color:var(--accent-5)">AMD RDNA ekvivalenty</div>
+    <ul>
+      <li><strong>Compute Unit (CU)</strong> – ekvivalent NVIDIA SM</li>
+      <li><strong>Stream Processors</strong> – ekvivalent CUDA Cores (64 per CU)</li>
+      <li><strong>Wavefront</strong> = 32 threads (AMD ekvivalent warp)</li>
+      <li><strong>Infinity Cache</strong> – 96 MB L3 cache (redukuje BW požadavky)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="section" id="tensor-rt">
+  <div class="section-header"><span class="section-num">06</span><h2>Tensor Cores, RT Cores, DLSS</h2></div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Tensor Cores</h4>
+      <p>Specializovaná jádra pro <strong>matrix multiply-accumulate</strong>. 4×4 matrix operace per clock! Kritické pro <strong>AI/ML</strong> a <strong>DLSS</strong> (neural network inference).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">RT Cores</h4>
+      <p><strong>Ray tracing</strong> akcelerátory. BVH traversal a ray-triangle intersection v HW → <strong>10–100× rychlejší</strong> než software RT.</p>
+    </div>
+  </div>
+
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">DLSS vs FSR</div>
+    <table class="compare-table">
+      <tr><th></th><th style="color:var(--accent-3)">NVIDIA DLSS 3.5</th><th style="color:var(--accent-5)">AMD FSR 3</th></tr>
+      <tr><td>Metoda</td><td><strong>AI-based</strong> (Tensor Cores)</td><td>Spatial upscaling (open-source)</td></tr>
+      <tr><td>HW potřeba</td><td>Jen NVIDIA RTX</td><td style="color:var(--accent-3)"><strong>Jakákoli GPU</strong></td></tr>
+      <tr><td>Kvalita</td><td style="color:var(--accent-3)"><strong>Lepší</strong> (AI trénování per game)</td><td>Dobrá</td></tr>
+      <tr><td>Frame Gen</td><td style="color:var(--accent-3)">Ano (DLSS 3)</td><td>Ano (FSR 3)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="section" id="pamet-gpu">
+  <div class="section-header"><span class="section-num">07</span><h2>Paměťová hierarchie GPU – GDDR vs HBM</h2></div>
+
+  <h3>GPU Memory hierarchie</h3>
+  <table class="compare-table">
+    <tr><th>Úroveň</th><th>Latence</th><th>Velikost</th><th>Poznámka</th></tr>
+    <tr><td><strong>Registers</strong></td><td style="color:var(--accent-3)">Nejrychlejší</td><td>~256 KB per SM</td><td>Per-thread</td></tr>
+    <tr><td><strong>Shared / L1</strong></td><td>~20–30 cycles</td><td>~100 KB per SM</td><td>Programovatelná scratchpad</td></tr>
+    <tr><td><strong>L2 Cache</strong></td><td>~200 cycles</td><td>RTX 4090: 72 MB</td><td>Sdílená všemi SM</td></tr>
+    <tr><td><strong>VRAM</strong></td><td style="color:var(--accent-5)">~400–800 cycles</td><td>8–24 GB (consumer)</td><td>GDDR6/6X / HBM</td></tr>
+  </table>
+
+  <div class="divider"></div>
+  <h3>GDDR vs HBM</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">GDDR6 / GDDR6X</h4>
+      <p><strong>Consumer standard.</strong> Chipy okolo GPU na PCB. GDDR6X: až 24 Gbps. RTX 4090: 384-bit bus = <strong>~1000 GB/s</strong>. Levnější, až 24 GB.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">HBM (High Bandwidth Memory)</h4>
+      <p><strong>Datacenter/professional.</strong> Stackovaná vertikálně nad/pod GPU die (TSV). HBM3: <strong>3+ TB/s!</strong> Extrémní BW, nízká spotřeba. VELMI DRAHÉ.</p>
+    </div>
+  </div>
+
+  <div class="formula">
+    GDDR6X: ~1 000 GB/s (consumer) &nbsp;│&nbsp; HBM3: ~3 000 GB/s (datacenter)
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="section" id="rendering">
+  <div class="section-header"><span class="section-num">08</span><h2>Rendering pipeline – rasterizace a ray tracing</h2></div>
+
+  <h3>Klasická rasterizace</h3>
+  <div class="pipe-flow">
+    <div class="sm-label">RASTERIZATION PIPELINE</div>
+    <div class="pipe-row">
+      <div class="pipe-box" style="background:rgba(96,165,250,.15);color:var(--accent-1)">Vertex<br>Shader<div style="font-size:8px;opacity:.6">transformace 3D</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box" style="background:rgba(251,191,36,.15);color:var(--accent-4)">Rasterization<div style="font-size:8px;opacity:.6">trojúhelníky→pixely</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box" style="background:rgba(167,139,250,.15);color:var(--accent-2)">Pixel/Fragment<br>Shader<div style="font-size:8px;opacity:.6">barva pixelu</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box" style="background:rgba(52,211,153,.15);color:var(--accent-3)">ROP<div style="font-size:8px;opacity:.6">blending, depth,<br>framebuffer</div></div>
+    </div>
+  </div>
+
+  <h3>Ray Tracing Pipeline (RTX)</h3>
+  <p>Simuluje <strong>fyzikální chování světla</strong> – paprsky z kamery, odrazy, lomy, stíny. VELMI výpočetně náročné → proto RT Cores!</p>
+
+  <div class="pipe-flow">
+    <div class="sm-label">RAY TRACING PIPELINE</div>
+    <div class="pipe-row">
+      <div class="pipe-box" style="background:rgba(248,113,113,.15);color:var(--accent-5)">Ray<br>Generation<div style="font-size:8px;opacity:.6">paprsky z kamery</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box" style="background:rgba(251,146,60,.15);color:var(--accent-6)">BVH<br>Traversal<div style="font-size:8px;opacity:.6">RT Cores!</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box" style="background:rgba(167,139,250,.15);color:var(--accent-2)">Hit/Miss<br>Shader<div style="font-size:8px;opacity:.6">reakce na průsečík</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box" style="background:rgba(244,114,182,.15);color:var(--accent-7)">Rekurze<div style="font-size:8px;opacity:.6">sekundární paprsky<br>(odrazy)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="section" id="hdmi">
+  <div class="section-header"><span class="section-num">09</span><h2>HDMI</h2></div>
+  <p><strong>HDMI</strong> (High-Definition Multimedia Interface, 2002) – digitální video + audio v jednom kabelu. Nejrozšířenější pro consumer electronics (TV, konzole).</p>
+
+  <table class="compare-table">
+    <tr><th>Verze</th><th>Bandwidth</th><th>Max rozlišení</th><th>Klíčové features</th></tr>
+    <tr><td>HDMI 1.4 (2009)</td><td>10.2 Gbps</td><td>4K @ 30 Hz</td><td>1080p @ 120 Hz</td></tr>
+    <tr><td>HDMI 2.0 (2013)</td><td>18 Gbps</td><td>4K @ 60 Hz</td><td>HDR support, 1080p @ 240 Hz</td></tr>
+    <tr><td><strong style="color:var(--accent-3)">HDMI 2.1</strong> (2017)</td><td style="color:var(--accent-3)"><strong>48 Gbps</strong></td><td><strong>4K @ 120 Hz, 8K @ 60 Hz</strong></td><td>VRR, eARC, DSC, gaming standard</td></tr>
+  </table>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">HDMI 2.1 features</div>
+    <ul>
+      <li><strong>VRR</strong> (Variable Refresh Rate) – G-Sync/FreeSync kompatibilní</li>
+      <li><strong>eARC</strong> (Enhanced Audio Return Channel) – high-quality audio zpět do soundbaru</li>
+      <li><strong>DSC</strong> (Display Stream Compression) – komprese pro vyšší rozlišení</li>
+      <li>Standard pro <strong>PS5, Xbox Series X, RTX 4000</strong></li>
+    </ul>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-6)">HDMI konektory</div>
+    <ul>
+      <li><strong>Type A</strong> (Standard) – plná velikost, GPU/TV</li>
+      <li><strong>Type C</strong> (Mini) – tablety, kamery</li>
+      <li><strong>Type D</strong> (Micro) – smartphones</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+  <h3>Zastaralé: VGA a DVI</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--text-muted)">
+      <h4 style="color:var(--text-muted)">VGA (1987)</h4>
+      <p><strong>Analogový</strong> RGB, 15-pin D-sub. Max 1080p@60. Žádné audio. Moderní GPU NEMAJÍ VGA.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--text-muted)">
+      <h4 style="color:var(--text-muted)">DVI (1999)</h4>
+      <p><strong>Digitální</strong>, max 2560×1600@60. Žádné audio. Dual-Link pro vyšší rozlišení. Postupně vyřazováno.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="section" id="dp">
+  <div class="section-header"><span class="section-num">10</span><h2>DisplayPort</h2></div>
+  <p><strong>DisplayPort</strong> (VESA 2006) – navrženo pro PC monitory. <strong>Royalty-free</strong> (na rozdíl od HDMI). Packet-based přenos. Podpora MST (Multi-Stream Transport) – daisy-chain monitorů.</p>
+
+  <table class="compare-table">
+    <tr><th>Verze</th><th>Bandwidth</th><th>Max rozlišení</th><th>Features</th></tr>
+    <tr><td>DP 1.2 (2010)</td><td>21.6 Gbps</td><td>4K @ 60 Hz</td><td>MST support</td></tr>
+    <tr><td><strong>DP 1.4</strong> (2016)</td><td>32.4 Gbps</td><td>4K @ 120 Hz (DSC)</td><td>HDR, 8K @ 60 Hz (DSC)</td></tr>
+    <tr><td><strong style="color:var(--accent-2)">DP 2.1</strong> (2022)</td><td style="color:var(--accent-2)"><strong>80 Gbps</strong></td><td><strong>4K @ 240 Hz, 8K @ 120 Hz</strong></td><td>UHBR, USB-C Alt Mode, 3× 4K@144 MST</td></tr>
+  </table>
+
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">DisplayPort výhody pro PC</div>
+    <ul>
+      <li><strong>Adaptive-Sync</strong> (VRR) – FreeSync native support</li>
+      <li><strong>MST</strong> – připoj více monitorů přes 1 port (daisy-chain)</li>
+      <li><strong>Royalty-free</strong> – bez licenčních poplatků (vs HDMI)</li>
+      <li><strong>USB-C Alt Mode</strong> kompatibilní – video přes USB-C</li>
+    </ul>
+  </div>
+
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">HDMI 2.1 vs DisplayPort 2.1</div>
+    <table class="compare-table">
+      <tr><th></th><th>HDMI 2.1</th><th>DisplayPort 2.1</th></tr>
+      <tr><td>Bandwidth</td><td>48 Gbps</td><td style="color:var(--accent-3)"><strong>80 Gbps</strong></td></tr>
+      <tr><td>Lepší pro</td><td>TV, konzole</td><td><strong>PC monitory</strong></td></tr>
+      <tr><td>MST</td><td>Ne</td><td style="color:var(--accent-3)"><strong>Ano</strong></td></tr>
+      <tr><td>Licence</td><td>Licenční poplatky</td><td style="color:var(--accent-3)"><strong>Royalty-free</strong></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="section" id="usbc-tb">
+  <div class="section-header"><span class="section-num">11</span><h2>USB-C Alt Mode a Thunderbolt</h2></div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">USB-C DisplayPort Alt Mode</h4>
+      <p>USB-C přenáší DP signál + USB data + power. <strong>1 kabel = video + data + nabíjení.</strong> 4K @ 60 Hz (DP 1.4). Běžné na laptopech.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Thunderbolt 3/4</h4>
+      <p>40 Gbps. DP + PCIe + USB + Power. 2× 4K@60 nebo 1× 5K@60. <strong>eGPU support</strong> – externí grafika!</p>
+    </div>
+  </div>
+
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">Kdy co použít?</div>
+    <ul>
+      <li><strong>Gaming PC → monitor:</strong> DisplayPort (VRR, vyšší refresh)</li>
+      <li><strong>Gaming PC → TV:</strong> HDMI 2.1 (4K @ 120 Hz)</li>
+      <li><strong>Laptop → monitor:</strong> USB-C Alt Mode nebo Thunderbolt</li>
+      <li><strong>Multi-monitor:</strong> DisplayPort MST (daisy-chain)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="section" id="summary">
+  <div class="section-header"><span class="section-num">12</span><h2>Shrnutí klíčových bodů</h2></div>
+
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">GPU ZÁKLADY + VÝROBCI</p>
+    <ul>
+      <li><strong>GPU</strong> = tisíce jader paralelně (vs CPU několik sekvenčně). SIMD/SIMT</li>
+      <li><strong>NVIDIA RTX 4090:</strong> 16 384 CUDA, 24 GB GDDR6X, 450W, 4K 120+ FPS, $1 600</li>
+      <li><strong>AMD RX 7900 XTX:</strong> 6 144 SP, 24 GB GDDR6, lepší cena/výkon, horší RT</li>
+      <li><strong>Intel Arc A770:</strong> nový hráč, 16 GB, XeSS, driver zlepšování</li>
+      <li><strong>DLSS 3.5</strong> (AI, Tensor) vs <strong>FSR 3</strong> (open-source, jakákoli GPU)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">MIKROARCHITEKTURA</p>
+    <ul>
+      <li><strong>NVIDIA SM:</strong> CUDA Cores (ALU) + Tensor Cores (AI) + RT Cores (ray tracing) + Warp Scheduler</li>
+      <li><strong>Warp</strong> = 32 threads SIMT. Divergence (if/else) → sekvenční → pomalé!</li>
+      <li><strong>AMD CU:</strong> Stream Processors (64/CU), Wavefront = 32 threads, Infinity Cache</li>
+      <li><strong>Paměť:</strong> Registers → Shared/L1 (20–30 cy) → L2 (200 cy) → VRAM (400–800 cy)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">GDDR vs HBM + RENDERING</p>
+    <ul>
+      <li><strong>GDDR6X:</strong> ~1 000 GB/s (consumer). <strong>HBM3:</strong> ~3 000 GB/s (datacenter, drahé)</li>
+      <li><strong>Rasterizace:</strong> Vertex Shader → Rasterization → Pixel Shader → ROP</li>
+      <li><strong>Ray Tracing:</strong> Ray Gen → BVH Traversal (RT Cores!) → Hit/Miss → Rekurze</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">VIDEO ROZHRANÍ</p>
+    <ul>
+      <li><strong>VGA:</strong> analogový, zastaralý │ <strong>DVI:</strong> digitální, žádné audio, vyřazováno</li>
+      <li><strong>HDMI 2.1:</strong> 48 Gbps, 4K@120, 8K@60, VRR, eARC. Standard TV/konzole</li>
+      <li><strong>DisplayPort 2.1:</strong> 80 Gbps, 4K@240, 8K@120, MST, royalty-free. Lepší pro PC</li>
+      <li><strong>USB-C Alt Mode:</strong> DP over USB-C, video+data+power jedním kabelem</li>
+      <li><strong>Thunderbolt 3/4:</strong> 40 Gbps, DP+PCIe+USB, eGPU support</li>
+    </ul>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Zlatá pravidla</div>
+    <ul>
+      <li><strong>GPU</strong> = masivní paralelismus. NVIDIA dominuje (80%), AMD lepší cena/výkon</li>
+      <li><strong>Warp</strong> = 32 threads SIMT. <strong>Tensor Cores</strong> = AI (DLSS), <strong>RT Cores</strong> = ray tracing HW</li>
+      <li><strong>GDDR6X</strong> ~1 TB/s (consumer), <strong>HBM3</strong> ~3 TB/s (datacenter)</li>
+      <li><strong>HDMI 2.1</strong> = 48 Gbps (TV/konzole), <strong>DP 2.1</strong> = 80 Gbps (PC monitory, MST)</li>
+      <li>Gaming PC → monitor: <strong>DisplayPort</strong>. PC → TV: <strong>HDMI 2.1</strong>. Laptop: <strong>USB-C / TB</strong></li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

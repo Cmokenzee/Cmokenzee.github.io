@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 1: Cíle a základní pojmy kybernetické bezpečnosti</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#2e0f28 40%,#1a0f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(232,121,249,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(248,113,113,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--kb);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--kb);background:rgba(232,121,249,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* CIA triad visual */
+.cia-triad{display:flex;justify-content:center;gap:16px;margin:20px 0;flex-wrap:wrap}
+.cia-pillar{text-align:center;padding:24px 20px;border-radius:12px;min-width:160px;flex:1;max-width:220px}
+.cia-pillar .cp-icon{font-size:32px;display:block;margin-bottom:8px}
+.cia-pillar .cp-name{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:block}
+.cia-pillar .cp-q{font-size:11px;margin-top:4px;opacity:.7;font-style:italic}
+/* Kill chain timeline */
+.killchain{display:flex;flex-direction:column;gap:4px;margin:14px 0}
+.kc-step{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:6px;font-size:13px}
+.kc-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;min-width:22px}
+.kc-name{font-weight:600;color:var(--heading);min-width:130px}
+.kc-desc{color:var(--text-muted);font-size:12px}
+/* Hacker types */
+.hacker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0}
+.hacker-card{text-align:center;padding:14px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.hacker-card .hc-icon{font-size:24px;display:block;margin-bottom:6px}
+.hacker-card .hc-name{font-weight:700;font-size:12px;display:block}
+.hacker-card .hc-desc{font-size:9px;font-family:'DM Sans',sans-serif;margin-top:4px;opacity:.8}
+/* Zero-day lifecycle */
+.zd-lifecycle{position:relative;margin:20px 0;padding-left:20px;border-left:3px solid var(--border)}
+.zd-step{padding:10px 0 10px 16px;position:relative}
+.zd-step::before{content:'';position:absolute;left:-11px;top:14px;width:10px;height:10px;border-radius:50%;border:2px solid var(--border);background:var(--bg)}
+.zd-step.active::before{border-color:var(--accent-5);background:rgba(248,113,113,.3)}
+.zd-step .zds-title{font-weight:600;color:var(--heading);font-size:14px}
+.zd-step .zds-desc{color:var(--text-muted);font-size:13px}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.cia-triad{flex-direction:column;align-items:center}.hacker-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 1</div>
+  <h1>Cíle a základní pojmy<br>kybernetické bezpečnosti</h1>
+  <p>CIA triáda • Hrozby • Zranitelnosti • Fáze útoku • Typy hackerů • Zero-Day</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#cia">CIA triáda</a></li>
+  <li><a href="#confidentiality">Confidentiality (Důvěrnost)</a></li>
+  <li><a href="#integrity">Integrity (Integrita)</a></li>
+  <li><a href="#availability">Availability (Dostupnost)</a></li>
+  <li><a href="#threats">Hrozby – interní vs externí</a></li>
+  <li><a href="#vuln">Zranitelnosti a zneužití</a></li>
+  <li><a href="#killchain">Fáze útoku (Cyber Kill Chain)</a></li>
+  <li><a href="#hackers">Typy hackerů</a></li>
+  <li><a href="#zeroday">Zero-Day Attacks</a></li>
+  <li><a href="#scenario">Praktický scénář útoku</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 CIA -->
+<section class="section" id="cia">
+<div class="section-header"><span class="section-num">01</span><h2>CIA triáda</h2></div>
+
+<p>Tři základní pilíře kybernetické bezpečnosti – <strong>Confidentiality, Integrity, Availability</strong>.</p>
+
+<div class="cia-triad">
+  <div class="cia-pillar" style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2)">
+    <span class="cp-icon" style="color:var(--accent-1)">🔒</span>
+    <span class="cp-name" style="color:var(--accent-1)">Confidentiality</span>
+    <span class="cp-q">Kdo to vidí?</span>
+  </div>
+  <div class="cia-pillar" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2)">
+    <span class="cp-icon" style="color:var(--accent-3)">🛡️</span>
+    <span class="cp-name" style="color:var(--accent-3)">Integrity</span>
+    <span class="cp-q">Jsou data správná?</span>
+  </div>
+  <div class="cia-pillar" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2)">
+    <span class="cp-icon" style="color:var(--accent-4)">⚡</span>
+    <span class="cp-name" style="color:var(--accent-4)">Availability</span>
+    <span class="cp-q">Funguje to, když potřebuju?</span>
+  </div>
+</div>
+</section>
+
+<!-- 02 CONFIDENTIALITY -->
+<section class="section" id="confidentiality">
+<div class="section-header"><span class="section-num">02</span><h2>Confidentiality (Důvěrnost)</h2></div>
+
+<p>Data vidí <strong>jen ti, kdo mají oprávnění</strong>. Šifrování (AES symetrická, RSA asymetrická), autentizace (kdo jsi?), autorizace (co smíš?).</p>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Příklady porušení</div>
+  <ul>
+    <li><strong>Man-in-the-Middle:</strong> Útočník na veřejné Wi-Fi odposlouchává komunikaci</li>
+    <li><strong>Data breach:</strong> 2013 Yahoo – ukradena data 3 miliard uživatelů</li>
+    <li><strong>Shoulder surfing:</strong> Někdo se dívá přes rameno při zadávání PINu</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Ochrana</div>
+  <ul>
+    <li><strong>HTTPS</strong> (zelený zámek v prohlížeči)</li>
+    <li><strong>VPN</strong> při veřejné Wi-Fi</li>
+    <li><strong>Šifrování disku</strong> (BitLocker, FileVault)</li>
+    <li><strong>2FA</strong> – dvoufaktorová autentizace</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 INTEGRITY -->
+<section class="section" id="integrity">
+<div class="section-header"><span class="section-num">03</span><h2>Integrity (Integrita)</h2></div>
+
+<p>Data jsou <strong>správná, kompletní a nezměněná</strong>. Nikdo je nepozměnil.</p>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Příklady porušení</div>
+  <ul>
+    <li><strong>Ransomware:</strong> Virus zašifruje soubory → data změněna (nemůžeš je použít)</li>
+    <li><strong>SQL Injection:</strong> Útočník změní dotaz do DB. Místo přihlášení zadá <code>' OR '1'='1</code> a dostane se všude</li>
+    <li><strong>Manipulace s logy:</strong> Smazání záznamů aby nebylo vidět průnik</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Ochrana</div>
+  <ul>
+    <li><strong>Hash funkce (SHA-256):</strong> „otisk" souboru – pokud se liší, soubor byl změněn</li>
+    <li><strong>Digitální podpis:</strong> garantuje autora + nezměněnost</li>
+    <li><strong>Checksums (CRC):</strong> kontrolní součty při přenosu</li>
+    <li><strong>Logování:</strong> kdo, kdy, co změnil</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 AVAILABILITY -->
+<section class="section" id="availability">
+<div class="section-header"><span class="section-num">04</span><h2>Availability (Dostupnost)</h2></div>
+
+<p>Systém musí <strong>fungovat, když ho potřebuješ</strong>. Nemůže být „dole".</p>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Příklady porušení</div>
+  <ul>
+    <li><strong>DDoS (2016 Dyn):</strong> Miliony požadavků → vyřadilo Twitter, Netflix, Reddit, Spotify</li>
+    <li><strong>WannaCry (2017):</strong> Ransomware na britské NHS → rušení operací</li>
+    <li><strong>Fyzické:</strong> Požár v datacentru, povodeň, výpadek elektřiny, HW selhání</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Ochrana</div>
+  <ul>
+    <li><strong>Zálohy 3-2-1:</strong> 3 kopie, 2 různá média, 1 offsite</li>
+    <li><strong>Redundance:</strong> více serverů, failover</li>
+    <li><strong>Load balancing:</strong> rozdělení zátěže</li>
+    <li><strong>UPS:</strong> záložní zdroj. <strong>CDN:</strong> distribuovaný obsah</li>
+    <li><strong>Rate limiting:</strong> omezení požadavků z jedné IP</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 THREATS -->
+<section class="section" id="threats">
+<div class="section-header"><span class="section-num">05</span><h2>Hrozby – interní vs externí</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Interní hrozby</h4>
+    <p><strong>Úmyslné:</strong> Snowden (NSA leak), zaměstnanec krade data, admin maže servery před výpovědí.<br><strong>Neúmyslné:</strong> Klik na phishing, notebook v kavárně, slabé heslo „jmeno123". <strong>95 % incidentů = lidský faktor!</strong></p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Externí hrozby</h4>
+    <p><strong>Organizovaný zločin:</strong> ransomware, krádeže kreditek. <strong>Státní aktéři (APT):</strong> špionáž, SolarWinds 2020. <strong>Hacktivisté:</strong> Anonymous. <strong>Script kiddies:</strong> pro zábavu.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Proč jsou interní hrozby nebezpečné?</div>
+  <p style="margin-bottom:0">Mají <strong>legitimní přístup</strong> – prochází kontrolami. Znají vnitřní systémy. Důvěřuje se jim. <strong>Těžko se detekují.</strong></p>
+</div>
+</section>
+
+<!-- 06 VULN -->
+<section class="section" id="vuln">
+<div class="section-header"><span class="section-num">06</span><h2>Zranitelnosti a zneužití</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Software</h4>
+    <p><strong>Buffer Overflow:</strong> pošli 1000 znaků místo 10 → code execution. <strong>SQL Injection:</strong> <code>admin'--</code> obejde přihlášení. <strong>XSS:</strong> škodlivý JS v komentáři.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Konfigurace</h4>
+    <p>Výchozí hesla (admin/admin). Otevřené porty. Zbytečné služby.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Hardware</h4>
+    <p><strong>Spectre/Meltdown:</strong> chyba v CPU, čtení cizí paměti. <strong>Keylogger:</strong> HW zařízení mezi klávesnicí a PC.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Social Engineering</h4>
+    <p><strong>Phishing:</strong> falešný email banky. <strong>Pretexting:</strong> „jsem z IT, potřebuji heslo". <strong>Baiting:</strong> USB „Výplaty 2024" na parkovišti.</p>
+  </div>
+</div>
+
+<details><summary>SQL Injection – jak to funguje</summary>
+<div style="background:#0d0f14;border:1px solid var(--border);border-radius:8px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;margin:10px 0;color:var(--text-muted)">
+<span style="color:var(--accent-3)">-- Normální dotaz:</span><br>
+SELECT * FROM users WHERE name = '<span style="color:var(--accent-1)">Jan</span>' AND password = '<span style="color:var(--accent-4)">heslo123</span>'<br><br>
+<span style="color:var(--accent-5)">-- Útočník zadá jméno: admin'--</span><br>
+SELECT * FROM users WHERE name = '<span style="color:var(--accent-5)">admin'--</span>' AND password = 'heslo123'<br><br>
+<span style="color:var(--accent-5)">-- = komentář v SQL → vše za ním ignorováno → přihlášení BEZ hesla!</span>
+</div>
+</details>
+</section>
+
+<!-- 07 KILLCHAIN -->
+<section class="section" id="killchain">
+<div class="section-header"><span class="section-num">07</span><h2>Fáze útoku (Cyber Kill Chain)</h2></div>
+
+<div class="killchain">
+  <div class="kc-step" style="background:rgba(167,139,250,.08)"><span class="kc-num" style="color:var(--accent-2)">1</span><span class="kc-name">Reconnaissance</span><span class="kc-desc">Průzkum: LinkedIn, web firmy, Shodan, WHOIS, sociální sítě</span></div>
+  <div class="kc-step" style="background:rgba(96,165,250,.08)"><span class="kc-num" style="color:var(--accent-1)">2</span><span class="kc-name">Weaponization</span><span class="kc-desc">Příprava: infikovaný PDF s exploitem, phishingová stránka</span></div>
+  <div class="kc-step" style="background:rgba(52,211,153,.06)"><span class="kc-num" style="color:var(--accent-3)">3</span><span class="kc-name">Delivery</span><span class="kc-desc">Doručení: spear-phishing email „Faktura za služby…"</span></div>
+  <div class="kc-step" style="background:rgba(251,191,36,.06)"><span class="kc-num" style="color:var(--accent-4)">4</span><span class="kc-name">Exploitation</span><span class="kc-desc">Zneužití: oběť otevře PDF → exploit v Adobe Reader → malware</span></div>
+  <div class="kc-step" style="background:rgba(251,146,60,.06)"><span class="kc-num" style="color:var(--accent-6)">5</span><span class="kc-name">Installation</span><span class="kc-desc">Instalace: backdoor na port 4444, autostart, vypne antivir</span></div>
+  <div class="kc-step" style="background:rgba(248,113,113,.06)"><span class="kc-num" style="color:var(--accent-5)">6</span><span class="kc-name">Command & Control</span><span class="kc-desc">C2: malware se připojí k útočníkovu serveru (přes TOR)</span></div>
+  <div class="kc-step" style="background:rgba(232,121,249,.06)"><span class="kc-num" style="color:var(--kb)">7</span><span class="kc-name">Actions on Obj.</span><span class="kc-desc">Cíl: lateral movement, domain admin, stažení dat / ransomware</span></div>
+</div>
+</section>
+
+<!-- 08 HACKERS -->
+<section class="section" id="hackers">
+<div class="section-header"><span class="section-num">08</span><h2>Typy hackerů</h2></div>
+
+<div class="hacker-grid">
+  <div class="hacker-card" style="background:rgba(52,211,153,.1);color:var(--accent-3)">
+    <span class="hc-icon">🤍</span><span class="hc-name">White Hat</span>
+    <div class="hc-desc">Etický hacker. Bug bounty, pen-testing, security audit. Najímaný firmami.</div>
+  </div>
+  <div class="hacker-card" style="background:rgba(248,113,113,.1);color:var(--accent-5)">
+    <span class="hc-icon">🖤</span><span class="hc-name">Black Hat</span>
+    <div class="hc-desc">Kriminální. Ransomware, krádež dat, špionáž. APT28, Lazarus, REvil.</div>
+  </div>
+  <div class="hacker-card" style="background:rgba(107,114,128,.12);color:var(--text)">
+    <span class="hc-icon">🩶</span><span class="hc-name">Grey Hat</span>
+    <div class="hc-desc">Hackne bez povolení, pak informuje. Hraničí s vydíráním.</div>
+  </div>
+  <div class="hacker-card" style="background:rgba(251,191,36,.1);color:var(--accent-4)">
+    <span class="hc-icon">👶</span><span class="hc-name">Script Kiddie</span>
+    <div class="hc-desc">Stáhne hotový tool (LOIC), nerozumí jak funguje. Chytí se snadno.</div>
+  </div>
+  <div class="hacker-card" style="background:rgba(167,139,250,.1);color:var(--accent-2)">
+    <span class="hc-icon">✊</span><span class="hc-name">Hacktivist</span>
+    <div class="hc-desc">Politické motivy. Anonymous, LulzSec. DDoS, defacement, leak.</div>
+  </div>
+  <div class="hacker-card" style="background:rgba(244,114,182,.1);color:var(--accent-7)">
+    <span class="hc-icon">🏛️</span><span class="hc-name">State-Sponsored</span>
+    <div class="hc-desc">APT. Obrovské zdroje, vlastní zero-days. Stuxnet, NotPetya, APT29.</div>
+  </div>
+</div>
+</section>
+
+<!-- 09 ZERO-DAY -->
+<section class="section" id="zeroday">
+<div class="section-header"><span class="section-num">09</span><h2>Zero-Day Attacks</h2></div>
+
+<p><strong>Zero-day</strong> = zranitelnost neznámá výrobci. Vývojáři měli <strong>0 dní</strong> na přípravu opravy. Žádná obrana!</p>
+
+<h3>Životní cyklus zero-day</h3>
+<div class="zd-lifecycle">
+  <div class="zd-step active"><div class="zds-title">1. Objevení</div><div class="zds-desc">Výzkumník/hacker najde chybu → nahlásí (bug bounty) nebo prodá na černém trhu (miliony $)</div></div>
+  <div class="zd-step active"><div class="zds-title">2. Zneužívání „in the wild"</div><div class="zds-desc">Útočník exploit používá, nikdo neví. Může trvat dny až roky</div></div>
+  <div class="zd-step"><div class="zds-title">3. Odhalení</div><div class="zds-desc">Bezp. firma zpozoruje podivnou aktivitu → analýza → informuje výrobce</div></div>
+  <div class="zd-step"><div class="zds-title">4. Patch Development</div><div class="zds-desc">Výrobce pracuje na opravě (dny–týdny)</div></div>
+  <div class="zd-step"><div class="zds-title">5. Patch Release</div><div class="zds-desc">Aktualizace vydána → od teď už to není zero-day. Ale ne všichni aktualizují!</div></div>
+  <div class="zd-step"><div class="zds-title">6. Post-disclosure</div><div class="zds-desc">Závodí: kdo rychleji? Ti co patchují vs ti co útočí na neaktualizované</div></div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--kb)">Slavné zero-day příklady</div>
+  <ul>
+    <li><strong>Stuxnet (2010):</strong> 4 zero-days najednou! USA+Izrael zničili íránské centrifugy. Cena: desítky mil. $</li>
+    <li><strong>EternalBlue (2017):</strong> Windows SMB exploit vyvinutý NSA, ukraden, zveřejněn → WannaCry + NotPetya</li>
+    <li><strong>Log4Shell (2021):</strong> Log4j (Java) – 1 řádek kódu v Minecraft chatu = napadený server</li>
+    <li><strong>Pegasus (NSO Group):</strong> iOS/Android zero-click exploit. Odposlech novinářů, politiků</li>
+  </ul>
+</div>
+
+<details><summary>Černý trh s zero-days (ceny 2024)</summary>
+<table class="compare-table">
+  <tr><th>Exploit</th><th>Cena</th></tr>
+  <tr><td>iOS remote jailbreak</td><td><strong>$2–3 miliony</strong></td></tr>
+  <tr><td>Android full chain</td><td>$2.5 milionu</td></tr>
+  <tr><td>Windows RCE</td><td>$100K–$500K</td></tr>
+  <tr><td>Chrome/Safari sandbox escape</td><td>$500K+</td></tr>
+</table>
+<p style="font-size:13px;color:var(--text-muted)">Kupují: vlády, zpravodajské služby, NSO Group, Hacking Team.</p>
+</details>
+
+<div class="divider"></div>
+
+<h3>Obrana proti zero-days</h3>
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-1)">Defense in Depth</h4><p>Vícevrstvá obrana: firewall + IDS + antivirus + segmentace + least privilege</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-3)">Behavior Detection</h4><p>Hledej podezřivé chování (Word se normálně nepřipojuje k internetu)</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-4)">Sandboxing</h4><p>Izolované prostředí pro podezřelé programy</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-2)">Zero Trust</h4><p>„Nikdy nedůvěřuj, vždy ověřuj" – i ve firemní síti autentizace pro každý systém</p></div>
+</div>
+</section>
+
+<!-- 10 SCENARIO -->
+<section class="section" id="scenario">
+<div class="section-header"><span class="section-num">10</span><h2>Praktický scénář: Ransomware útok</h2></div>
+
+<div class="card">
+<div class="card-title" style="color:var(--accent-5)">Útok na malou firmu – krok za krokem</div>
+<div class="steps">
+  <div class="step"><div class="step-num" style="color:var(--accent-2)">D1</div><div class="step-content"><div class="step-label">Průzkum</div><div class="step-desc">LinkedIn zaměstnanci, zjistí zastaralý Windows Server 2012</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-1)">D3</div><div class="step-content"><div class="step-label">Příprava</div><div class="step-desc">Phishing email „Faktura" + faktura.pdf.exe (Windows schovává přípony)</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-4)">D5</div><div class="step-content"><div class="step-label">Doručení + Exploitation</div><div class="step-desc">Účetní otevře přílohu → malware: vypne Defender, backdoor na port 443, autostart</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-6)">D5–15</div><div class="step-content"><div class="step-label">C2 + čekání</div><div class="step-desc">Malware přes TOR. Útočník čeká 10 dní (znehodnotit týdenní zálohy)</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-5)">D15</div><div class="step-content"><div class="step-label">Ransomware</div><div class="step-desc">Smaže shadow copies + NAS zálohy. Ve 2:00 zašifruje vše AES-256. Požaduje 5 BTC (~$200K) / 72 h</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--text-muted)">D16</div><div class="step-content"><div class="step-label">Následky</div><div class="step-desc">Firma nefunguje, ztráta ~$50K/den. Možnosti: zaplatit (bez záruky) / ztratit data / offline záloha</div></div></div>
+</div>
+</div>
+</section>
+
+<!-- 11 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">11</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">CIA TRIÁDA</p>
+<ul>
+  <li><strong>C (Confidentiality):</strong> kdo vidí data? Ochrana: HTTPS, VPN, šifrování, 2FA</li>
+  <li><strong>I (Integrity):</strong> jsou data správná? Ochrana: hash (SHA-256), digitální podpis, logování</li>
+  <li><strong>A (Availability):</strong> funguje to? Ochrana: zálohy 3-2-1, redundance, load balancing, UPS</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">HROZBY A ZRANITELNOSTI</p>
+<ul>
+  <li><strong>Interní:</strong> úmyslné (insider theft) + neúmyslné (phishing klik, slabé heslo). <strong>95 % = lidský faktor!</strong></li>
+  <li><strong>Externí:</strong> organizovaný zločin, státní aktéři (APT), hacktivisté, script kiddies</li>
+  <li><strong>Zranitelnosti:</strong> SW (buffer overflow, SQLi, XSS), konfigurace, HW (Spectre), social engineering</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">FÁZE ÚTOKU (KILL CHAIN)</p>
+<ul>
+  <li><strong>7 fází:</strong> Reconnaissance → Weaponization → Delivery → Exploitation → Installation → C2 → Actions</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--kb);margin-bottom:8px">HACKEŘI A ZERO-DAY</p>
+<ul>
+  <li><strong>White Hat</strong> (etický), <strong>Black Hat</strong> (kriminální), <strong>Grey Hat</strong> (bez povolení ale informuje), <strong>Script Kiddie</strong>, <strong>Hacktivist</strong>, <strong>State-Sponsored</strong> (APT)</li>
+  <li><strong>Zero-day:</strong> neznámá zranitelnost, 0 dní na patch. Stuxnet (4 zero-days!), EternalBlue→WannaCry, Log4Shell, Pegasus</li>
+  <li><strong>Obrana:</strong> Defense in Depth, behavior detection, sandboxing, Zero Trust, <strong>aktualizovat ASAP!</strong></li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

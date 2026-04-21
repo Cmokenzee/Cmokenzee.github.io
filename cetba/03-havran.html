@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Edgar Allan Poe: Havran</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080c;
+  --bg-card:#111117;
+  --bg-card-alt:#16161e;
+  --border:#26262f;
+  --text:#b8b5c2;
+  --text-muted:#6a6478;
+  --heading:#e4e0ec;
+  --accent-1:#8b7fb8;     /* tlumená fialová */
+  --accent-2:#6b4c7a;     /* tmavá fialová */
+  --accent-3:#4a6b7a;     /* studená modř */
+  --accent-4:#a3776f;     /* vybledlá růžová */
+  --accent-5:#a63d4a;     /* krvavě rudá */
+  --accent-6:#7a6b4a;     /* vybledlé zlato */
+  --accent-7:#4d4167;     /* noční fialová */
+  --accent-8:#2d4458;     /* půlnoční modř */
+  --raven:#d4d0e0;        /* bledá jako busta Pallas */
+  --blood:#8b1e2d;        /* krev */
+  --candle:#c9a961;       /* světlo svíčky */
+  --shadow:#000;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(107,76,122,.08) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(139,30,45,.05) 0%,transparent 60%),
+    radial-gradient(circle at 20% 30%,rgba(201,169,97,.03) 0%,transparent 40%);
+  background-attachment:fixed;
+}
+
+/* HERO — půlnoční studovna */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(8,8,12,.4) 0%,rgba(8,8,12,.9) 100%),
+    linear-gradient(135deg,#0a0812 0%,#1a0f20 35%,#120818 65%,#08060f 100%);
+  border-bottom:1px solid var(--border);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(201,169,97,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 30% 70%,rgba(139,30,45,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:-80px;left:50%;
+  transform:translateX(-50%);
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(201,169,97,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-raven{
+  font-size:80px;
+  color:var(--heading);
+  margin-bottom:20px;
+  opacity:.25;
+  line-height:1;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(212,208,224,.2));
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--candle);
+  margin-bottom:22px;position:relative;
+  opacity:.8;
+}
+.hero h1{
+  font-family:'UnifrakturMaguntia','Cormorant Garamond',serif;
+  font-size:clamp(44px,8vw,88px);
+  color:var(--heading);
+  font-weight:400;
+  line-height:1;
+  position:relative;
+  letter-spacing:2px;
+  text-shadow:
+    0 0 30px rgba(139,127,184,.3),
+    0 0 60px rgba(107,76,122,.2);
+}
+.hero .original{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--accent-1);
+  font-size:20px;
+  margin-top:8px;
+  letter-spacing:4px;
+  position:relative;
+  opacity:.7;
+}
+.hero .author{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--accent-4);
+  margin-top:28px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:2px;
+  font-style:italic;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:14px;
+  font-size:14px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2px;
+}
+.hero .nevermore{
+  font-family:'UnifrakturMaguntia',serif;
+  color:var(--blood);
+  font-size:24px;
+  margin-top:36px;
+  letter-spacing:6px;
+  opacity:.5;
+  position:relative;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — starý rukopis */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:32px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before,.toc::after{
+  content:'';position:absolute;
+  width:40px;height:40px;
+  border:1px solid var(--accent-6);
+  opacity:.4;
+}
+.toc::before{top:8px;left:8px;border-right:none;border-bottom:none}
+.toc::after{bottom:8px;right:8px;border-left:none;border-top:none}
+.toc h2{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--candle);
+  margin-bottom:20px;text-align:center;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,upper-roman) '. ';
+  font-family:'Cormorant Garamond',serif;
+  color:var(--candle);
+  font-size:13px;margin-right:6px;
+  font-style:italic;font-weight:600;
+  opacity:.7;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--candle)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-1px;left:0;
+  width:80px;height:1px;
+  background:linear-gradient(90deg,var(--candle),transparent);
+}
+.section-num{
+  font-family:'UnifrakturMaguntia',serif;
+  font-size:40px;color:var(--candle);
+  font-weight:400;
+  min-width:50px;opacity:.5;
+  line-height:1;
+}
+.section-header h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;color:var(--heading);
+  font-weight:600;font-style:italic;
+}
+
+h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-weight:600;
+  color:var(--heading);margin:20px 0 10px;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:2px solid var(--candle);background:rgba(201,169,97,.03)}
+.card.key{border-left:2px solid var(--accent-1);background:rgba(139,127,184,.04)}
+.card.warn{border-left:2px solid var(--blood);background:rgba(139,30,45,.04)}
+.card.green{border-left:2px solid var(--accent-3);background:rgba(74,107,122,.05)}
+.card.purple{border-left:2px solid var(--accent-7);background:rgba(77,65,103,.06)}
+.card.raven{border-left:2px solid var(--raven);background:rgba(212,208,224,.03)}
+
+.card-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--candle)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(201,169,97,.08);
+  color:var(--candle);
+  padding:2px 7px;border-radius:2px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-4);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+.ornament{
+  text-align:center;
+  color:var(--candle);
+  font-size:18px;
+  margin:40px 0;
+  opacity:.4;
+  letter-spacing:30px;
+  font-family:serif;
+}
+
+/* NEVERMORE ornament */
+.nevermore-divider{
+  text-align:center;
+  margin:40px 0;
+  font-family:'UnifrakturMaguntia',serif;
+  color:var(--blood);
+  font-size:20px;
+  letter-spacing:8px;
+  opacity:.4;
+  position:relative;
+}
+.nevermore-divider::before,
+.nevermore-divider::after{
+  content:'✦';
+  margin:0 20px;
+  color:var(--candle);
+  font-size:14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:16px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY / SYMBOLY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:3px;height:100%;
+  background:var(--character-color,var(--candle));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:20px;
+  transform:translateY(-50%);
+  font-size:64px;
+  opacity:.04;
+  pointer-events:none;
+  font-family:serif;
+}
+.character .char-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;font-style:italic;
+}
+.character .char-name em{
+  font-size:15px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--candle));
+  margin-bottom:14px;
+}
+
+/* VERŠE — sloky básně */
+.verse{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-left:2px solid var(--candle);
+  padding:22px 28px;
+  margin:18px 0;
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.8;
+  position:relative;
+  white-space:pre-line;
+}
+.verse::before{
+  content:'';
+  position:absolute;
+  top:10px;right:14px;
+  width:12px;height:12px;
+  border-top:1px solid var(--candle);
+  border-right:1px solid var(--candle);
+  opacity:.4;
+}
+.verse-source{
+  display:block;margin-top:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* SCÉNA — pasáže z díla */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';position:absolute;
+  top:10px;right:10px;
+  width:20px;height:20px;
+  border-top:1px solid var(--candle);
+  border-right:1px solid var(--candle);
+  opacity:.3;
+}
+.scene::after{
+  content:'';position:absolute;
+  bottom:10px;left:10px;
+  width:20px;height:20px;
+  border-bottom:1px solid var(--candle);
+  border-left:1px solid var(--candle);
+  opacity:.3;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--candle);
+  background:rgba(201,169,97,.06);
+  padding:5px 12px;border-radius:2px;
+  margin-bottom:16px;
+  border:1px solid rgba(201,169,97,.15);
+}
+.scene-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:23px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--raven);
+  margin:16px 0;
+  padding:18px 24px;
+  border-left:2px solid var(--candle);
+  background:rgba(201,169,97,.03);
+  line-height:1.8;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--accent-4)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(139,30,45,.05);
+  border-left:2px solid var(--blood);
+  border-radius:0 2px 2px 0;
+}
+.scene-meaning strong{color:var(--accent-5)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--candle);text-align:left;
+  padding:12px 16px;
+  border-bottom:1px solid var(--candle);
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,var(--candle),transparent);
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--candle);margin-bottom:8px;
+}
+.trope-example{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* NEVERMORE significance — vícevrstvé významy */
+.meanings-stack{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:24px 28px;
+  margin:20px 0;
+  position:relative;
+}
+.meanings-stack .central{
+  font-family:'UnifrakturMaguntia',serif;
+  font-size:36px;
+  color:var(--blood);
+  text-align:center;
+  letter-spacing:4px;
+  margin-bottom:24px;
+  opacity:.8;
+  text-shadow:0 0 20px rgba(139,30,45,.3);
+}
+.meaning-layer{
+  padding:10px 18px;
+  margin:6px 0;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--candle);
+  font-style:italic;
+  color:var(--raven);
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--candle);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+/* TIMELINE — struktura básně */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:1px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-7px;top:22px;
+  width:12px;height:12px;
+  border-radius:50%;
+  border:1px solid var(--candle);
+  background:var(--bg);
+}
+.timeline-step .ts-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-stanza{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--candle);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.7;
+}
+
+/* RÝMOVÉ SCHÉMA */
+.rhyme-scheme{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  padding:20px 24px;margin:16px 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;line-height:1.9;
+}
+.rhyme-scheme .rhyme-letter{
+  display:inline-block;
+  min-width:24px;
+  padding:2px 8px;
+  margin-left:12px;
+  border-radius:2px;
+  font-weight:700;
+  text-align:center;
+}
+.rhyme-A{background:rgba(107,76,122,.2);color:var(--accent-1)}
+.rhyme-B{background:rgba(139,30,45,.15);color:var(--accent-5)}
+.rhyme-line{color:var(--text)}
+.rhyme-line em{color:var(--accent-4);font-style:italic}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+  .hero h1{font-size:48px}
+  .rhyme-scheme{font-size:11px;padding:16px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-raven">◤◥</div>
+  <div class="hero-label">Maturitní rozbor · Světová literatura</div>
+  <h1>Havran</h1>
+  <div class="original">◆ The Raven ◆</div>
+  <div class="author">Edgar Allan Poe</div>
+  <div class="subtitle">1845 · Amerika · Temný romantismus</div>
+  <div class="nevermore">⋆ Nevermore ⋆</div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Lyrický subjekt</a></li>
+  <li><a href="#postavy">Postavy a symboly</a></li>
+  <li><a href="#versova">Veršová výstavba</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#nevermore">Význam slova „Nevermore"</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Havran</strong> <em>(The Raven)</em> je lyricko-epická báseň publikovaná v roce <strong>1845</strong> v New York Evening Mirror. Báseň má <strong>18 slok</strong>, každá obsahuje <strong>6 veršů</strong>. Publikace básni přinesla Poeovi okamžitou literární slávu, ale finančně ho nezachránila – dostal za ni pouhých 9 dolarů.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-stanza">Sloky 1–2</span> Úvod</div>
+    <div class="ts-desc">Představení situace — noční studium, smutek po Lenoře, první zaklepání</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-stanza">Sloky 3–6</span> Zvědavost</div>
+    <div class="ts-desc">Otevření dveří, tma, šepot jména „Lenora"</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-stanza">Sloky 7–9</span> Příchod havrana</div>
+    <div class="ts-desc">Havran vlétne oknem, usadí se na bustě Pallas Athény</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-stanza">Sloky 10–15</span> Dialog</div>
+    <div class="ts-desc">Otázky lyrického subjektu, havran opakuje „Nevermore"</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-stanza">Sloky 16–18</span> Zoufalství</div>
+    <div class="ts-desc">Hněv, pokus havrana vyhnat, věčný stín na podlaze</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--candle)">Celý děj</div>
+  <p style="margin-bottom:0">Odehrává se <strong>během jedné prosincové noci v jedné místnosti</strong> – maximální koncentrace času a prostoru.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--candle)">Hlavní téma</div>
+  <p style="margin-bottom:0"><strong>Smutek a zármutek po ztrátě milované ženy</strong>, pomíjivost, smrt, marnost naděje, šílenství ze smutku, nemožnost překonat ztrátu.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Havran</strong> – symbol smrti a věštby</li>
+  <li><strong>Lenora</strong> – mrtvá milovaná žena</li>
+  <li><strong>Noc a prosinec</strong> – čas tmy, smrti přírody</li>
+  <li><strong>Knihy</strong> – marný pokus utéct před žalem do učení</li>
+  <li><strong>Busta Pallas Athény</strong> – symbol rozumu, na kterém vítězí iracionální smrt</li>
+  <li><strong>Slovo „Nevermore"</strong> – refrén věčného zoufalství</li>
+  <li><strong>Černá barva</strong> – smrt, smutek, beznaděj</li>
+  <li><strong>Ticho, stín, duše, věčnost, zapomenutí</strong> – doprovodné motivy atmosféry</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-7)">
+    <h4 style="color:var(--accent-1)">Čas</h4>
+    <p><strong>Prosincová půlnoc</strong> — „Once upon a midnight dreary". Zima, tma, pozdní večer přecházející v hlubokou noc. Čas, kdy se podle pověr otevírají brány mezi světy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-8)">
+    <h4 style="color:var(--accent-3)">Prostor</h4>
+    <p><strong>Studentský pokoj</strong> lyrického subjektu – knihovna plná knih, okno, busta bohyně Pallas Athény nad dveřmi. Temná, uzavřená místnost osvětlená lampou.</p>
+  </div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--accent-1)">Atmosféra časoprostoru</div>
+  <p style="margin-bottom:0">Kombinace prosincové půlnoci a uzavřené studovny vytváří <strong>klaustrofobický pocit osamělosti</strong>. Svět venku je mrtvý (zima), svět uvnitř je prázdný (bez Lenory). Havran přichází z <em>„plutónského nočního břehu"</em> – narážka na antický podsvětí.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> – děj plyne lineárně během jedné noci</li>
+  <li><strong>Gradace napětí</strong> – od klidného studia přes zvědavost k zoufalství a šílenství</li>
+  <li><strong>Rámcová kompozice</strong> – začátek i konec zdůrazňují věčnost havranovy přítomnosti</li>
+</ul>
+
+<h3>Části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Báseň má <strong>18 slok (strof)</strong></li>
+    <li>Každá sloka má <strong>6 veršů (sextet)</strong></li>
+    <li>Pravidelné střídání kratších a delších veršů</li>
+    <li>Opakující se <strong>refrén „Nevermore"</strong> – 11× v celé básni</li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura — od klidu ke katastrofě</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Úvod · Večerní studium</div>
+    <div class="ts-desc"><strong>Sloky 1–2</strong> — Smutek po Lenoře, hledání úlevy v knihách</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Tajemné klepání</div>
+    <div class="ts-desc"><strong>Sloky 3–6</strong> — Zaklepání, zvědavost, otevření dveří, tma</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">3. Příchod havrana</div>
+    <div class="ts-desc"><strong>Sloky 7–9</strong> — Havran vlétne, usadí se na bustě Pallas</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">4. Dialog s temnotou</div>
+    <div class="ts-desc"><strong>Sloky 10–15</strong> — Otázky a stereotypní odpověď „Nevermore"</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">5. Zoufalství · Věčný stín</div>
+    <div class="ts-desc"><strong>Sloky 16–18</strong> — Hněv, marný pokus vyhnat, věčný stín na duši</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Literární druh</h4>
+    <p><strong>Lyrika s epickými prvky</strong> — lyricko-epická báseň. Vyjadřuje pocity, ale zároveň má děj.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--accent-5)">Literární žánr</h4>
+    <p><strong>Balada</strong> — s prvky hororu a gotiky.</p>
+  </div>
+</div>
+
+<h3>Charakteristika žánru</h3>
+<ul>
+  <li>Má <strong>děj</strong> (příběh o příchodu havrana)</li>
+  <li>Obsahuje <strong>fantastické prvky</strong> (mluvící pták)</li>
+  <li><strong>Tragický konec</strong> – zoufalství lyrického subjektu</li>
+  <li><strong>Temná atmosféra</strong> – noc, smrt, tajemno</li>
+  <li>Prvky <strong>hororu a gotiky</strong></li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-1)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Má děj, ale zároveň vyjadřuje pocity a nálady <em>(lyrika)</em></li>
+    <li>Fantastický prvek – havran mluví</li>
+    <li>Temná, tajemná atmosféra typická pro baladu</li>
+    <li>Tragický konec bez naděje</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 LYRICKY SUBJEKT -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Lyrický subjekt (vypravěč)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--candle)">Typ</div>
+  <p style="margin-bottom:0"><strong>Ich-forma</strong> – lyrický subjekt hovoří v 1. osobě jednotného čísla. Čtenář vidí celý děj jeho očima, prožívá jeho emoce zevnitř.</p>
+</div>
+
+<h3>Charakteristika lyrického subjektu</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Student, učenec</strong> zaměřený na studium starých knih</li>
+    <li>Truchlí po zesnulé milované <strong>Lenoře</strong></li>
+    <li><strong>Osamělý, zoufalý, unavený</strong></li>
+    <li>Postupně propadá <strong>šílenství</strong></li>
+    <li>Hledá úlevu od smutku v knihách – marně</li>
+    <li>Touží po <strong>zapomenutí bolesti</strong></li>
+    <li>Vývoj: <strong>zvědavý → tázající → zoufalý → šílený</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy a symboly</h2></div>
+
+<p>V lyrické básni nejsou klasické postavy jako v epice, ale vystupují tyto figury:</p>
+
+<div class="character" style="--character-color:var(--accent-1)" data-symbol="✎">
+  <div class="char-name">Lyrický subjekt</div>
+  <div class="char-role">Hlavní figura · Vypravěč · Osiřelý milenec</div>
+  <ul style="margin:0">
+    <li>Student, osiřelý milenec</li>
+    <li>Truchlící po Lenoře</li>
+    <li>Hledající útěchu v knihách</li>
+    <li>Postupně se propadající do <strong>zoufalství a šílenství</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--raven)" data-symbol="◤◥">
+  <div class="char-name">Havran</div>
+  <div class="char-role">Ústřední symbol · Černý prorok</div>
+  <ul style="margin:0">
+    <li>Černý pták, který přilétne v noci</li>
+    <li>Usadí se na <strong>bustě Pallas Athény</strong></li>
+    <li>Opakuje jediné slovo: <em>„Nevermore"</em> (Už nikdy víc)</li>
+    <li>Symbol smrti, osudu, marnosti naděje</li>
+    <li>Možná jen <strong>halucinace</strong> smutného studenta</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="❀">
+  <div class="char-name">Lenora <em>(Lenore)</em></div>
+  <div class="char-role">Nepřítomná · Ztracená milovaná</div>
+  <ul style="margin:0">
+    <li>Mrtvá milovaná žena lyrického subjektu</li>
+    <li><strong>V básni fyzicky nepřítomná</strong> – existuje jen jako vzpomínka a stín</li>
+    <li>Nazývána <em>„vzácná a zářivá dívka, kterou andělé nazvali Lenora"</em></li>
+    <li>Symbol ztracené lásky a štěstí</li>
+    <li>Jméno možná odkazuje na Poeovu mrtvou ženu Virginii</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="⚛">
+  <div class="char-name">Pallas Athéna</div>
+  <div class="char-role">Symbol · Bohyně moudrosti</div>
+  <ul style="margin:0">
+    <li>Řecká bohyně <strong>moudrosti a rozumu</strong></li>
+    <li>Její bílá busta visí nad dveřmi</li>
+    <li>Symbol učenosti a rozumu, který je <strong>kontrastován s iracionálním havranem</strong></li>
+    <li>Havran sedí na bustě = smrt vítězí nad moudrostí</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VERSOVA VYSTAVBA -->
+<section class="section" id="versova">
+<div class="section-header"><span class="section-num">VIII</span><h2>Veršová výstavba</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--candle)">
+    <h4 style="color:var(--candle)">Sloky</h4>
+    <p><strong>18 slok</strong> — každá má 6 veršů (sextet).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Rýmové schéma</h4>
+    <p><strong>ABCBBB</strong> — komplexní schéma s vnitřními rýmy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--accent-5)">Metrum</h4>
+    <p><strong>Trochejský osmistopý verš</strong> — hypnotický rytmus.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Zvláštnost</h4>
+    <p>Každá sloka končí slovem na <strong>–ore</strong> (Lenore, door, Nevermore…).</p>
+  </div>
+</div>
+
+<h3>Příklad rýmového schématu</h3>
+<div class="rhyme-scheme">
+<span class="rhyme-line"><em>Once upon a midnight dreary, while I pondered, weak and weary,</em></span><span class="rhyme-letter rhyme-A">A</span>
+<span class="rhyme-line"><em>Over many a quaint and curious volume of forgotten lore—</em></span><span class="rhyme-letter rhyme-B">B</span>
+<span class="rhyme-line"><em>While I nodded, nearly napping, suddenly there came a tapping,</em></span><span class="rhyme-letter rhyme-A">A</span>
+<span class="rhyme-line"><em>As of some one gently rapping, rapping at my chamber door—</em></span><span class="rhyme-letter rhyme-B">B</span>
+<span class="rhyme-line"><em>"'Tis some visitor," I muttered, "tapping at my chamber door—</em></span><span class="rhyme-letter rhyme-B">B</span>
+<span class="rhyme-line"><em>Only this and nothing more."</em></span><span class="rhyme-letter rhyme-B">B</span>
+</div>
+
+<h3>Metrum: Trochej</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-1)">Trochejský osmistopý verš</div>
+  <p style="margin-bottom:0">Důrazná slabika následovaná slabou (<strong>TÁ-ta</strong>, TÁ-ta, TÁ-ta…). Vytváří:</p>
+  <ul style="margin:10px 0 0">
+    <li><strong>Hypnotický, monotónní rytmus</strong></li>
+    <li>Připomíná <strong>tlukot srdce</strong> nebo klepání</li>
+    <li>Navozuje stav tranzu — čtenář se „nechá unášet"</li>
+  </ul>
+</div>
+
+<h3>Druh rýmu</h3>
+<p><strong>Sdružený a přerývaný v kombinaci</strong> – neobvyklé a záměrně komplikované schéma, které přispívá k hudebnosti básně.</p>
+
+<h3>Zvláštní zvukové rysy</h3>
+<ul>
+  <li><strong>Aliterace</strong> (opakování souhlásek): <em>„weak and weary", „nodded, nearly napping"</em></li>
+  <li><strong>Vnitřní rým</strong> uvnitř verše — <em>dreary / weary</em>, <em>napping / tapping / rapping</em></li>
+  <li><strong>Repetice</strong>: <em>„Nevermore"</em>, <em>„chamber door"</em></li>
+  <li><strong>Onomatopoia</strong>: <em>„tapping, rapping"</em> — napodobuje zvuk klepání</li>
+</ul>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">IX</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th><th>Funkce</th></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>dreary</em> (ponurý), <em>quaint</em> (podivný), <em>countenance</em> (výraz tváře)</td><td>Vzdělanost vypravěče</td></tr>
+  <tr><td><strong>Poetismy</strong></td><td><em>yore</em> (dávno), <em>ere</em> (předtím), <em>burden</em> (břemeno)</td><td>Vznešenost</td></tr>
+  <tr><td><strong>Archaismy</strong></td><td><em>thy</em> (tvůj), <em>thou</em> (ty)</td><td>Zastaralé tvary pro poetický efekt</td></tr>
+</table>
+
+<h3>Expresivní a citoslovečné výrazy</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Hněv lyrického subjektu</div>
+  <ul style="margin:0">
+    <li><em>„Prophet!" said I, "thing of evil!"</em></li>
+    <li><em>„Get thee back into the tempest!"</em></li>
+    <li><em>„Nevermore!"</em> — slovo havrana, opakované jako zaklínadlo</li>
+  </ul>
+</div>
+
+<h3>Opakování</h3>
+<ul>
+  <li><strong>„Nevermore"</strong> — klíčové slovo opakované v každé sloce od příchodu havrana (<strong>11×</strong>)</li>
+  <li><strong>„Lenore"</strong> — jméno opakované jako vzpomínka</li>
+  <li><strong>„chamber door"</strong> — opakované v mnoha slokách</li>
+</ul>
+
+<h3>Zvukomalba (onomatopoia)</h3>
+<div class="card purple">
+  <ul style="margin:0">
+    <li><em>„tapping, rapping"</em> — napodobuje zvuk klepání</li>
+    <li><em>„rustling"</em> — šustění záclon</li>
+    <li><em>„flutter"</em> — třepotání křídel</li>
+    <li><em>„whispered"</em> — šepot Lenořina jména</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-1)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Archaismy</strong> vytvářejí mystickou, starobylou atmosféru</li>
+    <li><strong>Opakování</strong> zesiluje hypnotický efekt a obsesi</li>
+    <li><strong>Zvukomalba</strong> vytváří živou smyslovou představu</li>
+    <li><strong>Knižní jazyk</strong> podtrhuje vzdělanost vypravěče – o to větší je kontrast s jeho bezmocí</li>
+    <li><strong>Poetismy</strong> dodávají vznešenost a nadčasovost</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">X</span><h2>Tropy a figury</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Mluvící havran</div>
+    <div class="trope-note">Havran je zosobněn – mluví, myslí, působí jako prorok, který přináší ortel.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Stín na podlaze</div>
+    <div class="trope-note">Havran = smrt, osud, marnost. „Stín" havrana = tíha smutku, která nikdy neodejde.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">Vzácná a zářivá dívka</div>
+    <div class="trope-note">„Vznešený havran z dávných svatých dnů", „vzácná a zářivá dívka, kterou andělé nazvali Lenora".</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Anafora</div>
+    <div class="trope-example">Opakování začátků</div>
+    <div class="trope-note">Opakování slov na začátku veršů pro rytmický efekt a hudebnost.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epifora</div>
+    <div class="trope-example">„Nevermore"</div>
+    <div class="trope-note">Opakování na konci veršů — konec každé sloky od příchodu havrana.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Aliterace</div>
+    <div class="trope-example">weak and weary</div>
+    <div class="trope-note">Opakování souhlásek – <em>„nodded, nearly napping"</em>, <em>„doubting, dreaming dreams"</em>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Věštec, prorok, démon</div>
+    <div class="trope-note">Havran popsán přemrštěnými slovy — zvýrazňuje jeho mystickou povahu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Apostrofa</div>
+    <div class="trope-example">„Proroku!"</div>
+    <div class="trope-note">Přímé oslovení – <em>„Tell me what thy lordly name is"</em> (Řekni mi, jaké je tvé vznešené jméno).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Havran · Busta · Noc</div>
+    <div class="trope-note">Havran = smrt. Busta Pallas = moudrost. Noc = smutek. Stín = věčná tíha.</div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-1)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy a figury vytvářejí <strong>mystickou, tajemnou atmosféru</strong>, zesilují emocionální účinek a <strong>budují symbolický význam básně</strong>. Každý obraz má dvojí čtení – doslovné (pták přiletěl) i symbolické (smrt přišla natrvalo).</p>
+</div>
+</section>
+
+<!-- 11 NEVERMORE VYZNAM -->
+<section class="section" id="nevermore">
+<div class="section-header"><span class="section-num">XI</span><h2>Význam slova „Nevermore"</h2></div>
+
+<p>Slovo <em>„Nevermore"</em> má v básni několik významových vrstev. Opakuje se <strong>11×</strong> a s každým opakováním nabírá novou emocionální tíži.</p>
+
+<div class="meanings-stack">
+  <div class="central">⋆ Nevermore ⋆</div>
+  <div class="meaning-layer">Už nikdy neuvidím Lenoru</div>
+  <div class="meaning-layer">Už nikdy nebudu šťastný</div>
+  <div class="meaning-layer">Už nikdy nezapomenu</div>
+  <div class="meaning-layer">Už nikdy nenajdu klid</div>
+  <div class="meaning-layer">Havran už nikdy neodletí</div>
+  <div class="meaning-layer">Smutek už nikdy neskončí</div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Hypnotická funkce</div>
+  <p style="margin-bottom:0">Opakování slova vytváří <strong>hypnotický efekt</strong>. Symbolizuje <strong>nekonečnost zármutku</strong>, marnost naděje, věčnou přítomnost smrti. Čtenář je vtažen do stejného transu jako lyrický subjekt.</p>
+</div>
+
+<h3>Symbolika havrana</h3>
+<div class="card raven">
+  <div class="card-title" style="color:var(--raven)">Havran znamená</div>
+  <ul style="margin:0">
+    <li><strong>Smrt a pomíjivost</strong></li>
+    <li><strong>Osud</strong>, který nelze změnit</li>
+    <li><strong>Věštce</strong> přinášejícího špatné zprávy</li>
+    <li>Možná <strong>halucinaci</strong> zarmouceného muže</li>
+    <li><strong>Personifikaci zármutku</strong></li>
+    <li>Temnou stránku lidské psychiky</li>
+    <li>Věčnou přítomnost bolesti</li>
+  </ul>
+</div>
+
+<h3>Busta Pallas Athény</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li>Pallas Athéna = řecká <strong>bohyně moudrosti</strong></li>
+    <li>Havran sedící na bustě = <strong>smrt a iracionálno vítězí nad moudrostí a rozumem</strong></li>
+    <li>Student-učenec nemůže najít útěchu v rozumu a vzdělání</li>
+    <li>Kontrast mezi vzdělaností a bezmocností vůči smrti</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--candle)">Edgar Allan Poe (1809–1849)</div>
+  <p>Americký básník, prozaik, literární kritik. Život plný tragédií — <strong>matka mu zemřela na tuberkulózu</strong>, když mu byly 2 roky. Byl vychován obchodníkem Johnem Allanem, se kterým se později rozešel. Oženil se se svou třináctiletou sestřenicí <strong>Virginií Clemmovou</strong>, která zemřela na tuberkulózu v roce 1847 – dva roky po vydání Havrana. Trpěl alkoholismem a depresemi. Zemřel za dodnes <strong>nevyjasněných okolností</strong> v Baltimoru – našli ho zmateného v cizích šatech, zemřel o čtyři dny později.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Nejvýznamnější Poeova báseň</strong></li>
+  <li>Publikována <strong>29. ledna 1845</strong> v New York Evening Mirror</li>
+  <li>Přinesla Poeovi slávu (ale za honorář jen <strong>9 dolarů</strong>)</li>
+  <li>Vrchol autorovy básnické tvorby</li>
+  <li>Poe později napsal esej <em>„Filosofie básnické skladby"</em> <em>(The Philosophy of Composition)</em>, kde vysvětluje, jak Havrana psal – tvrdil, že šlo o čistě racionální proces, ne o inspiraci</li>
+</ul>
+
+<h3>Další Poeova díla</h3>
+
+<h4>Poezie</h4>
+<ul>
+  <li><strong>Annabel Lee</strong> (1849) – o ztrátě milované dívky, napsáno po smrti Virginie</li>
+  <li><strong>The Bells</strong> – zvukomalebná báseň o zvonech</li>
+  <li><strong>Ulalume</strong> – temná báseň o smutku</li>
+</ul>
+
+<h4>Povídky – horory a detektivky</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Žánr</th></tr>
+  <tr><td><strong>Jáma a kyvadlo</strong></td><td>Horor – španělská inkvizice</td></tr>
+  <tr><td><strong>Pád domu Usherů</strong></td><td>Gotický horor</td></tr>
+  <tr><td><strong>Předčasný pohřeb</strong></td><td>Horor – katalepsie</td></tr>
+  <tr><td><strong>Vraždy v ulici Morgue</strong></td><td><strong>První detektivka v historii</strong></td></tr>
+  <tr><td><strong>Černý kocour</strong></td><td>Psychologický horor</td></tr>
+  <tr><td><strong>Maska červené smrti</strong></td><td>Alegorie smrti</td></tr>
+  <tr><td><strong>Zlatý brouk</strong></td><td>Kryptografická dobrodružná povídka</td></tr>
+</table>
+
+<h3>Poeův styl</h3>
+<ul>
+  <li>Temné, tajemné, hororové látky</li>
+  <li><strong>Psychologická hloubka</strong> postav</li>
+  <li>Smrt, šílenství, strach jako ústřední témata</li>
+  <li><strong>Dokonalá formální konstrukce</strong> – každé slovo má své místo</li>
+  <li>Symbolismus</li>
+  <li>Detektivní žánr – <strong>Poe je považován za jeho zakladatele</strong> (postava C. Auguste Dupina předchází Sherlocka Holmese)</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Polovina 19. století</strong> (1809–1849 Poeův život)</li>
+    <li>Amerika v období <strong>romantismu</strong></li>
+    <li>Publikováno <strong>1845 v New Yorku</strong></li>
+    <li>Umělecký sloh: <strong>ROMANTISMUS</strong> (přesněji <em>temný romantismus</em>, <em>dark romanticism</em>)</li>
+  </ul>
+</div>
+
+<h3>Základní rysy romantismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-5)"><h4 style="color:var(--accent-5)">City a emoce</h4><p>Důraz na city, emoce, fantazii a iracionálno.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-1)"><h4 style="color:var(--accent-1)">Individualismus</h4><p>Originalita, jedinečnost, výjimečný hrdina.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-7)"><h4 style="color:var(--accent-7)">Tajemno</h4><p>Zájem o minulost, exotiku, nadpřirozeno.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Únik</h4><p>Únik od reality do snů, minulosti, exotiky.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Kontrast</h4><p>Napětí mezi protiklady (život/smrt, láska/nenávist).</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Příroda</h4><p>Příroda jako zrcadlo duše, bouře jako symbol.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--accent-5)">Temná psychika</h4><p>Temné stránky lidské duše, šílenství, strach.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--raven)"><h4 style="color:var(--raven)">Hlavní témata</h4><p>Smrt, láska, osud, touha, ztráta.</p></div>
+</div>
+
+<h3>Poeův směr: Temný romantismus, gotika</h3>
+<div class="card purple">
+  <ul style="margin:0">
+    <li>Zaměření na <strong>strach, smrt, šílenství</strong></li>
+    <li>Tajemno, nadpřirozeno</li>
+    <li><strong>Psychologická analýza</strong> extrémních stavů</li>
+    <li>Morbidní atmosféra</li>
+    <li>Ovlivnil pozdější <strong>symbolismus a dekadenci</strong> (Baudelaire, Mallarmé)</li>
+  </ul>
+</div>
+
+<h3>Další zástupci romantismu</h3>
+<table class="compare-table">
+  <tr><th>Země</th><th>Autor</th><th>Dílo</th></tr>
+  <tr><td rowspan="3"><strong>Amerika</strong></td><td>Nathaniel Hawthorne</td><td><em>Šarlatové písmeno</em></td></tr>
+  <tr><td>Herman Melville</td><td><em>Bílá velryba (Moby Dick)</em></td></tr>
+  <tr><td>Walt Whitman</td><td><em>Stébla trávy</em> (poezie)</td></tr>
+  <tr><td rowspan="4"><strong>Anglie</strong></td><td>Lord Byron</td><td><em>Childe Haroldova pouť</em></td></tr>
+  <tr><td>Percy Bysshe Shelley</td><td><em>Odpoutaný Prometheus</em></td></tr>
+  <tr><td>Mary Shelley</td><td><em>Frankenstein</em></td></tr>
+  <tr><td>John Keats</td><td>Ódy</td></tr>
+  <tr><td rowspan="2"><strong>Francie</strong></td><td>Victor Hugo</td><td><em>Chrám Matky Boží v Paříži, Bídníci</em></td></tr>
+  <tr><td>Alexandre Dumas</td><td><em>Tři mušketýři</em></td></tr>
+  <tr><td rowspan="2"><strong>Německo</strong></td><td>J. W. Goethe</td><td><em>Faust, Utrpení mladého Werthera</em></td></tr>
+  <tr><td>E. T. A. Hoffmann</td><td><em>Písečný muž</em> (horor)</td></tr>
+  <tr><td rowspan="2"><strong>Rusko</strong></td><td>Alexandr Puškin</td><td><em>Evžen Oněgin</em></td></tr>
+  <tr><td>Michail Lermontov</td><td><em>Hrdina naší doby</em></td></tr>
+  <tr><td rowspan="2"><strong>Česko</strong></td><td>Karel Hynek Mácha</td><td><em>Máj</em></td></tr>
+  <tr><td>Karel Jaromír Erben</td><td><em>Kytice</em></td></tr>
+</table>
+</section>
+
+<div class="nevermore-divider">Nevermore</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene">
+  <span class="scene-label">01 · Sloka 1 · Úvod</span>
+  <div class="scene-title">Představení atmosféry</div>
+  <div class="scene-text">Jednou v noci zimní, mdlé a šeré,
+když jsem v knihách hledal zapomnění
+na své stesky, náhle v pološeru
+kdosi klepe, slyším zaklepání —
+kdosi klepe potichu u dveří.
+„Návštěva," řekl jsem, „jen to a nic víc."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Slavný začátek básně. Student studuje v půlnoci staré knihy a snaží se zapomenout na smutek po Lenoře. Náhle uslyší klepání.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Vytváří temnou, tajemnou atmosféru. Noční studium, únava, smutek — vše naznačuje následující děsivou návštěvu.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Sloka 2 · Lenora</span>
+  <div class="scene-title">Vzpomínka na Lenoru</div>
+  <div class="scene-text">Ach, zřetelně si to pamatuji, byl prosinec a ledový vítr
+vrhal každého umírajícího ohaře stín na podlahu.
+Toužebně jsem čekal na svítání — marně jsem hledal úlevu
+ve svých knihách — úlevu od smutku — smutku po ztracené Lenoře —
+po vzácné a zářivé dívce, kterou andělé nazvali Lenora —
+bezejmenná zde navždy.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Lyrický subjekt vzpomíná na svou mrtvou milovanou Lenoru.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Zavádí klíčový motiv — ztrátu milované. Lenora je <em>„bezejmenná zde navždy"</em> — již neexistuje v tomto světě.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Sloka 5 · Otevření</span>
+  <div class="scene-title">Otevření dveří — Tma</div>
+  <div class="scene-text">Otevřel jsem dveře dokořán — tma, nic než tma.
+Stál jsem dlouho v úžasu, ve strachu, pochybách,
+snil sny, jaké si žádný smrtelník nikdy netroufal snít.
+Ale ticho zůstalo neporušené a ta nehybnost neprozradila žádné znamení,
+a jediné slovo tam vyřčené bylo šeptané slovo „Lenora!"
+To jsem šeptal já a ozvěna to šeptala zpět — „Lenora!" — jen to a nic víc.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Lyrický subjekt otevře dveře, ale nikdo tam není. Zašeptá jméno „Lenora" a ozvěna mu odpoví.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Napětí graduje. Tma a ticho symbolizují smrt. Šeptání jména ukazuje <strong>obsesi</strong> vypravěče.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Sloka 7 · Příchod</span>
+  <div class="scene-title">Příchod havrana</div>
+  <div class="scene-text">Dovnitř vkročil vznešený havran z posvátných dnů dávnověku,
+nepozdravil, ani na okamžik se nezastavil;
+ale s výrazem pána nebo dámy usedl nad dveřmi mé komnaty —
+usedl na bustě Pallas přímo nad dveřmi mé komnaty —
+usedl a seděl a nic víc.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Havran přilétne do pokoje a usadí se na bustě bohyně moudrosti Pallas Athény.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Kontrast — <strong>havran (symbol smrti) sedí na bustě moudrosti</strong>. Pták působí vznešeně, takřka nadpřirozeně. Klíčový vizuální obraz celé básně.</div>
+</div>
+
+<div class="scene" style="border:2px solid var(--candle)">
+  <span class="scene-label" style="background:rgba(201,169,97,.15);border-color:var(--candle)">★ 05 · Sloka 8 · PRVNÍ „NEVERMORE" ★</span>
+  <div class="scene-title">První „Nevermore"</div>
+  <div class="scene-text">Řekl jsem: „Jistě jsi byl vyhnán z nějaké noční pustiny —
+ačkoli tvá hlava je holá a ostříhaná, ty určitě nejsi zbabělec,
+pochmurný a prastarý havrane putující z nočního břehu —
+řekni mi, jaké je tvé vznešené jméno na nočním plutónském břehu!"
+Pravil havran: „Nevermore."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Lyrický subjekt se ptá havrana na jeho jméno. Havran odpoví jediným slovem.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> <strong>První vyslovení klíčového slova „Nevermore"</strong>. Slovo zní tajemně a hrozivě. Odtud se bude opakovat v každé další sloce.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · Sloky 9–10 · Úžas</span>
+  <div class="scene-title">Úžas nad havranem</div>
+  <div class="scene-text">Užasl jsem, že tento nevzhledný pták slyšel tak zřetelně,
+ačkoli jeho odpověď měla malý smysl — málo relevance.
+Neboť nemůžeme si nepomyslet, že žádný živý člověk
+nikdy dosud neměl tu výsadu vidět ptáka nad dveřmi své komnaty —
+ptáka nebo zvíře na vytesané bustě nad dveřmi jeho komnaty,
+se jménem jako „Nevermore."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Lyrický subjekt žasne nad tím, že pták umí mluvit.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Racionální vysvětlení — havran se naučil slovo od nějakého nešťastného pána. Ale napětí roste.</div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(139,30,45,.12);border-color:var(--blood);color:var(--blood)">★ 07 · Sloka 14 · KLÍČOVÁ OTÁZKA ★</span>
+  <div class="scene-title">Otázka o setkání v nebi</div>
+  <div class="scene-text">„Proroku!" pravil jsem, „věci zla! — proroku — stále ještě, ať už ptáku nebo ďáblu! —
+Zda tímto nebem, které se nad námi sklání — tímto Bohem, kterého oba ctíme —
+pověz této duši obtížené smutkem, zda v daleké Edenu
+bude objímat vzácnou dívku, kterou andělé nazvali Lenora —
+objímat vzácnou a zářivou dívku, kterou andělé nazvali Lenora."
+Pravil havran: „Nevermore."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Lyrický subjekt se ptá, zda se v posmrtném životě (v nebi) znovu setká s Lenorou.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> <strong>Nejdůležitější otázka celé básně</strong> — touha po setkání s milovanou. Havranovo „Nevermore" ničí jakoukoli naději, <strong>i naději na posmrtné shledání</strong>. Zoufalství dosahuje vrcholu.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Sloky 16–17 · Zoufalství</span>
+  <div class="scene-title">Hněv a zoufalství</div>
+  <div class="scene-text">„Buď ta řeč našim znamením rozloučení, ptáku nebo ďáble!" vykřikl jsem —
+„Vrať se zpět do bouře a na plutónský noční břeh!
+Nezanechej zde černé pírko jako znamení té lži, kterou tvá duše řekla!
+Nech mou samotu nedotčenou! — opusť bustu nad mými dveřmi!
+Vytáhni svůj zobák z mého srdce a odstraň svou podobu z mých dveří!"
+Pravil havran: „Nevermore."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Lyrický subjekt zuří, požaduje, aby havran odletěl. Chce být sám se svým smutkem.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> <strong>Climax emocionálního napětí</strong>. Lyrický subjekt ví, že havran mluví pravdu — nikdy nezapomene, nikdy nenajde klid. Havran se nehne.</div>
+</div>
+
+<div class="scene" style="border:2px solid var(--raven)">
+  <span class="scene-label" style="background:rgba(212,208,224,.08);border-color:var(--raven);color:var(--raven)">★ 09 · Sloka 18 · ZÁVĚR ★</span>
+  <div class="scene-title">Věčný stín</div>
+  <div class="scene-text">A havran stále sedí, stále sedí
+na bledé bustě Pallas přímo nad dveřmi mé komnaty;
+a jeho oči mají zdání očí démona, který sní,
+a světlo lampy vrhající se nad ním vrhá jeho stín na podlahu;
+a má duše z toho stínu, který se vznáší na podlaze,
+se nevyzvedne — už nikdy víc!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Závěrečná sloka. Havran stále sedí, jeho stín pokrývá podlahu. Duše lyrického subjektu zůstane navždy pod tímto stínem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tragický, beznadějný konec</strong></li>
+      <li>Havran nikdy neodletí — symbol věčného smutku</li>
+      <li><strong>Stín</strong> = tíha zármutku, která nikdy nepomine</li>
+      <li><em>„Nevermore"</em> = nikdy již nebude šťastný</li>
+      <li>Možná halucinace šíleného muže — nebo skutečnost</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="nevermore-divider">Nevermore</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--candle)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0">Smutek a zármutek po ztrátě milované osoby je <strong>nevyléčitelný</strong>. Není úniku od bolesti, smrt je konečná a neodvratná. <strong>Rozum a vzdělání neposkytují útěchu</strong> proti zármutku. Naděje je marná — <em>„Nevermore"</em>.</p>
+</div>
+
+<h3>Poetika díla</h3>
+<ul>
+  <li><strong>Dokonalá formální stavba</strong> – nic v básni není náhodné</li>
+  <li>Hypnotický rytmus (trochej)</li>
+  <li>Opakování jako umělecký prostředek</li>
+  <li>Zvukomalba – aliterace, rým, onomatopoia</li>
+  <li>Gradace napětí</li>
+  <li>Symbolismus</li>
+</ul>
+
+<h3>Symbol díla</h3>
+<div class="card raven">
+  <div class="card-title" style="color:var(--raven)">Havran</div>
+  <p style="margin-bottom:0">Symbol smrti, osudu, věčného smutku, marnosti naděje. Jeho <strong>černá barva</strong>, sedění na <strong>místě moudrosti</strong> (Pallas) a <strong>neustálé opakování</strong> „Nevermore" vytváří atmosféru beznaděje, ze které není úniku.</p>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-1)">Proč číst Havrana dnes?</div>
+  <p style="margin-bottom:0">Téma <strong>ztráty blízkého člověka</strong> je univerzální a nadčasové. Báseň mluví o nemožnosti vyrovnat se se smrtí milované osoby, o marnosti hledání útěchy. Psychologická pravdivost – <strong>smutek může člověka pohltit</strong> a šílenství může být důsledkem nezvládnutého zármutku. Poe předjímá moderní psychologii 20. století.</p>
+</div>
+
+<h3>Vliv na kulturu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Literatura</h4>
+    <p>Ovlivnil <strong>symbolismus a dekadenci</strong> – Baudelaire přeložil Poea do francouzštiny a nazval ho „bratrem duše".</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Hudba</h4>
+    <p>Inspiroval metalové i klasické skladby. Simpsonovi natočili legendární parodii (Halloween special).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Kulturní ikona</h4>
+    <p>Havran je <strong>jedna z nejcitovanějších básní</strong> v angličtině – memorována generacemi studentů.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Sport</h4>
+    <p>NFL tým <strong>Baltimore Ravens</strong> pojmenován po básni – Poe zemřel právě v Baltimoru.</p>
+  </div>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Jak Poe Havrana konstruoval — esej „Filosofie básnické skladby"</summary>
+  <p>Poe napsal esej, v níž tvrdí, že Havrana psal <strong>zcela racionálně</strong>. Začal rozhodnutím o délce básně (100 veršů), poté zvolil slovo <em>„Nevermore"</em> kvůli jeho zvukové kvalitě, a teprve potom hledal situaci, v níž by melancholický muž toto slovo slyšel znovu a znovu. Havran byl zvolen jako logické zvíře schopné opakovat slovo.</p>
+</details>
+<details>
+  <summary>Papoušek místo havrana</summary>
+  <p>Poe původně zvažoval <strong>papouška</strong> jako ptáka, který opakuje slovo — ale zamítl ho jako příliš veselého. Havran, černý a zlověstný, se hodil k melancholickému tónu lépe.</p>
+</details>
+<details>
+  <summary>Finanční smůla</summary>
+  <p>Přes obrovský úspěch Poe dostal za báseň <strong>pouhých 9 dolarů</strong>. Proslavila ho, ale neuživila. Zemřel o čtyři roky později v bídě za záhadných okolností.</p>
+</details>
+
+<div class="verse" style="margin-top:40px;text-align:center;border-left:none;border-top:2px solid var(--candle);border-bottom:2px solid var(--candle)">
+Quoth the Raven: „Nevermore."
+<span class="verse-source">Edgar Allan Poe · The Raven · 1845</span>
+</div>
+</section>
+
+<div class="nevermore-divider" style="margin-top:50px">Nevermore</div>
+
+</div>
+</body>
+</html>

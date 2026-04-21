@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 1: Mikrokontroléry – Základní pojmy, Architektura</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #0f1a2e 40%, #1a0f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 25% 50%, rgba(96,165,250,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(167,139,250,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+  .tag-risc { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+  .tag-cisc { background: rgba(251,146,60,0.15); color: var(--accent-6); }
+  .tag-harv { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+  .tag-vn { background: rgba(167,139,250,0.15); color: var(--accent-2); }
+
+  /* Architecture diagrams */
+  .arch-diagram {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .arch-row { display: flex; align-items: center; gap: 10px; }
+  .arch-box {
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 100px;
+  }
+  .arch-arrow { font-size: 18px; }
+  .arch-bus {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Pipeline diagram */
+  .pipeline {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .pipeline-grid {
+    display: grid;
+    gap: 3px;
+  }
+  .pipeline-row { display: flex; gap: 3px; align-items: center; }
+  .pipeline-label { min-width: 30px; color: var(--text-muted); font-size: 10px; text-align: right; padding-right: 8px; }
+  .pipeline-cell {
+    width: 44px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 10px;
+  }
+  .pipeline-empty { width: 44px; height: 28px; }
+  .pc-f { background: rgba(248,113,113,0.2); color: var(--accent-5); }
+  .pc-d { background: rgba(251,191,36,0.2); color: var(--accent-4); }
+  .pc-e { background: rgba(52,211,153,0.2); color: var(--accent-3); }
+  .pc-m { background: rgba(96,165,250,0.2); color: var(--accent-1); }
+  .pc-w { background: rgba(167,139,250,0.2); color: var(--accent-2); }
+
+  /* MCU block diagram */
+  .mcu-block {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .mcu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .mcu-cell {
+    padding: 12px 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+  }
+  .mcu-cell .mc-sub { font-size: 9px; font-weight: 400; opacity: 0.7; margin-top: 3px; }
+  .mcu-cpu { grid-column: 1 / -1; }
+
+  /* ISA code comparison */
+  .code-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .code-block {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .code-block .cb-title {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .code-block .cb-line { color: var(--text-muted); }
+  .code-block .cb-comment { color: #4b5563; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .code-compare { grid-template-columns: 1fr; }
+    .mcu-grid { grid-template-columns: 1fr; }
+    .arch-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 1</div>
+  <h1>Mikrokontroléry – Základní pojmy, Architektura</h1>
+  <p>MCU • Harvard / Von Neumann • RISC / CISC • Mikroarchitektura • Pipeline</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#mcu">Co je mikrokontrolér</a></li>
+    <li><a href="#components">Základní komponenty MCU</a></li>
+    <li><a href="#von-neumann">Von Neumann architektura</a></li>
+    <li><a href="#harvard">Harvard architektura</a></li>
+    <li><a href="#modified">Modified Harvard</a></li>
+    <li><a href="#isa">Instrukční sada (ISA)</a></li>
+    <li><a href="#cisc">CISC</a></li>
+    <li><a href="#risc">RISC</a></li>
+    <li><a href="#risc-vs-cisc">RISC vs CISC – porovnání</a></li>
+    <li><a href="#microarch">Mikroarchitektura</a></li>
+    <li><a href="#cycle">Instrukční cyklus</a></li>
+    <li><a href="#pipeline">Pipelining a hazardy</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 MCU -->
+<section class="section" id="mcu">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Co je mikrokontrolér</h2>
+  </div>
+
+  <p><strong>Mikrokontrolér (MCU)</strong> = kompletní počítačový systém na jednom čipu. Obsahuje CPU, paměť (RAM, Flash) a periférie (GPIO, timery, ADC, komunikace) – vše integrováno.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Mikroprocesor (μP)</h4>
+      <p>Pouze CPU na čipu. Externí RAM, ROM, periférie nutné. Vyšší výkon, vyšší spotřeba. Příklady: Intel x86, ARM Cortex-A. Použití: PC, servery, smartphony.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Mikrokontrolér (MCU)</h4>
+      <p>CPU + paměť + periférie na jednom čipu (SoC). Kompaktní, nízká cena, nízká spotřeba. Příklady: ATmega328, STM32, ESP32. Použití: embedded, IoT, automotive.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Klíčové vlastnosti MCU</div>
+    <ul>
+      <li><strong>Integrace</strong> – vše na jednom čipu</li>
+      <li><strong>Real-time</strong> – deterministické chování</li>
+      <li><strong>Low power</strong> – μA až mA (bateriové napájení)</li>
+      <li><strong>Dedicated purpose</strong> – jedna specifická úloha</li>
+      <li><strong>Affordable</strong> – cena od pár korun</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 COMPONENTS -->
+<section class="section" id="components">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Základní komponenty MCU</h2>
+  </div>
+
+  <!-- MCU block diagram -->
+  <div class="mcu-block">
+    <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:12px">MIKROKONTROLÉR (SoC)</div>
+    <div class="mcu-grid">
+      <div class="mcu-cell mcu-cpu" style="background:rgba(96,165,250,0.15);color:var(--accent-1);">
+        CPU (RISC/CISC jádro)
+        <div class="mc-sub">ALU • Registry • Control Unit • PC</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(248,113,113,0.12);color:var(--accent-5);">
+        Flash/ROM
+        <div class="mc-sub">Program (kB–MB)</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(251,191,36,0.12);color:var(--accent-4);">
+        RAM
+        <div class="mc-sub">Data (kB)</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(167,139,250,0.12);color:var(--accent-2);">
+        EEPROM
+        <div class="mc-sub">Config (B–kB)</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(52,211,153,0.12);color:var(--accent-3);">
+        GPIO
+        <div class="mc-sub">Digital I/O piny</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(251,146,60,0.12);color:var(--accent-6);">
+        Timery
+        <div class="mc-sub">PWM, Capture, Compare</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(244,114,182,0.12);color:var(--accent-7);">
+        ADC / DAC
+        <div class="mc-sub">Analog ↔ Digital</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(96,165,250,0.12);color:var(--accent-8);">
+        Komunikace
+        <div class="mc-sub">UART, SPI, I2C, CAN</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(167,139,250,0.12);color:var(--accent-2);">
+        Interrupt
+        <div class="mc-sub">Controller</div>
+      </div>
+      <div class="mcu-cell" style="background:rgba(107,114,128,0.12);color:var(--text-muted);">
+        Clock & Power
+        <div class="mc-sub">Oscilátor, Sleep modes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 VON NEUMANN -->
+<section class="section" id="von-neumann">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Von Neumann architektura <span class="tag tag-vn">VON NEUMANN</span></h2>
+  </div>
+
+  <p><strong>Jediná sběrnice</strong> a <strong>jediný paměťový prostor</strong> pro program i data. Instrukce a data sdílejí stejnou cestu k CPU.</p>
+
+  <!-- Von Neumann diagram -->
+  <div class="arch-diagram">
+    <div class="arch-row">
+      <div class="arch-box" style="background:rgba(96,165,250,0.15);color:var(--accent-1);min-width:140px">
+        CPU
+        <div style="font-size:9px;opacity:0.7">ALU + Control</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div class="arch-arrow" style="color:var(--accent-2)">←→</div>
+        <div class="arch-bus" style="color:var(--accent-2)">Jediná sběrnice</div>
+      </div>
+      <div class="arch-box" style="background:rgba(167,139,250,0.15);color:var(--accent-2);min-width:180px">
+        Jednotná paměť
+        <div style="font-size:9px;opacity:0.7">Program + Data (sdílené)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p>Jednoduchost, levnější HW. Flexibilní poměr program/data. Self-modifying code možný.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p><strong>Von Neumann bottleneck</strong> – nelze fetch instrukce a data současně! Nižší výkon při intenzivním data access.</p>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)"><strong>Příklady:</strong> Intel x86/x64, ARM Cortex-A, ARM Cortex-M0 (pro jednoduchost).</p>
+</section>
+
+<!-- 04 HARVARD -->
+<section class="section" id="harvard">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Harvard architektura <span class="tag tag-harv">HARVARD</span></h2>
+  </div>
+
+  <p><strong>Oddělené sběrnice</strong> a <strong>oddělené paměťové prostory</strong> pro program a data. Paralelní přístup!</p>
+
+  <!-- Harvard diagram -->
+  <div class="arch-diagram">
+    <div class="arch-row">
+      <div class="arch-box" style="background:rgba(248,113,113,0.12);color:var(--accent-5);">
+        Program Memory
+        <div style="font-size:9px;opacity:0.7">Flash (instrukce)</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div class="arch-arrow" style="color:var(--accent-5)">←→</div>
+        <div class="arch-bus" style="color:var(--accent-5)">Program Bus</div>
+      </div>
+      <div class="arch-box" style="background:rgba(96,165,250,0.15);color:var(--accent-1);min-width:100px">
+        CPU
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div class="arch-arrow" style="color:var(--accent-4)">←→</div>
+        <div class="arch-bus" style="color:var(--accent-4)">Data Bus</div>
+      </div>
+      <div class="arch-box" style="background:rgba(251,191,36,0.12);color:var(--accent-4);">
+        Data Memory
+        <div style="font-size:9px;opacity:0.7">RAM (data)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p><strong>Vyšší propustnost</strong> – paralelní fetch instrukce + data access. Deterministický timing. Ideální pro real-time. Lepší pipelining.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p>Složitější HW (dvě sběrnice, více pinů). Dražší. Fixní poměr program/data paměti. Self-modifying code obtížný.</p>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)"><strong>Příklady:</strong> AVR (ATmega – Arduino), PIC, ARM Cortex-M (STM32, nRF52) – většina moderních MCU.</p>
+</section>
+
+<!-- 05 MODIFIED HARVARD -->
+<section class="section" id="modified">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Modified Harvard</h2>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Hybridní přístup – best of both worlds</div>
+    <p>Oddělené I-Bus a D-Bus pro CPU, ale možnost přístupu k program memory jako k datům (čtení konstant z Flash → šetří RAM). Instrukční cache oddělená od data cache.</p>
+    <p style="margin-bottom:0"><strong>Používá:</strong> ARM Cortex-M, moderní x86 (interně). <strong>Nejpoužívanější</strong> v moderních systémech.</p>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th><span class="tag tag-vn">Von Neumann</span></th><th><span class="tag tag-harv">Harvard</span></th><th>Modified Harvard</th></tr>
+    <tr><td><strong>Sběrnice</strong></td><td>1 sdílená</td><td>2 oddělené</td><td>2 + cross-access</td></tr>
+    <tr><td><strong>Paralelismus</strong></td><td>Ne (bottleneck)</td><td><strong>Ano</strong></td><td>Ano</td></tr>
+    <tr><td><strong>Flexibilita</strong></td><td>Vysoká</td><td>Nízká (fixní)</td><td>Střední</td></tr>
+    <tr><td><strong>Složitost HW</strong></td><td>Nízká</td><td>Vysoká</td><td>Střední</td></tr>
+    <tr><td><strong>Příklady</strong></td><td>x86, Cortex-A</td><td>AVR, PIC</td><td>Cortex-M, mod. x86</td></tr>
+  </table>
+</section>
+
+<!-- 06 ISA -->
+<section class="section" id="isa">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Instrukční sada (ISA)</h2>
+  </div>
+
+  <p><strong>ISA</strong> (Instruction Set Architecture) = abstraktní rozhraní mezi HW a SW. Definuje jaké instrukce procesor rozumí, jak jsou kódované, jaké registry existují, jak se adresuje paměť.</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">ISA určuje</div>
+    <ul>
+      <li><strong>Instrukční set</strong> – dostupné operace (ADD, SUB, LOAD, STORE, BRANCH…)</li>
+      <li><strong>Datové typy</strong> – 8/16/32/64 bit integer, float</li>
+      <li><strong>Registry</strong> – počet, velikost, special-purpose</li>
+      <li><strong>Addressing modes</strong> – jak se specifikují operandy</li>
+      <li><strong>Memory architecture</strong> – Von Neumann vs Harvard</li>
+    </ul>
+  </div>
+
+  <p>Dvě hlavní filosofie: <span class="tag tag-cisc">CISC</span> a <span class="tag tag-risc">RISC</span></p>
+</section>
+
+<!-- 07 CISC -->
+<section class="section" id="cisc">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>CISC <span class="tag tag-cisc">Complex Instruction Set Computer</span></h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-6)">
+    <div class="card-title" style="color: var(--accent-6);">Filosofie: „Čím více instrukcí, tím lépe"</div>
+    <p>Komplexní instrukce, které dělají HODNĚ práce. Variabilní délka (1–15+ B). Instrukce mohou přímo přistupovat k paměti. Microkód překládá na μops.</p>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p><strong>Kompaktní kód</strong> – méně instrukcí = menší program. Menší „semantic gap". Backward compatibility (x86 od 1978!).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p>Složitý HW (dekódování variabilních instrukcí). Pomalejší clock. Obtížné pipelining. Vyšší spotřeba. Mnoho instrukcí se málo používá.</p>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)"><strong>Příklady:</strong> Intel x86/x64 (PC, servery), Motorola 68000, VAX.</p>
+</section>
+
+<!-- 08 RISC -->
+<section class="section" id="risc">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>RISC <span class="tag tag-risc">Reduced Instruction Set Computer</span></h2>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Filosofie: „Keep it simple"</div>
+    <p>Malý set jednoduchých, rychlých instrukcí. Komplexní operace se skládají z více jednoduchých. Fixní délka (32 bit). Load/Store architektura.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">7 RISC principů</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Malý instrukční set (~100 instrukcí)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Fixní délka instrukcí (32 bit)</div><div class="step-desc">Zjednodušuje dekódování a pipelining</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Load/Store architektura</div><div class="step-desc">POUZE Load/Store přistupují k paměti. Aritmetika = register-to-register</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Jednoduché addressing modes (2–5)</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Velký register file (16–32 GP registrů)</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Hardwired control (žádný microkód)</div></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-content"><div class="step-label">Pipelined execution → CPI ≈ 1</div></div></div>
+    </div>
+  </div>
+
+  <!-- Code comparison -->
+  <h4>Příklad: Load/Store vs CISC přímý přístup</h4>
+  <div class="code-compare">
+    <div class="code-block">
+      <div class="cb-title" style="color:var(--accent-3)">RISC (ARM)</div>
+      <span style="color:var(--accent-3)">LDR</span> <span class="cb-line">R0, [R1]</span>    <span class="cb-comment">; Load z paměti</span><br>
+      <span style="color:var(--accent-3)">ADD</span> <span class="cb-line">R0, R0, R2</span>  <span class="cb-comment">; R0 = R0 + R2</span><br>
+      <span style="color:var(--accent-3)">STR</span> <span class="cb-line">R0, [R1]</span>    <span class="cb-comment">; Store zpět</span>
+    </div>
+    <div class="code-block">
+      <div class="cb-title" style="color:var(--accent-6)">CISC (x86)</div>
+      <span style="color:var(--accent-6)">ADD</span> <span class="cb-line">[EBX], ECX</span>  <span class="cb-comment">; 1 instrukce!</span><br>
+      <span class="cb-comment">; Load + Add + Store</span><br>
+      <span class="cb-comment">; vše v jednom</span>
+    </div>
+  </div>
+
+  <p><strong>Příklady RISC:</strong> ARM (Cortex-M/A), RISC-V (open-source), MIPS, AVR (Arduino).</p>
+</section>
+
+<!-- 09 RISC vs CISC -->
+<section class="section" id="risc-vs-cisc">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>RISC vs CISC – porovnání</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th><span class="tag tag-risc">RISC</span></th><th><span class="tag tag-cisc">CISC</span></th></tr>
+    <tr><td><strong>Instrukční set</strong></td><td>~100 jednoduchých</td><td>100–1000+ složitých</td></tr>
+    <tr><td><strong>Délka instrukce</strong></td><td>Fixní (32 bit)</td><td>Variabilní (1–15+ B)</td></tr>
+    <tr><td><strong>Memory access</strong></td><td>Pouze LOAD/STORE</td><td>Většina instrukcí může</td></tr>
+    <tr><td><strong>Registry</strong></td><td>Mnoho (16–32 GP)</td><td>Méně (8–16 GP)</td></tr>
+    <tr><td><strong>CPI</strong></td><td>~1 (ideálně)</td><td>Variabilní (1–100+)</td></tr>
+    <tr><td><strong>Addressing modes</strong></td><td>2–5</td><td>12–24</td></tr>
+    <tr><td><strong>Code size</strong></td><td>Větší (více instrukcí)</td><td>Menší (kompaktní)</td></tr>
+    <tr><td><strong>Pipelining</strong></td><td>Efektivní (fixní délka)</td><td>Obtížné (variabilní)</td></tr>
+    <tr><td><strong>Spotřeba</strong></td><td>Nízká</td><td>Vyšší</td></tr>
+    <tr><td><strong>Příklady</strong></td><td>ARM, RISC-V, MIPS</td><td>Intel x86, Motorola 68K</td></tr>
+  </table>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Moderní realita</div>
+    <p style="margin-bottom:0">Hranice mezi RISC a CISC se stírá. Moderní x86 interně překládá CISC instrukce na RISC-like μops. ARM přidává komplexnější instrukce (NEON, SVE). Hybridní přístupy jsou norma.</p>
+  </div>
+</section>
+
+<!-- 10 MICROARCH -->
+<section class="section" id="microarch">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Mikroarchitektura</h2>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">ISA vs Mikroarchitektura</div>
+    <p><strong>ISA</strong> = „CO" procesor dělá – abstraktní interface, programátorský model.</p>
+    <p style="margin-bottom:0"><strong>Mikroarchitektura</strong> = „JAK" procesor implementuje ISA – fyzický hardware (datapath, pipeline, cache, branch prediction).</p>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)">Příklad: ARM Cortex-M0, M3, M4 všechny implementují ARM ISA, ale mají různé mikroarchitektury (různý pipeline, execution units).</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Co mikroarchitektura zahrnuje</div>
+    <ul>
+      <li><strong>Datapath</strong> – jak data proudí čipem</li>
+      <li><strong>Pipeline organization</strong> – kolik stages, funkce v každém</li>
+      <li><strong>Cache hierarchy</strong> – L1/L2 velikost, associativity</li>
+      <li><strong>Branch prediction</strong> – jak predikovat skoky</li>
+      <li><strong>Execution units</strong> – ALU, FPU, SIMD</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>Příklad: ARM Cortex-M0</summary>
+    <ul>
+      <li>32-bit RISC jádro, Von Neumann (pro jednoduchost)</li>
+      <li>3-stage pipeline (Fetch, Decode, Execute)</li>
+      <li>16 general-purpose registrů (R0–R15)</li>
+      <li>Thumb instruction set (16-bit instrukce → lepší code density)</li>
+      <li>Velmi nízká spotřeba – ideální pro IoT</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 11 CYCLE -->
+<section class="section" id="cycle">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Instrukční cyklus</h2>
+  </div>
+
+  <p>Základní cyklus vykonání jedné instrukce má <strong>5 fází</strong>:</p>
+
+  <div class="card">
+    <div class="steps">
+      <div class="step"><div class="step-num" style="color:var(--accent-5)">F</div><div class="step-content"><div class="step-label">FETCH – Načtení instrukce</div><div class="step-desc">PC obsahuje adresu → CPU načte instrukci z program memory. <code>Instruction = Memory[PC]</code></div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-4)">D</div><div class="step-content"><div class="step-label">DECODE – Dekódování</div><div class="step-desc">Zjistí se operace, registry, operandy. Control unit generuje řídící signály.</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-3)">E</div><div class="step-content"><div class="step-label">EXECUTE – Vykonání</div><div class="step-desc">ALU provede operaci. Pro LOAD/STORE: ALU počítá adresu. Pro BRANCH: vyhodnocení podmínky.</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-1)">M</div><div class="step-content"><div class="step-label">MEMORY ACCESS – Přístup k paměti</div><div class="step-desc">Pouze LOAD/STORE: čtení/zápis dat. Ostatní: NOP.</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-2)">W</div><div class="step-content"><div class="step-label">WRITE BACK – Zápis výsledku</div><div class="step-desc">Výsledek zapsán do cílového registru.</div></div></div>
+    </div>
+  </div>
+
+  <p><strong>Bez pipeline:</strong> Všech 5 stages sekvenčně pro každou instrukci → CPI = 5. Pomalé!</p>
+</section>
+
+<!-- 12 PIPELINE -->
+<section class="section" id="pipeline">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Pipelining a hazardy</h2>
+  </div>
+
+  <p><strong>Pipelining</strong> = překrývání vykonávání více instrukcí. Jako assembly line – zatímco I1 je v Execute, I2 je v Decode, I3 ve Fetch.</p>
+
+  <!-- Pipeline visualization -->
+  <div class="pipeline">
+    <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;letter-spacing:1px">5-STAGE PIPELINE (KLASICKÝ RISC)</div>
+    <div style="display:flex;gap:3px;margin-bottom:6px;padding-left:38px">
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK1</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK2</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK3</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK4</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK5</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK6</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">CLK7</div>
+    </div>
+    <div class="pipeline-grid">
+      <div class="pipeline-row">
+        <div class="pipeline-label">I1</div>
+        <div class="pipeline-cell pc-f">F</div>
+        <div class="pipeline-cell pc-d">D</div>
+        <div class="pipeline-cell pc-e">E</div>
+        <div class="pipeline-cell pc-m">M</div>
+        <div class="pipeline-cell pc-w">W</div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-label">I2</div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-cell pc-f">F</div>
+        <div class="pipeline-cell pc-d">D</div>
+        <div class="pipeline-cell pc-e">E</div>
+        <div class="pipeline-cell pc-m">M</div>
+        <div class="pipeline-cell pc-w">W</div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-label">I3</div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-cell pc-f">F</div>
+        <div class="pipeline-cell pc-d">D</div>
+        <div class="pipeline-cell pc-e">E</div>
+        <div class="pipeline-cell pc-m">M</div>
+        <div class="pipeline-cell pc-w">W</div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-label">I4</div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-cell pc-f">F</div>
+        <div class="pipeline-cell pc-d">D</div>
+        <div class="pipeline-cell pc-e">E</div>
+        <div class="pipeline-cell pc-m">M</div>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-label">I5</div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-empty"></div>
+        <div class="pipeline-cell pc-f">F</div>
+        <div class="pipeline-cell pc-d">D</div>
+        <div class="pipeline-cell pc-e">E</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:10px;color:var(--accent-3)">Po naplnění pipeline: 1 instrukce dokončena KAŽDÝ clock → CPI ≈ 1 (5× throughput!)</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Pipeline Hazards (překážky)</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Data Hazard (RAW)</h4>
+      <p>Instrukce potřebuje výsledek předchozí, která ještě není hotová. <code style="font-size:11px">ADD R1,R2,R3 → SUB R4,R1,R5</code> (R1 ještě neexistuje!). Řešení: <strong>Forwarding/Bypass</strong> nebo pipeline stall (bubble).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Control Hazard (Branch)</h4>
+      <p>BRANCH instrukce – nevíme kam skočit, pipeline neví co fetchovat. Řešení: <strong>Branch prediction</strong>, delay slot, pipeline flush.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Structural Hazard</h4>
+      <p>Dvě instrukce potřebují stejný HW resource současně (např. fetch + load na Von Neumann). Řešení: <strong>Harvard arch</strong> (oddělené sběrnice), resource duplication.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-8);margin-bottom:8px">MIKROKONTROLÉR</p>
+    <ul>
+      <li><strong>MCU</strong> = CPU + paměť + periférie na jednom čipu. Low-power, dedicated, real-time</li>
+      <li><strong>Mikroprocesor</strong> = pouze CPU, externí RAM/ROM/periférie (PC, servery)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">PAMĚŤOVÉ ARCHITEKTURY</p>
+    <ul>
+      <li><span class="tag tag-vn">VON NEUMANN</span> Jediná sběrnice, jednoduché, flexibilní. <strong>Bottleneck!</strong> (x86, Cortex-A)</li>
+      <li><span class="tag tag-harv">HARVARD</span> Oddělené sběrnice, paralelní přístup, deterministické. Složitější HW. (AVR, PIC, Cortex-M)</li>
+      <li><strong>Modified Harvard</strong> = hybridní, best of both. Nejpoužívanější dnes</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ISA: RISC vs CISC</p>
+    <ul>
+      <li><span class="tag tag-risc">RISC</span> ~100 instrukcí, fixní délka (32 b), <strong>Load/Store only</strong>, 16–32 registrů, CPI≈1, low power. ARM, RISC-V, AVR</li>
+      <li><span class="tag tag-cisc">CISC</span> 100–1000+ instrukcí, variabilní délka, přímý memory access, microkód, kompaktní kód. x86</li>
+      <li>Moderní realita: hranice se stírá (x86 interně RISC-like μops, ARM přidává složitější instrukce)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">MIKROARCHITEKTURA A PIPELINE</p>
+    <ul>
+      <li><strong>ISA</strong> = CO procesor dělá. <strong>Mikroarchitektura</strong> = JAK to implementuje (pipeline, cache, branch prediction)</li>
+      <li><strong>Instrukční cyklus:</strong> Fetch → Decode → Execute → Memory → Write Back</li>
+      <li><strong>Pipeline:</strong> překrývání instrukcí → CPI ≈ 1 (5× throughput vs sekvenční)</li>
+      <li><strong>Hazards:</strong> Data (RAW → forwarding), Control (Branch → prediction), Structural (→ Harvard arch)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 9: Správa paměti</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Flow diagrams */
+.flow-diagram{display:flex;flex-direction:column;gap:4px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.flow-step{padding:12px 16px;border-radius:6px;text-align:center;font-weight:600;position:relative}
+.flow-step small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.flow-arrow{text-align:center;color:var(--text-muted);font-size:16px;line-height:1}
+.fl-hw{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.fl-cpu{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.fl-os{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.fl-done{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+.fl-err{background:rgba(248,113,113,.15);color:var(--accent-5);border:1px solid rgba(248,113,113,.3)}
+/* Memory stack */
+.mem-stack{margin:16px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.mem-layer{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid rgba(0,0,0,.3)}
+.mem-layer:last-child{border-bottom:none}
+.mem-layer small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.7;margin-top:2px}
+.ml-kernel{background:rgba(248,113,113,.2);color:var(--accent-5)}
+.ml-stack{background:rgba(167,139,250,.2);color:var(--osy)}
+.ml-mmap{background:rgba(96,165,250,.2);color:var(--accent-1)}
+.ml-heap{background:rgba(52,211,153,.2);color:var(--accent-3)}
+.ml-text{background:rgba(251,191,36,.2);color:var(--accent-4)}
+.ml-reserved{background:rgba(107,114,128,.3);color:var(--text-muted)}
+/* Hierarchy */
+.hierarchy{margin:16px 0;display:flex;flex-direction:column;gap:0}
+.h-level{padding:14px 18px;text-align:center;font-weight:600;font-size:13px;border:1px solid var(--border)}
+.h-level small{display:block;font-weight:400;font-size:11px;opacity:.7;margin-top:2px}
+.h-level:first-child{border-radius:10px 10px 0 0}
+.h-level:last-child{border-radius:0 0 10px 10px}
+/* Code block */
+.code-block{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:var(--osy);overflow-x:auto;white-space:pre}
+.code-block .comment{color:var(--text-muted)}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 9</div>
+  <h1>Správa paměti</h1>
+  <p>Typy pamětí • HDD / SSD / RAM • Přidělování paměti • Virtuální paměť • Segmentace • Stránkování • OOM • Memory leak</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#rozdeleni">Rozdělení a typy pamětí</a></li>
+  <li><a href="#urceni">Paměti podle určení (primární, sekundární, terciální)</a></li>
+  <li><a href="#ddr">DDR SDRAM – operační paměť</a></li>
+  <li><a href="#flash">Flash paměť a SSD</a></li>
+  <li><a href="#hdd">Pevný disk (HDD)</a></li>
+  <li><a href="#opram">Operační paměť – přístup a správa</a></li>
+  <li><a href="#organizace">Organizace paměti procesu</a></li>
+  <li><a href="#mapovani32">32bitové mapování (Linux 3+1, Windows 2+2)</a></li>
+  <li><a href="#metody">Metody přidělování paměti</a></li>
+  <li><a href="#ochrana">Ochrana paměti</a></li>
+  <li><a href="#relokace">Relokace</a></li>
+  <li><a href="#strategie">Strategie výběru bloku</a></li>
+  <li><a href="#fragmentace">Fragmentace paměti</a></li>
+  <li><a href="#virtualni">Virtuální paměť</a></li>
+  <li><a href="#segmentace">Segmentace paměti</a></li>
+  <li><a href="#strankovani">Stránkování paměti</a></li>
+  <li><a href="#demand">Stránkování na žádost (demand paging)</a></li>
+  <li><a href="#vypadek">Obsluha výpadku stránky</a></li>
+  <li><a href="#algoritmy">Algoritmy výběru stránky</a></li>
+  <li><a href="#cow">Copy on Write, mmap, sdílená paměť</a></li>
+  <li><a href="#negativni">Negativní projevy (OOM, page storm, memory leak)</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 ROZDĚLENÍ -->
+<section class="section" id="rozdeleni">
+<div class="section-header"><span class="section-num">01</span><h2>Rozdělení a typy pamětí</h2></div>
+
+<h3>Podle materiálu a fyzikálních vlastností</h3>
+<div class="card">
+  <p>Magnetické, optické, polovodičové, zpožďovací smyčka…</p>
+</div>
+
+<h3>Metoda uchování informace</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Statické</h4>
+    <p>Klopný obvod. <strong>Dražší, rychlejší</strong> → cache.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Dynamické</h4>
+    <p>Periodické obnovování obsahu (<strong>refresh</strong>) → RAM.</p>
+  </div>
+</div>
+
+<h3>Závislost na napájení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Volatilní</h4>
+    <p>Udržení informace <strong>závislé na napájení</strong> (RAM).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Nevolatilní</h4>
+    <p>Udržení informace <strong>nezávislé na napájení</strong> (Flash, HDD, SSD).</p>
+  </div>
+</div>
+
+<h3>Podle přístupu</h3>
+<table class="compare-table">
+  <tr><th>Typ přístupu</th><th>Popis</th><th>Příklad</th></tr>
+  <tr><td><strong>Sekvenční</strong></td><td>Postupné čtení od začátku</td><td>Magnetická páska</td></tr>
+  <tr><td><strong>Asociativní</strong></td><td>Adresace obsahem (klíč)</td><td>TLB cache</td></tr>
+  <tr><td><strong>Sériový</strong></td><td>Posuvný registr FIFO</td><td>Buffer</td></tr>
+  <tr><td><strong>RAM</strong></td><td>Přímý přístup podle zvolené adresy</td><td>Operační paměť</td></tr>
+</table>
+
+<h3>Podle schopnosti čtení a zápisu</h3>
+<div class="card">
+  <ul>
+    <li><strong>RWM (Read Write Memory)</strong> – pro čtení i zápis → označujeme jako RAM</li>
+    <li><strong>ROM (Read Only Memory)</strong> – pouze pro čtení</li>
+    <li><strong>PROM</strong> → uživatelsky programovatelná</li>
+    <li><strong>EPROM</strong> → smazatelná UV zářením</li>
+    <li><strong>EEPROM</strong> → elektricky smazatelná</li>
+    <li><strong>Flash EPROM</strong> → rychlé mazání po větších blocích</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 PODLE URČENÍ -->
+<section class="section" id="urceni">
+<div class="section-header"><span class="section-num">02</span><h2>Paměti podle určení</h2></div>
+
+<div class="hierarchy">
+  <div class="h-level" style="background:rgba(248,113,113,.15);color:var(--accent-5)">Primární (vnitřní) paměť<small>Registry CPU, cache, RAM – přímý dosah z CPU – nejrychlejší, nejdražší</small></div>
+  <div class="h-level" style="background:rgba(251,191,36,.15);color:var(--accent-4)">Sekundární (vnější) paměť<small>Pevný disk (HDD), SSD – virtuální paměť (stránkování) – odděleno řadičem</small></div>
+  <div class="h-level" style="background:rgba(52,211,153,.15);color:var(--accent-3)">Terciální paměť<small>CD, DVD, magnetické pásky – zálohovací, vyměnitelné médium – nejlevnější</small></div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Výběr adekvátní paměti</div>
+  <ul>
+    <li><strong>Rychlost:</strong> statické (nejrychlejší, nejdražší) → dynamické (pomalejší, laciné)</li>
+    <li><strong>Cena/jednotku:</strong> terciální nejlevnější → primární nejdražší</li>
+    <li><strong>Uchování:</strong> nevolatilní pro uchování dat, volatilní pro běh procesů</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 DDR SDRAM -->
+<section class="section" id="ddr">
+<div class="section-header"><span class="section-num">03</span><h2>DDR SDRAM – operační paměť</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Double Data Rate Synchronous Dynamic RAM</div>
+  <ul>
+    <li>Běžně používaný typ pro operační paměť</li>
+    <li><strong>Volatilní</strong> → po odpojení napájení se obsah ztratí</li>
+    <li>Pro udržení informace nutný <strong>refresh</strong> (periodické obnovování náboje)</li>
+    <li>Čtení je <strong>destruktivní</strong> → po přečtení ihned znovu zápis</li>
+    <li><strong>Nejlacinější</strong> typ RAM paměti</li>
+  </ul>
+</div>
+
+<div class="card">
+  <ul>
+    <li>Generace: <strong>DDR → DDR2 → DDR3 → DDR4 → DDR5</strong></li>
+    <li>Nejrychlejší je čtení <strong>sousedních buněk</strong> (řádků)</li>
+    <li>Čtení ze vzdálenějšího řádku → <strong>čekací prodleva (CL)</strong></li>
+    <li>Vyšší frekvence → delší prodlevy → rychlost <strong>neroste lineárně</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 FLASH -->
+<section class="section" id="flash">
+<div class="section-header"><span class="section-num">04</span><h2>Flash paměť a SSD</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Nevolatilní paměť</div>
+  <ul>
+    <li>Pro udržení obsahu <strong>nepotřebuje napájení</strong></li>
+    <li><strong>Omezená životnost</strong> zápisových cyklů (2 000–100 000 přepsání dle typu)</li>
+    <li><strong>FTL (Flash Translation Layer)</strong> → rozkládání zápisů (wear leveling)</li>
+    <li>Práce s <strong>velkými bloky dat</strong> (stovky kB až MB) – kvůli úspoře řídících obvodů</li>
+  </ul>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">USB Flash disk</h4>
+    <p>Přístup skrze řadič USB portu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">SSD (Solid State Drive)</h4>
+    <p>Náhrada za HDD. Řádově <strong>~5× zrychlení čtení</strong> proti HDD. Rychlejší čtení/zápis, ale vyšší režie při běžném užívání.</p>
+  </div>
+</div>
+</section>
+
+<!-- 05 HDD -->
+<section class="section" id="hdd">
+<div class="section-header"><span class="section-num">05</span><h2>Pevný disk (HDD)</h2></div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Elektromagnetické uložení dat</div>
+  <ul>
+    <li>Přístup skrze řadič (<strong>PATA, SATA, SCSI…</strong>)</li>
+    <li>Práce s <strong>bloky dat</strong> (klasicky 512 B, nově 4 KiB)</li>
+    <li>Rotační plotna, hlavičky</li>
+    <li>Sekvenční čtení ~<strong>100 MB/s</strong>, náhodné ~<strong>20 MB/s</strong></li>
+    <li>Průměrná přístupová doba <strong>~10 ms</strong></li>
+    <li>V podstatě <strong>neomezená životnost</strong> zápisových cyklů</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Z hlediska CPU extrémně pomalé</div>
+  <p>10 ms při 2 GHz procesoru = <strong>20 miliónů tiků</strong> vnitřních hodin CPU. Proto: čtení z disku → přesun procesu do fronty <strong>blokovaných</strong>.</p>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Využití jako virtuální paměť</div>
+  <p>„Rozšíření RAM" – zvyšuje výkon a použitelnost počítače (i přes pomalost disku).</p>
+</div>
+</section>
+
+<!-- 06 OPERAČNÍ PAMĚŤ -->
+<section class="section" id="opram">
+<div class="section-header"><span class="section-num">06</span><h2>Operační paměť – přístup a správa</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Vnitřní paměť počítače</div>
+  <ul>
+    <li>Pro uchování programu, dat, mezivýsledků</li>
+    <li><strong>Přímo adresovatelná</strong> procesorem (adresní, datová, řídící sběrnice)</li>
+    <li>Uchovávány bity, adresace po <strong>bajtech</strong></li>
+    <li>Adresa v registru → přenos dat mezi registrem a pamětí</li>
+  </ul>
+</div>
+
+<h3>Adresování</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Přímo adresovatelná</h4>
+    <p>IA-32 → <strong>32 bitů = 4 GiB</strong>. x86_64 → dnes <strong>48 bitů = 256 TiB</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Nepřímo adresovatelná</h4>
+    <p>Různé triky: <strong>PAE, XMS, EMS</strong>, paměťové banky…</p>
+  </div>
+</div>
+
+<h3>Správa v hardware a software</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>MMU (Memory Management Unit)</strong> – v procesoru: řízení přístupu, řízení cache, překlad virtuálních adres na fyzické</li>
+    <li><strong>MM (Memory Manager)</strong> – v jádře OS: řízení MMU, rozvržení paměti, přidělování paměti procesům</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 ORGANIZACE PAMĚTI -->
+<section class="section" id="organizace">
+<div class="section-header"><span class="section-num">07</span><h2>Organizace paměti procesu</h2></div>
+
+<div class="mem-stack">
+  <div class="mem-layer ml-kernel">KERNEL (jádro systému)<small>v IA-32: 1 GB z celkových 4 GB (Linux 3+1)</small></div>
+  <div class="mem-layer ml-stack">STACK (zásobník)<small>volání funkcí, lokální proměnné – roste dolů</small></div>
+  <div class="mem-layer ml-mmap">MMAP<small>knihovny, mapované soubory</small></div>
+  <div class="mem-layer ml-heap">HEAP (halda)<small>dynamicky alokovaná paměť (new, malloc) – roste nahoru</small></div>
+  <div class="mem-layer ml-text">TEXT (jen pro čtení)<small>kód programu, konstanty</small></div>
+  <div class="mem-layer ml-reserved">REZERVOVANÁ OBLAST<small>ochrana proti NULL pointeru</small></div>
+</div>
+</section>
+
+<!-- 08 32BIT MAPOVÁNÍ -->
+<section class="section" id="mapovani32">
+<div class="section-header"><span class="section-num">08</span><h2>32bitové mapování</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Linux 3+1 GB</h4>
+    <p>Proces <strong>3 GB</strong>, jádro <strong>1 GB</strong>. V adresním prostoru proces i jádro → <strong>syscall nevyžaduje remapování</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Windows 2+2 GB</h4>
+    <p>Proces <strong>2 GB</strong>, jádro <strong>2 GB</strong>. Rozlišení nejvyšším bitem adresy. Alternativa 3+1 jen pro speciální aplikace (SQL Server).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Linux 4+4 GB</h4>
+    <p>Jádro i proces <strong>vlastní adresní prostor</strong> (celé 4 GB). Syscall vyžaduje přemapování → <strong>režie PAE</strong>.</p>
+  </div>
+</div>
+</section>
+
+<!-- 09 METODY PŘIDĚLOVÁNÍ -->
+<section class="section" id="metody">
+<div class="section-header"><span class="section-num">09</span><h2>Metody přidělování paměti</h2></div>
+
+<table class="compare-table">
+  <tr><th>Metoda</th><th>Princip</th><th>Příklad</th></tr>
+  <tr><td><strong>Veškerá volná paměť</strong></td><td>Jeden běžící proces, vše pro něj</td><td>CP/M, DOS</td></tr>
+  <tr><td><strong>Pevné bloky (MFT)</strong></td><td>Paměť rozdělena předem, program umístěn tam, kam se vejde</td><td>IBM OS/360 MFT (1967)</td></tr>
+  <tr><td><strong>Proměnné bloky (MVT)</strong></td><td>Proces žádá při startu, po skončení uvolnění</td><td>IBM OS/360 MVT (1967)</td></tr>
+  <tr><td><strong>Bloky na žádost</strong></td><td>Přidělování i za běhu procesu (malloc/free)</td><td>Linux, Windows NT</td></tr>
+</table>
+
+<details><summary>CP/M a DOS – historické přístupy</summary>
+<div class="card">
+  <ul>
+    <li><strong>CP/M (1973):</strong> jádro na konci paměti, problém s různým množstvím RAM → potřeba jiné verze jádra nebo <strong>relokace</strong></li>
+    <li><strong>ISIS II (Intel 1977):</strong> nejprve jádro, pak program → relokace programu</li>
+    <li><strong>DOS (1979):</strong> jako ISIS + <strong>rezidentní programy (TSR)</strong> – program se ukončí, ale zůstane v paměti. Náhrada chybějícího multitaskingu. <strong>Bez ochrany paměti!</strong></li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 10 OCHRANA PAMĚTI -->
+<section class="section" id="ochrana">
+<div class="section-header"><span class="section-num">10</span><h2>Ochrana paměti</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Mezní registr</h4>
+    <p><strong>Nejjednodušší</strong> ochrana. Jeden nebo dva registry v CPU. Pokus o přístup za hranici → <strong>vnitřní přerušení</strong> → jádro ukončí proces. Vyžaduje <strong>privilegovaný režim</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Metoda zámků a klíčů</h4>
+    <p>Pro <strong>nesouvislé bloky</strong>. Paměť rozdělena na stránky (4 kB). Každá má <strong>zámek</strong> (číslo), CPU má <strong>klíč</strong> (registr). Přístup jen kde klíč = zámek. Jádro: univerzální klíč 0.</p>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nepovolený přístup</div>
+  <p>→ <strong>vnitřní přerušení</strong> (trap) → ISR v jádře OS → jádro proces <strong>ukončí</strong> (porušení ochrany paměti, „segmentation fault").</p>
+</div>
+</section>
+
+<!-- 11 RELOKACE -->
+<section class="section" id="relokace">
+<div class="section-header"><span class="section-num">11</span><h2>Relokace</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Přizpůsobení kódu konkrétnímu umístění v RAM</div>
+  <ul>
+    <li>Strojový kód používá <strong>absolutní adresy</strong> (skoky, čtení dat)</li>
+    <li>Program musí být umístěn na adresu, kterou předpokládal překladač</li>
+    <li>Při umístění na jinou adresu → nutná <strong>modifikace absolutních adres</strong></li>
+    <li><strong>Relokační tabulka</strong> je součástí spustitelného souboru</li>
+    <li>Lokátor připočte k adresám <strong>bázovou adresu</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 STRATEGIE VÝBĚRU BLOKU -->
+<section class="section" id="strategie">
+<div class="section-header"><span class="section-num">12</span><h2>Strategie výběru bloku</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Kterému bloku přidělit paměť?</div>
+  <p>Při požadavku na paměť musí jádro rozhodnout, který volný blok bude procesu přidělen. Strategie ovlivňuje <strong>fragmentaci</strong>.</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">First Fit</h4>
+    <p>První nalezený vyhovující blok (nebo jeho část).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Last Fit</h4>
+    <p>Poslední vyhovující blok. Výsledek závisí na aktuální fragmentaci.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Worst Fit</h4>
+    <p>Největší blok – snaha zmenšit fragmentaci, ohled na budoucí požadavky.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Best Fit</h4>
+    <p>Nejvhodnější (nejmenší vyhovující) blok.</p>
+  </div>
+</div>
+</section>
+
+<!-- 13 FRAGMENTACE -->
+<section class="section" id="fragmentace">
+<div class="section-header"><span class="section-num">13</span><h2>Fragmentace paměti</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problém</div>
+  <ul>
+    <li>Při průběžné alokaci a uvolňování vznikají <strong>izolované úseky</strong> volné paměti</li>
+    <li>Časem je volná paměť čím dál více <strong>rozdrobena</strong></li>
+    <li>Není možné alokovat větší úsek, i když je v součtu paměti dost</li>
+    <li>Nelze volné úseky jednoduše <strong>spojit</strong> do jednoho</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Řešení</div>
+  <ul>
+    <li>Vhodná <strong>strategie výběru bloku</strong> (paradoxně lepší přidělovat z největšího)</li>
+    <li><strong>Virtualizace paměti</strong> – rozlišení virtuálních a fyzických adres → fragmentace pro proces neexistuje</li>
+  </ul>
+</div>
+</section>
+
+<!-- 14 VIRTUÁLNÍ PAMĚŤ -->
+<section class="section" id="virtualni">
+<div class="section-header"><span class="section-num">14</span><h2>Virtuální paměť</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p>Proces vidí <strong>jiné uspořádání</strong>, než je skutečnost. Adresní prostor každého procesu <strong>začíná od 0</strong>. Jádro nastavuje virtuální paměť při každé <strong>změně kontextu</strong>.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Logická vs. fyzická adresa</div>
+  <ul>
+    <li><strong>Logická (virtuální) adresa</strong> – pracují s ní strojové instrukce (proces)</li>
+    <li><strong>Fyzická adresa</strong> – skutečná adresa v RAM</li>
+    <li>Převod zajišťuje <strong>MMU</strong> (součást procesoru), řízena jádrem (MM)</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Využití virtualizace</div>
+  <ul>
+    <li><strong>Multitasking</strong> – každý proces má vlastní logický adresní prostor, není nutná relokace</li>
+    <li><strong>Odstranění fragmentace</strong> – chytrým převodem adres</li>
+    <li><strong>Rozšíření adresního prostoru</strong> – místo na disku je lacinější než RAM (swapování, stránkování na žádost)</li>
+  </ul>
+</div>
+
+<h3>Dva přístupy k virtualizaci</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Segmentace</h4>
+    <p>Fyzická adresa = <strong>segment + offset</strong>. Obtížné řešení fragmentace. Dostupné od 8086.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Stránkování</h4>
+    <p>Virtuální → <strong>tabulka stránek</strong> → fyzická. Vyžaduje i386+. Dnes <strong>majoritně používáno</strong>.</p>
+  </div>
+</div>
+</section>
+
+<!-- 15 SEGMENTACE -->
+<section class="section" id="segmentace">
+<div class="section-header"><span class="section-num">15</span><h2>Segmentace paměti</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Fyzická adresa = segment + offset</div>
+  <ul>
+    <li>Převod zajišťuje <strong>MMU</strong> v CPU</li>
+    <li><strong>Offset</strong> = virtuální adresa, kterou používají strojové instrukce</li>
+    <li><strong>Segment</strong> nastavuje jádro OS (privilegovaná instrukce)</li>
+    <li>Proces může mít <strong>více segmentů</strong> (kód, data, zásobník, halda…)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Vlastnosti segmentace</div>
+  <ul>
+    <li><strong>Ochrana:</strong> privilegovaný režim (segment) + mezní registr (offset)</li>
+    <li><strong>Fragmentace:</strong> řeší se setřásáním segmentů (překopírování k sobě) – náročné na čas</li>
+    <li><strong>Sdílená paměť:</strong> sdílí se celý segment</li>
+    <li><strong>Odkládání na disk:</strong> celé segmenty → <strong>swapování</strong></li>
+    <li>Zvětšování segmentu za běhu je možné, ale za segmentem musí být prostor</li>
+  </ul>
+</div>
+
+<details><summary>Segmentace v PC (x86)</summary>
+<div class="card">
+  <ul>
+    <li><strong>16bitové CPU:</strong> registry 16:16, posunutí o 4 bity → 20bitová adresa, max. segment 64 kB</li>
+    <li><strong>32bitové CPU:</strong> segmentace využívá NX bit (při zapnutém PAE, od Windows XP SP2)</li>
+    <li><strong>64bitové:</strong> segmentace jen pro podporu HW virtualizace</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 16 STRÁNKOVÁNÍ -->
+<section class="section" id="strankovani">
+<div class="section-header"><span class="section-num">16</span><h2>Stránkování paměti</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Virtuální → tabulka stránek → fyzická adresa</div>
+  <ul>
+    <li>Převod zajišťuje <strong>MMU</strong> → typicky uvnitř CPU</li>
+    <li>Tabulka stránek je v <strong>RAM</strong>, řízena speciálními registry</li>
+    <li>Proces používá výhradně <strong>virtuální adresy</strong> (od 0)</li>
+    <li>Tabulka vytváří <strong>souvislý prostor z více fyzických stránek</strong></li>
+    <li>Tabulku sestavuje <strong>jádro OS</strong> – proces do ní nemůže zasahovat</li>
+    <li>Ochrana paměti: <strong>metoda zámků a klíčů</strong></li>
+  </ul>
+</div>
+
+<h3>Tabulka stránek</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Jak funguje</div>
+  <ul>
+    <li>Paměť rozdělena na stránky stejné velikosti – typicky <strong>4 KiB</strong></li>
+    <li>Offset uvnitř stránky: <strong>12 bitů</strong> (2<sup>12</sup> = 4 096)</li>
+    <li>Vyšší bity adresy = <strong>číslo stránky</strong> (index v tabulce)</li>
+    <li>Převádí se jen číslo stránky, offset zůstává</li>
+    <li>Ušetřených 12 bitů → využití na <strong>příznaky</strong> (dirty bit, paged…)</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Problém a řešení</div>
+  <ul>
+    <li>Každý přístup vyžaduje čtení tabulky (v RAM) → <strong>zdvojení přístupů</strong></li>
+    <li>Řešení: <strong>TLB (Translation Look-aside Buffer)</strong> – asociativní cache pro překlad adres</li>
+    <li>Jednoduchá tabulka by byla moc velká → <strong>víceúrovňové tabulky</strong> (Linux: 3 úrovně)</li>
+  </ul>
+</div>
+
+<details><summary>Segmentace se stránkováním – kombinace</summary>
+<div class="card">
+  <ul>
+    <li>Základem je segment, ten je rozdělen na stránky</li>
+    <li>Fyzická adresa = segment + převod z tabulky stránek + offset</li>
+    <li>Při zapnutém <strong>PAE</strong> je to nutnost</li>
+    <li><strong>Windows</strong> používají kombinaci vždy, <strong>Linux</strong> jen je-li nezbytné</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 17 DEMAND PAGING -->
+<section class="section" id="demand">
+<div class="section-header"><span class="section-num">17</span><h2>Stránkování na žádost (demand paging)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Princip</div>
+  <ul>
+    <li>Proces nevyužívá celou namapovanou paměť</li>
+    <li>Nevyužívané stránky <strong>odsuneme na disk</strong> (swap soubor/oddíl)</li>
+    <li>Zvětšení dostupné paměti o místo na disku</li>
+    <li>V tabulce stránek příznak <strong>„paged"</strong></li>
+    <li>Pokus o přístup ke stránce na disku → <strong>výpadek stránky (page fault)</strong></li>
+  </ul>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Windows NT</h4>
+    <p>Stránkovací <strong>soubor</strong>. Musí být souvislý (jádro přistupuje k blokům přímo). Velikost automaticky nebo ručně.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Linux</h4>
+    <p>Stránkovací <strong>soubor nebo oddíl</strong> (partition). Oddíl = vynechání režie souborového systému. Lze dát na samostatný disk.</p>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Proč NEVYPÍNAT stránkování</div>
+  <ul>
+    <li>Na disk se odkládá <strong>nepoužívaná paměť</strong> → uvolněná RAM se využije jako <strong>cache</strong></li>
+    <li>Veškerá „volná" paměť je vždy využita jako cache → zrychlení práce s diskem</li>
+    <li>Stránkování řeší <strong>OOM</strong> – při nedostatku paměti zpomalí, ale správce má čas zasáhnout</li>
+    <li>Vypnutí = zpomalení (nepoužívanou paměť nelze využít jako cache)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 18 VÝPADEK STRÁNKY -->
+<section class="section" id="vypadek">
+<div class="section-header"><span class="section-num">18</span><h2>Obsluha výpadku stránky</h2></div>
+
+<div class="flow-diagram">
+  <div class="flow-step fl-err">Procesor přistupuje k paměti odložené na disk<small>zjistí výpadek z příznaku „paged" v tabulce stránek</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-hw">Vnitřní přerušení – page fault<small>obsluha výpadku stránky je uvnitř jádra OS</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">Najít v RAM volnou stránku<small>případně odsunout jinou stránku na disk</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Zavést potřebnou stránku z disku do RAM<small>a opravit tabulku stránek</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">Zopakovat instrukci, která výpadek způsobila<small>proces pokračuje – nic nepozná</small></div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Zahazování stránek</div>
+  <ul>
+    <li>Některé stránky na disku <strong>již jsou</strong> (kód programu, obsah souboru)</li>
+    <li>Stránku lze prostě <strong>zrušit</strong> a při výpadku obnovit ze souborového systému</li>
+    <li>Zahodit <strong>nelze modifikovanou stránku</strong> → <strong>dirty bit</strong></li>
+    <li>Dirty bit se automaticky nastavuje při zápisu (řeší CPU/MMU)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 19 ALGORITMY VÝBĚRU STRÁNKY -->
+<section class="section" id="algoritmy">
+<div class="section-header"><span class="section-num">19</span><h2>Algoritmy výběru stránky</h2></div>
+
+<div class="card highlight">
+  <p>Kterou stránku odsuneme z RAM na disk, když potřebujeme volnou stránku?</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">FIFO</h4>
+    <p>Odsuneme stránku, která je v paměti <strong>nejdéle</strong>. Snadná HW implementace, ale může odsunout intenzivně používanou stránku. <strong>FIFO anomálie</strong>: více paměti → více výpadků!</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">LRU – Least Recently Used</h4>
+    <p>Podle <strong>času posledního použití</strong>. Nejlepší teoretický výsledek, ale HW příliš náročné (seznam časů + seřazení).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">NUR – Not Used Recently</h4>
+    <p>Zjednodušení LRU → <strong>jednobitový příznak</strong> použití. Jádro příznaky periodicky zpracovává a nuluje. Prakticky používaný.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Vyvážení stránkování</div>
+  <ul>
+    <li>Jádro volnou RAM využívá jako <strong>cache a buffery</strong></li>
+    <li>Agresivita odkládání ovlivňuje poměr <strong>programy vs. cache</strong></li>
+    <li>Jádro obsahuje <strong>balanční mechanismus</strong> – v Linuxu nastavitelný jako <strong>swappiness</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 20 COW, MMAP, SDÍLENÁ -->
+<section class="section" id="cow">
+<div class="section-header"><span class="section-num">20</span><h2>Copy on Write, mmap, sdílená paměť</h2></div>
+
+<h3>Copy on Write (COW)</h3>
+<div class="card green">
+  <ul>
+    <li>Využíváno při <strong>fork()</strong> – nový proces je kopie původního</li>
+    <li>Nejdříve má nový proces <strong>všechny stránky starého</strong></li>
+    <li>Při <strong>zápisu</strong> do stránky dojde k duplikaci stránky</li>
+    <li>Maximalizace sdílení stejného obsahu (kód programu se nemění, data mohou zůstat stejná)</li>
+  </ul>
+</div>
+
+<h3>Mapování souborů (mmap)</h3>
+<div class="card">
+  <ul>
+    <li>Využívá mechanismus <strong>výpadku stránky</strong></li>
+    <li>Obsah souboru namapován do paměti jako zahozené stránky</li>
+    <li>Při pokusu o čtení → <strong>page fault</strong> → obsluha optimalizovaná na rychlost</li>
+    <li>Výhodné: čtení části souboru, periodické čtení, knihovny</li>
+  </ul>
+</div>
+
+<h3>Sdílená paměť</h3>
+<div class="card purple">
+  <ul>
+    <li>Dva procesy mají v tabulce stránek <strong>stejnou stránku</strong></li>
+    <li><code>shmget()</code> → <code>shmat()</code> → práce → odpojení</li>
+    <li>Nutné řešit <strong>souběh</strong> (zámky, synchronizace)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 21 NEGATIVNÍ PROJEVY -->
+<section class="section" id="negativni">
+<div class="section-header"><span class="section-num">21</span><h2>Negativní projevy</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">OOM – Out Of Memory</h4>
+    <p>Dojde-li paměť (i virtuální) → katastrofa. <strong>OOM killer</strong> v jádře vybere oběť a ukončí ji. Programátoři typicky neřeší, že paměť dojde.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Page storm</h4>
+    <p><strong>Intenzivní výpadky stránek</strong>. Zpomalení, rozblikaná dioda disku. Paradoxně krátkodobě žádoucí (přepnutí mezi programy).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Memory trashing</h4>
+    <p><strong>Cyklické odkládání stránek</strong> a jejich obnovování. Může vyřadit systém z provozu (DoS). Jádro musí detekovat a přenastavit.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Memory leak</h4>
+    <p><strong>Únik paměti</strong> – proces alokuje, ale neuvolní. Periodické zapomínání → OOM. Řešení: restart programu, <strong>garbage collector</strong> (Java), <strong>Valgrind</strong>.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">malloc() a free()</div>
+  <ul>
+    <li><code>malloc()</code> – proces požádá jádro o paměť, jádro sdělí adresu. Knihovní překrytí: požadavky se sdružují do větších celků (menší režie)</li>
+    <li><code>free()</code> – uvolnění paměti. Nesmí uvolnit cizí paměť. Chyby časté → <strong>Valgrind</strong></li>
+    <li><strong>Garbage collector</strong> – automatizovaná správa (Java). Sleduje reference na objekt, uvolňuje nepoužívané. Zpomaluje běh, ale usnadňuje programování</li>
+  </ul>
+</div>
+
+<details><summary>PAE (Physical Address Extension)</summary>
+<div class="card">
+  <ul>
+    <li>Až <strong>64 GiB</strong> na 32bit CPU (od Pentium Pro 1995)</li>
+    <li>Limit 4 GiB na proces zůstává, PAE rozšiřuje celkovou zapojenou paměť</li>
+    <li>Záznamy v tabulce stránek 64 bitů (původně 32) → <strong>zvýšení režie</strong></li>
+    <li>Řešeno 3 úrovněmi tabulek místo 2</li>
+    <li>Umožňuje <strong>NX bit</strong> (je-li implementován) – Windows XP SP2+</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<div class="divider"></div>
+
+<!-- 22 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">22</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">TYPY PAMĚTÍ</p>
+<ul>
+  <li><strong>Statické</strong> (klopný obvod, cache, dražší, rychlejší) × <strong>Dynamické</strong> (refresh, RAM, lacinější)</li>
+  <li><strong>Volatilní</strong> (závisí na napájení – RAM) × <strong>Nevolatilní</strong> (Flash, HDD, SSD)</li>
+  <li><strong>DDR SDRAM:</strong> volatilní, refresh, destruktivní čtení, DDR1–DDR5, nejlacinější RAM</li>
+  <li><strong>Flash/SSD:</strong> nevolatilní, omezená životnost zápisů, FTL, ~5× rychlejší čtení než HDD</li>
+  <li><strong>HDD:</strong> elektromagnetický, 512 B/4 KiB bloky, ~100 MB/s seq., 10 ms přístup = 20M tiků CPU</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">PŘIDĚLOVÁNÍ A OCHRANA PAMĚTI</p>
+<ul>
+  <li><strong>Metody:</strong> veškerá volná (CP/M, DOS) → pevné bloky (MFT) → proměnné bloky (MVT) → bloky na žádost (Linux, Windows)</li>
+  <li><strong>Ochrana:</strong> mezní registr (jednoduchý) → metoda zámků a klíčů (stránky, klíč = zámek, univerzální klíč 0 pro jádro)</li>
+  <li><strong>Relokace:</strong> přizpůsobení absolutních adres při umístění kódu na jinou pozici (relokační tabulka)</li>
+  <li><strong>Strategie výběru bloku:</strong> first fit, last fit, worst fit, best fit</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">VIRTUÁLNÍ PAMĚŤ</p>
+<ul>
+  <li><strong>Logická adresa</strong> (proces) × <strong>fyzická adresa</strong> (RAM). Převod: MMU (CPU), řízení: MM (jádro)</li>
+  <li><strong>Segmentace:</strong> fyzická = segment + offset. Setřásání, swapování celých segmentů. x86: od 8086</li>
+  <li><strong>Stránkování:</strong> virtuální → tabulka stránek → fyzická. Stránky 4 KiB. TLB cache. Víceúrovňové tabulky. Od i386. Dnes majoritní</li>
+  <li><strong>Adresní prostor:</strong> Linux 3+1 GB (syscall bez remapování) × Windows 2+2 GB × Linux 4+4 GB (s PAE)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">STRÁNKOVÁNÍ NA ŽÁDOST</p>
+<ul>
+  <li><strong>Demand paging:</strong> nevyužívané stránky na disk, příznak „paged", page fault → obsluha v jádře</li>
+  <li><strong>Obsluha:</strong> najít volnou stránku → odsunout jinou na disk → zavést z disku → opravit tabulku → zopakovat instrukci</li>
+  <li><strong>Algoritmy výběru:</strong> FIFO (anomálie!), LRU (ideální, HW drahé), NUR (prakticky používaný, jednobitový příznak)</li>
+  <li><strong>Dirty bit:</strong> příznak modifikace stránky → nelze zahodit, musí se uložit na disk</li>
+  <li><strong>Swappiness:</strong> vyvážení agresivity odkládání vs. velikost cache (Linux)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">PROBLÉMY SPRÁVY PAMĚTI</p>
+<ul>
+  <li><strong>OOM:</strong> dojde paměť → OOM killer ukončí proces. Katastrofa pro jádro i aplikace</li>
+  <li><strong>Page storm:</strong> intenzivní výpadky stránek. Krátkodobě OK (přepnutí programu)</li>
+  <li><strong>Memory trashing:</strong> cyklické odkládání/obnovování stránek → DoS</li>
+  <li><strong>Memory leak:</strong> alokace bez uvolnění → vyčerpání paměti. Valgrind, garbage collector (Java)</li>
+  <li><strong>COW (Copy on Write):</strong> fork() sdílí stránky, duplikace až při zápisu</li>
+  <li><strong>malloc/free:</strong> alokace/uvolnění za běhu. Knihovní překrytí sdružuje požadavky. Chyby časté</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

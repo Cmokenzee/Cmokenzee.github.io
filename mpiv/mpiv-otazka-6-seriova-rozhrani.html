@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 6: Sériová rozhraní MCU</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #0f1a2e 40%, #1a0f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 25% 50%, rgba(96,165,250,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(167,139,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+  .cli .kw { color: var(--accent-4); }
+  .cli .val { color: var(--accent-6); }
+  .cli .reg { color: var(--accent-1); }
+
+  .formula {
+    background: rgba(96,165,250,0.08);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    text-align: center;
+    color: var(--accent-1);
+    font-weight: 600;
+  }
+  .formula .f-small { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 6px; }
+
+  /* Bus topology visualization */
+  .bus-visual {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    overflow-x: auto;
+  }
+  .bus-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
+
+  /* Signal flow */
+  .signal-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    justify-content: center;
+  }
+  .sf-box {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 80px;
+  }
+  .sf-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* Frame visualization */
+  .frame-visual {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 14px 0;
+    overflow-x: auto;
+  }
+  .frame-row {
+    display: flex;
+    gap: 2px;
+    margin: 8px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .frame-bit {
+    padding: 8px 6px;
+    border-radius: 4px;
+    text-align: center;
+    min-width: 40px;
+    line-height: 1.3;
+  }
+  .frame-bit .fb-label {
+    font-size: 8px;
+    opacity: 0.6;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Voltage level bars */
+  .voltage-visual {
+    display: flex;
+    gap: 16px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+  }
+  .volt-bar {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .volt-bar .vb-value { font-size: 22px; font-weight: 700; display: block; }
+  .volt-bar .vb-label { font-size: 11px; margin-top: 4px; opacity: 0.7; }
+
+  /* Pros/Cons grid */
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .pros-cons .pros { background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.2); border-radius: 8px; padding: 16px 18px; }
+  .pros-cons .cons { background: rgba(248,113,113,0.06); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 16px 18px; }
+  .pros-cons h4 { margin: 0 0 8px; font-size: 12px; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .pros-cons { grid-template-columns: 1fr; }
+    .signal-flow { flex-direction: column; }
+    .voltage-visual { flex-direction: column; }
+    .frame-row { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 6</div>
+  <h1>Sériová rozhraní MCU</h1>
+  <p>UART • RS-232/422/485 • SPI • I2C • CAN • Master-Slave • Arbitrace</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#serial-vs-parallel">Sériová vs paralelní komunikace</a></li>
+    <li><a href="#uart">UART – princip a frame</a></li>
+    <li><a href="#baud-rate">Baud Rate a konfigurace</a></li>
+    <li><a href="#rs232">RS-232 – fyzický standard</a></li>
+    <li><a href="#rs485">RS-485 – diferenciální multi-point</a></li>
+    <li><a href="#rs422">RS-422 – diferenciální full-duplex</a></li>
+    <li><a href="#spi">SPI – synchronní master-slave</a></li>
+    <li><a href="#spi-modes">SPI – clock režimy a komunikace</a></li>
+    <li><a href="#i2c">I2C – princip a adresování</a></li>
+    <li><a href="#i2c-comm">I2C – komunikace a arbitrace</a></li>
+    <li><a href="#can">CAN – Controller Area Network</a></li>
+    <li><a href="#can-frame">CAN – frame a error detection</a></li>
+    <li><a href="#summary">Shrnutí a srovnání</a></li>
+  </ol>
+</nav>
+
+<!-- 01 SERIAL VS PARALLEL -->
+<section class="section" id="serial-vs-parallel">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Sériová vs paralelní komunikace</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Paralelní komunikace</h4>
+      <p>Více vodičů (8 bitů = 8 pinů + clock + control). Rychlá – celý byte najednou. Ale: hodně pinů, EMI, skew, krátké vzdálenosti (&lt;1 m). Dnes zastaralé (starý printer port).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Sériová komunikace</h4>
+      <p>Málo vodičů – typicky 2–4 piny (TX, RX, Clock, GND). Bity jdou po sobě. Méně pinů, delší vzdálenosti, nižší EMI. Moderní trend: USB, Ethernet, PCIe – vše sériové.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Hlavní sériová rozhraní pro MCU</div>
+    <ul>
+      <li><strong>UART/USART</strong> – asynchronní, point-to-point</li>
+      <li><strong>SPI</strong> – synchronní, master-slave, vysoká rychlost</li>
+      <li><strong>I2C</strong> – synchronní, multi-master, adresování</li>
+      <li><strong>CAN</strong> – multi-master, automotive, robustní</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 UART -->
+<section class="section" id="uart">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>UART – princip a frame</h2>
+  </div>
+
+  <p><strong>UART</strong> (Universal Asynchronous Receiver/Transmitter) je nejjednodušší sériový protokol pro <strong>point-to-point</strong> komunikaci. Asynchronní = žádný clock vodič. Sender i receiver musí mít stejný <strong>baud rate</strong>.</p>
+
+  <div class="bus-visual">
+    <div class="bus-label">UART ZAPOJENÍ – FULL-DUPLEX</div>
+    <div class="signal-flow">
+      <div class="sf-box" style="background:rgba(96,165,250,0.15);color:var(--accent-1);min-width:100px">
+        MCU 1
+        <div style="font-size:9px;opacity:0.7">TX / RX</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;color:var(--text-muted)">
+        <div>TX <span style="color:var(--accent-3)">→→→</span> RX</div>
+        <div>RX <span style="color:var(--accent-6)">←←←</span> TX</div>
+        <div style="text-align:center;color:var(--accent-4)">GND ───── GND</div>
+      </div>
+      <div class="sf-box" style="background:rgba(167,139,250,0.15);color:var(--accent-2);min-width:100px">
+        MCU 2
+        <div style="font-size:9px;opacity:0.7">RX / TX</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>UART Frame struktura</h3>
+
+  <div class="frame-visual">
+    <div class="bus-label">UART DATA FRAME</div>
+    <div class="frame-row">
+      <div class="frame-bit" style="background:rgba(107,114,128,0.2);color:var(--text-muted)">IDLE<span class="fb-label">HIGH</span></div>
+      <div class="frame-bit" style="background:rgba(248,113,113,0.2);color:var(--accent-5)">START<span class="fb-label">0 (LOW)</span></div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1);min-width:50px">D0<span class="fb-label">LSB</span></div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">D1</div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">D2</div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">D3</div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">D4</div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">D5</div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">D6</div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.15);color:var(--accent-1);min-width:50px">D7<span class="fb-label">MSB</span></div>
+      <div class="frame-bit" style="background:rgba(167,139,250,0.15);color:var(--accent-2)">P<span class="fb-label">Parity</span></div>
+      <div class="frame-bit" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">STOP<span class="fb-label">1 (HIGH)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Detailní popis frame</div>
+    <ul>
+      <li><strong>IDLE state</strong> – linka HIGH (logic 1)</li>
+      <li><strong>START bit</strong> – přechod HIGH→LOW signalizuje začátek</li>
+      <li><strong>DATA bits</strong> – 5–9 bitů (typicky 8), <strong>LSB first</strong></li>
+      <li><strong>PARITY bit</strong> – volitelná kontrola chyb (even/odd/none)</li>
+      <li><strong>STOP bits</strong> – 1 nebo 2 bity HIGH, konec frame</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 BAUD RATE -->
+<section class="section" id="baud-rate">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Baud Rate a konfigurace</h2>
+  </div>
+
+  <p><strong>Baud rate</strong> = počet symbolů (bitů) za sekundu. Protože UART nemá clock, <strong>oboje strany musí používat STEJNÝ baud rate</strong>!</p>
+
+  <table class="compare-table">
+    <tr><th>Baud rate</th><th>Použití</th></tr>
+    <tr><td><code>9600</code></td><td>Klasický, spolehlivý – kompatibilita se vším</td></tr>
+    <tr><td><code>19200 / 38400 / 57600</code></td><td>Střední rychlosti</td></tr>
+    <tr><td><code>115200</code></td><td>Velmi běžný pro MCU – dobrý kompromis</td></tr>
+    <tr><td><code>230400 – 921600</code></td><td>Vysoké rychlosti – kratší vzdálenosti</td></tr>
+  </table>
+
+  <div class="formula">
+    UBRR = (F_CPU / (16 × Baud_rate)) − 1
+    <div class="f-small">Příklad: 16 MHz, 9600 baud → UBRR = (16 000 000 / (16 × 9600)) − 1 = <strong>103</strong></div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Konfigurace: notace 9600 8N1</div>
+    <p style="margin-bottom:0"><strong>9600</strong> baud, <strong>8</strong> data bitů, <strong>N</strong>o parity, <strong>1</strong> stop bit – nejčastější nastavení.</p>
+  </div>
+
+  <details>
+    <summary>Příklad kódu (AVR – UART 9600 8N1)</summary>
+    <div class="cli">
+      <span class="comment">// Nastavení 9600 baud, 8N1</span><br>
+      <span class="reg">UBRR0</span> = <span class="val">103</span>;  <span class="comment">// Baud rate</span><br>
+      <span class="reg">UCSR0B</span> <span class="kw">=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">RXEN0</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">TXEN0</span>);  <span class="comment">// Enable RX/TX</span><br>
+      <span class="reg">UCSR0C</span> <span class="kw">=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">UCSZ01</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">UCSZ00</span>);  <span class="comment">// 8-bit data</span><br><br>
+      <span class="kw">void</span> <span class="cmd">UART_Transmit</span>(<span class="kw">uint8_t</span> data) {<br>
+      &nbsp;&nbsp;<span class="kw">while</span> (!(<span class="reg">UCSR0A</span> &amp; (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">UDRE0</span>)));  <span class="comment">// Wait until ready</span><br>
+      &nbsp;&nbsp;<span class="reg">UDR0</span> = data;  <span class="comment">// Send data</span><br>
+      }
+    </div>
+  </details>
+</section>
+
+<!-- 04 RS-232 -->
+<section class="section" id="rs232">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>RS-232 – fyzický standard</h2>
+  </div>
+
+  <p><strong>RS-232</strong> je <strong>fyzický/elektrický</strong> standard pro UART komunikaci. Definuje napěťové úrovně a konektory. UART = protokol, RS-232 = elektrická specifikace.</p>
+
+  <div class="voltage-visual">
+    <div class="volt-bar" style="background:rgba(52,211,153,0.12);color:var(--accent-3)">
+      <span class="vb-value">+3V až +15V</span>
+      <span class="vb-label">Logic 0 (SPACE)</span>
+    </div>
+    <div class="volt-bar" style="background:rgba(107,114,128,0.12);color:var(--text-muted)">
+      <span class="vb-value">−3V až +3V</span>
+      <span class="vb-label">Undefined zone</span>
+    </div>
+    <div class="volt-bar" style="background:rgba(248,113,113,0.12);color:var(--accent-5)">
+      <span class="vb-value">−3V až −15V</span>
+      <span class="vb-label">Logic 1 (MARK)</span>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém s MCU!</div>
+    <p>MCU UART pracuje s TTL/CMOS úrovněmi (<strong>0 V / 3.3 V</strong> nebo <strong>0 V / 5 V</strong>). RS-232 používá <strong>±12 V</strong> → potřeba <strong>level shifter</strong>!</p>
+    <p style="margin-bottom:0"><strong>MAX232</strong> – IC pro konverzi TTL ↔ RS-232. Generuje ±10 V z +5 V pomocí charge pump. Zapojení: MCU TX → MAX232 → RS-232 TX.</p>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Parametr</th><th>Hodnota</th></tr>
+    <tr><td>Max délka kabelu</td><td>15 m (spec), prakticky až 30 m</td></tr>
+    <tr><td>Max baud rate</td><td>20 kbps (spec), moderně až 115.2 kbps</td></tr>
+    <tr><td>Konektor</td><td>DB-9 (9 pinů) nebo DB-25 (25 pinů)</td></tr>
+    <tr><td>Topologie</td><td>Point-to-point</td></tr>
+  </table>
+</section>
+
+<!-- 05 RS-485 -->
+<section class="section" id="rs485">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>RS-485 – diferenciální multi-point</h2>
+  </div>
+
+  <p><strong>RS-485</strong> je diferenciální standard pro <strong>multi-point</strong> komunikaci. BUS topologie – více zařízení na jedné sběrnici. <strong>Half-duplex</strong> – jeden mluví, ostatní poslouchají.</p>
+
+  <div class="bus-visual">
+    <div class="bus-label">RS-485 BUS TOPOLOGIE</div>
+    <div style="text-align:center;font-size:12px">
+      <span style="color:var(--accent-4)">[120Ω]</span>
+      <span style="color:var(--text-muted)"> ──── </span>
+      <span style="color:var(--accent-1)">A/B bus</span>
+      <span style="color:var(--text-muted)"> ──── </span>
+      <span style="color:var(--accent-4)">[120Ω]</span>
+      <br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│</span><br>
+      <span style="color:var(--accent-6)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Master&nbsp;&nbsp;&nbsp;Slave1&nbsp;&nbsp;&nbsp;Slave2</span>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">Diferenciální signál</div>
+    <ul>
+      <li><strong>2 vodiče:</strong> A a B</li>
+      <li><strong>Logic 1:</strong> A − B &gt; +200 mV</li>
+      <li><strong>Logic 0:</strong> A − B &lt; −200 mV</li>
+      <li><strong>Výhoda:</strong> rušení ovlivní oba vodiče stejně → signál se nezmění!</li>
+    </ul>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Parametr</th><th>Hodnota</th></tr>
+    <tr><td>Max vzdálenost</td><td><strong>1 200 metrů!</strong></td></tr>
+    <tr><td>Max rychlost</td><td>10 Mbps (krátké vzdálenosti)</td></tr>
+    <tr><td>Max zařízení</td><td>32 (standardně), až 256 s repeaters</td></tr>
+    <tr><td>Terminace</td><td>120 Ω na obou koncích sběrnice</td></tr>
+    <tr><td>Duplex</td><td>Half-duplex</td></tr>
+  </table>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Řízení vysílání (DE/RE)</div>
+    <p>Protože half-duplex, MCU musí ovládat kdy vysílá:</p>
+    <ul>
+      <li><strong>DE</strong> (Driver Enable) – HIGH pro TX mode</li>
+      <li><strong>/RE</strong> (Receiver Enable) – LOW pro RX mode</li>
+    </ul>
+    <p style="margin-bottom:0">Typicky DE a /RE spojené na <strong>jeden GPIO pin</strong>.</p>
+  </div>
+
+  <h3>Použití RS-485</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Průmysl</h4>
+      <p>PLC, senzory, Modbus RTU protokol. Odolné, dlouhé vzdálenosti.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">DMX512</h4>
+      <p>Stage lighting – ovládání divadelních a koncertních světel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 RS-422 -->
+<section class="section" id="rs422">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>RS-422 – diferenciální full-duplex</h2>
+  </div>
+
+  <p><strong>RS-422</strong> je diferenciální standard podobný RS-485, ale <strong>full-duplex</strong>. Má samostatné páry pro TX a RX.</p>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>RS-422</th><th>RS-485</th></tr>
+    <tr><td>Duplex</td><td><strong>Full-duplex</strong> (4 vodiče: TX+/TX−, RX+/RX−)</td><td>Half-duplex (2 vodiče: A, B)</td></tr>
+    <tr><td>Topologie</td><td>Point-to-point nebo 1 driver + 10 receivers</td><td>Multi-point (32 zařízení)</td></tr>
+    <tr><td>Max vzdálenost</td><td>1 200 m</td><td>1 200 m</td></tr>
+    <tr><td>Max rychlost</td><td>10 Mbps</td><td>10 Mbps</td></tr>
+  </table>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Kdy RS-422 vs RS-485?</div>
+    <p style="margin-bottom:0"><strong>RS-422</strong> – high-speed point-to-point linky kde potřebuješ full-duplex. <strong>RS-485</strong> – když potřebuješ více zařízení na jedné sběrnici.</p>
+  </div>
+</section>
+
+<!-- 07 SPI -->
+<section class="section" id="spi">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>SPI – synchronní master-slave</h2>
+  </div>
+
+  <p><strong>SPI</strong> (Serial Peripheral Interface) je synchronní, <strong>full-duplex</strong>, <strong>master-slave</strong> protokol vyvinutý Motorolou. Jednoduchý a <strong>RYCHLÝ</strong> (desítky MHz). Pro periférie blízko MCU.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">4 signálové vodiče</div>
+    <table class="compare-table">
+      <tr><th>Signál</th><th>Směr</th><th>Funkce</th></tr>
+      <tr><td><code>SCLK</code></td><td>Master → Slave</td><td>Serial Clock – master generuje clock</td></tr>
+      <tr><td><code>MOSI</code></td><td>Master → Slave</td><td>Master Out Slave In – data ven z masteru</td></tr>
+      <tr><td><code>MISO</code></td><td>Slave → Master</td><td>Master In Slave Out – data ze slave</td></tr>
+      <tr><td><code>SS/CS</code></td><td>Master → Slave</td><td>Slave Select – výběr slave (active LOW)</td></tr>
+    </table>
+  </div>
+
+  <div class="bus-visual">
+    <div class="bus-label">SPI – VÍCE SLAVES</div>
+    <div style="text-align:center;font-size:11px;line-height:2">
+      <span style="color:var(--accent-1)">Master</span><br>
+      <span style="color:var(--accent-3)">SCLK</span><span style="color:var(--text-muted)"> ─────┬──────┬────── </span><span style="color:var(--accent-6)">Slave1 SCLK, Slave2 SCLK</span><br>
+      <span style="color:var(--accent-3)">MOSI</span><span style="color:var(--text-muted)"> ─────┬──────┬────── </span><span style="color:var(--accent-6)">Slave1 MOSI, Slave2 MOSI</span><br>
+      <span style="color:var(--accent-4)">MISO</span><span style="color:var(--text-muted)"> ←────┴──────┴────── </span><span style="color:var(--accent-6)">Slave1 MISO, Slave2 MISO</span> <span style="color:var(--text-muted)">(tri-state)</span><br>
+      <span style="color:var(--accent-5)">SS1</span><span style="color:var(--text-muted)"> ──────────────────→ </span><span style="color:var(--accent-6)">Slave1 SS</span><br>
+      <span style="color:var(--accent-5)">SS2</span><span style="color:var(--text-muted)"> ──────────────────→ </span><span style="color:var(--accent-6)">Slave2 SS</span>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">SPI komunikační proces</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Master pulls SS LOW</div><div class="step-desc">Výběr cílového slave zařízení</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Master generuje 8 clock pulzů</div><div class="step-desc">Data se posílají na SCLK hrany</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Každý clock: 1 bit MOSI + 1 bit MISO</div><div class="step-desc">Full-duplex – obousměrný shift register</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Po 8 clocks: oba mají nový byte</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Master pulls SS HIGH</div><div class="step-desc">Konec komunikace</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 SPI MODES -->
+<section class="section" id="spi-modes">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>SPI – clock režimy a komunikace</h2>
+  </div>
+
+  <p>SPI má <strong>4 režimy</strong> definované kombinací <strong>CPOL</strong> (Clock Polarity) a <strong>CPHA</strong> (Clock Phase). Master a Slave <strong>MUSÍ</strong> používat stejný mode!</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">CPOL a CPHA</div>
+    <ul>
+      <li><strong>CPOL=0:</strong> Clock idle LOW, active HIGH</li>
+      <li><strong>CPOL=1:</strong> Clock idle HIGH, active LOW</li>
+      <li><strong>CPHA=0:</strong> Data sampled na <strong>první</strong> edge, changed na druhé</li>
+      <li><strong>CPHA=1:</strong> Data changed na první edge, sampled na <strong>druhé</strong></li>
+    </ul>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Mode</th><th>CPOL</th><th>CPHA</th><th>Poznámka</th></tr>
+    <tr><td><strong>Mode 0</strong></td><td>0</td><td>0</td><td style="color:var(--accent-3)">Nejběžnější</td></tr>
+    <tr><td>Mode 1</td><td>0</td><td>1</td><td></td></tr>
+    <tr><td>Mode 2</td><td>1</td><td>0</td><td></td></tr>
+    <tr><td><strong>Mode 3</strong></td><td>1</td><td>1</td><td>Druhý nejčastější</td></tr>
+  </table>
+
+  <div class="formula">
+    SPI Clock = CPU_clock / prescaler
+    <div class="f-small">Prescaler: 2, 4, 8, 16, 32, 64, 128 → Typicky 1–20 MHz, teoreticky až 100+ MHz</div>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h4 style="color:var(--accent-3)">VÝHODY SPI</h4>
+      <ul>
+        <li>Vysoká rychlost (MHz)</li>
+        <li>Full-duplex</li>
+        <li>Jednoduchý protokol</li>
+        <li>Žádná adresace – jen SS</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4 style="color:var(--accent-5)">NEVÝHODY SPI</h4>
+      <ul>
+        <li>Mnoho pinů (4+ pro každý slave)</li>
+        <li>Krátké vzdálenosti (&lt;1 m)</li>
+        <li>Žádná error detection</li>
+        <li>Jen master-slave (ne multi-master)</li>
+      </ul>
+    </div>
+  </div>
+
+  <details>
+    <summary>Příklad kódu (AVR – SPI Master)</summary>
+    <div class="cli">
+      <span class="comment">// Master init</span><br>
+      <span class="reg">SPCR</span> <span class="kw">=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">SPE</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">MSTR</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">SPR0</span>);  <span class="comment">// Enable, Master, clk/16</span><br><br>
+      <span class="kw">uint8_t</span> <span class="cmd">SPI_Transfer</span>(<span class="kw">uint8_t</span> data) {<br>
+      &nbsp;&nbsp;<span class="reg">SPDR</span> = data;  <span class="comment">// Start transmission</span><br>
+      &nbsp;&nbsp;<span class="kw">while</span> (!(<span class="reg">SPSR</span> &amp; (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">SPIF</span>)));  <span class="comment">// Wait</span><br>
+      &nbsp;&nbsp;<span class="kw">return</span> <span class="reg">SPDR</span>;  <span class="comment">// Return received byte</span><br>
+      }
+    </div>
+  </details>
+
+  <h3>Typické SPI periférie</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Paměti</h4>
+      <p>SD karty, Flash (W25Q, MX25)</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Displaye</h4>
+      <p>TFT (ILI9341), E-ink moduly</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Převodníky</h4>
+      <p>ADC (MCP3008), DAC (MCP4921)</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Wireless</h4>
+      <p>nRF24L01, LoRa moduly</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 I2C -->
+<section class="section" id="i2c">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>I2C – princip a adresování</h2>
+  </div>
+
+  <p><strong>I2C</strong> (Inter-Integrated Circuit, „I-squared-C") je synchronní, <strong>multi-master</strong> sběrnicový protokol vyvinutý Philipsem. Pouze <strong>2 vodiče</strong> pro adresovatelnou komunikaci s mnoha zařízeními.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">2 signálové vodiče (+ GND)</div>
+    <ul>
+      <li><strong>SDA</strong> (Serial Data) – obousměrná data linka</li>
+      <li><strong>SCL</strong> (Serial Clock) – clock generovaný masterem</li>
+    </ul>
+  </div>
+
+  <div class="bus-visual">
+    <div class="bus-label">I2C – OPEN-DRAIN S PULL-UP REZISTORY</div>
+    <div style="text-align:center;font-size:11px;line-height:1.9">
+      <span style="color:var(--accent-4)">Vcc</span><span style="color:var(--text-muted)"> ─[</span><span style="color:var(--accent-4)">4.7 kΩ</span><span style="color:var(--text-muted)">]─┬─ </span><span style="color:var(--accent-3)">SDA</span><span style="color:var(--text-muted)"> &nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color:var(--accent-4)">Vcc</span><span style="color:var(--text-muted)"> ─[</span><span style="color:var(--accent-4)">4.7 kΩ</span><span style="color:var(--text-muted)">]─┬─ </span><span style="color:var(--accent-1)">SCL</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ </span><span style="color:var(--accent-6)">Master</span><span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ </span><span style="color:var(--accent-6)">Master</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ </span><span style="color:var(--accent-2)">Slave1</span><span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ </span><span style="color:var(--accent-2)">Slave1</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ </span><span style="color:var(--accent-2)">Slave2</span><span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ </span><span style="color:var(--accent-2)">Slave2</span>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Open-drain princip</div>
+    <ul>
+      <li>Zařízení může jen <strong>pull LOW</strong> (připojit k GND)</li>
+      <li>Pull-up rezistor táhne linku <strong>HIGH</strong></li>
+      <li>Umožňuje <strong>wired-AND</strong> logiku – základ arbitrace!</li>
+    </ul>
+  </div>
+
+  <h3>7-bit adresování</h3>
+  <p>Každé I2C zařízení má unikátní <strong>7-bit adresu</strong> (0x00–0x7F, celkem 128 adres). Některé rezervované → dostupných <strong>~112 adres</strong>.</p>
+
+  <table class="compare-table">
+    <tr><th>Adresa</th><th>Zařízení</th></tr>
+    <tr><td><code>0x50–0x57</code></td><td>EEPROM (24Cxx)</td></tr>
+    <tr><td><code>0x68</code></td><td>RTC DS1307, Gyroskop MPU6050</td></tr>
+    <tr><td><code>0x3C / 0x3D</code></td><td>OLED displej SSD1306</td></tr>
+    <tr><td><code>0x76 / 0x77</code></td><td>Senzor BMP280</td></tr>
+  </table>
+</section>
+
+<!-- 10 I2C COMMUNICATION -->
+<section class="section" id="i2c-comm">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>I2C – komunikace a arbitrace</h2>
+  </div>
+
+  <h3>START a STOP podmínky</h3>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Signály na sběrnici</div>
+    <ul>
+      <li><strong>START (S):</strong> SDA falls HIGH→LOW zatímco SCL HIGH</li>
+      <li><strong>STOP (P):</strong> SDA rises LOW→HIGH zatímco SCL HIGH</li>
+      <li><strong>Data platná</strong> když SCL HIGH, <strong>data se mění</strong> když SCL LOW</li>
+      <li><strong>ACK:</strong> receiver pulls SDA LOW (potvrzení přijetí)</li>
+      <li><strong>NACK:</strong> SDA zůstane HIGH (konec nebo chyba)</li>
+    </ul>
+  </div>
+
+  <h3>Write sekvence</h3>
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">I2C Write</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Master: START</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Master: Address (7 bit) + W (0) = 8 bitů</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Slave: ACK</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Master: Data byte</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Slave: ACK</div><div class="step-desc">Opakuj 4–5 pro další byty</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Master: STOP</div></div></div>
+    </div>
+  </div>
+
+  <h3>Read sekvence</h3>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">I2C Read</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Master: START</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Master: Address + R (1)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Slave: ACK</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Slave: Data byte</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Master: ACK (více dat) nebo NACK (konec)</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Master: STOP</div></div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Multi-master a arbitrace sběrnice</h3>
+
+  <p>I2C podporuje <strong>více masterů</strong> na jedné sběrnici. Co když 2 mastery začnou vysílat současně? I2C má elegantní řešení: <strong>wired-AND arbitrace</strong>.</p>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Princip arbitrace</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Oba mastery vysílají současně</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Každý master monitoruje SDA během vysílání</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Master vysílá 1 ale vidí 0 → někdo jiný táhne LOW</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Ten master OKAMŽITĚ přestane a čeká</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Master s nižší adresou (více 0) vždy vyhraje</div><div class="step-desc">Výsledek: BEZ KOLIZE! Jeden dokončí, druhý zkusí znovu.</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Clock stretching</div>
+    <p style="margin-bottom:0">Slave může <strong>držet SCL LOW</strong> pokud potřebuje více času na zpracování. Master musí čekat. Užitečné pro pomalé slave devices.</p>
+  </div>
+
+  <h3>I2C rychlost</h3>
+  <table class="compare-table">
+    <tr><th>Režim</th><th>Rychlost</th></tr>
+    <tr><td>Standard Mode</td><td>100 kbps (původní)</td></tr>
+    <tr><td><strong>Fast Mode</strong></td><td>400 kbps (nejběžnější)</td></tr>
+    <tr><td>Fast Mode Plus</td><td>1 Mbps</td></tr>
+    <tr><td>High Speed Mode</td><td>3.4 Mbps (vzácné)</td></tr>
+  </table>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h4 style="color:var(--accent-3)">VÝHODY I2C</h4>
+      <ul>
+        <li>Jen 2 vodiče (+ GND)</li>
+        <li>Adresování – až 112 zařízení</li>
+        <li>Multi-master s arbitrací</li>
+        <li>ACK mechanismus</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4 style="color:var(--accent-5)">NEVÝHODY I2C</h4>
+      <ul>
+        <li>Pomalejší než SPI</li>
+        <li>Half-duplex</li>
+        <li>Krátké vzdálenosti (&lt;1 m)</li>
+        <li>Pull-up rezistory potřebné</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Typické I2C periférie</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Senzory</h4>
+      <p>BMP280, MPU6050, AHT20</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">RTC / EEPROM</h4>
+      <p>DS1307, PCF8523, AT24C</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Displaye / IO</h4>
+      <p>OLED SSD1306, I/O expander PCF8574</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 CAN -->
+<section class="section" id="can">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>CAN – Controller Area Network</h2>
+  </div>
+
+  <p><strong>CAN</strong> je robustní <strong>multi-master</strong> sběrnicový protokol vyvinutý <strong>Boschem</strong> pro automotive. Extrémně odolný vůči chybám a rušení. Používá se v autech, průmyslu, robotice.</p>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">Diferenciální sběrnice</div>
+    <ul>
+      <li><strong>CAN_H</strong> (CAN High) a <strong>CAN_L</strong> (CAN Low)</li>
+      <li><strong>Dominant bit (0):</strong> CAN_H = 3.5 V, CAN_L = 1.5 V (diff = 2 V)</li>
+      <li><strong>Recessive bit (1):</strong> CAN_H = CAN_L = 2.5 V (diff = 0 V)</li>
+    </ul>
+  </div>
+
+  <div class="voltage-visual">
+    <div class="volt-bar" style="background:rgba(248,113,113,0.12);color:var(--accent-5)">
+      <span class="vb-value">Dominant (0)</span>
+      <span class="vb-label">CAN_H 3.5V, CAN_L 1.5V</span>
+    </div>
+    <div class="volt-bar" style="background:rgba(107,114,128,0.12);color:var(--text-muted)">
+      <span class="vb-value">Recessive (1)</span>
+      <span class="vb-label">CAN_H = CAN_L = 2.5V</span>
+    </div>
+  </div>
+
+  <h3>CAN Arbitrace (Non-Destructive)</h3>
+
+  <p>CAN <strong>NEpoužívá adresy</strong>! Každá zpráva má <strong>Message ID</strong>. Všichni přijímají všechny zprávy, filtrují podle ID.</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Wired-AND arbitrace</div>
+    <ul>
+      <li><strong>Dominant (0)</strong> přebíjí <strong>Recessive (1)</strong></li>
+      <li>Node s <strong>nižším ID</strong> (více 0) vždy vyhraje</li>
+      <li>Prohrávající node <strong>okamžitě přestane</strong> vysílat</li>
+      <li><strong>NON-DESTRUCTIVE</strong> – vítězná zpráva není poškozena!</li>
+    </ul>
+  </div>
+
+  <div class="bus-visual">
+    <div class="bus-label">PŘÍKLAD CAN ARBITRACE</div>
+    <div style="font-size:12px;line-height:2">
+      <span style="color:var(--accent-6)">Node A</span><span style="color:var(--text-muted)"> vysílá ID </span><span style="color:var(--accent-6)">0b00101</span><span style="color:var(--text-muted)"> (priorita 5)</span><br>
+      <span style="color:var(--accent-2)">Node B</span><span style="color:var(--text-muted)"> vysílá ID </span><span style="color:var(--accent-2)">0b00011</span><span style="color:var(--text-muted)"> (priorita 3)</span><br><br>
+      <span style="color:var(--text-muted)">Bit 0: A=</span><span style="color:var(--accent-3)">0</span><span style="color:var(--text-muted)">, B=</span><span style="color:var(--accent-3)">0</span><span style="color:var(--text-muted)"> → oboje OK</span><br>
+      <span style="color:var(--text-muted)">Bit 1: A=</span><span style="color:var(--accent-3)">0</span><span style="color:var(--text-muted)">, B=</span><span style="color:var(--accent-3)">0</span><span style="color:var(--text-muted)"> → oboje OK</span><br>
+      <span style="color:var(--text-muted)">Bit 2: A=</span><span style="color:var(--accent-5)">1</span><span style="color:var(--text-muted)">, B=</span><span style="color:var(--accent-3)">0</span><span style="color:var(--text-muted)"> → </span><span style="color:var(--accent-2)">B vítězí!</span><span style="color:var(--accent-5)"> A přestane.</span><br>
+      <span style="color:var(--text-muted)">→ </span><span style="color:var(--accent-2)">Node B dokončí zprávu bez kolize.</span>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Rychlost</th><th>Max vzdálenost</th><th>Použití</th></tr>
+    <tr><td>125 kbps</td><td>500 m</td><td>Dlouhé sběrnice</td></tr>
+    <tr><td>250 kbps</td><td>250 m</td><td>Průmysl</td></tr>
+    <tr><td>500 kbps</td><td>100 m</td><td>Automotive standard</td></tr>
+    <tr><td>1 Mbps</td><td>40 m</td><td>Krátké sběrnice</td></tr>
+  </table>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">CAN Transceiver</div>
+    <p style="margin-bottom:0">MCU nemá přímo CAN piny. Potřeba <strong>CAN controller + CAN transceiver</strong> (např. MCP2515 + MCP2551). Terminace <strong>120 Ω na obou koncích</strong> sběrnice.</p>
+  </div>
+</section>
+
+<!-- 12 CAN FRAME -->
+<section class="section" id="can-frame">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>CAN – frame a error detection</h2>
+  </div>
+
+  <h3>Standard CAN 2.0A Frame</h3>
+
+  <div class="frame-visual">
+    <div class="bus-label">CAN FRAME STRUKTURA</div>
+    <div class="frame-row">
+      <div class="frame-bit" style="background:rgba(248,113,113,0.2);color:var(--accent-5);min-width:35px">SOF<span class="fb-label">1 bit</span></div>
+      <div class="frame-bit" style="background:rgba(96,165,250,0.2);color:var(--accent-1);min-width:70px">Identifier<span class="fb-label">11 bitů</span></div>
+      <div class="frame-bit" style="background:rgba(167,139,250,0.15);color:var(--accent-2);min-width:35px">RTR<span class="fb-label">1 bit</span></div>
+      <div class="frame-bit" style="background:rgba(251,191,36,0.15);color:var(--accent-4);min-width:50px">Control<span class="fb-label">6 bitů</span></div>
+      <div class="frame-bit" style="background:rgba(52,211,153,0.2);color:var(--accent-3);min-width:80px">Data<span class="fb-label">0–8 bytů</span></div>
+      <div class="frame-bit" style="background:rgba(251,146,60,0.15);color:var(--accent-6);min-width:50px">CRC<span class="fb-label">15+1 bit</span></div>
+      <div class="frame-bit" style="background:rgba(244,114,182,0.15);color:var(--accent-7);min-width:35px">ACK<span class="fb-label">2 bity</span></div>
+      <div class="frame-bit" style="background:rgba(107,114,128,0.2);color:var(--text-muted);min-width:35px">EOF<span class="fb-label">7 bitů</span></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Extended CAN 2.0B</div>
+    <p style="margin-bottom:0"><strong>29-bit identifier</strong> (místo 11-bit). Pro více message types, zpětně kompatibilní.</p>
+  </div>
+
+  <h3>Pětinásobná error detection!</h3>
+
+  <p>CAN má nejrobustnější detekci chyb ze všech běžných sběrnic. Neodetekovaná chyba: &lt; 10<sup>−13</sup>.</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">5× Error Detection</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">CRC check</div><div class="step-desc">15-bit Cyclic Redundancy Check</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Frame check</div><div class="step-desc">Kontrola struktury frame</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">ACK check</div><div class="step-desc">Alespoň 1 node musí ACK</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Bit monitoring</div><div class="step-desc">Sender čte zpět co poslal</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Bit stuffing</div><div class="step-desc">Max 5 stejných bitů po sobě</div></div></div>
+    </div>
+  </div>
+
+  <h3>Použití CAN</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Automotive</h4>
+      <p>ECU komunikace v autě – motor, ABS, airbag, dashboard.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Průmysl (CANopen)</h4>
+      <p>Průmyslová automatizace – roboty, výrobní linky.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Robotika</h4>
+      <p>Robustní komunikace mezi moduly robota.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí a srovnání</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr>
+      <th>Protokol</th>
+      <th>Vodiče</th>
+      <th>Rychlost</th>
+      <th>Vzdálenost</th>
+      <th>Topologie</th>
+    </tr>
+    <tr>
+      <td><strong>UART</strong></td>
+      <td>2 (TX/RX)</td>
+      <td>9.6–115.2 kbps</td>
+      <td>&lt;15 m</td>
+      <td>Point-to-point</td>
+    </tr>
+    <tr>
+      <td><strong>RS-485</strong></td>
+      <td>2 (A/B)</td>
+      <td>až 10 Mbps</td>
+      <td>1 200 m</td>
+      <td>Multi-point (32)</td>
+    </tr>
+    <tr>
+      <td><strong>SPI</strong></td>
+      <td>4+ (SCLK/MOSI/MISO/SS)</td>
+      <td>1–20 MHz</td>
+      <td>&lt;1 m</td>
+      <td>Master-Slave</td>
+    </tr>
+    <tr>
+      <td><strong>I2C</strong></td>
+      <td>2 (SDA/SCL)</td>
+      <td>100–400 kbps</td>
+      <td>&lt;1 m</td>
+      <td>Multi-master (112)</td>
+    </tr>
+    <tr>
+      <td><strong>CAN</strong></td>
+      <td>2 (CAN_H/CAN_L)</td>
+      <td>125 kbps–1 Mbps</td>
+      <td>40–500 m</td>
+      <td>Multi-master, msg-based</td>
+    </tr>
+  </table>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">UART / RS-232</p>
+    <ul>
+      <li><strong>UART</strong> – asynchronní, point-to-point, 2 vodiče, START-DATA-STOP frame</li>
+      <li><strong>RS-232</strong> – ±12 V úrovně, MAX232 level shifter, DB-9 konektor</li>
+      <li><strong>Baud rate</strong> – obě strany MUSÍ mít stejný! UBRR = (F_CPU / (16 × Baud)) − 1</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">RS-485 / RS-422</p>
+    <ul>
+      <li><strong>RS-485</strong> – diferenciální, half-duplex, multi-point, 1200 m, 32 zařízení, terminace 120 Ω</li>
+      <li><strong>RS-422</strong> – full-duplex, 4 vodiče, point-to-point nebo 1:10</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">SPI</p>
+    <ul>
+      <li><strong>Synchronní</strong>, full-duplex, master-slave, 4+ pinů (SCLK/MOSI/MISO/SS)</li>
+      <li><strong>4 modes</strong> (CPOL/CPHA) – Mode 0 nejběžnější. MHz rychlosti, žádná error detection</li>
+      <li>Periférie: SD karty, Flash, TFT displaye, ADC/DAC, wireless moduly</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">I2C</p>
+    <ul>
+      <li><strong>2 vodiče</strong> (SDA/SCL), open-drain + pull-up 4.7 kΩ, 7-bit adresy</li>
+      <li><strong>Multi-master</strong> s wired-AND arbitrací. ACK/NACK mechanismus</li>
+      <li><strong>100–400 kbps</strong> typicky. Periférie: senzory, RTC, EEPROM, OLED</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">CAN</p>
+    <ul>
+      <li><strong>Diferenciální</strong>, multi-master, message-based (11/29-bit ID, ne adresy!)</li>
+      <li><strong>Non-destructive arbitrace</strong> – nižší ID vyhraje, dominant přebíjí recessive</li>
+      <li><strong>5× error detection</strong> (CRC, frame, ACK, bit monitoring, bit stuffing)</li>
+      <li>Automotive, průmysl, terminace 120 Ω na obou koncích</li>
+    </ul>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Kdy co použít?</div>
+    <ul>
+      <li><strong>UART</strong> – jednoduché point-to-point (debug, GPS, Bluetooth modul)</li>
+      <li><strong>RS-485</strong> – průmysl, multi-point, dlouhé vzdálenosti</li>
+      <li><strong>SPI</strong> – rychlé lokální periférie (displeje, Flash, SD karty)</li>
+      <li><strong>I2C</strong> – mnoho senzorů na 2 vodičích (adresování)</li>
+      <li><strong>CAN</strong> – kritické automotive/průmyslové aplikace</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

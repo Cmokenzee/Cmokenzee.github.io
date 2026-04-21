@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Karel Čapek: Válka s mloky</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a141a;
+  --bg-card:#111c22;
+  --bg-card-alt:#17222a;
+  --border:#263540;
+  --text:#a8b8bc;
+  --text-muted:#5e6e74;
+  --heading:#d8e2e4;
+  --accent-1:#2a6a7a;     /* moře hlubiny */
+  --accent-2:#5a8a48;     /* mlok zeleň */
+  --accent-3:#b8903a;     /* novinový papír */
+  --accent-4:#a82828;     /* nacistická rudá */
+  --accent-5:#2a3848;     /* noc */
+  --accent-6:#d48a1a;     /* výstraha */
+  --accent-7:#4a6860;     /* oceánský kámen */
+  --accent-8:#8a4a2a;     /* rez */
+  --deep:#2a6a7a;         /* hluboká voda */
+  --newt:#5a8a48;         /* mlok */
+  --paper:#b8903a;        /* novinový papír */
+  --red:#a82828;          /* nacistická / propagandistická rudá */
+  --warn:#d48a1a;         /* výstražná žlutá */
+  --ink:#2a3848;          /* černý inkoust */
+  --kelp:#4a6860;         /* řasy */
+  --rust:#8a4a2a;         /* rez */
+  --mist:#5a7078;         /* mlha */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(42,106,122,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(90,138,72,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — meziválečné noviny + oceán */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(10,20,26,.3) 0%,rgba(10,20,26,.92) 100%),
+    linear-gradient(135deg,#0e1620 0%,#16242e 30%,#0a1218 65%,#060c10 100%);
+  border-bottom:3px solid var(--deep);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(42,106,122,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(90,138,72,.08) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Dekorativní noviny pásek */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:4px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--deep) 0,var(--deep) 30px,
+      var(--paper) 30px,var(--paper) 32px,
+      var(--deep) 32px,var(--deep) 62px,
+      transparent 62px,transparent 66px);
+  opacity:.4;
+}
+.hero-newt{
+  display:inline-block;
+  color:var(--newt);
+  font-size:48px;
+  line-height:1;
+  margin-bottom:24px;
+  opacity:.75;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(90,138,72,.3));
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--paper);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(44px,8vw,78px);
+  color:var(--heading);
+  font-weight:900;
+  line-height:1;
+  position:relative;
+  letter-spacing:1px;
+  text-shadow:0 2px 30px rgba(42,106,122,.3);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--paper);
+  font-size:.3em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.8;
+}
+.hero h1 .sub-title{
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:.34em;
+  font-style:italic;
+  color:var(--paper);
+  letter-spacing:3px;
+  margin-top:16px;
+  font-weight:400;
+}
+.hero .author{
+  font-family:'Playfair Display',serif;
+  color:var(--paper);
+  margin-top:30px;
+  font-size:24px;
+  position:relative;
+  letter-spacing:2px;
+  font-weight:700;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-headline{
+  font-family:'Playfair Display',serif;
+  color:var(--red);
+  font-size:20px;
+  margin:36px auto 0;
+  max-width:600px;
+  font-weight:700;
+  position:relative;
+  letter-spacing:1px;
+  line-height:1.4;
+  text-transform:uppercase;
+  padding:20px 28px;
+  border-top:3px double var(--red);
+  border-bottom:3px double var(--red);
+}
+.hero-headline em{
+  display:block;
+  font-size:.55em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:italic;
+  letter-spacing:2px;
+  text-transform:none;
+  font-weight:400;
+  font-family:'Crimson Pro',serif;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — meziválečný novinový štítek */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--deep);
+  border-bottom:3px solid var(--deep);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'LIDOVÉ NOVINY';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--paper);
+  font-family:'Playfair Display',serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.toc::after{
+  content:'ROČNÍK 1936';
+  position:absolute;
+  top:-10px;right:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--text-muted);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+}
+.toc h2{
+  font-family:'Playfair Display',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--paper);
+  margin-bottom:20px;text-align:center;
+  font-weight:700;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:'§ ' counter(toc,decimal-leading-zero) ' ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--deep);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--newt)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--deep),var(--newt));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Playfair Display',serif;
+  font-size:38px;color:var(--deep);
+  font-weight:900;
+  min-width:70px;opacity:.55;
+  line-height:1;
+  letter-spacing:1px;
+  font-style:italic;
+}
+.section-header h2{
+  font-family:'Playfair Display',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+h3{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Playfair Display',serif;
+  font-size:14px;font-weight:700;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--deep);background:rgba(42,106,122,.05)}
+.card.key{border-left:3px solid var(--newt);background:rgba(90,138,72,.05)}
+.card.warn{border-left:3px solid var(--red);background:rgba(168,40,40,.05)}
+.card.paper{border-left:3px solid var(--paper);background:rgba(184,144,58,.05)}
+.card.dark{border-left:3px solid var(--ink);background:rgba(42,56,72,.1)}
+.card.sci{border-left:3px solid var(--mist);background:rgba(90,112,120,.05)}
+
+.card-title{
+  font-family:'Playfair Display',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--deep)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(42,106,122,.1);
+  color:var(--deep);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--paper);font-style:italic}
+
+/* Oceánská vlna jako dělič */
+.wave-divider{
+  position:relative;
+  margin:48px 0;
+  text-align:center;
+  color:var(--deep);
+  opacity:.5;
+  font-family:'Oswald',sans-serif;
+  font-size:20px;
+  letter-spacing:12px;
+}
+.wave-divider::before,.wave-divider::after{
+  content:'';
+  display:inline-block;
+  width:80px;height:1px;
+  background:var(--deep);
+  vertical-align:middle;
+  margin:0 14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--deep));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.06;
+  pointer-events:none;
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+}
+.character .char-name{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:.5px;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--deep));
+  margin-bottom:10px;
+}
+.character .char-alegory{
+  display:inline-block;
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  letter-spacing:2px;
+  padding:4px 12px;
+  background:rgba(42,106,122,.1);
+  color:var(--deep);
+  border:1px solid var(--deep);
+  text-transform:uppercase;
+  font-weight:500;
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--deep);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Crimson Pro',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--deep);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* NOVINOVÝ TITULEK — speciální blok */
+.newspaper-headline{
+  background:var(--bg-card-alt);
+  border:2px solid var(--paper);
+  padding:24px 28px;
+  margin:24px 0;
+  position:relative;
+  font-family:'Playfair Display',serif;
+}
+.newspaper-headline::before{
+  content:'★ VEČERNÍ NOVINY ★';
+  position:absolute;
+  top:-12px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--paper);
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.newspaper-date{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-align:center;
+  margin-bottom:14px;
+  text-transform:uppercase;
+}
+.newspaper-main{
+  font-family:'Playfair Display',serif;
+  font-size:26px;
+  color:var(--red);
+  font-weight:900;
+  text-align:center;
+  line-height:1.2;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.newspaper-sub{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text);
+  text-align:center;
+  font-style:italic;
+  line-height:1.6;
+}
+
+/* VĚDECKÁ STUDIE — speciální blok */
+.scientific-paper{
+  background:var(--bg-card-alt);
+  border:1px solid var(--mist);
+  padding:20px 26px;
+  margin:20px 0;
+  position:relative;
+  font-family:'Crimson Pro',serif;
+  font-size:14.5px;
+  color:var(--text);
+  line-height:1.7;
+}
+.scientific-paper::before{
+  content:'SCIENTIA · VĚDECKÝ LIST';
+  position:absolute;
+  top:-10px;left:20px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--mist);
+  font-family:'Playfair Display',serif;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.scientific-title{
+  font-family:'Playfair Display',serif;
+  font-size:16px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  margin-bottom:10px;
+}
+.scientific-latin{
+  font-family:'Playfair Display',serif;
+  font-size:15px;
+  color:var(--newt);
+  font-style:italic;
+  letter-spacing:.5px;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--deep),var(--newt),var(--deep));
+  opacity:.6;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--deep);
+  background:rgba(42,106,122,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(42,106,122,.3);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--deep);
+  background:rgba(42,106,122,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--paper)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(90,138,72,.05);
+  border-left:2px solid var(--newt);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--newt)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Playfair Display',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--deep);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--deep);
+  font-weight:700;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--deep),transparent);
+  opacity:.7;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--deep);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* ALEGORIE mloků */
+.allegory-interpretations{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:12px;
+  margin:20px 0;
+}
+.allegory-interp{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--allegory-color,var(--deep));
+  padding:18px 20px;
+  text-align:center;
+}
+.allegory-interp-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--allegory-color,var(--deep));
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  font-weight:600;
+}
+.allegory-interp-title{
+  font-family:'Playfair Display',serif;
+  font-size:17px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  margin-bottom:6px;
+}
+.allegory-interp-desc{
+  font-size:13px;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+
+/* 3 KNIHY vizualizace */
+.books-viz{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:24px 0;
+}
+.book-block{
+  padding:20px 16px;
+  text-align:center;
+  background:var(--book-bg,var(--bg-card-alt));
+  border:1px solid var(--border);
+  border-top:3px solid var(--book-color,var(--deep));
+  position:relative;
+  min-height:140px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.book-num{
+  font-family:'Playfair Display',serif;
+  font-size:32px;
+  color:var(--book-color,var(--deep));
+  font-weight:900;
+  font-style:italic;
+  line-height:1;
+  margin-bottom:8px;
+}
+.book-title{
+  font-family:'Playfair Display',serif;
+  font-size:13px;
+  color:var(--heading);
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  line-height:1.3;
+  margin-bottom:8px;
+}
+.book-desc{
+  font-family:'Crimson Pro',serif;
+  font-size:13px;
+  color:var(--text-muted);
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--deep);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--red);
+  background:rgba(168,40,40,.3);
+}
+.timeline-step.growth::before{
+  border-color:var(--newt);
+  background:rgba(90,138,72,.2);
+}
+.timeline-step .ts-title{
+  font-family:'Playfair Display',serif;
+  font-weight:700;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-book{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--deep);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--deep);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .allegory-interpretations{grid-template-columns:1fr}
+  .books-viz{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.newspaper-headline,.scientific-paper{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-newt">※</div>
+  <div class="hero-label">Maturitní rozbor · Česká meziválečná literatura · Satirické sci-fi</div>
+  <h1><em>Satirický román · 1936</em>Válka<br>s mloky<span class="sub-title">aneb Prorocké varování před válkou</span></h1>
+  <div class="author">Karel Čapek</div>
+  <div class="subtitle">Praha · Meziválečné Československo · Před Mnichovem</div>
+  <div class="hero-headline">Mloci žádají lebensraum!<em>— Mělo se to stát. Čapek to viděl v roce 1936.</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Tři knihy</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč · Mozaika stylů</a></li>
+  <li><a href="#postavy">Postavy · Lidé a mloci</a></li>
+  <li><a href="#alegorie">Mloci jako alegorie</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a satira</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Válka s mloky</strong> je satirický science fiction román publikovaný v roce <strong>1936</strong>. Dílo má <strong>třídílnou strukturu</strong> sledující vývoj od objevu mloků přes jejich civilizaci až po konflikt s lidstvem. Čapek ho napsal <strong>v době sílícího fašismu v Evropě</strong> — 3 roky po Hitlerově nástupu k moci, 2 roky před Mnichovskou dohodou. Román je jedním z nejprorockejších děl 20. století.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step growth">
+    <div class="ts-title"><span class="ts-book">Kniha I</span> Objev mloků</div>
+    <div class="ts-desc">Kapitán van Toch objevuje mloky, začátek obchodu, domestikace</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-book">Kniha II</span> Civilizace mloků</div>
+    <div class="ts-desc">Vzestup civilizace mloků, jejich vykořisťování, publicistika</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-book">Kniha III</span> Válka a apokalypsa</div>
+    <div class="ts-desc">Vzpoura mloků, válka, zatápění pevnin, zánik</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>několik desetiletí</strong> — od 20. let 20. století až do <strong>blízké budoucnosti</strong> (40. léta?). Rychlý vývoj: od objevu po apokalypsu.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Kritika fašismu a nacismu, kapitalismus a jeho nebezpečí, kolonialismus, rasismus, válka, ekologická katastrofa, manipulace mas, lidská chamtivost, technologický pokrok bez morálky, totalitarismus.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Mloci</strong> — inteligentní obojživelníci, alegorie</li>
+  <li><strong>Kapitán van Toch</strong> — objevitel, dobrák</li>
+  <li><strong>G. H. Bondy</strong> — průmyslník, kapitalista</li>
+  <li><strong>Vykořisťování</strong>, obchod s mloky</li>
+  <li><strong>Mloci jako levná pracovní síla</strong></li>
+  <li><strong>Vzpoura mloků</strong>, válka</li>
+  <li><strong>Zatápění pevnin</strong> — ekologická katastrofa</li>
+  <li><strong>Newspeak</strong> (manipulace jazyka)</li>
+  <li><strong>Věda bez svědomí</strong></li>
+  <li><strong>Masová média</strong>, propaganda</li>
+  <li><strong>Ničení přírody</strong></li>
+  <li><strong>Lebensraum</strong> — nacistický termín</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--deep)">
+    <h4 style="color:var(--deep)">Čas</h4>
+    <p><strong>Začátek:</strong> 20. léta 20. století. <strong>Vývoj:</strong> 20.–30. léta. <strong>Konec:</strong> blízká budoucnost. Celkově cca <strong>20–30 let</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--newt)">
+    <h4 style="color:var(--newt)">Prostor</h4>
+    <p><strong>Celý svět</strong> — globální příběh. Tichý oceán (objev), Česko (Bondyho továrna), různé země světa, oceány (mloci), potopený svět.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--newt)">Globální rozsah</div>
+  <p style="margin-bottom:0">Čapek zvolil <strong>globální, nikoli lokální příběh</strong> — to bylo v české literatuře 30. let nové. Dílo přesahuje hranice Československa — kritizuje <strong>celosvětové trendy</strong> kapitalismu, fašismu, kolonialismu. Je to <strong>první skutečně globální český román</strong>.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba · Tři knihy</h2></div>
+
+<h3>Třídílná struktura</h3>
+<div class="books-viz">
+  <div class="book-block" style="--book-color:var(--newt);--book-bg:rgba(90,138,72,.05)">
+    <div class="book-num">I</div>
+    <div class="book-title">Andrias<br>Scheuchzeri</div>
+    <div class="book-desc">Objev mloků</div>
+  </div>
+  <div class="book-block" style="--book-color:var(--paper);--book-bg:rgba(184,144,58,.05)">
+    <div class="book-num">II</div>
+    <div class="book-title">Po stupních<br>civilizace</div>
+    <div class="book-desc">Civilizace mloků</div>
+  </div>
+  <div class="book-block" style="--book-color:var(--red);--book-bg:rgba(168,40,40,.05)">
+    <div class="book-num">III</div>
+    <div class="book-title">Válka<br>s mloky</div>
+    <div class="book-desc">Konflikt a zánik</div>
+  </div>
+</div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Třídílná struktura</strong> — každá kniha jiný charakter</li>
+  <li><strong>Chronologický postup</strong> s publicistickými vstupy</li>
+  <li><strong>Mozaiková kompozice</strong> — různé žánry, dokumenty, reportáže</li>
+</ul>
+
+<div class="card paper">
+  <div class="card-title" style="color:var(--paper)">Inovativní kompozice</div>
+  <p style="margin-bottom:0">Každá ze 3 knih má <strong>jiný literární styl</strong>. <strong>Kniha I</strong> je klasický vyprávěcí román (van Toch objevuje mloky). <strong>Kniha II</strong> je téměř celá <strong>mozaikou publicistických textů</strong> — fiktivní novinové články, vědecké studie, dokumenty. <strong>Kniha III</strong> je apokalyptický reportážně-vyprávěcí styl. Kompozice <strong>odráží vývoj společnosti</strong> — od individuálního příběhu přes mediální obraz po kolektivní zánik.</p>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step growth">
+    <div class="ts-title">Kniha I: Objev, domestikace, začátek obchodu</div>
+    <div class="ts-desc">Van Toch objeví mloky, Bondy rozpozná jejich komerční potenciál</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Kniha II: Rozvoj civilizace mloků, vykořisťování</div>
+    <div class="ts-desc">Mloci se učí, stávají se pracovní silou, vědecké debaty, propaganda</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">Kniha III: Vzpoura, válka, apokalypsa</div>
+    <div class="ts-desc">Mloci žádají lebensraum, začíná válka, pevniny se zatápějí</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (alegoricky).</p>
+</div>
+
+<h3>Literární žánr — vícenásobné zařazení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Satirický román</h4>
+    <p>Kritika společnosti skrze nadsázku a ironii.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deep)">
+    <h4 style="color:var(--deep)">Science fiction</h4>
+    <p>Fiktivní vědecká premisa — inteligentní mloci. Žánr, který Čapek sám spoluformoval.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--ink)">
+    <h4 style="color:var(--ink)">Dystopie / antiutopie</h4>
+    <p>Varování před budoucností, negativní vize.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--newt)">
+    <h4 style="color:var(--newt)">Alegorický román</h4>
+    <p>Mloci = alegorie útlaku, fašismu, kolonialismu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--paper)">
+    <h4 style="color:var(--paper)">Publicistická próza</h4>
+    <p>Žurnalistické prvky — fiktivní noviny, dokumenty, zprávy.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--newt)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Satira současnosti</strong> (30. léta)</li>
+    <li>Sci-fi prvek (evoluce mloků)</li>
+    <li><strong>Varování před totalitou</strong></li>
+    <li>Mloci = alegorie utlačovaných / nebezpečných mas</li>
+    <li><strong>Publicistické prvky</strong> — fiktivní noviny, dokumenty</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč · Mozaika stylů</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Typ</div>
+  <p style="margin-bottom:0"><strong>Střídání různých vypravěčů a forem</strong> — mozaiková kompozice.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Er-forma</strong> — základní vyprávění ve 3. osobě</li>
+  <li><strong>Publicistické texty</strong> — noviny, zprávy, dokumenty</li>
+  <li><strong>Vědecké úvahy</strong> — odborné texty</li>
+  <li><strong>Rozhovory</strong> — dialogy, interview</li>
+  <li><strong>Autorský komentář</strong> — Čapek ironicky komentuje</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Všetečný vypravěč</strong></li>
+    <li>Ironický, satirický tón</li>
+    <li>Zdánlivě objektivní (publicistika)</li>
+    <li><strong>Ve skutečnosti kritický</strong></li>
+    <li>Mozaika perspektiv</li>
+  </ul>
+</div>
+
+<div class="card paper">
+  <div class="card-title" style="color:var(--paper)">Metafikce — autor v díle</div>
+  <p style="margin-bottom:0">Čapek <strong>se sám objevuje v díle</strong> jako vypravěč/komentátor. V závěru knihy má poslední slovo — v kapitole <em>„Autor sám se sebou"</em> diskutuje o osudu lidstva. To je na dobu <strong>experimentální metafikční prvek</strong> — autor otevřeně přiznává, že kniha je fikce, a ptá se, co bude dál.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy · Lidé a mloci</h2></div>
+
+<div class="character" style="--character-color:var(--newt)" data-symbol="⚓">
+  <div class="char-name">Kapitán J. van Toch</div>
+  <div class="char-role">Hlavní postava (kniha I) · Kladná · Objevitel</div>
+  <ul style="margin:0">
+    <li><strong>Starý kapitán lodi</strong></li>
+    <li>Objeví inteligentní mloky na tichomořském ostrově</li>
+    <li><strong>Dobrák, idealista</strong></li>
+    <li>Chce mloky ochraňovat</li>
+    <li>Vzpomíná si na Československo a své dětství</li>
+    <li>Umírá brzy v románu</li>
+    <li>Symbol <strong>dobrých úmyslů</strong>, které vedou k katastrofě</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--paper)" data-symbol="$">
+  <div class="char-name">G. H. Bondy</div>
+  <div class="char-role">Hlavní postava · Neutrální / Pragmatická · Průmyslník</div>
+  <ul style="margin:0">
+    <li><strong>Továrník, kapitalista</strong></li>
+    <li>Van Tochův přítel z mládí (Českého Budějovic)</li>
+    <li><strong>Vidí obchodní příležitost v mlocích</strong></li>
+    <li>Ne zlý, jen pragmatický</li>
+    <li>Umírá, ale jeho <strong>firma pokračuje</strong> — systém je silnější než jednotlivec</li>
+    <li>Symbol <strong>kapitalismu</strong> bez morálky</li>
+    <li>Postava zná se z Čapkova románu <em>Továrna na absolutno</em></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--deep)" data-symbol="※">
+  <div class="char-name">Mloci <em>(Andrias Scheuchzeri)</em></div>
+  <div class="char-role">Kolektivní „postava" · Nejednoznačná</div>
+  <div class="char-alegory">Alegorie: dělnictvo · kolonie · fašistické masy</div>
+  <ul style="margin:0">
+    <li>Inteligentní obojživelníci z Tichého oceánu</li>
+    <li>Vědecké jméno <em>Andrias Scheuchzeri</em> — po švýcarském přírodovědci Johannu Scheuchzerovi (18. století)</li>
+    <li><strong>Rychle se učí</strong> — řeč, psaní, technologie</li>
+    <li>Zpočátku nevinní, poslušní</li>
+    <li>Postupně civilizovaní lidmi</li>
+    <li>Nakonec nebezpeční — žádají lebensraum</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--red)" data-symbol="✕">
+  <div class="char-name">Vrchní mlok <em>(Chief Salamander)</em></div>
+  <div class="char-role">Antagonista (kniha III) · Diktátor</div>
+  <div class="char-alegory">Alegorie: Adolf Hitler · Führer</div>
+  <ul style="margin:0">
+    <li><strong>Vůdce mloků</strong> v knize III</li>
+    <li>Diktátor, fanatik</li>
+    <li>Požaduje <strong>lebensraum</strong> (životní prostor) — Hitlerův klíčový termín</li>
+    <li>Posílá ultimáta lidstvu</li>
+    <li>Přímá paralela k Hitlerovi</li>
+    <li>Ironicky — <strong>ukázalo se, že je to možná vlastně původně člověk</strong>, který velí mlokům</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mist)" data-symbol="♁">
+  <div class="char-name">Lidstvo</div>
+  <div class="char-role">Kolektivní postava · Oběť i viník</div>
+  <ul style="margin:0">
+    <li><strong>Chamtivé, krátkozraké</strong></li>
+    <li>Vykořisťuje mloky</li>
+    <li>Ignoruje varování</li>
+    <li>Nakonec <strong>oběť vlastní chamtivosti</strong></li>
+    <li>Reprezentováno různými vědci, novináři, politiky</li>
+  </ul>
+</div>
+
+<h3>Vedlejší postavy</h3>
+<div class="card paper">
+  <p style="margin-bottom:0">Román obsahuje <strong>desítky vedlejších postav</strong> — vědci, novináři, politici, filantropové, spisovatelé. Většina je <strong>satiricky zobrazena</strong>. Reprezentují <strong>různé aspekty meziválečné společnosti</strong>: akademiky, média, obchod, diplomacii. Čapek se nebál jmenovat — postavy jsou inspirovány reálnými osobnostmi (často karikaturně).</p>
+</div>
+</section>
+
+<!-- 08 ALEGORIE -->
+<section class="section" id="alegorie">
+<div class="section-header"><span class="section-num">VIII</span><h2>Mloci jako alegorie</h2></div>
+
+<p>Mloci v Čapkově románu nejsou <strong>jedna konkrétní alegorie</strong>, ale <strong>vícevrstevnatá metafora</strong>. Je to genialita díla — <strong>každá generace čtenářů v nich vidí něco jiného</strong>.</p>
+
+<div class="allegory-interpretations">
+  <div class="allegory-interp" style="--allegory-color:var(--red)">
+    <div class="allegory-interp-label">Interpretace I</div>
+    <div class="allegory-interp-title">Dělnická třída</div>
+    <div class="allegory-interp-desc">Vykořisťovaná, pak nebezpečná. Marxistická interpretace.</div>
+  </div>
+  <div class="allegory-interp" style="--allegory-color:var(--rust)">
+    <div class="allegory-interp-label">Interpretace II</div>
+    <div class="allegory-interp-title">Kolonie</div>
+    <div class="allegory-interp-desc">Utlačované národy třetího světa povstávají proti impériům.</div>
+  </div>
+  <div class="allegory-interp" style="--allegory-color:var(--red)">
+    <div class="allegory-interp-label">Interpretace III</div>
+    <div class="allegory-interp-title">Fašistické masy</div>
+    <div class="allegory-interp-desc">Manipulované, pak agresivní. Nacismus, lebensraum.</div>
+  </div>
+  <div class="allegory-interp" style="--allegory-color:var(--deep)">
+    <div class="allegory-interp-label">Interpretace IV</div>
+    <div class="allegory-interp-title">Technologie</div>
+    <div class="allegory-interp-desc">Užitečná, pak destruktivní. Dnes: umělá inteligence, automatizace.</div>
+  </div>
+  <div class="allegory-interp" style="--allegory-color:var(--newt)">
+    <div class="allegory-interp-label">Interpretace V</div>
+    <div class="allegory-interp-title">Levná práce</div>
+    <div class="allegory-interp-desc">Imigrace, globalizace. Dnešní globální ekonomika.</div>
+  </div>
+  <div class="allegory-interp" style="--allegory-color:var(--paper)">
+    <div class="allegory-interp-label">Interpretace VI</div>
+    <div class="allegory-interp-title">Příroda</div>
+    <div class="allegory-interp-desc">Ničená lidmi, pak se mstí. Ekologická interpretace.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red)">„Lebensraum" — přímá reference k nacismu</div>
+  <p style="margin-bottom:0"><strong>Lebensraum</strong> (německy „životní prostor") byl <strong>ústřední termín nacistické ideologie</strong>. Hitler jej užíval k ospravedlnění expanze Německa na Východ. Čapek ho <strong>přímo vkládá do úst vůdce mloků</strong> — v roce 1936! Tři roky před válkou. <strong>Čapek přímo obviňuje nacismus</strong> z Hitlerových vlastních slov.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--newt)">Univerzálnost alegorie</div>
+  <p style="margin-bottom:0">To, že mloci mohou znamenat tolik různých věcí, z díla dělá <strong>nadčasovou satiru</strong>. V roce 1936 to bylo o fašismu. V 60. letech o koloniích. V 80. letech o studené válce. Dnes může být o AI, imigraci, klimatické změně. <strong>Každá epocha najde své „mloky".</strong></p>
+</div>
+</section>
+
+<!-- 09 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">IX</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card">
+  <div class="card-title" style="color:var(--deep)">Přímá řeč · Dialogy</div>
+  <div class="quote-block" style="margin:0">„Tohle jsou mloci," řekl van Toch. „Inteligentní tvorové."<span class="quote-source">Dialog van Toche s Bondym</span></div>
+</div>
+
+<div class="card paper">
+  <div class="card-title" style="color:var(--paper)">Nepřímá řeč · Zprávy</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Vědci oznámili, že mloci mají rozvinutou inteligenci.</p>
+</div>
+
+<div class="newspaper-headline">
+  <div class="newspaper-date">★ PUBLICISTICKÉ TEXTY · FIKTIVNÍ NOVINY ★</div>
+  <div class="newspaper-main">Mloci žádají více práv!</div>
+  <div class="newspaper-sub">Parodie novinářského stylu 30. let</div>
+</div>
+
+<div class="scientific-paper">
+  <div class="scientific-title">Vědecké úvahy</div>
+  Odborné texty o mlocích — latinské názvy, evoluční teorie, antropologické úvahy. Parodie akademického stylu — zdánlivě objektivní, ve skutečnosti absurdní. <span class="scientific-latin">Andrias Scheuchzeri — Homo Salamander?</span>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--deep)"><h4 style="color:var(--deep)">Pásmo vypravěče</h4><p>Klasické vyprávění — hlavně kniha I.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--paper)"><h4 style="color:var(--paper)">Publicistika</h4><p>Noviny, zprávy, reportáže — <strong>hlavně v knize II</strong>.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--mist)"><h4 style="color:var(--mist)">Vědecké texty</h4><p>Studie, úvahy o mlocích.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--newt)"><h4 style="color:var(--newt)">Dialog</h4><p>Rozhovory postav.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--red)"><h4 style="color:var(--red)">Dokumenty</h4><p>Smlouvy, protokoly, projevy.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--warn)"><h4 style="color:var(--warn)">Satira</h4><p>Ironické komentáře — prostupuje vším.</p></div>
+</div>
+</section>
+
+<!-- 10 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">X</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Publicistický styl</h3>
+<div class="card paper">
+  <ul style="margin:0">
+    <li><strong>Novinářské texty</strong></li>
+    <li>Titulky, zprávy</li>
+    <li>Různé žurnalistické žánry</li>
+    <li>Parodie meziválečného tisku — <strong>Čapek sám novinář</strong> (Lidové noviny)</li>
+  </ul>
+</div>
+
+<h3>Vědecký styl</h3>
+<div class="card sci">
+  <ul style="margin:0">
+    <li><strong>Odborná terminologie</strong></li>
+    <li><strong>Latinské názvy</strong> — <em>Andrias Scheuchzeri</em></li>
+    <li>Vědecké úvahy</li>
+    <li>Parodie akademického diskurzu</li>
+  </ul>
+</div>
+
+<h3>Hovorový jazyk</h3>
+<ul>
+  <li>V dialozích postav</li>
+  <li><strong>Autentičnost</strong> různých společenských vrstev</li>
+  <li>Kapitán van Toch mluví jinak než akademik</li>
+</ul>
+
+<h3>Ironie a satira</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Celé dílo prosyceno ironií</strong></li>
+    <li>Zdánlivě vážné, ve skutečnosti satirické</li>
+    <li>Žádný styl není jen sám sebou — všechno je parodie</li>
+  </ul>
+</div>
+
+<h3>Nadsázka</h3>
+<ul>
+  <li>Přehánění pro satirický efekt</li>
+  <li>Mloci dobývají svět — absurdní premisa, ale <strong>ukazuje pravdu</strong> o lidské povaze</li>
+</ul>
+
+<h3>Newspeak — manipulace jazyka</h3>
+<div class="card dark">
+  <div class="card-title" style="color:var(--ink)">Orwell před Orwellem</div>
+  <ul style="margin:0">
+    <li>Manipulace s jazykem</li>
+    <li><strong>Eufemismy, propaganda</strong></li>
+    <li>„Zatápění" místo „genocida"</li>
+    <li>„Potřeba prostoru" místo „invaze"</li>
+    <li>Čapek předvídá Orwellův <em>newspeak</em> (<em>1984</em> — 1949) už v 1936</li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Různé styly</strong> vytvářejí mozaiku</li>
+    <li><strong>Publicistika</strong> dodává zdání autenticity</li>
+    <li><strong>Ironie</strong> odhaluje absurditu</li>
+    <li><strong>Satira</strong> kritizuje společnost</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">XI</span><h2>Tropy, figury a satira</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Alegorie (hlavní!)</div>
+    <div class="trope-example">Celé dílo</div>
+    <div class="trope-note">Mloci = různé interpretace: dělnická třída, kolonie, fašistické masy, technologie.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Civilizace = zkáza</div>
+    <div class="trope-note"><strong>Lidé civilizují mloky a tím vytváří svou zkázu.</strong> Ústřední ironie díla.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Satira</div>
+    <div class="trope-example">Kapitalismus · fašismus</div>
+    <div class="trope-note">Zesměšnění kapitalismu, fašismu, kolonialismu. Parodie vědy, médií, politiky.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Zatápění = apokalypsa</div>
+    <div class="trope-note">Mloci = nebezpečí, které lidstvo samo vytváří. Zatápění = apokalypsa, ekologická katastrofa.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Paradox</div>
+    <div class="trope-example">Pokrok = zkáza</div>
+    <div class="trope-note">Civilizace vede k barbarství. Pokrok vede ke zkáze.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Groteska</div>
+    <div class="trope-example">Realita + absurdno</div>
+    <div class="trope-note">Přehánění reality do absurdna — ale vždy s politickým smyslem.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Parodie</div>
+    <div class="trope-example">Žurnalistika · věda</div>
+    <div class="trope-note">Parodie žurnalistiky, vědy, politiky — všechno, co společnost bere vážně.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Civilizace vs. barbarství</div>
+    <div class="trope-note">Lidé vs. mloci. Kapitál vs. etika. Demokracie vs. totalita.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Alegorie</strong> umožňuje kritiku <strong>bez přímého útoku</strong> (Čapek by jinak riskoval cenzurní problémy s Německem). <strong>Satira</strong> zesměšňuje nedostatky společnosti. <strong>Ironie</strong> odhaluje absurditu. Čapek využívá <strong>jemný, ale ostrý intelektuální humor</strong> — netančí na stole, ale píše mozkem.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Karel Čapek (1890–1938)</div>
+  <p>Český spisovatel, dramatik, novinář, filozof, fotograf. Narozen v <strong>Malých Svatoňovicích</strong>, vyrůstal v Úpici. Studoval <strong>filozofii v Praze, Berlíně a Paříži</strong>. Doktor filozofie. Společně se svým bratrem <strong>Josefem Čapkem</strong> (malířem, spisovatelem) tvořili nejznámější sourozeneckou literární dvojici v české kultuře — Josef Čapek vlastně <strong>vymyslel slovo „robot"</strong> (poradil ho Karlovi pro R.U.R.). Čapek byl <strong>blízký přítel T. G. Masaryka</strong> — zaznamenal s ním rozhovory v trojsvazku <em>Hovory s TGM</em>. Pracoval jako <strong>šéfredaktor Lidových novin</strong>. Byl <strong>demokrat, humanista, liberál</strong> — symbol první republiky. V 30. letech se stal <strong>jedním z nejhlasitějších kritiků nacismu</strong>. <strong>Dvakrát nominován na Nobelovu cenu</strong>, nikdy ji ale nedostal (údajně proto, aby Švédská akademie neuráželi Hitlera). Po <strong>Mnichovské dohodě (září 1938)</strong> byl fyzicky i psychicky zlomen — <strong>zemřel 25. prosince 1938</strong> na zápal plic, <strong>tři měsíce před nacistickou okupací</strong>. Gestapo si ho přišlo zatknout, ale byl už mrtvý. Jeho bratr Josef zemřel v koncentračním táboře Bergen-Belsen (1945).</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Čapkovo vrcholné dílo</strong> (1936)</li>
+  <li><strong>Poslední velký román</strong></li>
+  <li>Reakce na vzestup fašismu</li>
+  <li>Vrchol satirické prózy české meziválečné literatury</li>
+</ul>
+
+<h3>Další Čapkova díla</h3>
+
+<h4>Sci-fi a filozofické romány</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>R.U.R.</strong></td><td>1920</td><td>Drama — <strong>Čapkové vymysleli slovo „robot"</strong></td></tr>
+  <tr><td><strong>Továrna na absolutno</strong></td><td>1922</td><td>Sci-fi satira, postavu Bondyho dále rozvíjí ve Válce s mloky</td></tr>
+  <tr><td><strong>Krakatit</strong></td><td>1924</td><td>Sci-fi o atomové energii — pozoruhodně vizionářské</td></tr>
+  <tr><td><strong>Hordubal · Povětroň · Obyčejný život</strong></td><td>1933–34</td><td>Noetická trilogie — tři pohledy na pravdu</td></tr>
+  <tr><td><strong>Válka s mloky</strong></td><td>1936</td><td>Vrcholné satirické sci-fi</td></tr>
+</table>
+
+<h4>Dramata (pozdní)</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Bílá nemoc</strong></td><td>1937</td><td>Varování před fašismem — premiéra rok před Mnichovem</td></tr>
+  <tr><td><strong>Matka</strong></td><td>1938</td><td>Protiválečné — posledné drama</td></tr>
+</table>
+
+<h4>Detektivky, cestopisy, eseje</h4>
+<ul>
+  <li><em>Povídky z jedné a druhé kapsy</em> — detektivní povídky</li>
+  <li><em>Anglické listy, Italské listy, Cesta na sever, Výlet do Španěl, Obrázky z Holandska</em> — cestopisy</li>
+  <li><em>Hovory s TGM</em> — rozhovory s prezidentem</li>
+  <li><em>Dášeňka čili život štěněte</em> — pro děti</li>
+</ul>
+
+<h3>Čapkův styl</h3>
+<ul>
+  <li><strong>Humanismus</strong></li>
+  <li><strong>Demokratické hodnoty</strong></li>
+  <li>Varování před totalitou</li>
+  <li>Sci-fi s <strong>filozofickým přesahem</strong></li>
+  <li>Satira</li>
+  <li>Obhajoba <strong>„malého člověka"</strong></li>
+  <li>Esejistická lehkost</li>
+  <li>Noetická skepse — <em>„každý má svou pravdu"</em></li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>1936</strong></li>
+    <li><strong>Vzestup nacismu v Německu</strong> (Hitler u moci od 1933)</li>
+    <li>Fašismus v Itálii (Mussolini od 1922)</li>
+    <li>Španělská občanská válka začíná (1936)</li>
+    <li><strong>Před Mnichovem</strong> (1938)</li>
+    <li>Předválečná atmosféra</li>
+    <li>Umělecký sloh: <strong>DEMOKRATICKÝ PROUD / SOCIÁLNÍ PRÓZA</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy demokratického proudu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--deep)"><h4 style="color:var(--deep)">Obhajoba demokracie</h4><p>První republika jako ideál.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--red)"><h4 style="color:var(--red)">Kritika totalitarismu</h4><p>Nacismus, fašismus, bolševismus.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--newt)"><h4 style="color:var(--newt)">Humanismus</h4><p>Hodnota jednotlivce, důstojnost.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--paper)"><h4 style="color:var(--paper)">Sociální témata</h4><p>Kapitalismus, chudoba, práce.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--warn)"><h4 style="color:var(--warn)">Varování</h4><p>Před nebezpečími doby.</p></div>
+</div>
+
+<h3>Meziválečná česká literatura</h3>
+<table class="compare-table">
+  <tr><th>Proud</th><th>Autoři</th></tr>
+  <tr><td><strong>Demokratický</strong></td><td>Karel Čapek · Karel Poláček · Eduard Bass (<em>Cirkus Humberto</em>)</td></tr>
+  <tr><td><strong>Katolický</strong></td><td>Jaroslav Durych · Jan Čep</td></tr>
+  <tr><td><strong>Levicový (socialistický)</strong></td><td>Ivan Olbracht · Marie Majerová · Jiří Wolker · Vladislav Vančura</td></tr>
+  <tr><td><strong>Experimentální (Devětsil)</strong></td><td>Vítězslav Nezval · Jaroslav Seifert · Konstantin Biebl</td></tr>
+</table>
+
+<h3>Světový kontext — antiutopie 20. století</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Rok</th></tr>
+  <tr><td><strong>Jevgenij Zamjatin</strong></td><td><em>My</em></td><td>1924</td></tr>
+  <tr><td><strong>Aldous Huxley</strong></td><td><em>Konec civilizace</em></td><td>1932</td></tr>
+  <tr><td><strong>Karel Čapek</strong></td><td><em>Válka s mloky</em></td><td>1936</td></tr>
+  <tr><td><strong>George Orwell</strong></td><td><em>Farma zvířat</em></td><td>1945</td></tr>
+  <tr><td><strong>George Orwell</strong></td><td><em>1984</em></td><td>1949</td></tr>
+  <tr><td><strong>Ray Bradbury</strong></td><td><em>451 stupňů Fahrenheita</em></td><td>1953</td></tr>
+  <tr><td><strong>Margaret Atwood</strong></td><td><em>Příběh služebnice</em></td><td>1985</td></tr>
+</table>
+
+<h3>Témata 30. let</h3>
+<ul>
+  <li><strong>Strach z totalitarismu</strong></li>
+  <li>Fašismus vs. demokracie</li>
+  <li>Válečná hrozba</li>
+  <li>Technologie a etika</li>
+  <li>Kapitalismus a jeho krize (Velká hospodářská krize 1929)</li>
+</ul>
+
+<details>
+  <summary>Jak Čapek navazuje na Swiftova Gullivera</summary>
+  <p>Čapkova satira má kořeny v tradici <strong>Jonathana Swifta</strong> (<em>Gulliverovy cesty</em>, 1726). Oba autoři používají <strong>fantastickou premisu pro společenskou kritiku</strong>. Gulliver u Houyhnhnmů je paralela Bondyho u mloků — civilizace v zrcadle. Čapek několikrát zmínil, že Swift je jedním z jeho vzorů.</p>
+</details>
+</section>
+
+<div class="wave-divider">≋ ≋ ≋</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--newt)">
+  <span class="scene-label" style="background:rgba(90,138,72,.1);border-color:var(--newt);color:var(--newt)">★ 01 · Kniha I · OBJEV MLOKŮ ★</span>
+  <div class="scene-title">Kapitán van Toch objevuje mloky</div>
+  <div class="scene-context">Kapitán van Toch našel na ostrově podivné tvory. Sbírali perly. Byli inteligentní. Dokázali používat nože. <em>„Tohle není jen zvíře,"</em> pomyslel si. <em>„Tohle je něco víc."</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Začátek příběhu</strong></li>
+      <li>Nevinný objev s katastrofálními důsledky</li>
+      <li>Motiv <em>„Pandořiny skříňky"</em></li>
+      <li>Van Toch zachází s mloky s úctou — ale jiní ne</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--paper)">
+  <span class="scene-label" style="background:rgba(184,144,58,.1);border-color:var(--paper);color:var(--paper)">★ 02 · Kniha I · OBCHODNÍ PŘÍLEŽITOST ★</span>
+  <div class="scene-title">Bondy vidí obchodní příležitost</div>
+  <div class="scene-text">„To je skvělé!" zvolal Bondy. „Mloci můžou pracovat pod vodou! Stavět přehrady, těžit! Budou levní! Tohle je budoucnost!"</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kapitalismus vidí jen zisk</strong></li>
+      <li>Začátek vykořisťování</li>
+      <li>Nevidí nebezpečí</li>
+      <li>Kritika krátkozrakosti byznysu</li>
+      <li>Kontrast s van Tochem (ochrana vs. využití)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Kniha II · Vzestup mloků</span>
+  <div class="scene-title">Civilizace mloků</div>
+  <div class="scene-context">Mloci se rychle učili. Mluvili. Četli. Stavěli. Vynalézali. <strong>Lidé je učili.</strong> A mloci přijímali vše, co jim lidé dali. <strong>Včetně zbraní.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Rychlá evoluce</li>
+      <li><strong>Lidé dávají mlocům nástroje vlastní zkázy</strong></li>
+      <li>Ironie — civilizace vede k válce</li>
+      <li>Technologie bez morálky</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red)">
+  <span class="scene-label" style="background:rgba(168,40,40,.08);border-color:var(--red);color:var(--red)">★ 04 · Kniha II · OBCHOD S MLOKY ★</span>
+  <div class="scene-title">Mloci jako zboží</div>
+  <div class="scene-context">Mloci se stali zbožím. <strong>Kupovali se a prodávali.</strong> Pracovali za minimum. Neměli práva. Byli pouze nástroj. Levná pracovní síla.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kritika kapitalismu</strong></li>
+      <li>Otročnictví — přímá paralela k černošskému otroctví</li>
+      <li>Vykořisťování</li>
+      <li>Mloci = dělnická třída / kolonie</li>
+    </ul>
+  </div>
+</div>
+
+<div class="newspaper-headline">
+  <div class="newspaper-date">★ KNIHA II · PUBLICISTIKA ★</div>
+  <div class="newspaper-main">Mloci jsou nebezpeční!<br><span style="color:var(--paper)">Mloci jsou užiteční!</span></div>
+  <div class="newspaper-sub">Noviny si protiřečí. Politici lžou. Nikdo nemá pravdu. <strong>Všichni lžou.</strong></div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Kniha II · Propaganda</span>
+  <div class="scene-title">Mediální obraz mloků</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kritika médií</strong></li>
+      <li>Propaganda</li>
+      <li>Manipulace veřejného mínění</li>
+      <li>Každý má svou agendu</li>
+      <li>Dnes: fake news, dezinformace</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scientific-paper">
+  <div class="scientific-title">Vědecké úvahy o mlocích</div>
+  Vědci debatovali: <em>Mají mloci duši? Jsou to lidé? Nebo zvířata? Mohou mít práva?</em> Filozofové psali dlouhé úvahy. <strong>Ale nikdo se jich nezeptal, co si myslí oni.</strong>
+  <div class="scientific-latin" style="margin-top:12px">— Satira akademické debaty —</div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red)">
+  <span class="scene-label" style="background:rgba(168,40,40,.1);border-color:var(--red);color:var(--red)">★ 06 · Kniha III · LEBENSRAUM ★</span>
+  <div class="scene-title">Mloci žádají lebensraum</div>
+  <div class="scene-text">Mloci poslali ultimátum:
+„Potřebujeme více místa. Oceány nestačí. Požadujeme pobřeží. LEBENSRAUM!"</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>„Lebensraum"</strong> = <strong>nacistický termín</strong> (životní prostor)</li>
+      <li><strong>Přímá reference k Hitlerovi</strong></li>
+      <li>Obětní beránci se stávají hrozbou</li>
+      <li>Varování před stvořením monstra</li>
+      <li><strong>Napsáno 3 roky před napadením Polska</strong> (1. září 1939)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red)">
+  <span class="scene-label" style="background:rgba(168,40,40,.1);border-color:var(--red);color:var(--red)">★ 07 · Kniha III · ZAČÁTEK VÁLKY ★</span>
+  <div class="scene-title">Válka začíná</div>
+  <div class="scene-context">Mloci začali útočit. <strong>Torpéda. Výbuchy. Pobřežní města zatápěna.</strong> Lidstvo bylo v šoku. <em>„Jak to mohlo dojít tak daleko?"</em> ptali se. <strong>Ale bylo příliš pozdě.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Apokalypsa</strong></li>
+      <li>„Jak to mohlo dojít?" — otázka po katastrofě</li>
+      <li>Ignorovali varování</li>
+      <li>Chamtivost vedla ke zkáze</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--deep)">
+  <span class="scene-label" style="background:rgba(42,106,122,.1);border-color:var(--deep);color:var(--deep)">★ 08 · Kniha III · ZATÁPĚNÍ SVĚTA ★</span>
+  <div class="scene-title">Zatápění pevnin</div>
+  <div class="scene-context">Voda stoupala. Města mizela pod hladinou. <strong>Holandsko. Benátky. Londýn. New York.</strong> Mloci systematicky ničili pevniny. Potřebovali prostor.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Ekologická katastrofa</strong></li>
+      <li>Vizionářské — <strong>dnes: globální oteplování, zvyšování hladin</strong></li>
+      <li>Apokalyptický obraz</li>
+      <li>Ironie — pokrok vede k zániku</li>
+      <li>Čapek předvídá klimatickou katastrofu — v roce 1936!</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Kniha III · Satira politiky</span>
+  <div class="scene-title">Mezinárodní konference</div>
+  <div class="scene-context">Mezinárodní konference debatovala: <em>„Máme mlokům povolit zatopení Finska?"</em> <em>„Finsko je malé."</em> <em>„Ale principiálně…"</em> Debata trvala měsíce. <strong>Finsko mezitím zmizelo.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Satira mezinárodní diplomacie</strong></li>
+      <li>Nerozhodnost</li>
+      <li>Politici debatují, zatímco svět hoří</li>
+      <li>Kritika <strong>Společnosti národů</strong> (Liga národů)</li>
+      <li>Paralela s appeasementem Hitlera — <strong>Mnichovská dohoda (1938)</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--warn)">
+  <span class="scene-label" style="background:rgba(212,138,26,.1);border-color:var(--warn);color:var(--warn)">★ 10 · Kniha III · VĚDA BEZ ETIKY ★</span>
+  <div class="scene-title">Vědci vynalézají zbraně pro mloky</div>
+  <div class="scene-context">Vědci vynalézali nové zbraně pro mloky. <em>„Je to jen věda,"</em> řekli. <em>„Morálka není náš problém."</em> A pokračovali ve vynalézání.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kritika vědy bez etiky</strong></li>
+      <li>Vědci jako komplicové</li>
+      <li>Technologie bez morálky</li>
+      <li><strong>Předzvěst atomové bomby</strong> (kterou Čapek předvídal už v <em>Krakatitu</em>, 1924)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--ink);background:rgba(42,56,72,.2)">
+  <span class="scene-label" style="background:rgba(42,56,72,.5);border-color:var(--ink);color:var(--mist)">★ 11 · ZÁVĚR · AUTOROVA METAFIKCE ★</span>
+  <div class="scene-title">Autorův epilog — otevřený konec</div>
+  <div class="scene-context">„A co bude dál?" ptal se autor sám sebe. „Nevím. Možná lidé najdou způsob. Možná ne. Možná se mloci rozštěpí a budou bojovat mezi sebou. Nebo možná…"<br><strong>Konec není jasný.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Otevřený konec</strong></li>
+      <li>Nejistota budoucnosti</li>
+      <li><strong>Autorský komentář</strong></li>
+      <li>Metafikce (autor v díle)</li>
+      <li>Naděje? Nebo rezignace? Čtenář musí rozhodnout sám</li>
+      <li>Toto je formálně inovativní — <strong>pro rok 1936 velmi moderní</strong></li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="wave-divider">≋ ≋ ≋</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--deep)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Lidstvo chamtivostí a krátkozrakostí vytváří vlastní zkázu.</strong> Vykořisťování vede ke vzpouře. Technologie bez etiky je nebezpečná. Fašismus je hrozba. Kapitalismus vidí jen zisk, ne důsledky. <strong>Musíme se poučit, než bude pozdě.</strong></p>
+</div>
+
+<h3>Čapkův prorocký hlas</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li>Napsáno <strong>1936</strong> — <strong>3 roky před 2. sv. válkou</strong></li>
+    <li>Varování před nacismem (lebensraum, Führer)</li>
+    <li><strong>Mnichovská zrada 1938</strong> (2 roky po knize) — potvrdila Čapkovy obavy</li>
+    <li>Čapek <strong>nepřežil válku</strong> (zemřel 25. prosince 1938)</li>
+    <li>Dílo zakázáno nacisty — <strong>Čapek byl na černé listině gestapa</strong></li>
+    <li>Bratr Josef zavražděn v koncentračním táboře</li>
+  </ul>
+</div>
+
+<h3>Hlavní témata díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--paper)">
+    <h4 style="color:var(--paper)">Kapitalismus</h4>
+    <p>Zisk nade vše, i za cenu zkázy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Fašismus</h4>
+    <p>Lebensraum, vůdce, masy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--rust)">
+    <h4 style="color:var(--rust)">Kolonialismus</h4>
+    <p>Vykořisťování „nižších" ras.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--newt)">
+    <h4 style="color:var(--newt)">Ekologie</h4>
+    <p>Ničení prostředí.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--ink)">
+    <h4 style="color:var(--ink)">Média</h4>
+    <p>Manipulace, propaganda.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mist)">
+    <h4 style="color:var(--mist)">Věda</h4>
+    <p>Bez etiky nebezpečná.</p>
+  </div>
+</div>
+
+<h3>Interpretace mloků dnes</h3>
+<details>
+  <summary>Od 30. let po dnešek</summary>
+  <p>Mloci v průběhu desetiletí <strong>dostávali různé interpretace</strong>. Ve 30. letech to byla jednoznačně <strong>nacistická agrese</strong>. V 50.–60. letech byla populární <strong>marxistická interpretace</strong> (dělnictvo, kolonie). V 80.–90. letech se zdůrazňoval <strong>ekologický rozměr</strong> (zatápění pevnin = klimatická krize). Dnes se mluví o <strong>umělé inteligenci</strong>, <strong>globální levné pracovní síle</strong>, <strong>migračních vlnách</strong>. Genialita Čapka je v tom, že <strong>každá doba v mlocích vidí své úzkosti</strong>.</p>
+</details>
+
+<h3>Ekologické varování</h3>
+<details>
+  <summary>Čapek předvídá klimatickou krizi</summary>
+  <p><strong>Zatápění pevnin</strong> — v dnešní době čteme jako metaforu <strong>globálního oteplování a stoupání mořské hladiny</strong>. Čapek v roce 1936 popisuje zatopení Holandska, Benátek, Londýna, New Yorku — <strong>přesně ty oblasti, které jsou dnes nejvíce ohroženy klimatickou změnou</strong>. Čapek nemyslel na klima, ale <strong>jeho metafora je pozoruhodně aplikovatelná</strong> na dnešní ekologickou krizi.</p>
+</details>
+
+<h3>Žánrová inovace</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Mozaika stylů</strong> (próza, publicistika, věda)</li>
+    <li>Fiktivní dokumenty</li>
+    <li><strong>Metafikce</strong> (autor v díle)</li>
+    <li>Moderní sci-fi forma</li>
+    <li>Postmoderní prvky — <strong>dávno před postmodernou</strong>!</li>
+  </ul>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li>Varování před <strong>populismem</strong> — stále aktuální</li>
+    <li><strong>Fake news</strong> (manipulace médii)</li>
+    <li>Levná práce (globalizace)</li>
+    <li><strong>AI a robotika</strong> (nahradí lidi?)</li>
+    <li><strong>Ekologická krize</strong></li>
+    <li>Vzestup extremismu</li>
+    <li>Kapitalismus bez morálky</li>
+  </ul>
+</div>
+
+<h3>Čapkova smrt</h3>
+<details>
+  <summary>25. prosince 1938 · Tři měsíce před okupací</summary>
+  <p>Po <strong>Mnichovské dohodě (září 1938)</strong> — kdy Československo <strong>ztratilo Sudety bez boje</strong> — byl Čapek <strong>fyzicky i psychicky zlomen</strong>. Útoky z pravice i levice, obvinění z „odpovědnosti za katastrofu", cítil se zrazen. <strong>Nachladil se</strong> při zahradnických pracích a onemocněl zápalem plic. <strong>Zemřel na Boží hod vánoční, 25. prosince 1938.</strong> Pohřeb byl vlastenecký manifest — první republika truchlila.</p>
+  <p>V <strong>březnu 1939</strong> gestapo přišlo Čapka zatknout — byl už <strong>tři měsíce mrtvý</strong>. Obvinění bylo absurdní — mrtvého muže měli zatknout jako „státního nepřítele Třetí říše". Jeho manželka <strong>Olga Scheinpflugová</strong> musela prokazovat, že je vdova.</p>
+  <p>Čapkův bratr <strong>Josef zahynul</strong> v koncentračním táboře <strong>Bergen-Belsen v dubnu 1945</strong> — několik dní před osvobozením.</p>
+</details>
+
+<h3>Čapkův odkaz</h3>
+<details>
+  <summary>Slovo „robot" — nejznámější český přínos světu</summary>
+  <p>Ve hře <em>R.U.R.</em> (1920) Karel Čapek představil světu slovo <strong>„robot"</strong>. Podle vyprávění mu ho poradil <strong>bratr Josef</strong> — Karel původně chtěl použít slovo „labor" (z latiny). Josef navrhl „robot" (z českého „robota" = nucená práce). Slovo se stalo <strong>nejznámějším českým příspěvkem do světových jazyků</strong> — dnes ho zná každý jazyk na světě.</p>
+</details>
+
+<h3>Kulturní vliv</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li>Nejslavnější <strong>české sci-fi</strong></li>
+    <li>Přeloženo do <strong>desítek jazyků</strong></li>
+    <li>Inspirace pro další autory (Stanisław Lem, Ray Bradbury)</li>
+    <li>Symbol <strong>varování před totalitou</strong></li>
+    <li>Ikona české literatury</li>
+    <li><strong>Povinná četba</strong> na středních školách</li>
+    <li>Součást <strong>národní identity</strong></li>
+  </ul>
+</div>
+
+<div class="card warn" style="margin-top:40px;border:2px solid var(--red);background:rgba(168,40,40,.05)">
+  <div class="card-title" style="color:var(--red);text-align:center;font-size:12px">Prorocké varování</div>
+  <p style="margin:0;text-align:center;font-family:'Playfair Display',serif;font-size:20px;letter-spacing:1px;color:var(--heading);font-weight:700;font-style:italic">„A co bude dál?" ptal se autor sám sebe.<br>„Nevím."</p>
+  <p style="margin:12px 0 0;text-align:center;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">Karel Čapek · Válka s mloky · 1936</p>
+</div>
+</section>
+
+<div class="wave-divider" style="margin-top:50px">≋ ≋ ≋</div>
+
+</div>
+</body>
+</html>

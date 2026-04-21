@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Petr Šabach: Občanský průkaz</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a1814;
+  --bg-card:#221f1a;
+  --bg-card-alt:#2a2620;
+  --border:#363230;
+  --text:#b0a896;
+  --text-muted:#6a6258;
+  --heading:#d8cfb8;
+  --panelak:#6a7078;
+  --red-pioneer:#9a3828;
+  --brown-hospoda:#6a4830;
+  --beige-obcanka:#a89070;
+  --yellow-retro:#c4a048;
+  --green-vb:#4a5838;
+  --gold-rock:#c4a848;
+  --sepia:#8a7858;
+  --tram:#8a3a28;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Crimson Pro',serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;background-image:radial-gradient(ellipse at top,rgba(106,112,120,.06) 0%,transparent 60%),radial-gradient(ellipse at bottom,rgba(168,144,112,.04) 0%,transparent 60%);background-attachment:fixed}
+
+/* HERO — občanský průkaz stylizace */
+.hero{
+  background:linear-gradient(180deg,rgba(26,24,20,.3) 0%,rgba(26,24,20,.95) 100%),linear-gradient(135deg,#201c16 0%,#2a241c 30%,#1c1a14 65%,#14120e 100%);
+  border-bottom:3px solid var(--beige-obcanka);
+  padding:100px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 50% 80%,rgba(196,160,72,.08) 0%,transparent 50%),radial-gradient(ellipse at 20% 20%,rgba(154,56,40,.05) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Razítkový pásek dole */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:repeating-linear-gradient(90deg,
+    var(--beige-obcanka) 0,var(--beige-obcanka) 20px,
+    var(--red-pioneer) 20px,var(--red-pioneer) 23px,
+    var(--beige-obcanka) 23px,var(--beige-obcanka) 43px,
+    transparent 43px,transparent 48px);
+  opacity:.5;
+}
+.hero-classified{
+  display:inline-block;
+  background:var(--red-pioneer);
+  color:var(--heading);
+  padding:5px 18px;
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  letter-spacing:5px;
+  font-weight:600;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  transform:rotate(-1deg);
+  position:relative;
+  border:1px solid var(--red-pioneer);
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--beige-obcanka);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(42px,7.5vw,76px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1;
+  position:relative;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  text-shadow:0 2px 30px rgba(168,144,112,.2);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--sepia);
+  font-size:.28em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:20px;
+  opacity:.8;
+}
+.hero h1 .sub-title{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.32em;
+  font-style:italic;
+  color:var(--gold-rock);
+  letter-spacing:3px;
+  margin-top:20px;
+  font-weight:500;
+  text-transform:none;
+}
+.hero .author{
+  font-family:'Oswald',sans-serif;
+  color:var(--sepia);
+  margin-top:32px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:4px;
+  font-weight:400;
+  text-transform:uppercase;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Crimson Pro',serif;
+  color:var(--heading);
+  font-size:17px;
+  margin:40px auto 0;
+  max-width:620px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.7;
+  opacity:.9;
+  padding:22px 30px;
+  border-top:1px solid var(--beige-obcanka);
+  border-bottom:1px solid var(--beige-obcanka);
+}
+.hero-quote em{
+  display:block;
+  font-size:.7em;
+  color:var(--text-muted);
+  margin-top:14px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — úřední dokument */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--beige-obcanka);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'OBČANSKÝ PRŮKAZ · ČSSR';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--beige-obcanka);
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:600;
+}
+.toc::after{
+  content:'PRAHA · 197x';
+  position:absolute;
+  top:-10px;right:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--text-muted);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+}
+.toc h2{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--sepia);
+  margin-bottom:20px;text-align:center;
+  font-weight:500;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:'§ ' counter(toc,decimal-leading-zero) ' ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--beige-obcanka);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--red-pioneer)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--beige-obcanka),var(--gold-rock));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Oswald',sans-serif;
+  font-size:38px;color:var(--beige-obcanka);
+  font-weight:700;
+  min-width:70px;opacity:.6;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'Oswald',sans-serif;
+  font-size:26px;color:var(--heading);
+  font-weight:500;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+h3{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:500;
+  color:var(--heading);
+  margin:32px 0 14px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+h4{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--beige-obcanka);background:rgba(168,144,112,.05)}
+.card.key{border-left:3px solid var(--gold-rock);background:rgba(196,168,72,.04)}
+.card.warn{border-left:3px solid var(--red-pioneer);background:rgba(154,56,40,.06)}
+.card.hospoda{border-left:3px solid var(--brown-hospoda);background:rgba(106,72,48,.06)}
+.card.panelak{border-left:3px solid var(--panelak);background:rgba(106,112,120,.05)}
+.card.vb{border-left:3px solid var(--green-vb);background:rgba(74,88,56,.05)}
+
+.card-title{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:600;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--beige-obcanka)}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--gold-rock);font-style:italic}
+
+/* Panelový dělič */
+.panel-divider{
+  text-align:center;
+  margin:52px 0;
+  color:var(--panelak);
+  opacity:.5;
+  font-family:'Oswald',sans-serif;
+  font-size:16px;
+  letter-spacing:10px;
+}
+.panel-divider::before,.panel-divider::after{
+  content:'';
+  display:inline-block;
+  width:90px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--panelak),transparent);
+  vertical-align:middle;
+  margin:0 14px;
+}
+/* Rock'n'roll dělič */
+.rock-divider{
+  text-align:center;
+  margin:52px 0;
+  color:var(--gold-rock);
+  opacity:.55;
+  font-family:'Oswald',sans-serif;
+  font-size:18px;
+  letter-spacing:10px;
+}
+.rock-divider::before,.rock-divider::after{
+  content:'';
+  display:inline-block;
+  width:90px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-rock),transparent);
+  vertical-align:middle;
+  margin:0 14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* OBČANKA — speciální blok */
+.obcanka-box{
+  background:linear-gradient(180deg,rgba(168,144,112,.1) 0%,rgba(168,144,112,.03) 100%);
+  border:2px solid var(--beige-obcanka);
+  padding:28px 32px;
+  margin:28px 0;
+  position:relative;
+  font-family:'Courier Prime',monospace;
+  color:var(--heading);
+  font-size:15px;
+  line-height:1.8;
+}
+.obcanka-box::before{
+  content:'◆ OBČANSKÝ PRŮKAZ ◆';
+  position:absolute;
+  top:-12px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 18px;
+  color:var(--beige-obcanka);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:600;
+  text-transform:uppercase;
+}
+.obcanka-row{
+  display:flex;
+  justify-content:space-between;
+  padding:4px 0;
+  border-bottom:1px dashed rgba(168,144,112,.3);
+}
+.obcanka-row:last-child{border-bottom:none}
+.obcanka-label{
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  color:var(--sepia);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;
+}
+.obcanka-value{
+  color:var(--heading);
+  font-weight:400;
+}
+
+/* VB BOX — autorita */
+.vb-box{
+  background:linear-gradient(180deg,rgba(74,88,56,.08) 0%,rgba(154,56,40,.04) 100%);
+  border:2px solid var(--green-vb);
+  padding:26px 30px;
+  margin:26px 0;
+  position:relative;
+  text-align:center;
+}
+.vb-box::before{
+  content:'★ VEŘEJNÁ BEZPEČNOST ★';
+  position:absolute;
+  top:-12px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 18px;
+  color:var(--green-vb);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:600;
+  text-transform:uppercase;
+}
+.vb-main{
+  font-family:'Oswald',sans-serif;
+  font-size:22px;
+  color:var(--green-vb);
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.vb-text{
+  font-family:'Special Elite',monospace;
+  font-size:14px;
+  color:var(--heading);
+  letter-spacing:.5px;
+  line-height:1.7;
+}
+.vb-source{
+  display:block;
+  margin-top:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--beige-obcanka));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+}
+.character .char-name{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+  text-transform:none;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--beige-obcanka));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--beige-obcanka);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Crimson Pro',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--beige-obcanka);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* ROCK BOX — západní hudba */
+.rock-box{
+  background:linear-gradient(180deg,rgba(196,168,72,.06) 0%,rgba(196,168,72,.02) 100%);
+  border:1px solid var(--gold-rock);
+  border-left:4px solid var(--gold-rock);
+  padding:24px 30px;
+  margin:24px 0;
+  position:relative;
+  font-family:'Courier Prime',monospace;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;
+  line-height:1.75;
+}
+.rock-box::before{
+  content:'♫ ZAKÁZANÁ HUDBA ♪';
+  position:absolute;
+  top:-11px;left:20px;
+  background:var(--bg);
+  padding:0 14px;
+  color:var(--gold-rock);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:3px;
+  font-weight:700;
+  text-transform:uppercase;
+  font-style:normal;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--beige-obcanka),var(--gold-rock),var(--beige-obcanka));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--beige-obcanka);
+  background:rgba(168,144,112,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(168,144,112,.3);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--beige-obcanka);
+  background:rgba(168,144,112,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--sepia)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(196,168,72,.04);
+  border-left:2px solid var(--gold-rock);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--gold-rock)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--beige-obcanka);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--beige-obcanka);
+  font-weight:600;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--beige-obcanka),transparent);
+  opacity:.7;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--beige-obcanka);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Oswald',sans-serif;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* DOBOVÉ REÁLIE */
+.realia-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin:20px 0;
+}
+.realia-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:2px solid var(--realia-color,var(--beige-obcanka));
+  padding:14px 12px;
+  text-align:center;
+}
+.realia-icon{
+  font-size:22px;
+  color:var(--realia-color,var(--beige-obcanka));
+  margin-bottom:6px;
+  opacity:.75;
+}
+.realia-name{
+  font-family:'Oswald',sans-serif;
+  font-size:12px;
+  color:var(--heading);
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.realia-note{
+  font-size:11.5px;
+  color:var(--text-muted);
+  font-style:italic;
+  line-height:1.4;
+}
+
+/* SYMBOLY */
+.symbols-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;margin:20px 0;
+}
+.symbol-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--sym-color,var(--beige-obcanka));
+  padding:18px;
+  text-align:center;
+}
+.symbol-icon{
+  font-size:28px;
+  color:var(--sym-color,var(--beige-obcanka));
+  margin-bottom:8px;
+  opacity:.75;
+}
+.symbol-name{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--heading);
+  font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.symbol-meaning{
+  font-size:12.5px;
+  color:var(--text-muted);
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--beige-obcanka);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:600;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--beige-obcanka));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  color:var(--heading);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--beige-obcanka);
+  background:var(--bg);
+}
+.timeline-step.red-step::before{
+  border-color:var(--red-pioneer);
+  background:rgba(154,56,40,.3);
+}
+.timeline-step.rock-step::before{
+  border-color:var(--gold-rock);
+  background:rgba(196,168,72,.2);
+}
+.timeline-step .ts-title{
+  font-family:'Oswald',sans-serif;
+  font-weight:500;color:var(--heading);
+  font-size:17px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--beige-obcanka);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* ŠABACHOVA DÍLA */
+.works-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+  margin:20px 0;
+}
+.work-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--work-color,var(--beige-obcanka));
+  padding:16px 18px;
+  text-align:center;
+}
+.work-title{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  color:var(--heading);
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.work-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--work-color,var(--beige-obcanka));
+  margin-bottom:8px;
+  letter-spacing:2px;
+}
+.work-desc{
+  font-size:12.5px;
+  color:var(--text-muted);
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Oswald',sans-serif;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--beige-obcanka);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .symbols-grid{grid-template-columns:repeat(2,1fr)}
+  .realia-grid{grid-template-columns:repeat(2,1fr)}
+  .locations-list{grid-template-columns:1fr}
+  .works-grid{grid-template-columns:1fr}
+  .obcanka-row{flex-direction:column;gap:2px}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.obcanka-box,.vb-box,.rock-box{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-classified">Občanský průkaz · ČSSR</div>
+  <div class="hero-label">Maturitní rozbor · Současná česká próza · Normalizace</div>
+  <h1><em>Sbírka povídek · 2006</em>Občanský<br>průkaz<span class="sub-title">aneb Děti normalizace vzpomínají</span></h1>
+  <div class="author">Petr Šabach</div>
+  <div class="subtitle">Praha · 70.–80. léta · Panelák · Hospoda</div>
+  <div class="hero-quote">„Dostal jsem občanský průkaz. Měl jsem patnáct. Byl jsem dospělý. Aspoň podle papíru."<em>— Vypravěč · Titulní povídka</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Normalizační Praha</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Mozaika</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč · Ich-forma</a></li>
+  <li><a href="#postavy">Postavy · Generace normalizace</a></li>
+  <li><a href="#realie">Dobové reálie</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky · Šabachův styl</a></li>
+  <li><a href="#tropy">Tropy, figury a humor</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější povídky a témata</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Občanský průkaz</strong> je <strong>sbírka povídek</strong> publikovaná v roce <strong>2006</strong>. Dílo má <strong>mozaikovou strukturu</strong> — každá povídka je samostatný příběh, ale všechny spojuje <strong>postava vypravěče a atmosféra normalizace</strong>. Šabach ho napsal jako <strong>generační vzpomínku</strong> — on sám patřil k „dětem normalizace" a v povídkách zpracovává <strong>autentické zážitky své generace</strong> z let 70.–80.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Dětství</span> Škola, rodiče</div>
+    <div class="ts-desc">Konflikty s učiteli, generační spor, pionýr</div>
+  </div>
+  <div class="timeline-step rock-step">
+    <div class="ts-title"><span class="ts-year">Puberta</span> První láska, hudba</div>
+    <div class="ts-desc">Zamilovanost, Rolling Stones, dospívání</div>
+  </div>
+  <div class="timeline-step red-step">
+    <div class="ts-title"><span class="ts-year">Občanka 15</span> Průkaz dospělosti</div>
+    <div class="ts-desc">Dostal občanský průkaz — titulní motiv</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Vojna</span> Absurdity armády</div>
+    <div class="ts-desc">Švejkování, šikana, přežití</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Dospělost</span> Práce, hospoda</div>
+    <div class="ts-desc">První zaměstnání, pivo, kamarádi</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Časový rámec</div>
+  <p style="margin-bottom:0">Povídky pokrývají <strong>70. až 90. léta 20. století</strong>, ale soustředí se především na <strong>období normalizace (1969–1989)</strong>. Jde o <strong>retrospektivní vyprávění</strong> — dospělý muž vzpomíná na své mládí. Publikováno 2006 — 17 let po pádu režimu, s odstupem a nostalgií.</p>
+</div>
+</section>
+
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Dospívání a hledání identity za normalizace, generace „dětí normalizace", absurdita totalitního systému, vztahy (láska, přátelství, rodina), malý člověk v systému, konflikty s autoritou, humor jako přežití, nostalgická vzpomínka na 70.–80. léta.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Občanský průkaz</strong> — identita, dospělost, začlenění do systému</li>
+  <li><strong>Normalizace</strong> (70.–80. léta)</li>
+  <li><strong>Dospívání</strong> — puberta, identita</li>
+  <li><strong>První láska</strong> — neopětovaná, komická</li>
+  <li><strong>Škola</strong> — konflikty, absurdity</li>
+  <li><strong>Rodiče</strong> — generační spor i láska</li>
+  <li><strong>Práce</strong> — první zaměstnání, továrna</li>
+  <li><strong>Vojenská služba</strong> — absurdity armády</li>
+  <li><strong>Pivo, hospoda</strong> — útočiště, svoboda</li>
+  <li><strong>Fotbal, rock'n'roll</strong> — koníčky, kultura</li>
+  <li><strong>Autority</strong> — učitelé, nadřízení, VB</li>
+  <li><strong>Humor, ironie</strong></li>
+  <li><strong>Praha, panelák, tramvaj</strong> — reálie doby</li>
+</ul>
+</section>
+
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor · Normalizační Praha</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red-pioneer)">
+    <h4 style="color:var(--red-pioneer)">Čas</h4>
+    <p><strong>70. léta až 90. léta 20. století.</strong> Především normalizace (1969–1989). Retrospektivní vyprávění — vzpomínky s odstupem. Období dospívání vypravěče.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--panelak)">
+    <h4 style="color:var(--panelak)">Prostor</h4>
+    <p><strong>Praha</strong> (většinou). Panelákové sídliště, školy, hospody, kasárna (vojna), běžná místa všedního života.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--panelak)">
+      <div class="location-name">Panelákové sídliště</div>
+      <div class="location-note">Uniformní byty — symbol doby</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--red-pioneer)">
+      <div class="location-name">Škola</div>
+      <div class="location-note">Základní, střední — pionýr, SSM, ideologie</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--brown-hospoda)">
+      <div class="location-name">Hospoda</div>
+      <div class="location-note">Pivo, fotbal, kamarádi, svoboda</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--tram)">
+      <div class="location-name">Tramvaj č. 11</div>
+      <div class="location-note">Pražská každodennost</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--green-vb)">
+      <div class="location-name">Kasárna</div>
+      <div class="location-note">Vojna — dva roky absurdity</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--sepia)">
+      <div class="location-name">Továrna</div>
+      <div class="location-note">První zaměstnání, dělnická realita</div>
+    </div>
+  </div>
+</div>
+
+<div class="card panelak">
+  <div class="card-title" style="color:var(--panelak)">Panelákové sídliště — symbol doby</div>
+  <p style="margin-bottom:0">Šabach miluje detaily. <strong>Panelákové sídliště</strong> je jedním z nejsilnějších symbolů. <strong>Uniformní byty, uniformní lidé</strong> — aspoň zvenku. Uvnitř ale každý žil svůj individuální život. <em>„Všechny byty stejné. Všichni lidé stejní. Aspoň zvenku."</em> Panelák je <strong>metaforou normalizace</strong> — venku šedá, uvnitř barevné osudy.</p>
+</div>
+</section>
+
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba · Mozaika</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Mozaiková struktura</strong> — samostatné povídky</li>
+  <li><strong>Volné řazení</strong> — povídky nejsou chronologické</li>
+  <li><strong>Tematické skupiny</strong> — podobné motivy se opakují</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold-rock)">Sbírka povídek</div>
+  <p style="margin-bottom:0">Dílo obsahuje <strong>cca 20–30 povídek</strong>. Každá je <strong>samostatný celek</strong> — s vlastní zápletkou, pointou, smyslem. Ale spolu tvoří <strong>mozaiku generačního svědectví</strong>. Čtenář může knihu otevřít kdekoli a číst — každá povídka je jako anekdota vyprávěná v hospodě.</p>
+</div>
+
+<h3>Vnitřní struktura povídek</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--beige-obcanka)">
+    <h4 style="color:var(--beige-obcanka)">Krátké, hutné</h4>
+    <p>Šabach neztrácí čas — řekne, co je třeba, a skončí.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold-rock)">
+    <h4 style="color:var(--gold-rock)">Pointovaný konec</h4>
+    <p>Každá povídka má pointu — jako anekdota.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--brown-hospoda)">
+    <h4 style="color:var(--brown-hospoda)">Anekdotický charakter</h4>
+    <p>Hospodský styl vyprávění — kdekoli je pivo, jsou historky.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Humor, ironie</h4>
+    <p>Suchý humor, ironický pohled — šabachovský podpis.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--panelak)">
+    <h4 style="color:var(--panelak)">Nostalgická vzpomínka</h4>
+    <p>Ale bez sentimentu — kritický odstup.</p>
+  </div>
+</div>
+</section>
+
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (vzpomínky).</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--beige-obcanka)">
+    <h4 style="color:var(--beige-obcanka)">Sbírka povídek</h4>
+    <p>Samostatné příběhy spojené vypravěčem a atmosférou.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold-rock)">
+    <h4 style="color:var(--gold-rock)">Humoristická próza</h4>
+    <p>Humor, ironie, suchý šabachovský styl.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Autobiografická próza</h4>
+    <p>Vzpomínky (částečně fiktivní) — generace normalizace.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--red-pioneer)">
+    <h4 style="color:var(--red-pioneer)">Generační próza</h4>
+    <p>O konkrétní generaci — „dětech normalizace".</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold-rock)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Povídková forma</strong></li>
+    <li>Humor jako základní prvek</li>
+    <li><strong>Autobiografické prvky</strong> (Šabach = generace normalizace)</li>
+    <li>Zobrazuje generaci 70.–80. let</li>
+    <li><strong>Vzpomínkový charakter</strong></li>
+  </ul>
+</div>
+</section>
+
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč · Ich-forma</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Typ</div>
+  <p style="margin-bottom:0"><strong>Ich-forma</strong> — vypravěč hovoří v 1. osobě. <strong>Autobiografický vypravěč</strong> = alter ego Petra Šabacha.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Personální vypravěč</strong> — vypráví vlastní zkušenosti</li>
+  <li><strong>Retrospektivní vyprávění</strong> — vzpomínky s odstupem</li>
+  <li><strong>Subjektivní perspektiva</strong> — vidíme svět očima vypravěče</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Muž <strong>střední generace</strong> (vzpomíná na mládí)</li>
+    <li><strong>Ironický odstup</strong></li>
+    <li>Sebeironický</li>
+    <li>Nostalgický, ale <strong>ne sentimentální</strong></li>
+    <li>Pražan</li>
+    <li>Šabachovský humor — suchý, pointovaný</li>
+    <li>Pozorný k absurditám</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold-rock)">Dvojí perspektiva</div>
+  <p style="margin-bottom:0">Vypravěč <strong>kombinuje perspektivu dítěte/mladíka</strong> (zažívá příběh) a <strong>perspektivu dospělého</strong> (vzpomíná s odstupem). Tato dvojí optika dává povídkám <strong>emoční hloubku i humornou distanci</strong>. Dítě nechápe absurditu — dospělý ji vidí a směje se.</p>
+</div>
+</section>
+
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy · Generace normalizace</h2></div>
+
+<p>Postavy se <strong>mění povídku od povídky</strong>, ale typy se opakují. Některé postavy jsou <strong>archetypální</strong> — reprezentují celou generaci.</p>
+
+<div class="character" style="--character-color:var(--gold-rock)" data-symbol="♟">
+  <div class="char-name">Vypravěč</div>
+  <div class="char-role">Hlavní postava · Kladná · Alter ego autora</div>
+  <ul style="margin:0">
+    <li>Chlapec / mladík / muž (podle povídky)</li>
+    <li><strong>Dospívá za normalizace</strong></li>
+    <li>Inteligentní, <strong>ironický</strong></li>
+    <li>Konflikty s autoritou</li>
+    <li>Hledá své místo ve světě</li>
+    <li>Zamilovává se — většinou marně</li>
+    <li>Pozoruje <strong>absurditu kolem sebe</strong></li>
+    <li>Alter ego Petra Šabacha</li>
+    <li>Typický „Husákovo dítě"</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--sepia)" data-symbol="♀♂">
+  <div class="char-name">Rodiče</div>
+  <div class="char-role">Vedlejší postavy · Neutrální</div>
+  <ul style="margin:0">
+    <li>„Normální" rodiče normalizace</li>
+    <li>Snaží se <strong>přežít systém</strong></li>
+    <li>Táta říká: „Musíš mít řád."</li>
+    <li>Máma říká: „Musíš být slušný."</li>
+    <li>Někdy chápou, někdy ne</li>
+    <li>Komické situace s nimi</li>
+    <li>Generace, která pamatovala Pražské jaro — rezignovala</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--red-pioneer)" data-symbol="★">
+  <div class="char-name">Učitelé / Nadřízení</div>
+  <div class="char-role">Vedlejší postavy · Často antagonisté</div>
+  <ul style="margin:0">
+    <li><strong>Představitelé systému</strong></li>
+    <li>Většinou hloupí, absurdní</li>
+    <li>Konflikt s vypravěčem</li>
+    <li>Komické postavy — vypravěč je odhaluje</li>
+    <li>Hlásající ideologii, které často sami nerozumí</li>
+    <li>Citují marxismus jako zaklínadla</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold-rock)" data-symbol="♥">
+  <div class="char-name">Dívky / Ženy</div>
+  <div class="char-role">Vedlejší postavy · Různé role</div>
+  <ul style="margin:0">
+    <li><strong>První lásky</strong></li>
+    <li>Nedostupné krásky — vypravěč se marně zamilovává</li>
+    <li>Realistické vztahy</li>
+    <li>Komplikace — nedorozumění, rozchody</li>
+    <li>Zdroj humoru i smutku</li>
+    <li>Psal jim básničky — smály se s kamarádkami</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--brown-hospoda)" data-symbol="⚯">
+  <div class="char-name">Kamarádi</div>
+  <div class="char-role">Vedlejší postavy · Kladné</div>
+  <ul style="margin:0">
+    <li><strong>Spolubojovníci v absurditě</strong></li>
+    <li>Společné zážitky — škola, hospoda, vojna</li>
+    <li>Solidarita, vzájemná pomoc</li>
+    <li>Humor jako tmel</li>
+    <li>Hospodské diskuse, plány, vzpomínky</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--green-vb)" data-symbol="VB">
+  <div class="char-name">Policajti / VB</div>
+  <div class="char-role">Vedlejší postavy · Záporné</div>
+  <ul style="margin:0">
+    <li><strong>Veřejná bezpečnost</strong> — represivní složka</li>
+    <li>Kontrolují občanské průkazy</li>
+    <li>Zdroj strachu</li>
+    <li>Autorita, se kterou se nediskutuje</li>
+    <li>Symbolizují totalitní kontrolu</li>
+  </ul>
+</div>
+</section>
+
+<section class="section" id="realie">
+<div class="section-header"><span class="section-num">08</span><h2>Dobové reálie</h2></div>
+
+<p>Šabach pracuje s <strong>autentickými reáliemi normalizace</strong> — bez nich by povídky ztratily kořeny. Pro dnešní čtenáře (zejména mladší) jsou tyto detaily klíčem k pochopení doby.</p>
+
+<div class="realia-grid">
+  <div class="realia-card" style="--realia-color:var(--beige-obcanka)">
+    <div class="realia-icon">◆</div>
+    <div class="realia-name">Občanka</div>
+    <div class="realia-note">Povinný doklad od 15 let</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--red-pioneer)">
+    <div class="realia-icon">★</div>
+    <div class="realia-name">Pionýr</div>
+    <div class="realia-note">Dětská organizace — červený šátek</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--red-pioneer)">
+    <div class="realia-icon">☭</div>
+    <div class="realia-name">SSM</div>
+    <div class="realia-note">Socialistický svaz mládeže — pro středoškoláky</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--green-vb)">
+    <div class="realia-icon">⚖</div>
+    <div class="realia-name">VB</div>
+    <div class="realia-note">Veřejná bezpečnost — policie</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--panelak)">
+    <div class="realia-icon">▤</div>
+    <div class="realia-name">Panelák</div>
+    <div class="realia-note">Panelový dům — typický domov</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--tram)">
+    <div class="realia-icon">▬</div>
+    <div class="realia-name">Tramvaj</div>
+    <div class="realia-note">Pražská doprava — tramvaj č. 11</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--brown-hospoda)">
+    <div class="realia-icon">⚮</div>
+    <div class="realia-name">Hospoda</div>
+    <div class="realia-note">Pivo, fotbal, diskuse</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--gold-rock)">
+    <div class="realia-icon">♪</div>
+    <div class="realia-name">Rock</div>
+    <div class="realia-note">Stones, Lou Reed — zakázané</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--sepia)">
+    <div class="realia-icon">⚒</div>
+    <div class="realia-name">Továrna</div>
+    <div class="realia-note">První zaměstnání, dělnictvo</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--green-vb)">
+    <div class="realia-icon">⚔</div>
+    <div class="realia-name">Vojna</div>
+    <div class="realia-note">Povinná služba — dva roky</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--red-pioneer)">
+    <div class="realia-icon">§</div>
+    <div class="realia-name">Kritika-sebekritika</div>
+    <div class="realia-note">Totalitní rituál</div>
+  </div>
+  <div class="realia-card" style="--realia-color:var(--sepia)">
+    <div class="realia-icon">✉</div>
+    <div class="realia-name">Legitimace</div>
+    <div class="realia-note">Průkazky všeho druhu</div>
+  </div>
+</div>
+
+<div class="obcanka-box">
+  <div class="obcanka-row">
+    <span class="obcanka-label">Příjmení a jméno</span>
+    <span class="obcanka-value">■ ■ ■ ■ ■ ■ ■ ■</span>
+  </div>
+  <div class="obcanka-row">
+    <span class="obcanka-label">Rodné číslo</span>
+    <span class="obcanka-value">XX XX XX / XXXX</span>
+  </div>
+  <div class="obcanka-row">
+    <span class="obcanka-label">Bydliště</span>
+    <span class="obcanka-value">Praha · panelák</span>
+  </div>
+  <div class="obcanka-row">
+    <span class="obcanka-label">Povolání</span>
+    <span class="obcanka-value">dělník / student</span>
+  </div>
+  <div class="obcanka-row">
+    <span class="obcanka-label">Platnost</span>
+    <span class="obcanka-value">od 15 let · na věky</span>
+  </div>
+  <div class="obcanka-row">
+    <span class="obcanka-label">Vystavil</span>
+    <span class="obcanka-value">ČSSR · MV</span>
+  </div>
+</div>
+</section>
+
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">09</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red-pioneer)">Přímá řeč · Dialogy (časté, autentické)</div>
+  <div class="quote-block" style="margin:0">„Kde máš občanský průkaz?" zeptal se policajt.<br>„Zapomněl jsem ho," řekl jsem.<span class="quote-source">Typický šabachovský dialog</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--beige-obcanka)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Učitelka mi řekla, že jsem nezodpovědný.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold-rock)">Vnitřní monolog · Úvahy vypravěče</div>
+  <p style="font-style:italic;color:var(--heading);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Přemýšlel jsem, jestli mě vyhodí ze školy.</p>
+</div>
+
+<div class="card panelak">
+  <div class="card-title" style="color:var(--panelak)">Šabachovský styl · Stručný, pointovaný, dialogický</div>
+  <p style="margin-bottom:0"><strong>Dialog převažuje nad popisem.</strong> Šabach nepopisuje — řekne replikou. Povídky jsou <strong>krátké, hutné, s pointou</strong>. Žádné rozvinuté scény, jen to, co je podstatné. <strong>Stručnost = síla.</strong></p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--beige-obcanka)"><h4 style="color:var(--beige-obcanka)">Pásmo vypravěče</h4><p>Stručné vyprávění, popis — minimalistický.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--gold-rock)"><h4 style="color:var(--gold-rock)">Dialog</h4><p><strong>Převažující forma</strong> — autentické rozhovory.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)"><h4 style="color:var(--sepia)">Vnitřní monolog</h4><p>Úvahy, vzpomínky, ironie.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--panelak)"><h4 style="color:var(--panelak)">Popis</h4><p><strong>Minimální</strong> — jen nutné detaily.</p></div>
+</div>
+</section>
+
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">10</span><h2>Jazykové prostředky · Šabachův styl</h2></div>
+
+<h3>Hovorová čeština</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Autentická řeč 70.–80. let</strong></li>
+    <li>Slang té doby</li>
+    <li><strong>Pražština</strong></li>
+    <li>Dobové výrazy — „občanka", „lampasák", „esenbák"</li>
+  </ul>
+</div>
+
+<h3>Stručnost — páteř stylu</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--gold-rock)">Méně je víc</div>
+  <ul style="margin:0">
+    <li><strong>Krátké věty</strong></li>
+    <li>Minimum přívlastků</li>
+    <li><strong>Hutný styl</strong></li>
+    <li>Každé slovo má svou váhu</li>
+    <li>„Šabach neztrácí čas. Řekne, co je třeba. A skončí."</li>
+  </ul>
+</div>
+
+<h3>Dialog</h3>
+<div class="card hospoda">
+  <ul style="margin:0">
+    <li><strong>Převažuje nad popisem</strong></li>
+    <li>Autentický — jako by jsi to slyšel v hospodě</li>
+    <li>Pointovaný</li>
+    <li>Charakterizuje postavy lépe než popis</li>
+  </ul>
+</div>
+
+<h3>Ironie — šabachovský podpis</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Suchý humor</strong></li>
+    <li>Sebeironie</li>
+    <li>Absurdní situace popsané klidným tónem</li>
+    <li><strong>Litotes / understatement</strong> — typicky české</li>
+    <li><em>„Nebyl jsem nadšený"</em> = byl jsem naštvaný</li>
+  </ul>
+</div>
+
+<h3>Nostalgie — ale bez sentimentu</h3>
+<div class="card panelak">
+  <ul style="margin:0">
+    <li><strong>Ale ne sentimentální</strong></li>
+    <li>Kritický odstup</li>
+    <li>Vzpomínky bez patosu</li>
+    <li>Realistický pohled</li>
+    <li>Humor jako obrana před sentimentem</li>
+  </ul>
+</div>
+
+<h3>Dobové reálie</h3>
+<div class="vb-box" style="text-align:left">
+  <div class="vb-main" style="font-size:16px;text-align:center">Pionýr · SSM · VB</div>
+  <div class="vb-text">Občanka · Legitimace · Panelák · Tramvaj<br>Pivo · Fotbal · Rock'n'roll<br>Kritika · sebekritika · Schůze</div>
+  <div class="vb-source">Autentický slovník doby</div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Hovorová čeština</strong> vytváří autenticitu</li>
+    <li><strong>Stručnost</strong> zesiluje pointu</li>
+    <li><strong>Dialog</strong> je živý, pravdivý</li>
+    <li><strong>Ironie</strong> odhaluje absurditu</li>
+    <li><strong>Dobové reálie</strong> ukotvují v čase</li>
+  </ul>
+</div>
+</section>
+
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">11</span><h2>Tropy, figury a humor</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Ironie (hlavní!)</div>
+    <div class="trope-example">Absurdní systém</div>
+    <div class="trope-note">Systém se jeví absurdní skrze ironický pohled. Šabachův podpis.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Humor</div>
+    <div class="trope-example">Situační, charakterový, jazykový</div>
+    <div class="trope-note">Na více úrovních — situace, postavy, jazyk.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Litotes</div>
+    <div class="trope-example">Understatement</div>
+    <div class="trope-note"><strong>Typicky Šabach.</strong> „Nebyl jsem nadšený" = byl naštvaný. Česká forma humoru.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Mírná nadsázka</div>
+    <div class="trope-note">Pro komický efekt. Ne groteskní, ale kontrolovaná.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Občanský průkaz</div>
+    <div class="trope-note">= dospělost, identita, systém. Titulní motiv celé knihy.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Anekdota</div>
+    <div class="trope-example">Hospodský styl</div>
+    <div class="trope-note">Povídky jako vyprávěné historky — jako u piva s kamarády.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Pointa</div>
+    <div class="trope-example">Každá povídka má pointu</div>
+    <div class="trope-note">Vtipná, ironická, někdy trpká — ale vždy je.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Nostalgie</div>
+    <div class="trope-example">Vzpomínky na mládí</div>
+    <div class="trope-note">Ale bez sentimentu. Kritická, vtipná, láskyplná.</div>
+  </div>
+</div>
+
+<h3>Klíčová symbolika díla</h3>
+<div class="symbols-grid">
+  <div class="symbol-card" style="--sym-color:var(--beige-obcanka)">
+    <div class="symbol-icon">◆</div>
+    <div class="symbol-name">Občanský průkaz</div>
+    <div class="symbol-meaning">Dospělost, identita, systém, dokument</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--panelak)">
+    <div class="symbol-icon">▤</div>
+    <div class="symbol-name">Panelák</div>
+    <div class="symbol-meaning">Uniformita, ale i domov</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--tram)">
+    <div class="symbol-icon">▬</div>
+    <div class="symbol-name">Tramvaj</div>
+    <div class="symbol-meaning">Každodennost Prahy</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--brown-hospoda)">
+    <div class="symbol-icon">⚮</div>
+    <div class="symbol-name">Hospoda</div>
+    <div class="symbol-meaning">Útočiště, relativní svoboda</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--gold-rock)">
+    <div class="symbol-icon">♪</div>
+    <div class="symbol-name">Rock'n'roll</div>
+    <div class="symbol-meaning">Vzdor, identita, Západ</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--red-pioneer)">
+    <div class="symbol-icon">★</div>
+    <div class="symbol-name">Pionýr / SSM</div>
+    <div class="symbol-meaning">Povinná ideologie, ztracená generace</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--green-vb)">
+    <div class="symbol-icon">⚖</div>
+    <div class="symbol-name">VB</div>
+    <div class="symbol-meaning">Autorita, strach, kontrola</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--sepia)">
+    <div class="symbol-icon">♥</div>
+    <div class="symbol-name">První láska</div>
+    <div class="symbol-meaning">Dospívání, něha, komplikace</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red-pioneer)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Ironie a humor</strong> kritizují i baví. <strong>Nostalgie</strong> připomíná dobu, ale bez idealizace. <strong>Pointy</strong> dávají povídkám smysl. Šabach používá humor jako <strong>dvojsečnou zbraň</strong> — proti režimu i proti sentimentu. <em>„Bavit a neplakat."</em></p>
+</div>
+</section>
+
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">12</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Petr Šabach (1951–2017)</div>
+  <p>Český prozaik a scenárista. Narozen <strong>23. srpna 1951 v Praze</strong>. Patřil ke generaci <strong>„dětí normalizace"</strong> — jeho dětství i dospívání se odehrálo za totalitního režimu. Studoval <strong>národopis na Filozofické fakultě Univerzity Karlovy</strong>. Během života vystřídal <strong>různá zaměstnání</strong> — podobně jako jeho literární postavy: skladník, noční hlídač, antikvární knihkupec, pracovník Národního muzea. Byl <strong>typický Pražan</strong> — miloval hospody, pivo, fotbal, Spartu Praha. V 80. letech začal publikovat — jeho literárním debutem byla povídková sbírka <em>Jak potopit Austrálii</em> (1986), která zaujala čtenáře i kritiky. Proslavil se ale až po roce 1989 — zejména jako <strong>scenárista</strong>. Spolupracoval s režisérem <strong>Janem Hřebejkem</strong> — jejich spolupráce přinesla <strong>kultovní české filmy</strong>: <em>Pelíšky</em> (1999), <em>Pupendo</em> (2003), <em>U mě dobrý</em> (2008). Šabach napsal <strong>15+ knih</strong> — většinou povídky, občas romány. Byl <strong>oblíbený autor</strong> — rozuměl lidem, rozuměl době, dovedl ji zachytit s humorem i empatií. <strong>Zemřel 16. září 2017</strong> v Praze ve věku 66 let na <strong>rakovinu</strong>. Pohřeb se stal <strong>manifestací celé generace</strong> — přišly tisíce lidí, herců, spisovatelů, prostě čtenářů.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Vrcholné dílo</strong> (2006) — spolu s <em>Babičkami</em> (2003)</li>
+  <li>Typické Šabachovo téma: <strong>normalizace</strong></li>
+  <li>Pokračování stylu z dřívějších děl</li>
+  <li>Zralá forma po letech zkušeností</li>
+</ul>
+
+<h3>Další Šabachova díla</h3>
+<div class="works-grid">
+  <div class="work-card" style="--work-color:var(--beige-obcanka)">
+    <div class="work-title">Jak potopit Austrálii</div>
+    <div class="work-year">1986</div>
+    <div class="work-desc">Debut — povídky</div>
+  </div>
+  <div class="work-card" style="--work-color:var(--gold-rock)">
+    <div class="work-title">Hovno hoří</div>
+    <div class="work-year">1994</div>
+    <div class="work-desc">Povídky — kultovní titul</div>
+  </div>
+  <div class="work-card" style="--work-color:var(--brown-hospoda)">
+    <div class="work-title">Babičky</div>
+    <div class="work-year">2003</div>
+    <div class="work-desc">Román o rodině</div>
+  </div>
+  <div class="work-card" style="--work-color:var(--red-pioneer)">
+    <div class="work-title">Občanský průkaz</div>
+    <div class="work-year">2006</div>
+    <div class="work-desc"><strong>Toto dílo</strong></div>
+  </div>
+  <div class="work-card" style="--work-color:var(--sepia)">
+    <div class="work-title">Opilé banány</div>
+    <div class="work-year">2011</div>
+    <div class="work-desc">Povídky</div>
+  </div>
+  <div class="work-card" style="--work-color:var(--panelak)">
+    <div class="work-title">Šakalí léta</div>
+    <div class="work-year">2010</div>
+    <div class="work-desc">Nostalgické vzpomínky</div>
+  </div>
+</div>
+
+<h3>Filmové scénáře — spolupráce s Hřebejkem</h3>
+<table class="compare-table">
+  <tr><th>Film</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Šakalí léta</strong></td><td>1993</td><td>60. léta — rock'n'roll v Praze</td></tr>
+  <tr><td><strong>Pelíšky</strong></td><td>1999</td><td><strong>Kultovní film</strong> o konci 60. let</td></tr>
+  <tr><td><strong>Pupendo</strong></td><td>2003</td><td>Normalizace — rodina umělců</td></tr>
+  <tr><td><strong>U mě dobrý</strong></td><td>2008</td><td>Vzpomínky pamětníka</td></tr>
+</table>
+
+<h3>Šabachův styl</h3>
+<ul>
+  <li><strong>Stručnost, pointovanost</strong></li>
+  <li>Humor, ironie</li>
+  <li><strong>Hovorová čeština</strong></li>
+  <li>Autenticita doby</li>
+  <li>Generace normalizace</li>
+  <li><strong>Pražské prostředí</strong></li>
+  <li>Dialog převažuje</li>
+</ul>
+</section>
+
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">13</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>2006</strong></li>
+    <li>Vzpomínky na <strong>70.–80. léta</strong> (normalizace)</li>
+    <li>Nostalgie po mládí generace</li>
+    <li>Umělecký sloh: <strong>SOUČASNÁ ČESKÁ PRÓZA</strong></li>
+  </ul>
+</div>
+
+<h3>Normalizace — historický kontext</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--red-pioneer)">„Normální" totalita</div>
+  <ul style="margin:0">
+    <li><strong>1969–1989</strong></li>
+    <li>Po invazi Varšavské smlouvy 1968</li>
+    <li><strong>Gustáv Husák</strong>, komunistický režim</li>
+    <li>Represe, cenzura, omezení svobod</li>
+    <li>Ale i <strong>„normální" život</strong> — pro ty, kdo neprovokovali</li>
+    <li>Generace <strong>„dětí normalizace"</strong> / „Husákovy děti"</li>
+  </ul>
+</div>
+
+<h3>Česká humoristická próza — tradice</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Společné rysy</th></tr>
+  <tr><td><strong>Jaroslav Hašek</strong></td><td><em>Osudy dobrého vojáka Švejka</em></td><td>Humor, absurdita, pražština</td></tr>
+  <tr><td><strong>Bohumil Hrabal</strong></td><td><em>Obsluhoval jsem anglického krále</em></td><td>Humor, hospoda, Praha</td></tr>
+  <tr><td><strong>Josef Škvorecký</strong></td><td><em>Tankový prapor</em></td><td>Satira systému, generační próza</td></tr>
+  <tr><td><strong>Petr Šabach</strong></td><td><em>Občanský průkaz</em></td><td><strong>Generace normalizace</strong></td></tr>
+  <tr><td><strong>Michal Viewegh</strong></td><td><em>Báječná léta pod psa</em></td><td>Humor, podobná generace</td></tr>
+  <tr><td><strong>Jáchym Topol</strong></td><td><em>Sestra</em></td><td>Generace po normalizaci</td></tr>
+</table>
+
+<h3>Generace „Husákových dětí"</h3>
+<details>
+  <summary>Kdo byly „děti normalizace"?</summary>
+  <p><strong>„Husákovy děti"</strong> — ironické pojmenování <strong>generace narozené v 50.–60. letech</strong>, která <strong>vyrostla za normalizace</strong>. Nepamatovaly Pražské jaro (1968) ani jeho naděje. Znaly jen <strong>„normální" totalitu</strong> — Husákův režim, panelákové sídliště, pionýra, SSM, povinnou vojnu. Tato generace žila v <strong>dvojím světě</strong>: venku oficiální ideologie a propaganda, <strong>doma upřímné rozhovory</strong>. Naučila se <strong>rozlišovat, kdy co říkat</strong>. Paradoxně měla <strong>nejsilnější zkušenost „normálního" socialismu</strong> — a po 1989 se stala hybnou silou transformace. Šabach, Michal Viewegh, Halina Pawlowská a další jsou její literárními mluvčími.</p>
+</details>
+
+<h3>Pelíšky — kultovní film Šabacha</h3>
+<details>
+  <summary>Hřebejk a Šabach · 1999</summary>
+  <p><strong>Pelíšky</strong> (1999) je <strong>jeden z nejoblíbenějších českých filmů vůbec</strong>. Režie <strong>Jan Hřebejk</strong>, scénář <strong>Petr Šabach</strong> (podle jeho povídek ze sbírek <em>Hovno hoří</em> a <em>Šakalí léta</em>). Film se odehrává na přelomu let 1967/1968 — od Vánoc do srpnové invaze. V hlavních rolích <strong>Miroslav Donutil, Jiří Kodet, Bolek Polívka</strong>. Film <strong>dokonale zachytil šabachovskou atmosféru</strong> — humor, nostalgii, rodinné konflikty, dobové reálie. Stal se <strong>kultovním</strong> — pravidelně se vysílá v televizi, citují ho generace. <em>„Maminko, maminko, Pepík Hnátek má pořád větší rohlík než já!"</em> je jedna z nejcitovanějších replik české kinematografie.</p>
+</details>
+</section>
+
+<div class="panel-divider">▤ ▥ ▤</div>
+
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">14</span><h2>Nejznámější povídky a témata</h2></div>
+
+<div class="scene" style="border:2px solid var(--beige-obcanka)">
+  <span class="scene-label" style="background:rgba(168,144,112,.1);border-color:var(--beige-obcanka);color:var(--beige-obcanka)">★ 01 · TITULNÍ POVÍDKA · OBČANSKÝ PRŮKAZ ★</span>
+  <div class="scene-title">Občanský průkaz</div>
+  <div class="scene-text">Dostal jsem občanský průkaz. Měl jsem patnáct. Byl jsem dospělý. Aspoň podle papíru. Ve skutečnosti jsem pořád nevěděl, kdo jsem.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Získání občanského průkazu v 15 letech.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Symbolika dospělosti</strong></li>
+      <li>Identita — kdo jsem?</li>
+      <li>Občanka = začlenění do systému</li>
+      <li>Ironie — <strong>papír říká, že jsem dospělý, ale nejsem</strong></li>
+      <li>Titul celé knihy — shrnuje atmosféru dospívání</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red-pioneer)">
+  <span class="scene-label" style="background:rgba(154,56,40,.1);border-color:var(--red-pioneer);color:var(--red-pioneer)">★ 02 · ŠKOLA · IDEOLOGICKÁ ABSURDITA ★</span>
+  <div class="scene-title">„Máš buržoazní názory"</div>
+  <div class="scene-text">Učitelka mě poslala za ředitelem. „Jsi neukázněný," řekla. „Máš buržoazní názory." Nevěděl jsem, co to je buržoazní. Ale znělo to nebezpečně.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Absurdita ideologického hodnocení</strong></li>
+      <li>„Buržoazní" = vše, co se nelíbí</li>
+      <li>Dítě nerozumí, ale trpí</li>
+      <li>Satira normalizačního školství</li>
+      <li>Šabachovský humor</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold-rock)">
+  <span class="scene-label" style="background:rgba(196,168,72,.1);border-color:var(--gold-rock);color:var(--gold-rock)">★ 03 · PRVNÍ LÁSKA · NEDOSTUPNÁ SPOLUŽAČKA ★</span>
+  <div class="scene-title">Psal jsem jí básničky</div>
+  <div class="scene-context">Zamiloval jsem se do spolužačky. Byla krásná. Nemluvila se mnou. Psal jsem jí básničky. Četla je a <strong>smála se. S kamarádkami.</strong> Láska bolela.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Typická puberta</strong></li>
+      <li>Neopětovaná láska</li>
+      <li>Humor v tragédii</li>
+      <li>Autenticita pocitů</li>
+      <li>Sebeirkonie — vypravěč se sám směje své naivitě</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Rodiče a generační spor</span>
+  <div class="scene-title">Máma, táta a rock</div>
+  <div class="scene-context">Táta říkal: <em>„Musíš mít řád."</em> Máma říkala: <em>„Musíš být slušný."</em> <strong>Já jsem chtěl jen poslouchat rock'n'roll.</strong> Nerozuměli mi. Já jsem nerozuměl jim.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Generační konflikt</strong></li>
+      <li>Rodiče = normalizace, děti = jiný svět</li>
+      <li>Ale i láska pod konfliktem</li>
+      <li>Realističnost</li>
+      <li>Humor — vzájemné neporozumění je komické</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--green-vb)">
+  <span class="scene-label" style="background:rgba(74,88,56,.1);border-color:var(--green-vb);color:var(--green-vb)">★ 05 · VOJNA · ŠABACHOVSKÁ STRUČNOST ★</span>
+  <div class="scene-title">Celá vojna ve dvou větách</div>
+  <div class="scene-text">Na vojně jsem se naučil dvě věci: Jak nic nedělat a vypadat, že dělám. A jak se vyhnout problémům. To byla vojna.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Satira armády</strong> (jako Škvorecký)</li>
+      <li>Švejkování — pasivní odpor</li>
+      <li>Přežití systému</li>
+      <li><strong>Stručnost</strong> — celá vojna ve dvou větách</li>
+      <li>Pointovanost — dokonalý šabachovský styl</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--brown-hospoda)">
+  <span class="scene-label" style="background:rgba(106,72,48,.1);border-color:var(--brown-hospoda);color:var(--brown-hospoda)">★ 06 · HOSPODA · MÍSTO ÚTĚKU ★</span>
+  <div class="scene-title">Pivo, fotbal, ženy</div>
+  <div class="scene-text">Hospoda byla náš svět. Pivo, fotbal, ženy. Tady jsme byli svobodní. Aspoň dokud jsme měli peníze. A to byla vždycky krátká svoboda.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Hospoda = svobodný prostor</strong> (relativně)</li>
+      <li>Únik z reality</li>
+      <li>Mužská solidarita</li>
+      <li>Humor — svoboda = dokud mám peníze</li>
+      <li><strong>Typicky české téma</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Práce · První zaměstnání</span>
+  <div class="scene-title">Dělník v továrně</div>
+  <div class="scene-context">První zaměstnání. Dělník. Továrna. Osm hodin denně dělat něco, čemu jsem nerozuměl. <strong>Šéf byl idiot.</strong> Byl jsem nešťastný. Ale měl jsem výplatu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Realita dospělosti</strong></li>
+      <li>Práce bez smyslu</li>
+      <li>Ale nutnost (výplata)</li>
+      <li>Satira zaměstnání</li>
+      <li>Pragmatismus — cynický humor</li>
+    </ul>
+  </div>
+</div>
+
+<div class="vb-box">
+  <div class="vb-main">„Legitimujte se!"</div>
+  <div class="vb-text">Hledal jsem občanku. Neměl jsem ji. „Pojďte s námi." Strach. Vysvětlování. Nakonec pustili. Ale strach zůstal.</div>
+  <div class="vb-source">Kontrola Veřejné bezpečnosti · Praha · 197x</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Legitimace · Kontrola VB</span>
+  <div class="scene-title">Strach z autority</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Strach z autority</strong></li>
+      <li>Občanka = povinnost</li>
+      <li>Totalita = kontrola</li>
+      <li>Ale i humor (zapomněl jsem)</li>
+      <li>Autenticita doby — VB kontroly časté</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--panelak)">
+  <span class="scene-label" style="background:rgba(106,112,120,.1);border-color:var(--panelak);color:var(--panelak)">★ 09 · PANELÁK · PROSTŘEDÍ DOBY ★</span>
+  <div class="scene-title">Tramvaj a panelák</div>
+  <div class="scene-text">Tramvaj číslo 11. Panelákové sídliště. Všichni jsme bydleli v panelácích. Všechny byty stejné. Všichni lidé stejní. Aspoň zvenku.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Autentické reálie</strong></li>
+      <li>Paneláky = symbol doby</li>
+      <li>Uniformita</li>
+      <li>Ale <strong>individualita uvnitř</strong></li>
+      <li>Nostalgie místa</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red-pioneer)">
+  <span class="scene-label" style="background:rgba(154,56,40,.1);border-color:var(--red-pioneer);color:var(--red-pioneer)">★ 10 · PIONÝR A SSM · POVINNÁ IDEOLOGIE ★</span>
+  <div class="scene-title">Neměl jsem na výběr</div>
+  <div class="scene-context">Byl jsem pionýr. <strong>Musel jsem.</strong> Pak jsem byl v SSM. Taky jsem musel. Neměl jsem rád šátky ani odznaky. <strong>Ale neměl jsem na výběr.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Povinnost, ne volba</strong></li>
+      <li>Ideologická výchova</li>
+      <li>Odpor (pasivní)</li>
+      <li>„Neměl jsem na výběr" = realita</li>
+      <li>Stručná charakteristika doby</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rock-box">„Poslouchal jsem zakázané kapely. Rolling Stones, Lou Reed. Bylo to nebezpečné. A proto vzrušující. Hudba byla rebel."</div>
+
+<div class="scene">
+  <span class="scene-label">11 · Hudba · Rock jako vzdor</span>
+  <div class="scene-title">Stones a Lou Reed tajně</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Hudba = symbol svobody</strong></li>
+      <li>Zakázané = lákavé</li>
+      <li>Generační identita</li>
+      <li><strong>Jako jazz u Škvoreckého</strong> — západní hudba jako vzdor</li>
+      <li>Malý vzdor systému</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">12 · Absurdita · Kritika a sebekritika</span>
+  <div class="scene-title">„Jsem špatný. Budu lepší."</div>
+  <div class="scene-context">Musel jsem napsat kritiku a sebekritiku. Nevěděl jsem proč. Napsal jsem: <em>„Jsem špatný. Budu lepší."</em> <strong>Přijali to.</strong> Absurdita byla norma.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Absurdita systému</strong></li>
+      <li>Kritika a sebekritika (totalitní rituál)</li>
+      <li>Humor (stručná verze)</li>
+      <li>Systém přijme cokoliv</li>
+      <li>Satira — stačí formálně splnit</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--sepia);background:rgba(138,120,88,.05)">
+  <span class="scene-label" style="background:rgba(138,120,88,.15);border-color:var(--sepia);color:var(--sepia)">★ 13 · NOSTALGIE BEZ SENTIMENTU ★</span>
+  <div class="scene-title">Byla to naše doba</div>
+  <div class="scene-context">Šabach vzpomíná na normalizaci. <strong>Byla to těžká doba. Ale byla to jeho doba.</strong> Vzpomíná <strong>s humorem, ne se slzami</strong>. S ironií, ne s patosem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Vyváženost</strong></li>
+      <li>Nejde o idealizaci</li>
+      <li>Ani o zatracení</li>
+      <li>Realistický pohled</li>
+      <li><strong>Humor jako obrana</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold-rock);background:rgba(196,168,72,.03)">
+  <span class="scene-label" style="background:rgba(196,168,72,.1);border-color:var(--gold-rock);color:var(--gold-rock)">★ 14 · ŠABACHŮV STYL · STRUČNOST ★</span>
+  <div class="scene-title">Anekdoty z hospody</div>
+  <div class="scene-context">Povídky jsou krátké. Pointované. <strong>Jako anekdoty vyprávěné v hospodě.</strong> Šabach neztrácí čas. Řekne, co je třeba. A skončí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Literární technika</strong></li>
+      <li>Stručnost = síla</li>
+      <li>Pointy účinkují</li>
+      <li>Hospodský styl vyprávění</li>
+      <li>Autentičnost</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="rock-divider">♪ ♫ ♪</div>
+
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">15</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--beige-obcanka)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Generace, která vyrůstala za normalizace, měla normální životy</strong> — první lásky, konflikty s rodiči, školu, vojnu, práci. <strong>Systém byl absurdní, ale lidé v něm žili.</strong> Humor pomáhal přežít. Vzpomínky jsou nostalgické, ale ne sentimentální. <strong>To byla naše doba — směšná i smutná.</strong></p>
+</div>
+
+<h3>Hlavní hodnoty díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold-rock)">
+    <h4 style="color:var(--gold-rock)">Humor</h4>
+    <p>Jako způsob přežití a pohledu na svět.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--beige-obcanka)">
+    <h4 style="color:var(--beige-obcanka)">Autenticita</h4>
+    <p>Skutečné detaily, skutečný jazyk, skutečná doba.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Generační paměť</h4>
+    <p>Zachycení zkušenosti celé jedné generace.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--brown-hospoda)">
+    <h4 style="color:var(--brown-hospoda)">Přátelství</h4>
+    <p>Hospoda, kamarádi, společné zážitky.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--red-pioneer)">
+    <h4 style="color:var(--red-pioneer)">Ironie</h4>
+    <p>Pohled, který odhaluje absurditu systému.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--panelak)">
+    <h4 style="color:var(--panelak)">Každodennost</h4>
+    <p>Obyčejné životy, které jsou neobyčejné.</p>
+  </div>
+</div>
+
+<h3>Šabachova autobiografická zkušenost</h3>
+<details>
+  <summary>Šabach = generace normalizace</summary>
+  <p>Petr Šabach <strong>sám zažil všechno, o čem píše</strong>. Narozen 1951, dospíval za normalizace. Byl pionýr, byl v SSM, šel na vojnu, pracoval v různých zaměstnáních (skladník, hlídač, v muzeu), chodil do hospody. <strong>Občanský průkaz je silně autobiografický</strong>, ale <strong>není čistá autobiografie</strong> — je to literární zpracování. Šabach mění jména, spojuje zážitky, přidává fikci. Ale <strong>atmosféra je autentická</strong> — proto rezonuje s celou generací.</p>
+</details>
+
+<h3>Generace „Husákových dětí"</h3>
+<details>
+  <summary>Kdo se v knize najde</summary>
+  <p>Šabachovy povídky rezonují především s <strong>generací narozenou v 50.–60. letech</strong>. Ti v knize <strong>najdou vlastní vzpomínky</strong> — pionýrské tábory, první láska, školní akademie, panelákové byty, hospody U Švejka, Rolling Stones na magnetofonovém pásce. <em>„To jsem zažil taky!"</em> je nejčastější reakce čtenářů. Pro <strong>mladší generace</strong> je kniha <strong>historickým svědectvím</strong> — oknem do doby, kterou neznali.</p>
+</details>
+
+<h3>Filmová spolupráce s Hřebejkem</h3>
+<details>
+  <summary>Šabach jako scenárista</summary>
+  <p>Spolupráce <strong>Petra Šabacha a Jana Hřebejka</strong> patří k nejvýznamnějším tvůrčím dvojicím české kinematografie. Společně vytvořili <strong>Šakalí léta (1993), Pelíšky (1999), Pupendo (2003), U mě dobrý (2008)</strong>. <strong>Pelíšky</strong> se staly <strong>kultovním filmem</strong> — generace si je pamatuje zpaměti. Šabachův literární styl — stručnost, pointovanost, dialog — se ideálně hodí pro film. Hřebejk přidal vizuální atmosféru 70. let. Spolupráce funguje dokonale.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Vzpomínky na dobu</strong> — pro mladší: jak to bylo</li>
+    <li>Pro starší: nostalgie</li>
+    <li><strong>Generační svědectví</strong></li>
+    <li>Historie všedních dnů</li>
+    <li>Humor nadčasový</li>
+    <li>Relevance pro pochopení 20. století</li>
+    <li>Autenticita doby proti oficiální „pravdě" dějin</li>
+  </ul>
+</div>
+
+<h3>Kulturní vliv</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>Generační klasika</strong></li>
+    <li>Obraz normalizace</li>
+    <li>Humor a nostalgie</li>
+    <li><strong>„Šabachovský" styl</strong> jako literární pojem</li>
+    <li>Pelíšky = kultovní film</li>
+    <li>Autor lidový i literární zároveň</li>
+    <li><strong>Typicky český</strong></li>
+    <li>Bestseller — stovky tisíc výtisků</li>
+  </ul>
+</div>
+
+<h3>Šabachova smrt a odkaz</h3>
+<details>
+  <summary>16. září 2017</summary>
+  <p>Petr Šabach zemřel <strong>16. září 2017</strong> v Praze po dlouhém boji s <strong>rakovinou</strong>. Bylo mu <strong>66 let</strong>. Jeho pohřeb se stal <strong>generačním manifestem</strong> — přišly tisíce lidí, fanoušků, kolegů, kamarádů z hospod. Herec <strong>Miroslav Donutil</strong> (hrál v mnoha Šabachovských filmech) pronesl dojemnou řeč. <strong>Česká kultura přišla o jednoho ze svých nejmilovanějších autorů.</strong> Šabachovy knihy se dodnes vydávají, jeho filmy se vysílají — <strong>jeho hlas zní dál</strong>. V roce 2025 byl podle povídek z <em>Občanského průkazu</em> uveden film (režie Ondřej Trojan).</p>
+</details>
+
+<div class="obcanka-box" style="margin-top:40px;text-align:center">
+  <div class="obcanka-row" style="border-bottom:none;justify-content:center;flex-direction:column;gap:10px">
+    <span class="obcanka-label" style="color:var(--gold-rock);font-size:12px">Poselství</span>
+    <span class="obcanka-value" style="font-family:'Crimson Pro',serif;font-style:italic;font-size:17px">„To byla naše doba — směšná i smutná.<br>Přežili jsme ji humorem."</span>
+    <span class="obcanka-label" style="font-size:9px;color:var(--text-muted);margin-top:8px">Petr Šabach · Občanský průkaz · 2006</span>
+  </div>
+</div>
+</section>
+
+<div class="panel-divider">▤ ▥ ▤</div>
+
+</div>
+</body>
+</html>

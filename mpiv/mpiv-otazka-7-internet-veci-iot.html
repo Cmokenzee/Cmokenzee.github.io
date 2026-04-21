@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 7: Internet věcí (IoT)</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #0f2e1a 40%, #1a0f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 25% 50%, rgba(52,211,153,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(167,139,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-3); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+  .cli .kw { color: var(--accent-4); }
+  .cli .val { color: var(--accent-6); }
+  .cli .reg { color: var(--accent-1); }
+
+  .formula {
+    background: rgba(96,165,250,0.08);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    text-align: center;
+    color: var(--accent-1);
+    font-weight: 600;
+  }
+  .formula .f-small { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 6px; }
+
+  /* Pillar visual */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .pillar {
+    text-align: center;
+    border-radius: 10px;
+    padding: 20px 12px;
+    position: relative;
+  }
+  .pillar-icon { font-size: 28px; margin-bottom: 8px; }
+  .pillar-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; opacity: 0.6; margin-bottom: 4px; }
+  .pillar-name { font-weight: 700; font-size: 14px; }
+  .pillar-desc { font-size: 11px; opacity: 0.7; margin-top: 4px; }
+
+  /* Architecture flow */
+  .arch-flow {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    overflow-x: auto;
+  }
+  .arch-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .flow-box {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 80px;
+  }
+  .flow-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* Power mode bars */
+  .power-bars { margin: 16px 0; }
+  .power-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 6px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .pb-label { min-width: 100px; color: var(--text-muted); font-size: 11px; }
+  .pb-bar { height: 22px; border-radius: 4px; display: flex; align-items: center; padding: 0 10px; font-size: 10px; font-weight: 600; }
+  .pb-value { min-width: 80px; text-align: right; font-size: 11px; }
+
+  /* SF scale visual */
+  .sf-scale {
+    display: flex;
+    gap: 4px;
+    margin: 14px 0;
+    align-items: flex-end;
+  }
+  .sf-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 6px 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .sf-bar .sf-label { font-size: 9px; opacity: 0.7; margin-top: 4px; }
+
+  /* Attack category */
+  .attack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .attack-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .attack-card h4 { margin: 0 0 8px; font-size: 13px; }
+  .attack-card p { font-size: 12px; color: var(--text-muted); margin: 0; }
+  .attack-card ul { font-size: 12px; margin: 6px 0 0; padding-left: 16px; }
+  .attack-card li { font-size: 12px; color: var(--text-muted); margin-bottom: 3px; }
+
+  /* Crypto comparison */
+  .crypto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .crypto-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+  .crypto-card h4 { margin: 0 0 8px; font-size: 14px; }
+  .crypto-card .cc-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; opacity: 0.5; margin-bottom: 6px; }
+  .crypto-card p { font-size: 13px; color: var(--text-muted); margin: 3px 0; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .pillar-grid { grid-template-columns: repeat(2, 1fr); }
+    .flow-row { flex-direction: column; }
+    .sf-scale { flex-wrap: wrap; }
+    .attack-grid { grid-template-columns: 1fr; }
+    .crypto-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 7</div>
+  <h1>Internet věcí (IoT)</h1>
+  <p>Architektura • Hardware • Čtyři pilíře • LoRa • Zabezpečení • Kryptografie • Fyzické útoky</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#co-je-iot">Co je Internet věcí</a></li>
+    <li><a href="#ctyri-pilire">Čtyři pilíře IoT</a></li>
+    <li><a href="#hardware">Hardware pro IoT – MCU/SoC</a></li>
+    <li><a href="#napajeni">Napájení a úspora energie</a></li>
+    <li><a href="#wpan-wlan">WPAN a WLAN – BLE, Zigbee, WiFi</a></li>
+    <li><a href="#lpwan">LPWAN – LoRa / LoRaWAN</a></li>
+    <li><a href="#lora-detail">LoRa – detaily a architektura</a></li>
+    <li><a href="#hrozby">Zabezpečení IoT – hrozby a útoky</a></li>
+    <li><a href="#kryptografie">Kryptografie pro IoT</a></li>
+    <li><a href="#tls-boot">TLS, Secure Boot a OTA</a></li>
+    <li><a href="#fyzicke-utoky">Fyzické útoky</a></li>
+    <li><a href="#obrana">Obrana proti fyzickým útokům</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 CO JE IoT -->
+<section class="section" id="co-je-iot">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Co je Internet věcí</h2>
+  </div>
+
+  <p><strong>Internet of Things (IoT)</strong> je síť fyzických objektů („věcí") vybavených senzory, softwarem a konektivitou, které umožňují sběr a výměnu dat přes internet. Komunikace <strong>M2M</strong> (Machine to Machine) bez lidského zásahu.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-3);">Klíčové charakteristiky</div>
+    <ul>
+      <li><strong>Senzory</strong> – měření fyzikálních veličin</li>
+      <li><strong>Konektivita</strong> – připojení k internetu/síti</li>
+      <li><strong>Procesování dat</strong> – lokálně nebo v cloudu</li>
+      <li><strong>Aktuátory</strong> – ovládání zařízení</li>
+      <li><strong>Autonomie</strong> – funguje bez lidského zásahu</li>
+    </ul>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Smart Home</h4>
+      <p>Termostat Nest, žárovky Philips Hue, kamery, zámky.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Wearables</h4>
+      <p>Fitness trackery, smartwatches, health monitoring.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Průmysl 4.0</h4>
+      <p>Prediktivní údržba, monitoring strojů, asset tracking.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Smart Cities</h4>
+      <p>Parkování, doprava, osvětlení, waste management.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Statistiky</div>
+    <ul>
+      <li><strong>2023:</strong> ~15 miliard IoT zařízení</li>
+      <li><strong>2030:</strong> predikce 30+ miliard zařízení</li>
+      <li>Každou sekundu připojeno <strong>~127 nových zařízení</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 ČTYŘI PILÍŘE -->
+<section class="section" id="ctyri-pilire">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Čtyři pilíře IoT</h2>
+  </div>
+
+  <p>IoT stojí na <strong>4 základních pilířích</strong> (IoT stack):</p>
+
+  <div class="pillar-grid">
+    <div class="pillar" style="background:rgba(52,211,153,0.1);color:var(--accent-3)">
+      <div class="pillar-icon">📡</div>
+      <div class="pillar-num">PILÍŘ 1</div>
+      <div class="pillar-name">Sensing</div>
+      <div class="pillar-desc">Senzory &amp; aktuátory</div>
+    </div>
+    <div class="pillar" style="background:rgba(96,165,250,0.1);color:var(--accent-1)">
+      <div class="pillar-icon">⚙️</div>
+      <div class="pillar-num">PILÍŘ 2</div>
+      <div class="pillar-name">Computing</div>
+      <div class="pillar-desc">Edge &amp; Cloud</div>
+    </div>
+    <div class="pillar" style="background:rgba(167,139,250,0.1);color:var(--accent-2)">
+      <div class="pillar-icon">🌐</div>
+      <div class="pillar-num">PILÍŘ 3</div>
+      <div class="pillar-name">Connectivity</div>
+      <div class="pillar-desc">BLE / WiFi / LoRa</div>
+    </div>
+    <div class="pillar" style="background:rgba(251,191,36,0.1);color:var(--accent-4)">
+      <div class="pillar-icon">📊</div>
+      <div class="pillar-num">PILÍŘ 4</div>
+      <div class="pillar-name">Analytics</div>
+      <div class="pillar-desc">Data &amp; ML</div>
+    </div>
+  </div>
+
+  <h3>1. Sensing (Snímání)</h3>
+  <p>Senzory převádějí fyzikální veličiny na elektrické signály.</p>
+
+  <table class="compare-table">
+    <tr><th>Veličina</th><th>Senzory</th></tr>
+    <tr><td>Teplota</td><td>DHT22, DS18B20, BMP280</td></tr>
+    <tr><td>Vlhkost</td><td>DHT22, AHT20, SHT31</td></tr>
+    <tr><td>Tlak</td><td>BMP280, BME680</td></tr>
+    <tr><td>Pohyb</td><td>PIR, MPU6050 (gyro/accel), radar</td></tr>
+    <tr><td>Vzdálenost</td><td>Ultrasonic HC-SR04, ToF VL53L0X</td></tr>
+    <tr><td>Světlo</td><td>LDR, BH1750</td></tr>
+    <tr><td>Kvalita vzduchu</td><td>MQ-135, CCS811, SDS011</td></tr>
+    <tr><td>GPS</td><td>NEO-6M, NEO-M8N</td></tr>
+  </table>
+
+  <p><strong>Aktuátory</strong> (opačný směr): LED, relé, servo/stepper motory, piezo, displeje.</p>
+
+  <h3>2. Computing (Výpočty)</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Edge Computing</h4>
+      <p>Zpracování lokálně na zařízení. Rychlé, funguje offline. Příklad: kamera s TensorFlow Lite detekuje osobu lokálně.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Cloud Computing</h4>
+      <p>Zpracování na serveru. AI/ML, úložiště, big data analýza. Vyžaduje konektivitu.</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Hybrid přístup</div>
+    <p style="margin-bottom:0"><strong>Kritické zpracování lokálně</strong> (rychlá reakce, privacy) + <strong>analytika v cloudu</strong> (ML modely, dashboardy). Nejčastější architektura v praxi.</p>
+  </div>
+
+  <h3>3. Connectivity (Konektivita)</h3>
+  <p>Komunikace mezi zařízeními a cloudem. Různé technologie podle požadavků:</p>
+
+  <table class="compare-table">
+    <tr><th>Kategorie</th><th>Technologie</th><th>Dosah</th></tr>
+    <tr><td><strong>PAN</strong> (Personal)</td><td>Bluetooth, BLE, Zigbee</td><td>~10 m</td></tr>
+    <tr><td><strong>LAN</strong> (Local)</td><td>WiFi, Ethernet</td><td>~100 m</td></tr>
+    <tr><td><strong>WAN</strong> (Wide)</td><td>Cellular (4G/5G), LoRa, Sigfox</td><td>km</td></tr>
+  </table>
+
+  <h3>4. Data Analytics (Analytika)</h3>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Úrovně analytiky</div>
+    <div class="steps">
+      <div class="step"><div class="step-num" style="color:var(--accent-1)">D</div><div class="step-content"><div class="step-label">Descriptive – Co se stalo?</div><div class="step-desc">Dashboardy, grafy, historická data</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-6)">D</div><div class="step-content"><div class="step-label">Diagnostic – Proč se to stalo?</div><div class="step-desc">Root cause analysis</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-2)">P</div><div class="step-content"><div class="step-label">Predictive – Co se stane?</div><div class="step-desc">ML predikce, anomaly detection</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-3)">P</div><div class="step-content"><div class="step-label">Prescriptive – Co udělat?</div><div class="step-desc">Automatizované akce, optimalizace</div></div></div>
+    </div>
+  </div>
+
+  <p><strong>Cloud platformy:</strong> AWS IoT Core, Azure IoT Hub, Google Cloud IoT, ThingSpeak, Blynk.</p>
+</section>
+
+<!-- 03 HARDWARE -->
+<section class="section" id="hardware">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Hardware pro IoT – MCU/SoC</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Požadavky na IoT MCU</div>
+    <ul>
+      <li><strong>Nízká spotřeba</strong> – bateriový provoz (roky!)</li>
+      <li><strong>Wireless konektivita</strong> – WiFi/BLE/LoRa integrovaná</li>
+      <li><strong>Periférie</strong> – ADC, SPI/I2C, GPIO</li>
+      <li><strong>Bezpečnost</strong> – crypto akcelerátor, secure boot</li>
+      <li><strong>Cena</strong> – miliony zařízení → každý cent počítá</li>
+    </ul>
+  </div>
+
+  <h3>Populární IoT MCU/SoC</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">ESP32 (Espressif)</h4>
+      <p>Dual-core Xtensa 32-bit @ 240 MHz. <strong>WiFi + BLE 4.2</strong>. 512 KB SRAM, 4 MB Flash. Deep sleep 5 μA. Cena: $2–4.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">ESP8266 (Espressif)</h4>
+      <p>Single-core @ 80 MHz. <strong>WiFi only</strong>. Levnější (~$1–2). Stále velmi populární pro jednoduché projekty.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">nRF52840 (Nordic)</h4>
+      <p>ARM Cortex-M4 @ 64 MHz. <strong>BLE 5.0, Thread, Zigbee</strong>. Ultra-low power 4.8 μA. Crypto akcelerátor.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">STM32 WL (ST Micro)</h4>
+      <p>ARM Cortex-M4 + <strong>LoRa radio integrované</strong>! Sub-GHz (868/915 MHz). Ideální pro LPWAN.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 NAPÁJENÍ -->
+<section class="section" id="napajeni">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Napájení a úspora energie</h2>
+  </div>
+
+  <p>IoT zařízení jsou často bateriová – musí vydržet <strong>roky</strong>. Klíčem jsou <strong>power modes</strong> a duty cycling.</p>
+
+  <h3>Power Modes</h3>
+
+  <div class="power-bars">
+    <div class="power-bar">
+      <span class="pb-label">Active</span>
+      <div class="pb-bar" style="width:100%;background:rgba(248,113,113,0.3);color:var(--accent-5)">Vše běží – CPU, WiFi, periférie</div>
+      <span class="pb-value" style="color:var(--accent-5)">20–100 mA</span>
+    </div>
+    <div class="power-bar">
+      <span class="pb-label">Light Sleep</span>
+      <div class="pb-bar" style="width:50%;background:rgba(251,191,36,0.3);color:var(--accent-4)">CPU stop, periférie on</div>
+      <span class="pb-value" style="color:var(--accent-4)">~800 μA</span>
+    </div>
+    <div class="power-bar">
+      <span class="pb-label">Deep Sleep</span>
+      <div class="pb-bar" style="width:15%;background:rgba(96,165,250,0.3);color:var(--accent-1)">Jen RTC</div>
+      <span class="pb-value" style="color:var(--accent-1)">5–10 μA</span>
+    </div>
+    <div class="power-bar">
+      <span class="pb-label">Hibernation</span>
+      <div class="pb-bar" style="width:6%;background:rgba(52,211,153,0.3);color:var(--accent-3)">Min</div>
+      <span class="pb-value" style="color:var(--accent-3)">~1 μA</span>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Strategie úspory energie</div>
+    <ul>
+      <li><strong>Sleep majority času</strong> – wake jen pro měření a TX</li>
+      <li><strong>Duty cycle</strong> – např. 1% active, 99% sleep</li>
+      <li><strong>Snížit TX power</strong> – kratší dosah ale úspora</li>
+      <li><strong>Batch data</strong> – shromažďuj, pošli najednou</li>
+    </ul>
+  </div>
+
+  <h3>Energy Harvesting</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Solární panel</h4>
+      <p>Outdoor zařízení. Nejčastější harvesting.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Piezo / Vibrace</h4>
+      <p>Mechanická energie z vibrací strojů.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">RF Harvesting</h4>
+      <p>Energie z WiFi/cellular signálů.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Termoelektrické</h4>
+      <p>Energie z rozdílu teplot (Peltier).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 WPAN WLAN -->
+<section class="section" id="wpan-wlan">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>WPAN a WLAN – BLE, Zigbee, WiFi</h2>
+  </div>
+
+  <h3>Bluetooth Low Energy (BLE)</h3>
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">BLE parametry</div>
+    <ul>
+      <li><strong>Dosah:</strong> 10–100 m</li>
+      <li><strong>Data rate:</strong> 1–2 Mbps</li>
+      <li><strong>Spotřeba:</strong> velmi nízká (μA v sleep)</li>
+      <li><strong>Frekvence:</strong> 2.4 GHz ISM</li>
+      <li><strong>Topologie:</strong> point-to-point, star, mesh (BLE Mesh)</li>
+      <li><strong>Použití:</strong> wearables, beacony, proximity</li>
+    </ul>
+  </div>
+
+  <h3>Zigbee</h3>
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">Zigbee parametry</div>
+    <ul>
+      <li><strong>Dosah:</strong> 10–100 m</li>
+      <li><strong>Data rate:</strong> 250 kbps</li>
+      <li><strong>Frekvence:</strong> 2.4 GHz</li>
+      <li><strong>Topologie:</strong> <strong>mesh</strong> – self-healing network</li>
+      <li><strong>Až 65 000 nodes</strong> v jedné síti</li>
+      <li><strong>Použití:</strong> smart home (Philips Hue, IKEA Tradfri)</li>
+    </ul>
+  </div>
+
+  <h3>WiFi (802.11)</h3>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">WiFi parametry</div>
+    <ul>
+      <li><strong>Dosah:</strong> 50–100 m indoor</li>
+      <li><strong>Data rate:</strong> 1–1000+ Mbps (podle standardu)</li>
+      <li><strong>Spotřeba:</strong> vyšší než BLE/Zigbee</li>
+      <li><strong>Frekvence:</strong> 2.4 GHz, 5 GHz</li>
+      <li><strong>Výhody:</strong> vysoká rychlost, přímý internet access</li>
+      <li><strong>Nevýhody:</strong> vyšší spotřeba</li>
+      <li><strong>Použití:</strong> kamery, smart displaye, home automation</li>
+    </ul>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>BLE</th><th>Zigbee</th><th>WiFi</th></tr>
+    <tr><td>Dosah</td><td>10–100 m</td><td>10–100 m</td><td>50–100 m</td></tr>
+    <tr><td>Data rate</td><td>1–2 Mbps</td><td>250 kbps</td><td>1–1000+ Mbps</td></tr>
+    <tr><td>Spotřeba</td><td style="color:var(--accent-3)">Velmi nízká</td><td style="color:var(--accent-3)">Nízká</td><td style="color:var(--accent-5)">Vyšší</td></tr>
+    <tr><td>Mesh</td><td>BLE Mesh</td><td style="color:var(--accent-3)"><strong>Ano (native)</strong></td><td>Ne</td></tr>
+    <tr><td>Max nodes</td><td>~32 000</td><td style="color:var(--accent-3)"><strong>65 000</strong></td><td>~250</td></tr>
+  </table>
+</section>
+
+<!-- 06 LPWAN -->
+<section class="section" id="lpwan">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>LPWAN – LoRa / LoRaWAN</h2>
+  </div>
+
+  <p><strong>LPWAN</strong> (Low Power Wide Area Network) – dlouhý dosah (km), velmi nízká spotřeba, nízký data rate. Ideální pro <strong>battery-powered outdoor sensors</strong>.</p>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Co je LoRa?</div>
+    <p><strong>LoRa</strong> je proprietární <strong>fyzická vrstva (PHY)</strong> vyvinutá Semtech. Používá <strong>Chirp Spread Spectrum (CSS)</strong> modulaci pro dlouhý dosah a odolnost vůči interferenci.</p>
+    <p style="margin-bottom:0"><strong>LoRa</strong> = fyzická vrstva (radio modulace). <strong>LoRaWAN</strong> = MAC protokol nad LoRa (network layer).</p>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Parametr</th><th>Hodnota</th></tr>
+    <tr><td>Dosah (urban)</td><td><strong>2–5 km</strong></td></tr>
+    <tr><td>Dosah (rural)</td><td><strong>15+ km</strong></td></tr>
+    <tr><td>Dosah (line of sight)</td><td><strong>200+ km</strong> (rekord)</td></tr>
+    <tr><td>Data rate</td><td>0.3 – 50 kbps (podle SF)</td></tr>
+    <tr><td>Frekvence</td><td>Sub-GHz ISM (EU: 868 MHz, US: 915 MHz)</td></tr>
+    <tr><td>Spotřeba TX</td><td>20–120 mA</td></tr>
+    <tr><td>Spotřeba sleep</td><td>1–2 μA</td></tr>
+  </table>
+
+  <h3>Spreading Factor (SF)</h3>
+  <p>SF určuje trade-off mezi <strong>rychlostí a dosahem</strong>. SF7–SF12:</p>
+
+  <div class="sf-scale">
+    <div class="sf-bar" style="height:50px;background:rgba(52,211,153,0.25);color:var(--accent-3)">SF7<span class="sf-label">5.5 kbps</span><span class="sf-label">kratší</span></div>
+    <div class="sf-bar" style="height:65px;background:rgba(52,211,153,0.2);color:var(--accent-3)">SF8<span class="sf-label">3.1 kbps</span></div>
+    <div class="sf-bar" style="height:80px;background:rgba(251,191,36,0.2);color:var(--accent-4)">SF9<span class="sf-label">1.8 kbps</span></div>
+    <div class="sf-bar" style="height:95px;background:rgba(251,191,36,0.2);color:var(--accent-4)">SF10<span class="sf-label">980 bps</span></div>
+    <div class="sf-bar" style="height:110px;background:rgba(251,146,60,0.2);color:var(--accent-6)">SF11<span class="sf-label">440 bps</span></div>
+    <div class="sf-bar" style="height:130px;background:rgba(248,113,113,0.2);color:var(--accent-5)">SF12<span class="sf-label">250 bps</span><span class="sf-label">delší dosah</span></div>
+  </div>
+
+  <div class="formula">
+    Vyšší SF = pomalejší přenos, delší airtime, vyšší šance na příjem
+    <div class="f-small">SF7 = nejrychlejší, nejkratší dosah → SF12 = nejpomalejší, nejdelší dosah</div>
+  </div>
+</section>
+
+<!-- 07 LORA DETAIL -->
+<section class="section" id="lora-detail">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>LoRa – detaily a architektura</h2>
+  </div>
+
+  <h3>LoRaWAN architektura</h3>
+
+  <div class="arch-flow">
+    <div class="arch-label">LoRaWAN ARCHITEKTURA</div>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">
+        End Devices
+        <div style="font-size:9px;opacity:0.7">Senzory + LoRa</div>
+      </div>
+      <div class="flow-arrow">→ LoRa RF →</div>
+      <div class="flow-box" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">
+        Gateway
+        <div style="font-size:9px;opacity:0.7">Forward zpráv</div>
+      </div>
+      <div class="flow-arrow">→ IP →</div>
+      <div class="flow-box" style="background:rgba(167,139,250,0.15);color:var(--accent-2)">
+        Network Server
+        <div style="font-size:9px;opacity:0.7">MAC, de-duplikace</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:rgba(251,191,36,0.15);color:var(--accent-4)">
+        App Server
+        <div style="font-size:9px;opacity:0.7">Aplikační logika</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>LoRaWAN device třídy</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Class A</h4>
+      <p><strong>Nejnižší spotřeba.</strong> RX okno jen po TX (2 krátká okna). Většina senzorů.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Class B</h4>
+      <p><strong>Scheduled RX windows.</strong> Periodické poslouchání synchronizované beaconem.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Class C</h4>
+      <p><strong>Kontinuální RX.</strong> Nejvyšší spotřeba, ale nejnižší latence. Aktuátory.</p>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Výhody vs Nevýhody LoRa</div>
+    <table class="compare-table">
+      <tr><th style="color:var(--accent-3)">Výhody</th><th style="color:var(--accent-5)">Nevýhody</th></tr>
+      <tr><td>Extrémní dosah (km)</td><td>Nízký data rate (kbps)</td></tr>
+      <tr><td>Nízká spotřeba – baterie roky</td><td>Duty cycle omezení (EU 1% @ 868 MHz)</td></tr>
+      <tr><td>Deep indoor penetrace</td><td>Latence (několik sekund)</td></tr>
+      <tr><td>Odolnost vůči interferenci (CSS)</td><td>Není pro real-time streaming</td></tr>
+    </table>
+  </div>
+
+  <h3>Použití LoRa</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Smart Agriculture</h4>
+      <p>Monitoring půdy, vlhkosti, počasí na farmách.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Smart Cities</h4>
+      <p>Parkování, waste management, monitoring infrastruktury.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Asset Tracking</h4>
+      <p>GPS tracker s low power – kontejnery, zásilky.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Utility Metering</h4>
+      <p>Odečty vody, elektřiny, plynu.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Další LPWAN technologie</h3>
+  <table class="compare-table">
+    <tr><th>Technologie</th><th>Data rate</th><th>Dosah</th><th>Poznámka</th></tr>
+    <tr><td><strong>Sigfox</strong></td><td>100 bps</td><td>50 km</td><td>Ultra-narrow band</td></tr>
+    <tr><td><strong>NB-IoT</strong></td><td>200 kbps</td><td>km</td><td>Cellular, licensed spectrum</td></tr>
+    <tr><td><strong>LTE-M</strong></td><td>1 Mbps</td><td>km</td><td>Cellular, mobility support</td></tr>
+  </table>
+</section>
+
+<!-- 08 HROZBY -->
+<section class="section" id="hrozby">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Zabezpečení IoT – hrozby a útoky</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Proč je bezpečnost kritická?</div>
+    <ul>
+      <li><strong>Miliardy zařízení</strong> připojených k internetu</li>
+      <li>Často <strong>slabé heslo nebo žádné</strong></li>
+      <li>Firmware updates vzácné/nemožné</li>
+      <li><strong>Botnet riziko</strong> – Mirai DDoS útok 2016</li>
+      <li><strong>Privacy</strong> – kamery, mikrofony, senzory v domě</li>
+    </ul>
+  </div>
+
+  <h3>Network útoky</h3>
+  <div class="attack-grid">
+    <div class="attack-card" style="border-left:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Man-in-the-Middle</h4>
+      <p>Zachytávání a modifikace komunikace mezi zařízeními.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Replay Attack</h4>
+      <p>Opakování zachycené legitimní zprávy pro neoprávněný přístup.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Jamming</h4>
+      <p>Rušení RF signálu – znemožnění komunikace.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-7)">
+      <h4 style="color:var(--accent-7)">DDoS</h4>
+      <p>Distributed Denial of Service – zahlcení serveru.</p>
+    </div>
+  </div>
+
+  <h3>Software útoky</h3>
+  <div class="attack-grid">
+    <div class="attack-card" style="border-left:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Malware</h4>
+      <p>Trojany, ransomware infikující IoT zařízení.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Buffer Overflow</h4>
+      <p>Exploit chyby ve firmwaru pro spuštění škodlivého kódu.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Default Credentials</h4>
+      <p>admin/admin – nezměněná výchozí hesla.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-7)">
+      <h4 style="color:var(--accent-7)">FW Downgrade</h4>
+      <p>Rollback na starší, zranitelnou verzi firmwaru.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 KRYPTOGRAFIE -->
+<section class="section" id="kryptografie">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Kryptografie pro IoT</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Cíle kryptografie</div>
+    <ul>
+      <li><strong>Confidentiality</strong> – nikdo cizí nemůže číst data</li>
+      <li><strong>Integrity</strong> – data nebyla změněna</li>
+      <li><strong>Authentication</strong> – ověření identity odesílatele</li>
+      <li><strong>Non-repudiation</strong> – nelze popřít autorství zprávy</li>
+    </ul>
+  </div>
+
+  <h3>Symetrická kryptografie</h3>
+  <p><strong>Stejný klíč</strong> pro šifrování i dešifrování.</p>
+
+  <div class="crypto-grid">
+    <div class="crypto-card" style="border-top:3px solid var(--accent-3)">
+      <div class="cc-type">SYMETRICKÁ</div>
+      <h4 style="color:var(--accent-3)">AES (Advanced Encryption Standard)</h4>
+      <p><strong>Nejpoužívanější</strong> symetrický algoritmus</p>
+      <p>Klíč: 128, 192, 256 bitů</p>
+      <p>Block cipher – bloky 128 bitů</p>
+      <p><strong>Rychlý</strong> – HW akcelerátor v MCU</p>
+      <p>Módy: ECB, CBC, CTR, GCM</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Příklad použití AES</div>
+    <p style="margin-bottom:0">Sensor data šifrována <strong>AES-128</strong> před odesláním. Gateway dešifruje pomocí <strong>shared key</strong>. Rychlé a efektivní pro MCU.</p>
+  </div>
+
+  <h3>Asymetrická kryptografie</h3>
+  <p>Pár klíčů – <strong>public</strong> (veřejný) a <strong>private</strong> (soukromý).</p>
+
+  <div class="crypto-grid">
+    <div class="crypto-card" style="border-top:3px solid var(--accent-6)">
+      <div class="cc-type">ASYMETRICKÁ</div>
+      <h4 style="color:var(--accent-6)">RSA</h4>
+      <p>Klíč: 1024–4096 bitů</p>
+      <p><strong>POMALÝ</strong> – nevhodný pro šifrování dat</p>
+      <p>Použití: digitální podpisy, key exchange</p>
+    </div>
+    <div class="crypto-card" style="border-top:3px solid var(--accent-2)">
+      <div class="cc-type">ASYMETRICKÁ – PREFEROVÁNO PRO IoT</div>
+      <h4 style="color:var(--accent-2)">ECC (Elliptic Curve)</h4>
+      <p><strong>256-bit ECC ≈ 3072-bit RSA</strong> (kratší klíče!)</p>
+      <p>Rychlejší než RSA</p>
+      <p>ECDSA – digitální podpisy</p>
+      <p>ECDH – key exchange</p>
+      <p style="color:var(--accent-3)"><strong>Preferováno pro IoT</strong> (menší klíče, nižší spotřeba)</p>
+    </div>
+  </div>
+
+  <h3>Hash funkce a HMAC</h3>
+
+  <div class="crypto-grid">
+    <div class="crypto-card" style="border-top:3px solid var(--accent-4)">
+      <div class="cc-type">HASH</div>
+      <h4 style="color:var(--accent-4)">SHA-256</h4>
+      <p>Jednosměrná funkce → fixed-size hash (256 bitů / 32 B)</p>
+      <p>Collision resistant</p>
+      <p>Použití: integrity check, digital signatures</p>
+    </div>
+    <div class="crypto-card" style="border-top:3px solid var(--accent-7)">
+      <div class="cc-type">MAC</div>
+      <h4 style="color:var(--accent-7)">HMAC</h4>
+      <p>Hash + secret key</p>
+      <p>Ověřuje <strong>autenticitu i integritu</strong> zprávy</p>
+      <p><code>HMAC-SHA256(message, key) = hash</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 TLS BOOT -->
+<section class="section" id="tls-boot">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>TLS, Secure Boot a OTA</h2>
+  </div>
+
+  <h3>TLS (Transport Layer Security)</h3>
+  <p>Protokol pro zabezpečenou komunikaci přes síť. <strong>HTTPS = HTTP + TLS</strong>.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">TLS Handshake (zjednodušeně)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Client Hello</div><div class="step-desc">Klient pošle podporované cipher suites</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Server Hello + Certificate</div><div class="step-desc">Server pošle svůj certifikát (public key)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Key Exchange</div><div class="step-desc">ECDH/RSA pro vygenerování session key</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Finished</div><div class="step-desc">Obě strany potvrdí parametry</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Encrypted Communication</div><div class="step-desc">Veškerá komunikace šifrována AES session key</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">DTLS (Datagram TLS)</div>
+    <p style="margin-bottom:0">TLS pro <strong>UDP</strong>. Používá se v <strong>CoAP</strong> (Constrained Application Protocol) – lehký protokol pro IoT zařízení.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Secure Boot</h3>
+  <p>Ověří <strong>digitální podpis firmwaru</strong> při boot. Pokud neplatný → nebootne.</p>
+
+  <div class="arch-flow">
+    <div class="arch-label">SECURE BOOT PROCES</div>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">
+        Bootloader
+        <div style="font-size:9px;opacity:0.7">Veřejný klíč výrobce</div>
+      </div>
+      <div class="flow-arrow">→ ověří →</div>
+      <div class="flow-box" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">
+        FW Podpis
+        <div style="font-size:9px;opacity:0.7">Soukromý klíč výrobce</div>
+      </div>
+      <div class="flow-arrow">→ OK? →</div>
+      <div class="flow-box" style="background:rgba(251,191,36,0.15);color:var(--accent-4)">
+        Boot FW
+        <div style="font-size:9px;opacity:0.7">Nebo STOP!</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>OTA (Over-The-Air) Update</h3>
+  <p>Firmware update přes síť (WiFi/cellular). Bezpečný OTA vyžaduje:</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Bezpečný OTA proces</div>
+    <ul>
+      <li><strong>Šifrovaný download</strong> – TLS</li>
+      <li><strong>Digitální podpis</strong> – ověření autenticity FW</li>
+      <li><strong>Rollback protection</strong> – version number check</li>
+      <li><strong>Dual partition (A/B boot)</strong> – fallback pokud update failed</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11 FYZICKÉ ÚTOKY -->
+<section class="section" id="fyzicke-utoky">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Fyzické útoky</h2>
+  </div>
+
+  <p>IoT zařízení jsou často <strong>fyzicky přístupná</strong> (na sloupu, v poli, na stěně) → musí odolat fyzickým útokům.</p>
+
+  <h3>1. Side-Channel Attacks</h3>
+  <p>Analýza <strong>vedlejších projevů</strong> (side effects) během kryptografických operací.</p>
+
+  <div class="attack-grid">
+    <div class="attack-card" style="border-left:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Power Analysis</h4>
+      <ul>
+        <li><strong>SPA</strong> (Simple) – měří spotřebu během crypto</li>
+        <li><strong>DPA</strong> (Differential) – statistická analýza</li>
+        <li>Cíl: extrahovat crypto klíč!</li>
+      </ul>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Timing Attack</h4>
+      <p>Měří čas trvání operací. Různé hodnoty → různý čas.</p>
+      <p style="color:var(--accent-3)">Obrana: constant-time algorithms</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">EM Analysis</h4>
+      <p>Měří elektromagnetické emise z CPU/krypto chipů. Podobné power analysis.</p>
+    </div>
+  </div>
+
+  <h3>2. Invasive Attacks</h3>
+  <p>Fyzická modifikace čipu – pokročilé a drahé.</p>
+
+  <div class="attack-grid">
+    <div class="attack-card" style="border-left:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Chip Decapsulation</h4>
+      <p>Chemicky odstranit plastic package, exponovat die.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Microprobing</h4>
+      <p>Mikroskopická sonda pro čtení/modifikaci signálů na die.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-7)">
+      <h4 style="color:var(--accent-7)">Focused Ion Beam (FIB)</h4>
+      <p>Přesně odstranit/přidat materiál na čipu. Extrémně pokročilé.</p>
+    </div>
+  </div>
+
+  <h3>3. Semi-Invasive – Fault Injection</h3>
+  <p>Vyvolat <strong>chybu v běhu programu</strong> pro bypass security.</p>
+
+  <div class="attack-grid">
+    <div class="attack-card" style="border-left:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Voltage Glitching</h4>
+      <p>Krátký drop/spike napětí → přeskočí instrukci.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Clock Glitching</h4>
+      <p>Manipulace clock signálu → špatné dekódování instrukce.</p>
+    </div>
+    <div class="attack-card" style="border-left:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Laser Fault Injection</h4>
+      <p>Zaměřený laser na čip → bitflip v registru/paměti.</p>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Příklad Glitch útoku</div>
+    <div class="cli">
+      <span class="kw">if</span> (password_correct) { <span class="cmd">unlock</span>(); }<br>
+      <span class="comment">// Voltage glitch může přeskočit IF check</span><br>
+      <span class="comment">// → unauthorized access bez hesla!</span>
+    </div>
+  </div>
+</section>
+
+<!-- 12 OBRANA -->
+<section class="section" id="obrana">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Obrana proti fyzickým útokům</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">HSM / Secure Element</h4>
+      <p>Dedikovaný crypto chip (TPM). <strong>Klíče nikdy neopustí čip.</strong> Tamper-resistant packaging.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Secure Enclave</h4>
+      <p>Izolovaná část CPU pro security operace. <strong>ARM TrustZone</strong>, Apple Secure Enclave.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Tamper Detection</h4>
+      <p>Sensory detekující opening case, voltage glitch. Reakce: <strong>smazat klíče, lock device</strong>.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Code Obfuscation</h4>
+      <p>Ztížit reverse engineering. Dummy operace maskují spotřebu.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Flash Encryption</h4>
+      <p>FW šifrován ve Flash, dešifrován on-the-fly. Čtení extractorem → <strong>nečitelné</strong>.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">JTAG/Debug Protection</h4>
+      <p>Disable JTAG v produkci. Nebo lock s heslem. Znemožní debugging.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">CO JE IoT + ČTYŘI PILÍŘE</p>
+    <ul>
+      <li><strong>IoT</strong> = síť fyzických objektů se senzory a konektivitou. M2M komunikace, 15+ miliard zařízení</li>
+      <li><strong>4 pilíře:</strong> Sensing (senzory) → Computing (Edge/Cloud) → Connectivity (BLE/WiFi/LoRa) → Analytics (ML, dashboardy)</li>
+      <li>MCU: <strong>ESP32</strong> (WiFi/BLE), <strong>nRF52</strong> (BLE), <strong>STM32WL</strong> (LoRa)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">NAPÁJENÍ</p>
+    <ul>
+      <li><strong>Power modes:</strong> Active (mA) → Light Sleep (800 μA) → Deep Sleep (5 μA) → Hibernation (1 μA)</li>
+      <li><strong>Strategie:</strong> duty cycle (99% sleep), batch data, snížit TX power</li>
+      <li><strong>Energy harvesting:</strong> solar, piezo, RF, termo</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">KOMUNIKACE</p>
+    <ul>
+      <li><strong>WPAN:</strong> BLE (10–100 m, μA), Zigbee (mesh, 250 kbps, 65k nodes)</li>
+      <li><strong>WLAN:</strong> WiFi (50–100 m, Mbps, vyšší spotřeba)</li>
+      <li><strong>LPWAN:</strong> LoRa/LoRaWAN (2–15 km, 0.3–50 kbps, CSS modulace)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">LoRa DETAILY</p>
+    <ul>
+      <li><strong>LoRa</strong> = PHY layer (CSS). <strong>LoRaWAN</strong> = MAC protocol</li>
+      <li><strong>SF7–SF12:</strong> trade-off rychlost ↔ dosah. SF7 = 5.5 kbps/kratší, SF12 = 250 bps/delší</li>
+      <li><strong>Architektura:</strong> End Device → Gateway → Network Server → App Server</li>
+      <li><strong>Class A</strong> (low power) / <strong>B</strong> (scheduled) / <strong>C</strong> (continuous RX)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">ZABEZPEČENÍ + KRYPTOGRAFIE</p>
+    <ul>
+      <li><strong>Hrozby:</strong> MitM, replay, jamming, DDoS, malware, default creds</li>
+      <li><strong>Symetrická:</strong> AES-128/256 (rychlé, šifrování dat, HW akcelerátor)</li>
+      <li><strong>Asymetrická:</strong> RSA (pomalé), <strong>ECC</strong> (preferováno pro IoT – kratší klíče)</li>
+      <li><strong>Hash:</strong> SHA-256, HMAC (integrity + authentication)</li>
+      <li><strong>TLS/DTLS</strong> pro zabezpečenou komunikaci. Secure Boot + OTA s podpisy</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">FYZICKÉ ÚTOKY + OBRANA</p>
+    <ul>
+      <li><strong>Side-channel:</strong> power analysis (SPA/DPA), timing attack, EM analysis</li>
+      <li><strong>Invasive:</strong> decapsulation, microprobing, FIB</li>
+      <li><strong>Fault injection:</strong> voltage/clock/laser glitching → přeskočení IF checku</li>
+      <li><strong>Obrana:</strong> HSM/Secure Element, ARM TrustZone, tamper detection, Flash encryption, JTAG disable</li>
+    </ul>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Zlaté pravidlo</div>
+    <p style="margin-bottom:0"><strong>Security by Design</strong> – bezpečnost musí být od začátku! Kryptografie (AES/ECC/SHA-256) + Secure Boot + fyzická ochrana = <strong>multi-layer defense</strong>. Každá vrstva chrání tu další.</p>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

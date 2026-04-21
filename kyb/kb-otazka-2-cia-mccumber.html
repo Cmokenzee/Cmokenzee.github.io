@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 2: CIA triáda, McCumber Cube</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a0f2e 40%,#2e0f28 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(232,121,249,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--kb);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--kb);background:rgba(232,121,249,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* CIA pillars */
+.cia-triad{display:flex;justify-content:center;gap:16px;margin:20px 0;flex-wrap:wrap}
+.cia-pillar{text-align:center;padding:24px 20px;border-radius:12px;min-width:160px;flex:1;max-width:220px}
+.cia-pillar .cp-icon{font-size:28px;display:block;margin-bottom:8px}
+.cia-pillar .cp-name{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:block}
+.cia-pillar .cp-q{font-size:11px;margin-top:4px;opacity:.7;font-style:italic}
+/* AAA cards */
+.aaa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.aaa-card{text-align:center;padding:18px 14px;border-radius:10px;font-family:'JetBrains Mono',monospace}
+.aaa-card .ac-letter{font-size:28px;font-weight:700;display:block}
+.aaa-card .ac-name{font-size:11px;margin-top:4px;display:block}
+.aaa-card .ac-q{font-size:10px;margin-top:6px;font-family:'DM Sans',sans-serif;opacity:.8}
+/* McCumber Cube */
+.cube-visual{background:#0d0f14;border:1px solid var(--border);border-radius:12px;padding:28px 24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:20px}
+.cube-axes{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.cube-axis{min-width:180px;flex:1;max-width:240px}
+.cube-axis-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;text-align:center;font-weight:600}
+.cube-item{padding:8px 12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-align:center;margin:4px 0}
+.cube-item .ci-sub{font-size:9px;font-weight:400;opacity:.7;font-family:'DM Sans',sans-serif;margin-top:2px}
+/* State cards with icons */
+.state-card{position:relative;overflow:hidden;border-radius:10px;padding:20px 22px;margin:12px 0;background:var(--bg-card);border:1px solid var(--border)}
+.state-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.sc-storage::before{background:var(--accent-1)}.sc-transit::before{background:var(--accent-3)}.sc-process::before{background:var(--accent-4)}
+.state-card .sc-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.state-card .sc-icon{font-size:20px}.state-card .sc-title{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+.state-card .sc-en{font-size:10px;color:var(--text-muted);font-family:'JetBrains Mono',monospace}
+/* Auth factors */
+.factor-row{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+.factor{flex:1;min-width:140px;padding:14px;border-radius:8px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px}
+.factor .f-icon{font-size:22px;display:block;margin-bottom:6px}
+.factor .f-name{font-weight:700;font-size:12px;display:block}
+.factor .f-examples{font-size:9px;font-family:'DM Sans',sans-serif;margin-top:4px;opacity:.8}
+/* Measure pillars */
+.measure-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.measure-card{padding:16px;border-radius:10px;text-align:center}
+.measure-card .mc-pct{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;display:block}
+.measure-card .mc-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;display:block;margin-top:4px}
+.measure-card .mc-desc{font-size:11px;margin-top:6px;opacity:.8}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.cia-triad{flex-direction:column;align-items:center}.aaa-grid{grid-template-columns:1fr}.cube-axes{flex-direction:column}.measure-grid{grid-template-columns:1fr}.factor-row{flex-direction:column}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 2</div>
+  <h1>CIA triáda, McCumber Cube</h1>
+  <p>C/I/A • AAA Framework • Stavy dat (S/T/P) • Technologie / Pravidla / Osoby</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#cia">CIA triáda</a></li>
+  <li><a href="#aaa">AAA Framework</a></li>
+  <li><a href="#auth">Authentication – tři faktory</a></li>
+  <li><a href="#authz">Authorization a Accounting</a></li>
+  <li><a href="#mccumber">McCumber Cube – přehled</a></li>
+  <li><a href="#storage">Data at Rest (Storage)</a></li>
+  <li><a href="#transit">Data in Transit (Transmission)</a></li>
+  <li><a href="#process">Data in Use (Processing)</a></li>
+  <li><a href="#tech">Technology (Technologie)</a></li>
+  <li><a href="#policy">Policy (Pravidla)</a></li>
+  <li><a href="#people">People (Lidé)</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 CIA -->
+<section class="section" id="cia">
+<div class="section-header"><span class="section-num">01</span><h2>CIA triáda</h2></div>
+
+<p>Tři základní pilíře kybernetické bezpečnosti.</p>
+
+<div class="cia-triad">
+  <div class="cia-pillar" style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25)">
+    <span class="cp-icon" style="color:var(--accent-1)">🔒</span>
+    <span class="cp-name" style="color:var(--accent-1)">Confidentiality</span>
+    <span class="cp-q">Kdo to vidí?</span>
+  </div>
+  <div class="cia-pillar" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25)">
+    <span class="cp-icon" style="color:var(--accent-3)">🛡️</span>
+    <span class="cp-name" style="color:var(--accent-3)">Integrity</span>
+    <span class="cp-q">Jsou data správná?</span>
+  </div>
+  <div class="cia-pillar" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25)">
+    <span class="cp-icon" style="color:var(--accent-4)">⚡</span>
+    <span class="cp-name" style="color:var(--accent-4)">Availability</span>
+    <span class="cp-q">Funguje to?</span>
+  </div>
+</div>
+
+<table class="compare-table">
+  <tr><th>Pilíř</th><th>Hrozba</th><th>Ochrana</th></tr>
+  <tr><td style="color:var(--accent-1)"><strong>Confidentiality</strong></td><td>MitM, data breach (Yahoo 3 mld), shoulder surfing</td><td>HTTPS, VPN, šifrování disku, 2FA</td></tr>
+  <tr><td style="color:var(--accent-3)"><strong>Integrity</strong></td><td>Ransomware, SQL Injection, manipulace logů</td><td>Hash (SHA-256), digitální podpis, CRC, logování</td></tr>
+  <tr><td style="color:var(--accent-4)"><strong>Availability</strong></td><td>DDoS (Dyn 2016), WannaCry, požár DC</td><td>Zálohy 3-2-1, redundance, load balancing, UPS, CDN</td></tr>
+</table>
+</section>
+
+<!-- 02 AAA -->
+<section class="section" id="aaa">
+<div class="section-header"><span class="section-num">02</span><h2>AAA Framework</h2></div>
+
+<p>Framework pro praktickou implementaci kontroly přístupu. Rozšiřuje CIA triádu.</p>
+
+<div class="aaa-grid">
+  <div class="aaa-card" style="background:rgba(96,165,250,.1);color:var(--accent-1)">
+    <span class="ac-letter">A</span>
+    <span class="ac-name">Authentication</span>
+    <span class="ac-q">Jsi to opravdu TY?</span>
+  </div>
+  <div class="aaa-card" style="background:rgba(52,211,153,.1);color:var(--accent-3)">
+    <span class="ac-letter">A</span>
+    <span class="ac-name">Authorization</span>
+    <span class="ac-q">Co SMÍŠ dělat?</span>
+  </div>
+  <div class="aaa-card" style="background:rgba(251,191,36,.1);color:var(--accent-4)">
+    <span class="ac-letter">A</span>
+    <span class="ac-name">Accounting</span>
+    <span class="ac-q">Co jsi DĚLAL?</span>
+  </div>
+</div>
+</section>
+
+<!-- 03 AUTH -->
+<section class="section" id="auth">
+<div class="section-header"><span class="section-num">03</span><h2>Authentication – tři faktory</h2></div>
+
+<div class="factor-row">
+  <div class="factor" style="background:rgba(96,165,250,.1);color:var(--accent-1)">
+    <span class="f-icon">🧠</span>
+    <span class="f-name">Something you KNOW</span>
+    <span class="f-examples">Heslo, PIN, bezpečnostní otázka, vzor na mobilu</span>
+  </div>
+  <div class="factor" style="background:rgba(52,211,153,.1);color:var(--accent-3)">
+    <span class="f-icon">🔑</span>
+    <span class="f-name">Something you HAVE</span>
+    <span class="f-examples">Mobil (SMS), YubiKey, čipová karta, certifikát</span>
+  </div>
+  <div class="factor" style="background:rgba(232,121,249,.1);color:var(--kb)">
+    <span class="f-icon">👤</span>
+    <span class="f-name">Something you ARE</span>
+    <span class="f-examples">Otisk prstu, Face ID, duhovka, hlas</span>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Typy autentizace</div>
+  <ul>
+    <li><strong>1FA (Single-Factor):</strong> Jen heslo – nejslabší, nejpoužívanější</li>
+    <li><strong>2FA (Two-Factor):</strong> Heslo + SMS kód – mnohem bezpečnější</li>
+    <li><strong>MFA (Multi-Factor):</strong> 3+ faktorů – heslo + otisk + lokace</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Příklady: Google 2FA (heslo + Authenticator), Bankomat (karta + PIN), iPhone (Face ID + passcode backup).</p>
+</div>
+</section>
+
+<!-- 04 AUTHZ + ACCOUNTING -->
+<section class="section" id="authz">
+<div class="section-header"><span class="section-num">04</span><h2>Authorization a Accounting</h2></div>
+
+<h3>Authorization (Autorizace)</h3>
+<p><strong>Co SMÍŠ dělat</strong> poté, co ses přihlásil? Authentication = „Jsi Jan?" → Authorization = „Jan smí vidět pouze SVÉ dokumenty."</p>
+
+<table class="compare-table">
+  <tr><th>Model</th><th>Princip</th><th>Příklad</th></tr>
+  <tr><td><strong>DAC</strong></td><td>Vlastník rozhoduje kdo má přístup</td><td>Windows file permissions</td></tr>
+  <tr><td><strong>MAC</strong></td><td>Centrální systém, štítky (TOP SECRET…)</td><td>Vojenské systémy</td></tr>
+  <tr><td><strong>RBAC</strong></td><td>Přístup podle role (nejpoužívanější)</td><td>Admin, Manager, Zaměstnanec</td></tr>
+  <tr><td><strong>ABAC</strong></td><td>Dynamická pravidla podle atributů</td><td>Čas + lokace + role</td></tr>
+</table>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Důležité principy</div>
+  <ul>
+    <li><strong>Least Privilege:</strong> Jen ta práva, která NUTNĚ potřebuješ</li>
+    <li><strong>Need-to-Know:</strong> Vidíš jen to, co potřebuješ vědět</li>
+    <li><strong>Separation of Duties:</strong> Žádná osoba nemá VŠECHNA práva pro kritickou operaci</li>
+  </ul>
+</div>
+
+<div class="divider"></div>
+
+<h3>Accounting (Účtování/Audit)</h3>
+<p><strong>Co jsi DĚLAL?</strong> Sledování a zaznamenávání aktivit uživatelů.</p>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Co se loguje</div>
+  <ul>
+    <li><strong>Authentication logy:</strong> Kdo, kdy, odkud (IP), úspěch/neúspěch</li>
+    <li><strong>Access logy:</strong> Kdo přistoupil k jakému souboru, co dělal</li>
+    <li><strong>System logy:</strong> Změny konfigurace, instalace, restarty</li>
+    <li><strong>Network logy:</strong> Komunikace, připojení, přenosy dat</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Nástroj: <strong>SIEM</strong> (Splunk, QRadar) – centralizuje logy, real-time analýza, detekce hrozeb. Důležité pro forensics, compliance (GDPR), non-repudiation.</p>
+</div>
+</section>
+
+<!-- 05 McCUMBER -->
+<section class="section" id="mccumber">
+<div class="section-header"><span class="section-num">05</span><h2>McCumber Cube – přehled</h2></div>
+
+<p><strong>McCumber Cube</strong> (1991) = 3D model KB. Tři osy → 3×3×3 = <strong>27 kombinací</strong> k zabezpečení.</p>
+
+<div class="cube-visual">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px">McCUMBER CUBE – 3 OSY</div>
+  <div class="cube-axes">
+    <div class="cube-axis">
+      <div class="cube-axis-title" style="color:var(--accent-1)">Osa 1: Principy (CIA)</div>
+      <div class="cube-item" style="background:rgba(96,165,250,.12);color:var(--accent-1)">Confidentiality</div>
+      <div class="cube-item" style="background:rgba(52,211,153,.12);color:var(--accent-3)">Integrity</div>
+      <div class="cube-item" style="background:rgba(251,191,36,.12);color:var(--accent-4)">Availability</div>
+    </div>
+    <div class="cube-axis">
+      <div class="cube-axis-title" style="color:var(--accent-6)">Osa 2: Stavy dat</div>
+      <div class="cube-item" style="background:rgba(96,165,250,.08);color:var(--accent-1)">Storage<div class="ci-sub">Data at Rest</div></div>
+      <div class="cube-item" style="background:rgba(52,211,153,.08);color:var(--accent-3)">Transmission<div class="ci-sub">Data in Transit</div></div>
+      <div class="cube-item" style="background:rgba(251,191,36,.08);color:var(--accent-4)">Processing<div class="ci-sub">Data in Use</div></div>
+    </div>
+    <div class="cube-axis">
+      <div class="cube-axis-title" style="color:var(--kb)">Osa 3: Opatření</div>
+      <div class="cube-item" style="background:rgba(167,139,250,.1);color:var(--accent-2)">Technology<div class="ci-sub">HW & SW nástroje</div></div>
+      <div class="cube-item" style="background:rgba(244,114,182,.1);color:var(--accent-7)">Policy<div class="ci-sub">Pravidla & zákony</div></div>
+      <div class="cube-item" style="background:rgba(232,121,249,.1);color:var(--kb)">People<div class="ci-sub">Vzdělávání & kultura</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 06 STORAGE -->
+<section class="section" id="storage">
+<div class="section-header"><span class="section-num">06</span><h2>Data at Rest (Storage)</h2></div>
+
+<div class="state-card sc-storage">
+  <div class="sc-header"><span class="sc-icon">💾</span><span class="sc-title" style="color:var(--accent-1)">Storage – uložená data</span><span class="sc-en">Data at Rest</span></div>
+  <p>Data „odpočívají" – na disku, v databázi, v cloudu, na USB.</p>
+  <p><strong>Kde:</strong> HDD/SSD, databáze (MySQL, MongoDB), cloud (S3, Google Drive), zálohy (pásky), USB.</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-5)">Hrozby</h4><p>Fyzická krádež (notebook, USB). Insider threat (kopírování). Ransomware (zašifruje). Nezabezpečené vyhozené disky.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-3)">Ochrana</h4><p><strong>FDE:</strong> BitLocker, FileVault, LUKS. <strong>File encryption:</strong> VeraCrypt, AES-256. Fyzické zabezpečení (serverovna). <strong>Secure deletion:</strong> DBAN, shred.</p></div>
+</div>
+</section>
+
+<!-- 07 TRANSIT -->
+<section class="section" id="transit">
+<div class="section-header"><span class="section-num">07</span><h2>Data in Transit (Transmission)</h2></div>
+
+<div class="state-card sc-transit">
+  <div class="sc-header"><span class="sc-icon">🌐</span><span class="sc-title" style="color:var(--accent-3)">Transmission – data v pohybu</span><span class="sc-en">Data in Transit</span></div>
+  <p>Data se přenášejí přes síť, internet, WiFi, Bluetooth, email.</p>
+  <p><strong>Kde:</strong> Email, HTTPS, FTP, VoIP, streaming, cloud sync.</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-5)">Hrozby</h4><p><strong>MitM:</strong> odposlech na veřejné WiFi. <strong>Packet sniffing:</strong> Wireshark. <strong>Session hijacking:</strong> krádež cookie. <strong>DNS spoofing.</strong></p></div>
+  <div class="device-card"><h4 style="color:var(--accent-3)">Ochrana</h4><p><strong>HTTPS</strong> (TLS/SSL). <strong>VPN</strong> (šifruje vše, skrývá IP). <strong>SSH</strong> (vzdálený přístup). <strong>SFTP/SCP</strong> místo FTP! <strong>PGP/GPG</strong> pro emaily.</p></div>
+</div>
+</section>
+
+<!-- 08 PROCESSING -->
+<section class="section" id="process">
+<div class="section-header"><span class="section-num">08</span><h2>Data in Use (Processing)</h2></div>
+
+<div class="state-card sc-process">
+  <div class="sc-header"><span class="sc-icon">⚙️</span><span class="sc-title" style="color:var(--accent-4)">Processing – data ve zpracování</span><span class="sc-en">Data in Use</span></div>
+  <p>Data právě zpracovávána – v RAM, CPU, na obrazovce. <strong>Nejzranitelnější stav!</strong> Data MUSÍ být dešifrovaná, aby se s nimi dalo pracovat.</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-5)">Hrozby</h4><p><strong>RAM scraping:</strong> malware čte paměť (hesla, kreditky). <strong>Shoulder surfing.</strong> Screen recording malware. <strong>Keylogger.</strong> Spectre/Meltdown (CPU chyby).</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-3)">Ochrana</h4><p><strong>ASLR + DEP</strong> (memory protection). <strong>Intel SGX / AMD SEV</strong> (memory encryption). Sandboxing. Privacy screen. <strong>TPM / HSM</strong> (secure enclaves). Lock screen (Win+L).</p></div>
+</div>
+</section>
+
+<!-- 09 TECH -->
+<section class="section" id="tech">
+<div class="section-header"><span class="section-num">09</span><h2>Technology (Technologie)</h2></div>
+
+<p>HW a SW nástroje pro zabezpečení.</p>
+
+<div class="card" style="border-left:3px solid var(--accent-2)">
+  <div class="card-title" style="color:var(--accent-2)">Kategorie technologií</div>
+  <ul>
+    <li><strong>Kryptografie:</strong> AES, RSA, ECC, SHA-256, bcrypt, digitální podpisy</li>
+    <li><strong>Access Control:</strong> Firewalls (Cisco ASA, pfSense), VPN (WireGuard), IDS/IPS (Snort, Suricata)</li>
+    <li><strong>Endpoint Security:</strong> Antivirus (Kaspersky, ESET), EDR (Endpoint Detection & Response)</li>
+    <li><strong>Identity & Access:</strong> IAM, SSO (Single Sign-On), MFA tokeny (YubiKey)</li>
+    <li><strong>Monitoring:</strong> SIEM (Splunk, QRadar), vulnerability scanners (Nessus, OpenVAS)</li>
+    <li><strong>Data Protection:</strong> DLP, DB encryption, backup systémy, RAID</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 POLICY -->
+<section class="section" id="policy">
+<div class="section-header"><span class="section-num">10</span><h2>Policy (Pravidla)</h2></div>
+
+<p>Psaná pravidla, procedury, standardy, zákony – <strong>„Co MUSÍŠ / NESMÍŠ dělat."</strong></p>
+
+<div class="card" style="border-left:3px solid var(--accent-7)">
+  <div class="card-title" style="color:var(--accent-7)">Typy firemních politik</div>
+  <ul>
+    <li><strong>Security Policy:</strong> Hlavní dokument – přístup organizace k bezpečnosti</li>
+    <li><strong>Password Policy:</strong> Min. 12 znaků, složitost, expirace 90 dní, zámek po 5 pokusech</li>
+    <li><strong>Access Control Policy:</strong> Least privilege, RBAC, pravidelná revize</li>
+    <li><strong>Data Classification:</strong> Public → Internal → Confidential → Secret</li>
+    <li><strong>AUP (Acceptable Use):</strong> Co smíš/nesmíš s firemním IT</li>
+    <li><strong>Incident Response:</strong> Co dělat při incidentu</li>
+    <li><strong>BYOD:</strong> Pravidla pro osobní zařízení (MDM, remote wipe)</li>
+  </ul>
+</div>
+
+<details><summary>Právní rámec (Compliance)</summary>
+<ul>
+  <li><strong>GDPR (EU):</strong> Ochrana osobních údajů, right to be forgotten, pokuty až 4 % globálního obratu</li>
+  <li><strong>NIS2 (EU):</strong> KB kritické infrastruktury</li>
+  <li><strong>PCI DSS:</strong> Standard pro zpracování platebních karet</li>
+  <li><strong>HIPAA (USA):</strong> Ochrana zdravotních údajů</li>
+</ul>
+</details>
+</section>
+
+<!-- 11 PEOPLE -->
+<section class="section" id="people">
+<div class="section-header"><span class="section-num">11</span><h2>People (Lidé)</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">95 % bezpečnostních incidentů = lidský faktor!</div>
+  <p style="margin-bottom:0">Klikají na phishing, slabá hesla „123456", odemčený PC, heslo pod klávesnicí. <strong>Člověk je nejslabší článek.</strong></p>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Security Awareness Training</div>
+  <ul>
+    <li><strong>Úvodní školení:</strong> Při nástupu – základy KB, firemní politiky</li>
+    <li><strong>Pravidelné školení:</strong> Čtvrtletně – aktualizace nových hrozeb</li>
+    <li><strong>Phishing simulace:</strong> Falešný email → kdo klikne? Bez trestu, cíl = naučit</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Témata: Social engineering, password hygiene, physical security (Win+L, clean desk), mobile security, incident reporting.</p>
+</div>
+
+<div class="divider"></div>
+
+<h3>Poměr tří opatření</h3>
+<div class="measure-grid">
+  <div class="measure-card" style="background:rgba(167,139,250,.1);color:var(--accent-2)">
+    <span class="mc-pct">30%</span>
+    <span class="mc-name">Technology</span>
+    <span class="mc-desc">Nástroje fungují, pokud…</span>
+  </div>
+  <div class="measure-card" style="background:rgba(244,114,182,.1);color:var(--accent-7)">
+    <span class="mc-pct">30%</span>
+    <span class="mc-name">Policy</span>
+    <span class="mc-desc">…jsou správně nastavená a…</span>
+  </div>
+  <div class="measure-card" style="background:rgba(232,121,249,.1);color:var(--kb)">
+    <span class="mc-pct">40%</span>
+    <span class="mc-name">People</span>
+    <span class="mc-desc">…lidé je dodržují!</span>
+  </div>
+</div>
+</section>
+
+<!-- 12 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">12</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">CIA TRIÁDA</p>
+<ul>
+  <li><strong>C:</strong> Důvěrnost – kdo vidí? Ochrana: HTTPS, VPN, šifrování, 2FA</li>
+  <li><strong>I:</strong> Integrita – správná data? Ochrana: hash (SHA-256), digitální podpis, logování</li>
+  <li><strong>A:</strong> Dostupnost – funguje to? Ochrana: zálohy 3-2-1, redundance, UPS, CDN</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">AAA FRAMEWORK</p>
+<ul>
+  <li><strong>Authentication:</strong> Jsi to TY? 3 faktory: KNOW (heslo), HAVE (token), ARE (biometrie). 1FA / 2FA / MFA</li>
+  <li><strong>Authorization:</strong> Co smíš? DAC / MAC / RBAC / ABAC. Least Privilege, Need-to-Know, Separation of Duties</li>
+  <li><strong>Accounting:</strong> Co jsi dělal? Logy (auth, access, system, network). SIEM (Splunk). Forensics, compliance</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">McCUMBER CUBE (3×3×3 = 27)</p>
+<ul>
+  <li><strong>Osa 1 – Principy:</strong> CIA (Confidentiality, Integrity, Availability)</li>
+  <li><strong>Osa 2 – Stavy dat:</strong> Storage (at rest → FDE, VeraCrypt), Transmission (in transit → HTTPS, VPN, SSH), Processing (in use → ASLR, SGX, sandboxing)</li>
+  <li><strong>Osa 3 – Opatření:</strong> Technology (30 % – firewalls, SIEM), Policy (30 % – pravidla, GDPR), People (40 % – <strong>nejslabší článek!</strong> Školení, phishing simulace)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--kb);margin-bottom:8px">KLÍČOVÉ POSELSTVÍ</p>
+<ul>
+  <li>KB není jen technologie! Je to kombinace <strong>Technology + Policy + People</strong></li>
+  <li><strong>Defense in Depth:</strong> vícevrstvá obrana – když jedna selže, další zachytí</li>
+  <li><strong>Nejslabší článek = člověk</strong> (95 % incidentů) → vzdělávání je kritické!</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

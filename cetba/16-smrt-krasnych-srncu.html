@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Ota Pavel: Smrt krásných srnců</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141812;
+  --bg-card:#1c2018;
+  --bg-card-alt:#232720;
+  --border:#323529;
+  --text:#b8b098;
+  --text-muted:#706a58;
+  --heading:#dcd2ba;
+  --accent-1:#4a6a4a;     /* řeka Berounka */
+  --accent-2:#8a7248;     /* zlato úlovku */
+  --accent-3:#6a5a38;     /* zemitá hnědá */
+  --accent-4:#a8882a;     /* Davidova hvězda žlutá */
+  --accent-5:#5a7858;     /* lesní mech */
+  --accent-6:#8a4a38;     /* srnčí */
+  --accent-7:#6a3a28;     /* tmavý les */
+  --accent-8:#c4a260;     /* slunce */
+  --river:#4a6a4a;        /* Berounka */
+  --gold:#8a7248;         /* zlato rybí */
+  --earth:#6a5a38;        /* zem */
+  --star:#a8882a;         /* Davidova hvězda */
+  --moss:#5a7858;         /* mech */
+  --deer:#8a4a38;         /* srnec */
+  --forest:#6a3a28;       /* les */
+  --sun:#c4a260;          /* slunce */
+  --sepia:#b8985a;        /* sépie staré fotky */
+  --fish-scale:#88a098;   /* šupiny ryb */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(74,106,74,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(138,114,72,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — teplá meziválečná vzpomínka */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(20,24,18,.3) 0%,rgba(20,24,18,.92) 100%),
+    linear-gradient(135deg,#1a1e16 0%,#24281c 30%,#181c14 65%,#10140e 100%);
+  border-bottom:3px solid var(--river);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(74,106,74,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(196,162,96,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Říční vlny */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--river) 20%,
+    var(--sun) 50%,
+    var(--river) 80%,
+    transparent 100%);
+  opacity:.5;
+}
+.hero-symbol{
+  display:inline-block;
+  font-size:42px;
+  line-height:1;
+  margin-bottom:26px;
+  color:var(--sun);
+  opacity:.8;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(196,162,96,.3));
+  letter-spacing:12px;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--sepia);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Lora',serif;
+  font-size:clamp(40px,7vw,68px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1.1;
+  position:relative;
+  letter-spacing:.5px;
+  text-shadow:0 2px 30px rgba(74,106,74,.2);
+  font-style:italic;
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--sepia);
+  font-size:.3em;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.8;
+  font-style:normal;
+}
+.hero h1 .sub-title{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.38em;
+  font-style:italic;
+  color:var(--sun);
+  letter-spacing:2.5px;
+  margin-top:16px;
+  font-weight:500;
+  opacity:.9;
+}
+.hero .author{
+  font-family:'Lora',serif;
+  color:var(--sepia);
+  margin-top:30px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:2px;
+  font-weight:600;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Lora',serif;
+  color:var(--heading);
+  font-size:18px;
+  margin:40px auto 0;
+  max-width:600px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.6;
+  opacity:.9;
+  padding:22px 28px;
+  border-top:1px solid var(--river);
+  border-bottom:1px solid var(--river);
+}
+.hero-quote em{
+  display:block;
+  font-size:.7em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — stará vzpomínková kniha */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--river);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'❦';
+  position:absolute;
+  top:-14px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--sun);
+  font-size:20px;
+  opacity:.75;
+}
+.toc h2{
+  font-family:'Lora',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--sun);
+  margin-bottom:20px;text-align:center;
+  font-weight:600;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,decimal-leading-zero) ' · ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--river);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--sun)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--river),var(--sun));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Lora',serif;
+  font-size:36px;color:var(--river);
+  font-weight:700;
+  min-width:70px;opacity:.6;
+  line-height:1;
+  letter-spacing:1px;
+  font-style:italic;
+}
+.section-header h2{
+  font-family:'Lora',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+  font-style:italic;
+}
+
+h3{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Lora',serif;
+  font-size:14px;font-weight:700;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--river);background:rgba(74,106,74,.05)}
+.card.key{border-left:3px solid var(--sun);background:rgba(196,162,96,.04)}
+.card.warn{border-left:3px solid var(--star);background:rgba(168,136,42,.05)}
+.card.earth{border-left:3px solid var(--earth);background:rgba(106,90,56,.05)}
+.card.forest{border-left:3px solid var(--forest);background:rgba(106,58,40,.05)}
+.card.deer{border-left:3px solid var(--deer);background:rgba(138,74,56,.05)}
+
+.card-title{
+  font-family:'Lora',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--river)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(74,106,74,.1);
+  color:var(--river);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--sun);font-style:italic}
+
+/* Říční dělič — vlnovky */
+.river-divider{
+  text-align:center;
+  margin:48px 0;
+  color:var(--river);
+  opacity:.5;
+  font-family:'Lora',serif;
+  font-size:22px;
+  letter-spacing:6px;
+}
+.river-divider::before,.river-divider::after{
+  content:'';
+  display:inline-block;
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--river),transparent);
+  vertical-align:middle;
+  margin:0 14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--river));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.06;
+  pointer-events:none;
+  font-family:'Lora',serif;
+}
+.character .char-name{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:.5px;
+  font-style:italic;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--river));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--sun);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Lora',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--sun);
+  opacity:.35;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* POVÍDKY — speciální katalog */
+.stories-catalog{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:12px;
+  margin:24px 0;
+}
+.story-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--story-color,var(--river));
+  padding:18px 20px;
+  position:relative;
+}
+.story-card.censored{
+  border-style:dashed;
+  opacity:.75;
+}
+.story-card.censored::after{
+  content:'CENZUROVÁNO';
+  position:absolute;
+  top:8px;right:10px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  color:var(--star);
+  letter-spacing:2px;
+  padding:2px 6px;
+  border:1px solid var(--star);
+}
+.story-num{
+  font-family:'Lora',serif;
+  font-size:28px;
+  color:var(--story-color,var(--river));
+  font-weight:700;
+  font-style:italic;
+  line-height:1;
+  margin-bottom:6px;
+  opacity:.6;
+}
+.story-title{
+  font-family:'Lora',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  margin-bottom:8px;
+  line-height:1.3;
+}
+.story-desc{
+  font-size:13px;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--river),var(--sun),var(--river));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--river);
+  background:rgba(74,106,74,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(74,106,74,.3);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Lora',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--sun);
+  background:rgba(196,162,96,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--sepia)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(74,106,74,.05);
+  border-left:2px solid var(--river);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--river)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Lora',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--river);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--river);
+  font-weight:700;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--river),transparent);
+  opacity:.7;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--river);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Lora',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Lora',serif;
+  font-size:13px;
+  color:var(--river);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:700;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--river));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Lora',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* MOTIVY-GRID */
+.motifs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin:20px 0;
+}
+.motif-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:2px solid var(--motif-color,var(--river));
+  padding:14px 12px;
+  text-align:center;
+}
+.motif-icon{
+  font-size:22px;
+  color:var(--motif-color,var(--river));
+  margin-bottom:6px;
+  opacity:.75;
+}
+.motif-name{
+  font-family:'Lora',serif;
+  font-size:13px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--river);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--deer);
+  background:rgba(138,74,56,.3);
+}
+.timeline-step.happy::before{
+  border-color:var(--sun);
+  background:rgba(196,162,96,.2);
+}
+.timeline-step .ts-title{
+  font-family:'Lora',serif;
+  font-weight:700;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--river);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* VZPOMÍNKOVÝ RÁMEČEK */
+.memory-frame{
+  background:var(--bg-card-alt);
+  border:1px solid var(--sepia);
+  padding:24px 30px;
+  margin:24px 0;
+  position:relative;
+  font-family:'Lora',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;
+  line-height:1.8;
+  text-align:center;
+}
+.memory-frame::before{
+  content:'❦ VZPOMÍNKA ❦';
+  position:absolute;
+  top:-11px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--sepia);
+  font-family:'Lora',serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:600;
+  text-transform:uppercase;
+  font-style:normal;
+}
+.memory-source{
+  display:block;
+  margin-top:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-style:normal;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Lora',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--river);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .locations-list{grid-template-columns:1fr}
+  .motifs-grid{grid-template-columns:repeat(2,1fr)}
+  .stories-catalog{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-symbol">✦ ≈ ✦</div>
+  <div class="hero-label">Maturitní rozbor · Česká literatura · Vzpomínková próza</div>
+  <h1><em>Soubor povídek · 1971</em>Smrt<br>krásných srnců<span class="sub-title">aneb Tatínek, rybník a Berounka</span></h1>
+  <div class="author">Ota Pavel</div>
+  <div class="subtitle">Křivoklátsko · Berounka · Luh pod Branovem</div>
+  <div class="hero-quote">Tatínek se vydal na starém kole s odpáranou Davidovou hvězdou, aby svým synům přinesl srnce — než je fašisté odvezou do Terezína.<em>— Ústřední scéna díla</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Berounka</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Soubor povídek</a></li>
+  <li><a href="#povidky">Přehled povídek</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč · Ich-forma</a></li>
+  <li><a href="#postavy">Postavy · Popperova rodina</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a humor</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Smrt krásných srnců</strong> je <strong>autobiografický soubor povídek</strong> publikovaný v roce <strong>1971</strong>. Ota Pavel ho psal v <strong>období duševní nemoci</strong> — maniodepresivní psychózy, která propukla v roce 1964 v Innsbrucku. Když nemohl nadále pracovat jako sportovní novinář, <strong>ustoupil do ústraní a začal vzpomínat na dětství</strong>. Vzpomínky se staly jeho terapií i literaturou.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step happy">
+    <div class="ts-title"><span class="ts-year">30. léta</span> Šťastné dětství</div>
+    <div class="ts-desc">Předválečné období, <em>Nejdražší kapr ve střední Evropě</em>, Buštěhrad, Luh pod Branovem</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">1939</span> Protektorát</div>
+    <div class="ts-desc">Zavedení Davidovy hvězdy, stále těžší život židovské rodiny</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-year">1942–44</span> Transporty, povídka Smrt krásných srnců</div>
+    <div class="ts-desc">Tatínek pro srnce, bratři Hugo a Jiří do koncentračních táborů</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">1944–45</span> <em>Kapři pro Wehrmacht</em></div>
+    <div class="ts-desc">Tatínkovi je vzat rybník, přesto krmí své kapry</div>
+  </div>
+  <div class="timeline-step happy">
+    <div class="ts-title"><span class="ts-year">Po 1945</span> Poválečný svět</div>
+    <div class="ts-desc">Obchody, mucholapky, králíci, komunistické absurdity</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Časový rámec</div>
+  <p style="margin-bottom:0">Dílo pokrývá období <strong>od 30. let do poválečné doby</strong> (30.–50. léta). Každá povídka zachycuje jednu epizodu, ale všechny dohromady tvoří <strong>kroniku židovské rodiny Popperových</strong>.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Vzpomínka na dětství, otcovská láska, holocaust a jeho lidský rozměr, židovský úděl, rodina a její soudržnost, vztah k přírodě, rybaření, lidskost uprostřed nelidskosti, humor jako obrana před bolestí, nostalgie, Křivoklátsko a Berounka.</strong></p>
+</div>
+
+<h3>Motivy díla</h3>
+<div class="motifs-grid">
+  <div class="motif-card" style="--motif-color:var(--sun)">
+    <div class="motif-icon">☀</div>
+    <div class="motif-name">Tatínek Leo</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--river)">
+    <div class="motif-icon">≈</div>
+    <div class="motif-name">Berounka</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--gold)">
+    <div class="motif-icon">◈</div>
+    <div class="motif-name">Rybaření</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--deer)">
+    <div class="motif-icon">ʬ</div>
+    <div class="motif-name">Srnec</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--forest)">
+    <div class="motif-icon">✦</div>
+    <div class="motif-name">Vlčák Holan</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--star)">
+    <div class="motif-icon">✡</div>
+    <div class="motif-name">Davidova hvězda</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--earth)">
+    <div class="motif-icon">♫</div>
+    <div class="motif-name">Luh pod Branovem</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--moss)">
+    <div class="motif-icon">✲</div>
+    <div class="motif-name">Příroda</div>
+  </div>
+</div>
+
+<h3>Další motivy</h3>
+<ul>
+  <li><strong>Kapr</strong> — ústřední rybářský motiv (první povídka, <em>Kapři pro Wehrmacht</em>)</li>
+  <li><strong>Rybník</strong> — tatínkova celoživotní touha</li>
+  <li><strong>Koncentrační tábor</strong> — Terezín, osud bratrů</li>
+  <li><strong>Buštěhrad</strong> — rodinný domov</li>
+  <li><strong>Mucholapka Bomba-chemik</strong> — poválečný podnikatelský pokus</li>
+  <li><strong>Králíci</strong> — poslední povídka, tatínkova nemoc</li>
+  <li><strong>Elektrolux</strong> — otcova firma</li>
+  <li><strong>Hlad a hojnost</strong> — kontrast před válkou a během ní</li>
+  <li><strong>Humor</strong> — obrana proti tragédii</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor · Berounka</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Čas</h4>
+    <p><strong>30.–50. léta 20. století.</strong> Většina povídek se odehrává v předválečném období a během 2. světové války. Závěrečné povídky v poválečné době.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Prostor</h4>
+    <p><strong>Střední Čechy, Křivoklátsko, Berounka.</strong> Praha, Buštěhrad (Kladensko), Luh pod Branovem, Kročehlavy, Radotín.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--earth)">
+      <div class="location-name">Buštěhrad</div>
+      <div class="location-note">Rodinný domov, místo, kde rodina přežila válku</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--moss)">
+      <div class="location-name">Luh pod Branovem</div>
+      <div class="location-note">Křivoklátsko — Proškova chalupa u Berounky</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--river)">
+      <div class="location-name">Berounka</div>
+      <div class="location-note">Řeka tatínkových rybářů — „krásná řeka"</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--forest)">
+      <div class="location-name">Křivoklátské lesy</div>
+      <div class="location-note">Lov srnců, Proškovy revíry</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--sepia)">
+      <div class="location-name">Praha</div>
+      <div class="location-note">Místo tatínkova obchodu Elektrolux</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--star)">
+      <div class="location-name">Terezín</div>
+      <div class="location-note">Tábor, kam byli posláni Hugo a Jiří</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--gold)">
+      <div class="location-name">Radotín</div>
+      <div class="location-note">Poválečný domek — povídka <em>Králíci s moudrýma očima</em></div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--earth)">
+      <div class="location-name">Kročehlavy</div>
+      <div class="location-note">Maminčino rodiště</div>
+    </div>
+  </div>
+</div>
+
+<div class="card earth">
+  <div class="card-title" style="color:var(--earth)">Genius loci — Křivoklátsko</div>
+  <p style="margin-bottom:0"><strong>Křivoklátsko</strong> je v díle téměř samostatnou postavou. Berounka, lesy, údolí, stráně. Ota Pavel zde trávil dětství u <strong>strejdy Proška v Luhu pod Branovem</strong> — a tyto krajiny se mu staly <strong>rájem, který byl zničen válkou</strong>. Je to <strong>česká variace na Hemingwayovy řeky</strong>, Dublin Joyce, Faulknerovo Mississippi — spisovatelovo mytické místo.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba · Soubor povídek</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Rámcová kompozice</strong> — samostatné povídky, ale spojené stejnou rodinou</li>
+  <li><strong>Chronologický postup</strong> — od předválečného dětství po poválečnou dobu</li>
+  <li><strong>Soubor povídek</strong> — každá má vlastní zápletku, ale všechny tvoří celek</li>
+  <li><strong>Autobiografický rámec</strong> — vše z Pavlova skutečného života</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Počet povídek — 7, 8 nebo 9?</div>
+  <p style="margin-bottom:0">Soubor má <strong>proměnlivý počet povídek</strong> podle vydání: <strong>Původní vydání 1971 mělo 7 povídek</strong> (povídka <em>Prase nebude!</em> byla vyškrtnuta komunistickou cenzurou). V pozdějších vydáních byla doplněna, takže má 8 povídek. Některá vydání přidávají navíc povídku <em>Běh Prahou</em>. Dnešní plné vydání má tedy až 9 povídek. <strong>Prase nebude!</strong> kolovalo v samizdatu — oficiálně bylo vydáno až po roce 1989.</p>
+</div>
+
+<h3>Vnitřní struktura — oblouk díla</h3>
+<div class="timeline">
+  <div class="timeline-step happy">
+    <div class="ts-title">Předválečné období</div>
+    <div class="ts-desc">Nejdražší kapr, Ve službách Švédska — šťastné časy</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">Okupace a holocaust</div>
+    <div class="ts-desc">Smrt krásných srnců, Kapři pro Wehrmacht — tragédie</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Soupeření a rybářské vášně</div>
+    <div class="ts-desc">Jak jsme se střetli s Vlky — rybářská ješitnost</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Poválečná doba</div>
+    <div class="ts-desc">Otázka hmyzu vyřešena, Prase nebude! — poválečné obchody</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">Konec tatínka</div>
+    <div class="ts-desc">Králíci s moudrýma očima — tatínkova nemoc a smrt ducha</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 POVIDKY -->
+<section class="section" id="povidky">
+<div class="section-header"><span class="section-num">V</span><h2>Přehled povídek</h2></div>
+
+<p>Soubor <em>Smrt krásných srnců</em> je <strong>souborem autobiografických povídek</strong>, z nichž každá má vlastní zápletku. Níže přehled jednotlivých povídek.</p>
+
+<div class="stories-catalog">
+  <div class="story-card" style="--story-color:var(--gold)">
+    <div class="story-num">I</div>
+    <div class="story-title">Nejdražší ve střední Evropě</div>
+    <div class="story-desc">Tatínek koupí rybník od Václavíka — ale je v něm jen jeden šestikilový kapr. Ironie osudu.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--sun)">
+    <div class="story-num">II</div>
+    <div class="story-title">Ve službách Švédska</div>
+    <div class="story-desc">Tatínkova práce pro firmu <strong>Elektrolux</strong>. Humor z obchodu, tatínek jako úspěšný prodejce.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--deer)">
+    <div class="story-num">III</div>
+    <div class="story-title">Smrt krásných srnců</div>
+    <div class="story-desc"><strong>Ústřední povídka souboru.</strong> Tatínek pro srnce před transportem synů do tábora. Strejda Prošek, pes Holan.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--river)">
+    <div class="story-num">IV</div>
+    <div class="story-title">Kapři pro Wehrmacht</div>
+    <div class="story-desc">Tatínkovi seberou rybník. Přesto chodí krmit „své" kapry. Tajný výlov v noci — před Němci.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--moss)">
+    <div class="story-num">V</div>
+    <div class="story-title">Jak jsme se střetli s Vlky</div>
+    <div class="story-desc">Rybářská sázka o největší štiku. Tatínek prohraje. Humor a lidská ješitnost.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--earth)">
+    <div class="story-num">VI</div>
+    <div class="story-title">Otázka hmyzu vyřešena</div>
+    <div class="story-desc">Poválečné obchody. Mucholapka <strong>Bomba-chemik</strong> — tatínkův obchodní úspěch i pád.</div>
+  </div>
+  <div class="story-card censored" style="--story-color:var(--star)">
+    <div class="story-num">VII</div>
+    <div class="story-title">Prase nebude!</div>
+    <div class="story-desc">Komunistická absurdita — rodina rok krmí prasata, pak dostane jen účet. Cenzurováno do 1989.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--sepia)">
+    <div class="story-num">VIII</div>
+    <div class="story-title">Běh Prahou</div>
+    <div class="story-desc">Tatínek zorganizuje předvolební závod — číslo 1 má vyhrát (komunisté). Pozdější dodatek.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--forest)">
+    <div class="story-num">IX</div>
+    <div class="story-title">Králíci s moudrýma očima</div>
+    <div class="story-desc"><strong>Závěrečná povídka.</strong> Tatínek chová králíky, prohraje výstavu, vypustí je. Jeho psychický pád a smrt.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--star)">Cenzura povídky „Prase nebude!"</div>
+  <p style="margin-bottom:0">Povídka <strong>Prase nebude!</strong> byla <strong>komunistickou cenzurou vyřazena z prvního vydání (1971)</strong> — ironicky popisovala absurditu socialistického zemědělství. Rodina krmila prasata s příslibem, že jedno dostane — nakonec jim přišel účet na 530,52 Kčs. Povídka kolovala <strong>v samizdatu</strong> a byla oficiálně vydána až po roce 1989.</p>
+</div>
+</section>
+
+<!-- 06 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">VI</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost.</p>
+</div>
+
+<h3>Literární žánr — vícenásobné zařazení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Povídka / soubor povídek</h4>
+    <p>Kratší prózy s poutavou zápletkou, umění zkratky a charakteristiky.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Autobiografická próza</h4>
+    <p>Vše čerpáno z Pavlova skutečného života — rodina, Buštěhrad, Berounka.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Vzpomínková próza</h4>
+    <p>Návrat k dětství, nostalgie, lyričnost. Třetí vlna válečné prózy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Lyrizovaná próza</h4>
+    <p>Poetické líčení přírody, lyrický tón uprostřed epiky.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Soubor povídek</strong> — každá má vlastní uzavřený děj</li>
+    <li><strong>Autobiografické prvky</strong> — Leo Popper = skutečný Pavlův otec</li>
+    <li><strong>Vzpomínkový charakter</strong> — pohled dospělého na dětství</li>
+    <li>Lyrické pasáže o přírodě</li>
+    <li><strong>Válka jako kulisa</strong> — ne hlavní téma, ale pozadí</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VII</span><h2>Vypravěč · Ich-forma</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Typ</div>
+  <p style="margin-bottom:0"><strong>Ich-forma</strong> — vypravěč v 1. osobě. Vypráví sám <strong>Ota Pavel</strong>, autor a zároveň postava.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Autobiografický vypravěč</strong> — Ota Pavel vypráví vlastní zážitky</li>
+  <li><strong>Personální vypravěč</strong> — subjektivní pohled</li>
+  <li><strong>Retrospektivní</strong> — dospělý vzpomíná na dětství</li>
+  <li><strong>Dvojí perspektiva</strong> — pohled dítěte + komentář dospělého</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Ota Pavel</strong> — nejmladší syn rodiny, narozen 1930</li>
+    <li>V době povídek <strong>dítě nebo dospívající chlapec</strong></li>
+    <li>Obdivuje tatínka — <strong>otec je mu vzorem</strong></li>
+    <li>Miluje přírodu, rybaření</li>
+    <li>Sám je v povídkách <strong>spíše pozorovatelem</strong> než hlavní postavou</li>
+    <li>Skutečná hlavní postava je <strong>tatínek</strong></li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Dvojí pohled: dítě a dospělý</div>
+  <p style="margin-bottom:0">Pavlův vypravěč <strong>zachovává perspektivu dítěte</strong> — naivitu, úžas, lásku k tatínkovi. Ale občas probleskne <strong>komentář dospělého</strong>, který už ví, co se stalo pak: <em>„Tenkrát jsem nevěděl, že…"</em>. Toto <strong>střídání vědění</strong> dává povídkám jejich emocionální hloubku — čtenář cítí, že dětství je <strong>vzpomínka na něco, co už není</strong>.</p>
+</div>
+</section>
+
+<!-- 08 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VIII</span><h2>Postavy · Popperova rodina</h2></div>
+
+<p>Všechny postavy jsou <strong>skutečné osoby z Pavlova života</strong> — rodina, přátelé, sousedé. <strong>Tatínek Leo Popper</strong> je hlavní postavou celého díla.</p>
+
+<div class="character" style="--character-color:var(--sun)" data-symbol="☀">
+  <div class="char-name">Tatínek Leo Popper <em>(Leo)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Obchodník, rybář, snílek</div>
+  <ul style="margin:0">
+    <li>Narozen v <strong>Buštěhradě</strong></li>
+    <li><strong>Žid</strong>, obchodní cestující, <strong>dobrý obchodník</strong></li>
+    <li>Pracuje pro švédskou firmu <strong>Elektrolux</strong></li>
+    <li><strong>Plný vitality, smyslu pro humor</strong></li>
+    <li><strong>Posedlý svými touhami a sny</strong> — chce vlastní rybník</li>
+    <li>Miluje rybaření, přírodu, ženy</li>
+    <li>Renesanční typ člověka — <strong>šarmantní, cílevědomý</strong></li>
+    <li>Žádný neúspěch ho nikdy neodradí</li>
+    <li>V době války se ukazuje jako <strong>skvělý otec</strong> — pro děti udělá všechno</li>
+    <li>V závěru psychicky zlomen (povídka <em>Králíci s moudrýma očima</em>)</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--sepia)" data-symbol="♀">
+  <div class="char-name">Maminka Hermína Popperová <em>(Herma)</em></div>
+  <div class="char-role">Vedlejší postava · Kladná · Oporná žena</div>
+  <ul style="margin:0">
+    <li>Narozena v <strong>Kročehlavech</strong></li>
+    <li><strong>Křesťanka</strong> — neni židovského původu, což zachraňuje rodinu</li>
+    <li>Velmi <strong>tolerantní a laskavá</strong></li>
+    <li>Manželovi odpouští všechny prohřešky</li>
+    <li>Racionální, skeptická k tatínkovým nápadům</li>
+    <li>Její sen: <strong>dovolená v Itálii</strong> u moře (nikdy neuskutečněný)</li>
+    <li>Vedla děti k <strong>lásce k vlasti</strong></li>
+    <li>V díle jí vypravěč věnuje <strong>méně pozornosti</strong> než otci</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--star)" data-symbol="✡">
+  <div class="char-name">Hugo Popper</div>
+  <div class="char-role">Vedlejší · Kladná · Otův starší bratr</div>
+  <ul style="margin:0">
+    <li>Starší bratr Oty</li>
+    <li><strong>Poslán do koncentračního tábora</strong> v Terezíně</li>
+    <li>Po válce se vrátil <strong>celkem zdravý</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--star)" data-symbol="✡">
+  <div class="char-name">Jiří Popper <em>(Jirka)</em></div>
+  <div class="char-role">Vedlejší · Kladná · Otův starší bratr</div>
+  <ul style="margin:0">
+    <li>Druhý starší bratr</li>
+    <li><strong>Poslán do koncentračního tábora</strong></li>
+    <li>Po návratu vážil <strong>pouhých 40 kg</strong></li>
+    <li><strong>Půl roku umíral hladem a utrpením</strong>, pak se vzpamatoval</li>
+    <li>Srnec, kterého Leo ulovil, mu možná zachránil život</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--moss)" data-symbol="✦">
+  <div class="char-name">Strejda Karel Prošek</div>
+  <div class="char-role">Vedlejší · Kladná · Pytlák, přítel rodiny</div>
+  <ul style="margin:0">
+    <li><strong>Pytlák z Luhu pod Branovem</strong></li>
+    <li>Sžitý s přírodou u Křivoklátu a Berounky</li>
+    <li>Rodina u něj tráví víkendy a prázdniny</li>
+    <li>Má psa <strong>vlčáka Holana</strong></li>
+    <li>Neumí mluvit, ale umí číst přírodu</li>
+    <li>V povídce <em>Smrt krásných srnců</em> se <strong>bojí pomoct tatínkovi</strong> (trest smrti za pytláctví a přechovávání Žida) — ale půjčí mu Holana</li>
+    <li>Symbol <strong>lidské solidarity za války</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--forest)" data-symbol="ʬ">
+  <div class="char-name">Vlčák Holan</div>
+  <div class="char-role">„Postava" · Věrný pes</div>
+  <ul style="margin:0">
+    <li><strong>Proškův vlčák</strong></li>
+    <li>Doprovází ho při pytlačení</li>
+    <li>Umí na povel <strong>„Holane, běž!"</strong> skočit po srnci a zlomit mu vaz</li>
+    <li>V povídce <em>Smrt krásných srnců</em> je tím, kdo <strong>ulovil srnce pro Popperovy</strong></li>
+    <li>Zachrání Popperům život — symbol věrnosti zvířete</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--earth)" data-symbol="⚓">
+  <div class="char-name">Tulák Bambas</div>
+  <div class="char-role">Vedlejší · Bohém, rybář</div>
+  <ul style="margin:0">
+    <li><strong>Tulák, rybář</strong></li>
+    <li>Uměl chytat ryby <strong>všemi dovolenými i nedovolenými způsoby</strong></li>
+    <li>Otovi se líbil jeho způsob života</li>
+    <li>Symbol svobodného života mimo společenské normy</li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">IX</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Přímá řeč · Dialogy</div>
+  <div class="quote-block" style="margin:0">„Holane, běž!" řekl Prošek. A pes vyběhl.<span class="quote-source">Klíčová věta povídky <em>Smrt krásných srnců</em></span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--river)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Tatínek se rozhodl, že pojede pro srnce, i kdyby to byl jeho poslední den.</p>
+</div>
+
+<div class="card earth">
+  <div class="card-title" style="color:var(--earth)">Polopřímá řeč · Myšlenky</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Tatínek se díval na rybník. Proč to všechno kupoval? Proč tak miloval ryby?</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)"><h4 style="color:var(--river)">Pásmo vypravěče</h4><p>Převažující forma — popis událostí, krajiny, rodiny.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sun)"><h4 style="color:var(--sun)">Dialog</h4><p>Živé rozhovory postav, často <strong>humorné</strong>.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--moss)"><h4 style="color:var(--moss)">Líčení</h4><p>Poetické <strong>líčení přírody</strong> — Berounka, lesy.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)"><h4 style="color:var(--sepia)">Charakteristika</h4><p>Stručné, ale výstižné popisy postav.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--deer)"><h4 style="color:var(--deer)">Reflexe</h4><p>Komentáře dospělého vypravěče — <em>„Tenkrát jsem nevěděl…"</em></p></div>
+</div>
+
+<div class="card forest">
+  <div class="card-title" style="color:var(--forest)">Volná kompozice povídek</div>
+  <p style="margin-bottom:0">Pavel sám charakterizoval svůj vypravěčský styl: <em>„Psaní povídek je jako procházka lesem křížem krážem."</em> Povídky mají <strong>volnou kompozici</strong>, spoustu odboček, <strong>připomínají vyprávění starého dědečka u krbu</strong>. To je část jejich kouzla — čtenář má pocit, jako by seděl s Pavlem u ohně a poslouchal vzpomínky.</p>
+</div>
+</section>
+
+<!-- 10 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">X</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovný jazyk</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Převažuje spisovná čeština</strong></li>
+    <li>Ale často doplněná hovorovými výrazy</li>
+    <li><strong>Jednoduchý, přirozený jazyk</strong></li>
+    <li>Přístupný — bez překombinované intelektuálnosti</li>
+  </ul>
+</div>
+
+<h3>Hovorový a obecný jazyk</h3>
+<div class="card earth">
+  <ul style="margin:0">
+    <li><em>„Mouchy nechcípají!"</em> — hovorové</li>
+    <li><em>„Embéčka"</em>, <em>„po čuchu"</em></li>
+    <li>Autentická řeč doby</li>
+    <li>Občas <strong>vulgarismy</strong> v dialozích: <em>„Jděte do prdele s takovým zázrakem!"</em></li>
+  </ul>
+</div>
+
+<h3>Rybářský a lovecký slang</h3>
+<div class="card moss" style="border-left:3px solid var(--moss);background:rgba(90,120,88,.05)">
+  <ul style="margin:0">
+    <li>Specifická terminologie <strong>rybářů a lovců</strong></li>
+    <li>Druhy ryb: kapr, štika, úhoř</li>
+    <li>Lov srnců: <em>„srnčí"</em>, <em>„stráň"</em></li>
+    <li>Dodává autenticitu a odbornou hloubku</li>
+  </ul>
+</div>
+
+<h3>Cizí slova</h3>
+<ul>
+  <li><em>Made in Sweden</em> (Elektrolux)</li>
+  <li><em>Wehrmacht</em> — německý vojenský termín</li>
+  <li><em>Lebensraum</em> — v kontextu nacismu</li>
+  <li>Autentické — zachycují dobu</li>
+</ul>
+
+<h3>Poetické prvky a lyrické pasáže</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Lyrická próza</div>
+  <ul style="margin:0">
+    <li>Líčení přírody — <strong>Berounka, les, úsvit</strong></li>
+    <li>Metafory, přirovnání</li>
+    <li><strong>Básnický jazyk uprostřed prózy</strong></li>
+    <li>Pavel byl nadaný <strong>lyrik</strong> — jeho popisy přírody jsou srovnávány s Karlem Klostermannem a Jaroslavem Seifertem</li>
+  </ul>
+</div>
+
+<h3>Lidová slovesnost</h3>
+<ul>
+  <li>Přísloví, pořekadla</li>
+  <li>Archaismy a dialektismy</li>
+  <li>Zachovává <strong>lidovou moudrost</strong> venkova</li>
+</ul>
+
+<h3>Kontrast registrů</h3>
+<div class="card highlight">
+  <p style="margin-bottom:0">Pavel mistrovsky <strong>kombinuje různé stylové vrstvy</strong>: poetické líčení řeky, hovorový dialog s tulákem, obchodní jazyk tatínka, mládežnický slang, rybářskou terminologii, historické termíny války. Tím vzniká <strong>živá, bohatá tkanina</strong>.</p>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Jednoduchý jazyk</strong> vytváří intimitu a důvěryhodnost</li>
+    <li><strong>Hovorovost</strong> dodává autenticitu</li>
+    <li><strong>Slang rybářů/lovců</strong> dává odbornou hloubku</li>
+    <li><strong>Lyrické pasáže</strong> oživují prózu</li>
+    <li><strong>Humor a ironie</strong> pomáhají unést tragédii</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">XI</span><h2>Tropy, figury a humor</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Humor (hlavní!)</div>
+    <div class="trope-example">Obrana před bolestí</div>
+    <div class="trope-note"><strong>Humor je hlavní zbraň Pavla.</strong> Smích uprostřed tragédie. Tatínek je směšný i hrdinský zároveň.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Srnec = život</div>
+    <div class="trope-note">Srnec = naděje, záchrana. Rybník = tatínkův sen. Berounka = dětství.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Davidova hvězda</div>
+    <div class="trope-note">Davidova hvězda = ponížení, nebezpečí. Odtržená hvězda = vzdor.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Kontrast</div>
+    <div class="trope-example">Idyla vs. holocaust</div>
+    <div class="trope-note">Dětská idyla vs. hrůza války. Veselý obchodník vs. pronásledovaný Žid.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Nejdražší kapr</div>
+    <div class="trope-note">Tatínek koupí „rybník plný ryb", ale je tam jen jeden kapr. <strong>„Nejdražší kapr ve střední Evropě."</strong></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Řeka žije</div>
+    <div class="trope-note">Berounka jako živá bytost — má náladu, tajemství, hloubky.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Poetická obraznost</div>
+    <div class="trope-note">Kapr tlustý jako host. Tatínek krásný jako mladý princ. Srnec jako letní vánek.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Nostalgie</div>
+    <div class="trope-example">Ztracený ráj</div>
+    <div class="trope-note">Celé dílo je prosyceno nostalgií po ztraceném dětství a světě, který už není.</div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Humor jako existenciální postoj</div>
+  <p style="margin-bottom:0">Pavel patří k <strong>české tradici „tragikomiky"</strong> — vedle Haška, Hrabala, Kundery. <strong>Humor v nejtěžších situacích</strong>. Tatínek se směje, i když ho odvážejí o rybník, i když bratři odcházejí do tábora. <strong>Smích je způsob, jak odmítnout být obětí.</strong> <em>„Dokud se můžu smát, jsem svobodný."</em></p>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--star)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Humor</strong> dělá z tragédie snesitelnou literaturu. <strong>Kontrast</strong> mezi idylou a hrůzou ukazuje <strong>sílu lidskosti</strong>. <strong>Nostalgie</strong> tvoří emocionální základ díla. Pavel se nesnaží čtenáři vnutit emoce — vytváří je <strong>jemně, bez patosu</strong>.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Ota Pavel (1930–1973)</div>
+  <p>Vlastním jménem <strong>Otto Popper</strong>. Narozen <strong>2. července 1930 v Praze</strong> jako nejmladší syn židovského obchodního cestujícího <strong>Lea Poppera</strong> a křesťanské matky <strong>Hermíny rozené Netuschilové</strong>. Za <strong>druhé světové války</strong>, po transportu jeho otce a obou starších bratrů <strong>Jiřího a Huga do koncentračního tábora</strong>, žil sám s matkou v <strong>Buštěhradě</strong> na Kladensku. Protože matka nebyla židovského původu, Ota nebyl deportován. <strong>Po válce se všichni jeho blízcí vrátili živí</strong> — to je výjimečné, většina českých židovských rodin tolik štěstí neměla. Pracoval krátce <strong>v dolech</strong>, pak jako <strong>sportovní redaktor Československého rozhlasu</strong>, časopisů <em>Stadión</em> a <em>Československý voják</em>. Byl <strong>talentovaný novinář</strong> — jeho reportáže byly oceňovány. <strong>Často cestoval do zahraničí</strong>. Při <strong>zimní olympiádě v Innsbrucku (1964)</strong> u něj propukla <strong>maniodepresivní psychóza</strong> — v náhlém záchvatu <strong>zapálil selské stavení</strong> nad městem. Léčil se dlouhá léta. Když už nemohl pracovat jako sportovní novinář, obrátil se k literatuře a <strong>vzpomínkám na dětství</strong>. <em>Smrt krásných srnců</em> (1971) a <em>Jak jsem potkal ryby</em> (1974, posmrtně) jsou výsledkem tohoto obratu. <strong>Zemřel 31. března 1973 na infarkt</strong> ve věku pouhých <strong>42 let</strong>.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Nejvýznamnější dílo</strong> Pavlovy tvorby (1971)</li>
+  <li><strong>Srdcovka</strong> — autor sám považoval za své nejlepší dílo</li>
+  <li>Vzpomínkové povídky o otci a Berounce</li>
+  <li>Pavel ho psal jako <strong>poctu milovanému kraji</strong></li>
+</ul>
+
+<h3>Další Pavlova díla</h3>
+
+<h4>Vydaná za života</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Dukla mezi mrakodrapy</strong></td><td>1964</td><td>Sportovní reportáž z USA, hokejová Dukla Jihlava</td></tr>
+  <tr><td><strong>Plná bedna šampaňského</strong></td><td>1967</td><td>Sportovní povídky a reportáže</td></tr>
+  <tr><td><strong>Pohádka o Raškovi</strong></td><td>1974</td><td>O skokanovi Jiřím Raškovi — pro děti</td></tr>
+  <tr><td><strong>Smrt krásných srnců</strong></td><td>1971</td><td><strong>Vrcholné dílo</strong></td></tr>
+  <tr><td><strong>Pohár od Pánaboha</strong></td><td>1971</td><td>Sportovní povídky</td></tr>
+</table>
+
+<h4>Vydaná posmrtně</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Jak jsem potkal ryby</strong></td><td>1974</td><td>Pokračování vzpomínek — také o rybaření a Berounce</td></tr>
+  <tr><td><strong>Fialový poustevník</strong></td><td>1977</td><td>Souborné vydání</td></tr>
+  <tr><td><strong>Zlatí úhoři</strong></td><td>1985</td><td>Výbor nejlepších povídek</td></tr>
+  <tr><td><strong>Mám rád tu řeku</strong></td><td>1989</td><td>Výbor</td></tr>
+  <tr><td><strong>Sedm deka zlata</strong></td><td>1993</td><td>Sportovní texty</td></tr>
+</table>
+
+<h3>Pavlův styl</h3>
+<ul>
+  <li><strong>Vypravěčské mistrovství</strong></li>
+  <li><strong>Lyričnost</strong> — poetické líčení přírody</li>
+  <li>Humor uprostřed tragédie</li>
+  <li>Inspirace otcem — renesanční typ člověka</li>
+  <li>Příroda kolem <strong>Berounky a Křivoklátska</strong></li>
+  <li>Sportovní prostředí (rané dílo)</li>
+  <li><strong>Autobiografičnost</strong></li>
+  <li>Prostý, přístupný jazyk</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>1971</strong></li>
+    <li>Po <strong>srpnové invazi 1968</strong></li>
+    <li>Začátek <strong>normalizace</strong></li>
+    <li>Komunistická cenzura (povídka <em>Prase nebude!</em> vyškrtnuta)</li>
+    <li>Paradoxně — v tomto období vzniká mnoho výjimečných děl</li>
+  </ul>
+</div>
+
+<h3>Třetí vlna válečné prózy (konec 60. a 70. léta)</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Vzpomínková próza</div>
+  <ul style="margin:0">
+    <li><strong>Návrat k epice</strong></li>
+    <li>Válka <strong>přestává být dominantní</strong>, stává se <strong>kulisou</strong></li>
+    <li>V příbězích se objevují prvky <strong>nadsázky, grotesky a humoru</strong></li>
+    <li>Dílčí témata — osobní, rodinné</li>
+    <li>Vzpomínky, návraty</li>
+  </ul>
+</div>
+
+<h3>Tři vlny české poválečné válečné prózy</h3>
+<table class="compare-table">
+  <tr><th>Vlna</th><th>Období</th><th>Charakteristika</th></tr>
+  <tr><td><strong>1. vlna</strong></td><td>1945–50</td><td>Bezprostřední reakce — dokumentárnost, hrdinský patos</td></tr>
+  <tr><td><strong>2. vlna</strong></td><td>60. léta</td><td>Psychologie, morální otázky, subjektivita (Lustig, Fuks)</td></tr>
+  <tr><td><strong>3. vlna</strong></td><td>Konec 60. – 70. léta</td><td><strong>Vzpomínková próza — OTA PAVEL</strong>, Hrabal, Škvorecký</td></tr>
+</table>
+
+<h3>Autoři podobné doby</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Společné rysy</th></tr>
+  <tr><td><strong>Bohumil Hrabal</strong></td><td><em>Ostře sledované vlaky</em></td><td>Tragikomika, malá historie velké války</td></tr>
+  <tr><td><strong>Arnošt Lustig</strong></td><td><em>Modlitba pro Kateřinu Horovitzovou</em></td><td>Židovský osud, psychologie</td></tr>
+  <tr><td><strong>Ladislav Fuks</strong></td><td><em>Spalovač mrtvol</em></td><td>Groteska, psychologie</td></tr>
+  <tr><td><strong>Josef Škvorecký</strong></td><td><em>Zbabělci</em></td><td>Generace, humor, nostalgie</td></tr>
+  <tr><td><strong>Jiří Weil</strong></td><td><em>Život s hvězdou</em></td><td>Židovský protagonista za války</td></tr>
+  <tr><td><strong>Jan Otčenášek</strong></td><td><em>Romeo, Julie a tma</em></td><td>Mladá láska v protektorátu</td></tr>
+</table>
+
+<h3>Tradice české vzpomínkové a lyrizované prózy</h3>
+<ul>
+  <li><strong>Jan Neruda</strong> — <em>Povídky malostranské</em> (vzor charakteristiky postav)</li>
+  <li><strong>Karel Poláček</strong> — <em>Bylo nás pět</em> (dětství v malém městě)</li>
+  <li><strong>Jaroslav Seifert</strong> — <em>Všecky krásy světa</em> (vzpomínková memoáristika)</li>
+  <li><strong>Eduard Petiška</strong> — vzpomínkové povídky</li>
+</ul>
+
+<details>
+  <summary>Proč mohla kniha vyjít v normalizačním režimu?</summary>
+  <p><strong>1971 byl už začátek normalizace</strong> — cenzura byla silná. Proč kniha vyšla? Protože <strong>Pavel se soustředil na židovský osud za války</strong> (což režimu vyhovovalo — antifašismus byl oficiální ideologie) a <strong>méně na své vlastní židovské identifikace</strong>. Povídka <em>Prase nebude!</em> byla ale přece vyškrtnuta — kritizovala socialistické zemědělství. <strong>Běh Prahou</strong> — o předvolebním podvodu komunistů — mohla vyjít až později.</p>
+</details>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(138,114,72,.1);border-color:var(--gold);color:var(--gold)">★ 01 · NEJDRAŽŠÍ KAPR ★</span>
+  <div class="scene-title">Nejdražší kapr ve střední Evropě</div>
+  <div class="scene-context"><strong>Kontext:</strong> První povídka. Tatínek koupí rybník od pana Václavíka „i s údajnými rybami". Po výlovu zjistí, že je v něm <strong>jen jeden šestikilový kapr</strong>. Chce si stěžovat — ale Václavík odjel s rodinou do Itálie.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Úvod do tatínkova charakteru — <strong>snílek, kterého podvedou</strong></li>
+      <li>Humor a ironie</li>
+      <li>Tatínkovy sny narazí na realitu</li>
+      <li>Ironie názvu — <em>„nejdražší kapr ve střední Evropě"</em></li>
+      <li>Zápletka se později obrátí — Václavík si chce od tatínka koupit ledničku</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--deer)">
+  <span class="scene-label" style="background:rgba(138,74,56,.1);border-color:var(--deer);color:var(--deer)">★ 02 · ÚSTŘEDNÍ POVÍDKA · SMRT KRÁSNÝCH SRNCŮ ★</span>
+  <div class="scene-title">Tatínek vyjede pro srnce</div>
+  <div class="scene-context"><strong>Kontext:</strong> 1942. Starším bratrům Hugovi a Jiřímu přišel transport do Terezína. Tatínek chce, aby se synové před deportací <strong>pořádně najedli masa</strong>. <strong>Odpáře si Davidovu hvězdu</strong> a vydá se na starém kole do Luhu pod Branovem — ke strejdovi Proškovi. Za pytláctví <strong>a přechovávání Žida hrozí trest smrti</strong>.</div>
+  <div class="scene-text">Prošek měl děti a bál se trestu smrti. Odmítl pomoct.
+Tatínek ho požádal, aby mu alespoň půjčil Holana.
+Poslední den, kdy Leo mohl zůstat, konečně uviděl srnce.
+Poštval na něj Holana.
+Ten ho úspěšně zabil.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Ústřední scéna celého souboru</strong></li>
+      <li>Otcovská láska — tatínek riskuje život pro syny</li>
+      <li><strong>Srnec možná zachránil Jirkovi život</strong> (po návratu vážil 40 kg)</li>
+      <li>Title díla — „smrt krásných srnců" = <strong>smrt nevinnosti</strong></li>
+      <li>Proškovo odmítnutí, ale půjčení Holana — lidská solidarita za strašlivé doby</li>
+      <li>Pes Holan jako skutečný hrdina</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--river)">
+  <span class="scene-label" style="background:rgba(74,106,74,.1);border-color:var(--river);color:var(--river)">★ 03 · KAPŘI PRO WEHRMACHT ★</span>
+  <div class="scene-title">Tatínkovi berou rybník</div>
+  <div class="scene-context"><strong>Kontext:</strong> Za války. <strong>Tatínkovi je vzat jeho milovaný rybník</strong> — ale on to nemůže přenést přes srdce. <strong>Chodí své kapry dál krmit</strong>. Jednou v noci se odhodlá a <strong>všechny kapry tajně vyloví</strong>. Ráno přijedou rybáři v uniformách Wehrmachtu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tichý vzdor</strong> — tatínek nemůže s Němci bojovat, ale vyloví své kapry</li>
+      <li>Rybník jako <strong>symbol ztraceného majetku a snu</strong></li>
+      <li>Tragikomická scéna</li>
+      <li>Lidská důstojnost v ponížení</li>
+      <li>Ironie — kapři „pro Wehrmacht" = kapři, kteří nikdy ke Wehrmachtu nedojedou</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Rybářská ješitnost</span>
+  <div class="scene-title">Jak jsme se střetli s Vlky</div>
+  <div class="scene-context"><strong>Kontext:</strong> Jeli do Luhu a chytli v Berounce stovky štik. Jeden den — soutěž s rodinou Vlkových, kdo uloví největší štiku. Tatínkovi se podařilo chytit <strong>jen 3 štiky</strong>, z toho jen jedna velká. Jeli s vozíkem k Vlkovým — a u domu viděli pověšených <strong>5 velkých „štik královských"</strong>. Tatínek se bez slova otočil a šel domů.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tatínkova rybářská ješitnost</strong></li>
+      <li>Tichá prohra, bez slov</li>
+      <li>Humor a lidskost v rybářské rivalitě</li>
+      <li>Charakterizace otce — cítí porážku, ale neobviňuje</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--earth)">
+  <span class="scene-label" style="background:rgba(106,90,56,.1);border-color:var(--earth);color:var(--earth)">★ 05 · OTÁZKA HMYZU VYŘEŠENA ★</span>
+  <div class="scene-title">Mucholapka Bomba-chemik</div>
+  <div class="scene-context"><strong>Kontext:</strong> Poválečné tatínkovy obchody. Prodává <strong>mucholapky „Bomba-chemik"</strong> firmy Dersol (med + DDT). <em>„Měla to být bomba, která zaplaví ČSR, Evropu a možná i svět."</em> Jenže mouchy v pasti <strong>nezhynuly</strong>. Přicházejí telegramy: <em>„Pane Popper. Mouchy nechcípají. Spravujou se! Jděte do prdele s takovým zázrakem!"</em> O pár let později <strong>Holanďané vynaleznou Fly Killer</strong> a zaplaví Evropu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Humor poválečných obchodních dobrodružství</li>
+      <li>Tatínkův <strong>vzestup i pád</strong></li>
+      <li>Tragikomika — vždycky ho někdo předhoní</li>
+      <li>Charakter renesančního snílka — nadšený, ale smolný</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--star)">
+  <span class="scene-label" style="background:rgba(168,136,42,.1);border-color:var(--star);color:var(--star)">★ 06 · CENZUROVÁNO · PRASE NEBUDE! ★</span>
+  <div class="scene-title">Komunistická absurdita</div>
+  <div class="scene-context"><strong>Kontext:</strong> Rodina rok krmila prasata s příslibem, že jedno za odměnu dostane. <strong>Maminka pomáhala, tatínek už viděl zabíjačku</strong>. Pak rodině oznámili: <strong>„Prase nebude!"</strong> Místo prasete dostali dopis, že <strong>dluží 530,52 Kčs</strong>. Tatínek se často ptal: <em>„Vstoupí ten dopis do historie?"</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Povídka byla komunistickou cenzurou vyškrtnuta</strong></li>
+      <li>Kritika socialistického zemědělství</li>
+      <li>Tatínkova bezmoc proti byrokracii</li>
+      <li>Historka, která je groteskní právě svou reálností</li>
+      <li>Kolovalo v <strong>samizdatu</strong>, oficiálně vydáno až po 1989</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--forest);background:rgba(106,58,40,.05)">
+  <span class="scene-label" style="background:rgba(106,58,40,.15);border-color:var(--forest);color:var(--forest)">★ 07 · ZÁVĚR · KRÁLÍCI S MOUDRÝMA OČIMA ★</span>
+  <div class="scene-title">Tatínkův konec</div>
+  <div class="scene-context"><strong>Kontext:</strong> Poslední povídka. Rodina koupí <strong>domek u Radotína</strong>. Tatínek začne s <strong>chovem králíků</strong>, maminka prodává vejce. Tatínek je přihlášen na výstavu králíků, ale <strong>odejde bez ceny</strong>. V rozrušení <strong>králíky vypustí ven</strong>. Sám přijde do nemocnice ve špatném stavu a <strong>už se nevrátí</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Konec tatínkova příběhu</strong></li>
+      <li>Psychické zhroucení renesančního snílka</li>
+      <li><strong>Smrt ducha</strong> — tatínek přežil nacismus, ale ne jeho snění nepřežije komunistickou šedost</li>
+      <li>Králíci s moudrýma očima = symbol nevinných tvorů, které tatínek osvobodí</li>
+      <li>Melancholický závěr celého souboru</li>
+      <li>Paralela s Pavlovou vlastní psychickou nemocí — otec i syn sdíleli osud</li>
+    </ul>
+  </div>
+</div>
+
+<div class="memory-frame">„Tatínek se vydal na kole s odpáranou Davidovou hvězdou,<br>aby přinesl svým synům srnce.<br>Než je fašisté odvezou do Terezína."<span class="memory-source">Ústřední obraz díla · Rok 1942</span></div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Láska k rodině, k otci, k přírodě a k rodnému kraji.</strong> Navzdory hrůzám války lidskost přežívá. <strong>Humor jako obrana před tragédií.</strong> Rodinná soudržnost. Solidarita obyčejných lidí. <strong>Důležitost vzpomínky</strong> — zachytit to, co bylo, než zmizí.</p>
+</div>
+
+<h3>Hlavní hodnoty díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Rodina</h4>
+    <p>Rodinná soudržnost jako základ života.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Příroda</h4>
+    <p>Berounka, les — zdroj klidu a štěstí.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Lidskost</h4>
+    <p>I v nejhorších dobách zůstává.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Humor</h4>
+    <p>Obrana před bolestí, smích navzdory utrpení.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Paměť</h4>
+    <p>Povinnost pamatovat, co bylo.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Otec</h4>
+    <p>Otec jako vzor, jako hrdina.</p>
+  </div>
+</div>
+
+<h3>Pavlův autobiografický rozměr</h3>
+<details>
+  <summary>Skuteční lidé v povídkách</summary>
+  <p>Téměř <strong>všechny postavy jsou skutečné osoby</strong>: <strong>Leo Popper</strong> — otec, <strong>Hermína</strong> — matka, <strong>Hugo a Jiří</strong> — bratři, <strong>Karel Prošek</strong> — pytlák z Luhu pod Branovem (skutečná osoba), <strong>Holan</strong> — skutečný vlčák. I konkrétní místa existují — Luh pod Branovem je dnes malá osada na Berounce u Křivoklátu. <strong>Chalupa, kde Popperovi trávili prázdniny, dodnes stojí.</strong></p>
+</details>
+
+<h3>Pavlova duševní choroba</h3>
+<details>
+  <summary>Psychický zlom v Innsbrucku 1964</summary>
+  <p>Ota Pavel byl <strong>úspěšný sportovní novinář</strong>. Jel na <strong>zimní olympiádu v Innsbrucku 1964</strong> jako rozhlasový zpravodaj. Tam u něj <strong>propukla maniodepresivní psychóza</strong> — pravděpodobně geneticky podmíněná (podobnou nemocí trpěl jeho otec v posledních letech). V záchvatu <strong>zapálil selské stavení</strong> v horách nad městem. Byl okamžitě odvezen do psychiatrické léčebny. <strong>Už se k novinářství nevrátil.</strong> Trpěl <strong>střídáním mánií a depresí</strong>. Ale z tohoto utrpení paradoxně vzešla <strong>jeho nejlepší literatura</strong> — vzpomínky na šťastné dětství s tatínkem.</p>
+</details>
+
+<h3>Filmová adaptace 1986</h3>
+<details>
+  <summary>Karel Kachyňa</summary>
+  <p><strong>Režie Karel Kachyňa, 1986.</strong> V hlavní roli tatínka <strong>Karel Heřmánek</strong>. Film se stal <strong>klasikou české kinematografie</strong>. Kachyňa zachytil melancholický tón Pavlovy prózy, poetiku Křivoklátska, humor i tragédii. Film je dodnes pravidelně vysílán v české televizi. Kachyňa později natočil i <strong><em>Zlaté úhoře</em></strong> (1979) podle jiných Pavlových povídek.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Univerzální příběh</strong> rodiny, otce a syna</li>
+    <li>Holocaust zprostředkován <strong>skrze rodinnou paměť</strong></li>
+    <li>Vztah k přírodě — <strong>dnes aktuální ekologicky</strong></li>
+    <li>Mezigenerační láska</li>
+    <li><strong>Humor jako obrana před bolestí</strong> — v těžkých časech</li>
+    <li>Česká identita a vztah k rodnému kraji</li>
+  </ul>
+</div>
+
+<h3>Kulturní vliv</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li>Jedna z nejoblíbenějších českých knih 20. století</li>
+    <li><strong>Povinná četba</strong> na středních školách</li>
+    <li>Stovky vydání, přes milion prodaných výtisků</li>
+    <li>Filmy <em>Smrt krásných srnců</em> (1986) a <em>Zlatí úhoři</em> (1979)</li>
+    <li><strong>Berounka a Křivoklátsko</strong> se staly literárním krajem</li>
+    <li>Inspirace pro české spisovatele dodnes (Michal Viewegh, Petr Šabach)</li>
+  </ul>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Literární vrchol z nemoci</summary>
+  <p>Paradoxem Pavlova osudu je, že <strong>bez nemoci by možná Smrt krásných srnců nikdy nenapsal</strong>. Zdravý sportovní novinář by dál psal reportáže o sportu. Nemoc ho donutila <strong>ustoupit do ústraní a vzpomínat</strong>. Utrpení se <strong>proměnilo v krásu</strong>. Kniha je Pavlovou cestou zpět do dětství, které ho mělo zachránit.</p>
+</details>
+
+<details>
+  <summary>„Psaní povídek je jako procházka lesem"</summary>
+  <p>Ota Pavel o svém stylu řekl: <em>„Psaní povídek je jako procházka lesem křížem krážem."</em> Jeho povídky mají <strong>volnou kompozici</strong> — odbočky, vedlejší příběhy, vzpomínky v vzpomínkách. Čtenář má pocit, že sedí u starého muže, který vypráví — <strong>občas zabloudí, ale nakonec dojde k poentě</strong>.</p>
+</details>
+
+<details>
+  <summary>Otec Leo Popper — skutečná legenda</summary>
+  <p>Leo Popper byl skutečná osoba — <strong>židovský obchodní cestující Elektroluxu</strong>. Byl <strong>malého vzrůstu, ale plný energie</strong>. Své přestupky před ženou obhajoval šarmem. <strong>Miloval ženy, ryby a přírodu</strong>. Za války se z něj stal skutečný hrdina — <strong>ochránil rodinu</strong>, navzdory nebezpečí. Po válce nikdy úplně nedosáhl úspěchu, který chtěl. <strong>Zemřel v 60. letech</strong>. Ota Pavel ho <strong>ve své literatuře zvěčnil</strong> — Leo Popper žije v české literatuře dál.</p>
+</details>
+
+<details>
+  <summary>Pavlova předčasná smrt</summary>
+  <p><strong>31. března 1973</strong> Ota Pavel <strong>zemřel na infarkt</strong> ve věku 42 let. Neviděl už posmrtné vydání své druhé vzpomínkové knihy <em>Jak jsem potkal ryby</em> (1974). Jeho smrt byla předčasná — kdyby žil, možná by napsal další vrcholná díla. Ale i to málo, co napsal za života nemoci, stačilo na to, aby <strong>zůstal jedním z nejmilovanějších českých spisovatelů</strong>.</p>
+</details>
+
+<div class="memory-frame" style="margin-top:40px">„Tenkrát jsem nevěděl, že tatínek jednou bude mít rybník.<br>Nevěděl jsem ani, co nás čeká.<br>Ale i kdybych to věděl —<br>to léto u Berounky by bylo stejně krásné."<span class="memory-source">Duch díla · Ota Pavel</span></div>
+</section>
+
+<div class="river-divider" style="margin-top:50px">≈ ✦ ≈</div>
+
+</div>
+</body>
+</html>

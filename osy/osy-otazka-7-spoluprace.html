@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 7: Spolupráce mezi procesy</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* IPC flow diagram */
+.flow-diagram{display:flex;flex-direction:column;gap:4px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.flow-step{padding:12px 16px;border-radius:6px;text-align:center;font-weight:600;position:relative}
+.flow-step small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.flow-arrow{text-align:center;color:var(--text-muted);font-size:16px;line-height:1}
+.fl-hw{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.fl-cpu{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.fl-os{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.fl-done{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+/* Signal flow */
+.sig-flow{margin:20px 0;padding:20px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.sig-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.sig-box{padding:10px 18px;border-radius:8px;font-weight:600;text-align:center;min-width:110px}
+.sig-box small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.sig-arrow{color:var(--text-muted);font-size:14px;min-width:20px;text-align:center}
+.sig-sender{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.sig-kernel{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.sig-receiver{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+.sig-handler{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+/* Pipe visualization */
+.pipe-vis{margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px}
+.pipe-proc{padding:14px 20px;border-radius:8px;font-weight:600;text-align:center;min-width:100px}
+.pipe-proc small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.pipe-conn{display:flex;align-items:center;gap:6px;color:var(--text-muted)}
+.pipe-line{width:60px;height:3px;border-radius:2px}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.sig-row{flex-direction:column}.sig-arrow{transform:rotate(90deg)}.pipe-vis{flex-direction:column}.pipe-conn{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 7</div>
+  <h1>Spolupráce mezi procesy</h1>
+  <p>IPC • Signály • Zasílání zpráv • Roura • Pojmenovaná roura • IPC socket • Sdílená paměť • Souběh</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#proc">Proč procesy spolupracují</a></li>
+  <li><a href="#cinnosti">Činnosti zajišťované IPC</a></li>
+  <li><a href="#mechanismy">Přehled mechanismů spolupráce</a></li>
+  <li><a href="#soubor">Soubor (nejjednodušší IPC)</a></li>
+  <li><a href="#mmap">Mapování souborů do paměti</a></li>
+  <li><a href="#signaly">Signály</a></li>
+  <li><a href="#signaly-unix">Signály v Unixu – podrobně</a></li>
+  <li><a href="#kill">Příkaz kill a syscall kill()</a></li>
+  <li><a href="#zpravy">Zasílání zpráv</a></li>
+  <li><a href="#zpravy-win">Zprávy ve Windows</a></li>
+  <li><a href="#kolona">Kolona (roura)</a></li>
+  <li><a href="#pojmenovana">Pojmenovaná roura</a></li>
+  <li><a href="#ipc-socket">IPC socket (Unix Domain Socket)</a></li>
+  <li><a href="#sdilena">Sdílená paměť</a></li>
+  <li><a href="#sdilena-impl">Implementace sdílené paměti</a></li>
+  <li><a href="#loopback">Komunikace přes loopback</a></li>
+  <li><a href="#soubeh">Problém souběhu a thready</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 PROČ SPOLUPRACUJÍ -->
+<section class="section" id="proc">
+<div class="section-header"><span class="section-num">01</span><h2>Proč procesy spolupracují</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Inter-Process Communication (IPC)</div>
+  <p>Procesy v OS běží <strong>odděleně</strong> (izolované paměťové prostory), ale často potřebují spolu komunikovat – vyměňovat si data, synchronizovat se nebo si posílat signály.</p>
+</div>
+
+<h3>Hlavní důvody</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Multiprogramování</h4>
+    <p>Úloha rozdělena na více samostatných procesů – programátor využívá multitasking (např. webový server). Využití výkonu <strong>více jader CPU</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Clustery</h4>
+    <p>Výpočty probíhají na <strong>oddělených počítačích</strong> – komunikace přes síť. Nutná synchronizace, signalizace a výměna dat.</p>
+  </div>
+</div>
+
+<h3>Konkrétní příklady spolupráce</h3>
+<div class="card">
+  <ul>
+    <li><strong>Systray (oznamovací oblast)</strong> – síťová aplikace pošle zprávu appletu → applet zobrazí bublinu (nový e-mail, IM zpráva)</li>
+    <li><strong>3D hra</strong> – arbitr přiděluje práci výpočetním procesům + synchronizace s pohybem hráče</li>
+    <li><strong>Ovládání GUI</strong> – správce oken sbírá události o pohybu myši a kliknutí, posílá informace aplikacím</li>
+    <li><strong>Webový server</strong> – rodičovský proces přijímá požadavky, přiděluje je potomkům (fork), ti je vyřizují</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 ČINNOSTI -->
+<section class="section" id="cinnosti">
+<div class="section-header"><span class="section-num">02</span><h2>Činnosti zajišťované IPC</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Synchronizace</h4>
+    <p>Čekání na událost v druhém procesu. Vzájemné informování o postupu výpočtu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Signalizace</h4>
+    <p>Jednoduchá <strong>asynchronní</strong> komunikace. Proces reaguje spuštěním obsluhy signálu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Výměna dat</h4>
+    <p>Vysoké nároky na flexibilitu. Pomocí výměny dat lze realizovat <strong>prakticky cokoliv</strong>.</p>
+  </div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Dva hlavní mechanismy</div>
+  <ul>
+    <li><strong>Zasílání zpráv</strong> – flexibilní, s daty nebo bez dat, i mezi různými počítači (cluster)</li>
+    <li><strong>Sdílená paměť</strong> – silnější nástroj, (neomezené) možnosti, knihovny → jednoduchá implementace</li>
+  </ul>
+  <p>Některé OS podporují oba mechanismy. Lze je implementovat i dodatečně pomocí knihoven (zjednodušení, přenositelnost).</p>
+</div>
+</section>
+
+<!-- 03 PŘEHLED MECHANISMŮ -->
+<section class="section" id="mechanismy">
+<div class="section-header"><span class="section-num">03</span><h2>Přehled mechanismů spolupráce</h2></div>
+
+<table class="compare-table">
+  <tr><th>Mechanismus</th><th>Směr</th><th>Vlastnosti</th></tr>
+  <tr><td><strong>Soubor</strong></td><td>Obousměrný</td><td>Přenositelné, ale pomalé (zápis na disk)</td></tr>
+  <tr><td><strong>Mapování souborů (mmap)</strong></td><td>Obousměrný</td><td>Pokročilé, sdílení paměti přes soubor</td></tr>
+  <tr><td><strong>Signály</strong></td><td>Jednosměrný</td><td>Jednoduché, bez přenosu dat (Unix)</td></tr>
+  <tr><td><strong>Zasílání zpráv</strong></td><td>Obousměrný</td><td>Univerzální řešení, i přes síť</td></tr>
+  <tr><td><strong>Roura (kolona)</strong></td><td>Jednosměrný</td><td>Příbuzné procesy, kruhový buffer v RAM</td></tr>
+  <tr><td><strong>Pojmenovaná roura</strong></td><td>Jednosměrný (FIFO)</td><td>I nepříbuzné procesy, speciální soubor</td></tr>
+  <tr><td><strong>IPC socket</strong></td><td>Obousměrný</td><td>Více klientů, Unix Domain Socket</td></tr>
+  <tr><td><strong>Sdílená paměť</strong></td><td>Obousměrný</td><td>Nejflexibilnější, nutné řešit souběh</td></tr>
+  <tr><td><strong>Loopback (127.0.0.1)</strong></td><td>Obousměrný</td><td>TCP/IP lokálně, totálně přenositelné</td></tr>
+</table>
+</section>
+
+<!-- 04 SOUBOR -->
+<section class="section" id="soubor">
+<div class="section-header"><span class="section-num">04</span><h2>Soubor (nejjednodušší IPC)</h2></div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Dočasné soubory</div>
+  <ul>
+    <li>V unixových systémech v adresáři <code>/tmp</code>, <code>/var/tmp</code></li>
+    <li>Všichni mají právo zápisu → mohou si vzájemně škodit</li>
+    <li>Používá se <strong>sticky bit</strong> → nelze si vzájemně mazat (i přes oprávnění „w")</li>
+    <li>Vytváření dočasných souborů vyžaduje <strong>speciální zacházení</strong> (zejména u privilegovaných procesů)</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nevýhody</div>
+  <ul>
+    <li>Komunikace je <strong>těžkopádná</strong></li>
+    <li>Velká <strong>režie</strong> (zápis na HDD)</li>
+    <li>Problém <strong>souběhu</strong> → náhodné názvy souborů, zamykání</li>
+    <li>Bezpečnostní rizika u privilegovaných procesů</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Výhoda</div>
+  <p>Mají <strong>všechny systémy</strong> → maximální přenositelnost. Lze též využít mapování souborů do paměti (<code>mmap()</code>).</p>
+</div>
+</section>
+
+<!-- 05 MMAP -->
+<section class="section" id="mmap">
+<div class="section-header"><span class="section-num">05</span><h2>Mapování souborů do paměti</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Funkce mmap()</div>
+  <p>Původně metoda nahrazující klasické operace (open, read, write, seek, close). Odstraňuje <strong>neustálé kopírování dat</strong> mezi cache, bufferem a paměťovým prostorem procesu.</p>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Princip</div>
+  <ul>
+    <li>Využívá mechanismu <strong>„výpadku stránky"</strong> (page fault) – stejný princip jako stránkování paměti</li>
+    <li>Na zvolené adrese v paměti bude <strong>obsah souboru</strong></li>
+    <li>Definujeme délku okna a offset obsahu souboru</li>
+    <li>Namapovaný soubor může být <strong>sdílen více procesy</strong> → IPC</li>
+    <li>Je nutné řešit <strong>souběh</strong> → zamykání</li>
+  </ul>
+</div>
+
+<h3>Postup použití</h3>
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">open() – otevření souboru<small>získáme deskriptor souboru</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">mmap() – mapování do paměti<small>deskriptor jako parametr, zvolíme adresu, délku, offset</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">Práce s pamětí = práce se souborem<small>čtení/zápis na adresu = čtení/zápis v souboru</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">munmap() – ukončení mapování<small>nebo automaticky při ukončení programu</small></div>
+</div>
+</section>
+
+<!-- 06 SIGNÁLY -->
+<section class="section" id="signaly">
+<div class="section-header"><span class="section-num">06</span><h2>Signály</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p><strong>Asynchronní oznámení události.</strong> Realizace jako jednoduché zprávy <strong>bez přenosu dat</strong>. Implementováno v jádře systému.</p>
+  <ul>
+    <li>Je přerušeno provádění procesu a je vyvolána <strong>obsluha signálu (handler)</strong></li>
+    <li><strong>Implicitní obsluha</strong> je standardně v jádře OS</li>
+    <li>Proces může definovat <strong>vlastní obsluhu</strong> (proceduru)</li>
+  </ul>
+</div>
+
+<h3>Jak signál funguje</h3>
+<div class="sig-flow">
+  <div class="sig-row">
+    <div class="sig-box sig-sender">Odesílatel<small>proces nebo jádro</small></div>
+    <div class="sig-arrow">→</div>
+    <div class="sig-box sig-kernel">Jádro OS<small>doručí signál cíli</small></div>
+    <div class="sig-arrow">→</div>
+    <div class="sig-box sig-receiver">Cílový proces<small>přerušen</small></div>
+    <div class="sig-arrow">→</div>
+    <div class="sig-box sig-handler">Handler<small>implicitní / vlastní</small></div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Oblíbené použití</div>
+  <ul>
+    <li><strong>Ukončení procesu</strong> – slušné (TERM), násilné (KILL), chybou (SEGV)</li>
+    <li><strong>Rekonfigurace</strong> – znovunačtení změněné konfigurace (HUP)</li>
+    <li><strong>Řídící znaky terminálu</strong> – CTRL+C, CTRL+Z</li>
+    <li><strong>Ošetření výjimek</strong> – dělení nulou, porušení ochrany paměti</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 SIGNÁLY V UNIXU -->
+<section class="section" id="signaly-unix">
+<div class="section-header"><span class="section-num">07</span><h2>Signály v Unixu – podrobně</h2></div>
+
+<h3>Řídící znaky terminálu</h3>
+<div class="card">
+  <ul>
+    <li><code>CTRL+C</code> → <strong>SIGINT</strong> → implicitně ukončení procesu</li>
+    <li><code>CTRL+Z</code> → <strong>SIGTSTP</strong> → pozastavení procesu</li>
+    <li><code>CTRL+\</code> → <strong>QUIT</strong> → ukončení + zápis core dump</li>
+  </ul>
+  <p>Mapování na klávesy lze změnit příkazem <code>stty</code>.</p>
+</div>
+
+<h3>Nejdůležitější signály</h3>
+<table class="compare-table">
+  <tr><th>Signál</th><th>Význam</th><th>Poznámka</th></tr>
+  <tr><td><strong>SIGHUP</strong></td><td>„Zavěšení" / rekonfigurace</td><td>Dnes znovunačtení konfigurace</td></tr>
+  <tr><td><strong>SIGINT</strong></td><td>Přerušení z terminálu</td><td>CTRL+C</td></tr>
+  <tr><td><strong>SIGQUIT</strong></td><td>Ukončení + core dump</td><td>CTRL+\</td></tr>
+  <tr><td><strong>SIGKILL</strong></td><td>Nepodmíněné ukončení</td><td>Nelze zachytit ani ignorovat!</td></tr>
+  <tr><td><strong>SIGSEGV</strong></td><td>Porušení ochrany paměti</td><td>Segmentation fault</td></tr>
+  <tr><td><strong>SIGPIPE</strong></td><td>Rozpad roury</td><td>Ukončení procesu čtoucího z roury</td></tr>
+  <tr><td><strong>SIGTERM</strong></td><td>Slušná žádost o ukončení</td><td>Výchozí signál příkazu <code>kill</code></td></tr>
+  <tr><td><strong>SIGFPE</strong></td><td>Dělení nulou</td><td>Floating point exception</td></tr>
+  <tr><td><strong>SIGSTOP</strong></td><td>Pozastavení procesu</td><td>Nelze zachytit ani ignorovat!</td></tr>
+  <tr><td><strong>SIGCONT</strong></td><td>Obnovení běhu procesu</td><td>Pokračování po STOP</td></tr>
+</table>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Definice handleru</div>
+  <ul>
+    <li>Proces sám definuje obsluhu signálu – <strong>ignorování</strong> nebo <strong>vlastní procedura</strong></li>
+    <li>Není-li definována → <strong>implicitní handler</strong> (z jádra)</li>
+    <li><strong>Nelze definovat</strong> pro SIGKILL a SIGSTOP – vždy je vykonána implicitní akce</li>
+    <li>Problémy: souběh, globální proměnné, non-reentrantní funkce</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 KILL -->
+<section class="section" id="kill">
+<div class="section-header"><span class="section-num">08</span><h2>Příkaz kill a syscall kill()</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Systémové volání kill()</div>
+  <p>Název pochází od signálu KILL. Knihovní funkce z programu nebo příkaz <code>kill</code> z terminálu. Lze zaslat signál <strong>pro daný proces (PID)</strong> nebo pro <strong>skupinu procesů</strong>.</p>
+</div>
+
+<h3>Příklady použití příkazu kill</h3>
+<div class="card">
+  <ul>
+    <li><code>kill -l</code> → vypíše seznam signálů + jejich čísla</li>
+    <li><code>kill &lt;PID&gt;</code> → zaslání signálu TERM (slušná žádost o ukončení)</li>
+    <li><code>kill -1 &lt;PID&gt;</code> nebo <code>kill -HUP &lt;PID&gt;</code> → rekonfigurace</li>
+    <li><code>kill -9 &lt;PID&gt;</code> nebo <code>kill -KILL &lt;PID&gt;</code> → bezpodmínečné ukončení</li>
+  </ul>
+  <p>Signál lze posílat jen <strong>svým procesům</strong>, uživatel <strong>root</strong> může všem.</p>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">SIGKILL – stav D</div>
+  <p>SIGKILL nelze doručit, je-li proces ve stavu <strong>D</strong> (uninterruptible sleep) – proces je v jádře a čeká na dokončení I/O operace.</p>
+</div>
+</section>
+
+<!-- 09 ZASÍLÁNÍ ZPRÁV -->
+<section class="section" id="zpravy">
+<div class="section-header"><span class="section-num">09</span><h2>Zasílání zpráv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Univerzálnější než signály</div>
+  <p>Mezi procesy lze přenášet <strong>i data</strong>. Implementace v jádře nebo jako sdílená paměť. Lze použít i <strong>mezi různými počítači</strong> (přes síť).</p>
+</div>
+
+<h3>Vlastnosti spojení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Kapacita spojení</h4>
+    <p>Kolik nezpracovaných zpráv může čekat. Nulová → odesílatel se blokuje nebo se zpráva ztratí. Omezená × neomezená kapacita.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Velikost zpráv</h4>
+    <p><strong>Pevná</strong> nebo <strong>proměnná</strong> velikost. Duplex: jednosměrnost × obousměrnost.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Synchronnost a spolehlivost</h4>
+    <p><strong>Synchronní</strong> (čekání na odpověď) × <strong>asynchronní</strong>. Spolehlivý přenos nebo bez záruk.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Řešení mezních situací</h4>
+    <p>Nutnost implementovat fronty, potvrzování. Řešení duplicit, ztráty, zkomolení, příjemce skončil…</p>
+  </div>
+</div>
+
+<details><summary>Limity zpráv v Linuxu (ipcs -l)</summary>
+<div class="card">
+  <ul>
+    <li>Celkový maximální počet front: <strong>32 000</strong></li>
+    <li>Maximální velikost zprávy: <strong>8 192 B</strong></li>
+    <li>Výchozí maximální velikost fronty: <strong>16 384 B</strong></li>
+  </ul>
+  <p>Příkaz <code>ipcs -l</code> kromě zpráv zobrazuje i limity sdílené paměti a semaforů.</p>
+</div>
+</details>
+</section>
+
+<!-- 10 ZPRÁVY VE WINDOWS -->
+<section class="section" id="zpravy-win">
+<div class="section-header"><span class="section-num">10</span><h2>Zprávy ve Windows</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Windows Message System</div>
+  <ul>
+    <li>MS Windows <strong>nemají signály</strong> (nejsou POSIX)</li>
+    <li>WinAPI (nízkoúrovňové) – vyšší jazyky mohou zprávy řešit jinak</li>
+    <li>Používá se <strong>zasílání zpráv</strong> – funkce <code>PostMessage</code> a <code>DispatchMessage</code></li>
+    <li>Program má funkce <strong>WinMain</strong> a <strong>WinProc</strong></li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Důležité zprávy</div>
+  <ul>
+    <li><strong>WM_CLOSE</strong> – zavření okna křížkem. Posláno i po stisku „End Task" ve správci procesů</li>
+    <li><strong>WM_DESTROY</strong> – okno už neexistuje, ale program ještě běží</li>
+    <li>Po stisku <strong>„End Process"</strong> ve správci procesů je program ukončen <strong>bez zprávy</strong> (obdoba SIGKILL)</li>
+    <li>„Nezavřitelný" program = nedělá po WM_CLOSE nic</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 KOLONA -->
+<section class="section" id="kolona">
+<div class="section-header"><span class="section-num">11</span><h2>Kolona (roura)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Jednosměrné propojení příbuzných procesů</div>
+  <p>Jeden proces do kolony <strong>zapisuje</strong>, druhý z ní <strong>čte</strong>. Propojení přes deskriptory. Vytváří se <strong>skupina procesů</strong>.</p>
+</div>
+
+<div class="pipe-vis">
+  <div class="pipe-proc" style="background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)">Proces A<small>zapisuje (stdout)</small></div>
+  <div class="pipe-conn">
+    <span>→</span>
+    <div class="pipe-line" style="background:linear-gradient(90deg,var(--accent-1),var(--accent-3))"></div>
+    <span>→</span>
+  </div>
+  <div class="pipe-proc" style="background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)">Kruhový buffer<small>v paměti (RAM)</small></div>
+  <div class="pipe-conn">
+    <span>→</span>
+    <div class="pipe-line" style="background:linear-gradient(90deg,var(--accent-3),var(--accent-4))"></div>
+    <span>→</span>
+  </div>
+  <div class="pipe-proc" style="background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)">Proces B<small>čte (stdin)</small></div>
+</div>
+
+<div class="card">
+  <ul>
+    <li>V paměti <strong>kruhový vyrovnávací paměť (buffer)</strong></li>
+    <li>Jádro posílá při přerušení roury signál <strong>SIGPIPE</strong> → skupina reaguje ukončením (<em>„broken pipe"</em>)</li>
+    <li>Typicky v příkazovém řádku: <code>grep ro /etc/passwd | sort</code></li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 POJMENOVANÁ ROURA -->
+<section class="section" id="pojmenovana">
+<div class="section-header"><span class="section-num">12</span><h2>Pojmenovaná roura</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Lepší než běžná roura</div>
+  <ul>
+    <li>Umožňuje spojení <strong>nepříbuzných procesů</strong></li>
+    <li>Definuje <strong>POSIX</strong></li>
+    <li>Styčné místo je <strong>speciální soubor typu roura</strong> – název lze předat nepříbuzným procesům</li>
+    <li>Pojmenovaná roura <strong>„přežije" ukončení procesů</strong> (soubor zůstává)</li>
+    <li>Data vyměňována v paměti (<strong>kruhový buffer</strong>)</li>
+    <li>Pouze <strong>jednosměrná</strong> komunikace (FIFO)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Vytvoření a ověření</div>
+  <p><code>mknod /tmp/pojmenovana p</code></p>
+  <p><code>ls -l /tmp/pojmenovana</code></p>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy)">prw-rw-r--. 1 ke ke 0 16. kvě 20.39 /tmp/pojmenovana</p>
+  <p>Písmeno <strong>p</strong> na začátku oprávnění značí speciální soubor typu roura.</p>
+</div>
+</section>
+
+<!-- 13 IPC SOCKET -->
+<section class="section" id="ipc-socket">
+<div class="section-header"><span class="section-num">13</span><h2>IPC socket (Unix Domain Socket)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p>Též tzv. <strong>Unix Domain Socket</strong>, definuje POSIX. Speciální soubor, ale implementováno <strong>v RAM</strong>. Obdoba síťové komunikace.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Výhody oproti rouře</div>
+  <ul>
+    <li><strong>Obousměrná komunikace</strong> (roura jen jednosměrná)</li>
+    <li>Možnost <strong>více klientů</strong></li>
+    <li>Například PostgreSQL server + klient: <code>/tmp/.s.PGSQL.5432</code></li>
+    <li>Klient otevře soubor socketu a připojí se</li>
+    <li>Vytváří se v programu, <strong>před skončením nutno smazat</strong></li>
+  </ul>
+</div>
+
+<h3>Srovnání: roura vs. pojmenovaná roura vs. IPC socket</h3>
+<table class="compare-table">
+  <tr><th>Vlastnost</th><th>Roura</th><th>Pojmenovaná roura</th><th>IPC socket</th></tr>
+  <tr><td><strong>Směr</strong></td><td>Jednosměrný</td><td>Jednosměrný (FIFO)</td><td>Obousměrný</td></tr>
+  <tr><td><strong>Procesy</strong></td><td>Jen příbuzné</td><td>I nepříbuzné</td><td>I nepříbuzné</td></tr>
+  <tr><td><strong>Více klientů</strong></td><td>Ne</td><td>Ne</td><td>Ano</td></tr>
+  <tr><td><strong>Soubor v FS</strong></td><td>Ne</td><td>Ano (přežije ukončení)</td><td>Ano (nutno smazat)</td></tr>
+  <tr><td><strong>Implementace</strong></td><td>RAM (buffer)</td><td>RAM (buffer)</td><td>RAM</td></tr>
+  <tr><td><strong>Standard</strong></td><td>Unix</td><td>POSIX</td><td>POSIX</td></tr>
+</table>
+</section>
+
+<!-- 14 SDÍLENÁ PAMĚŤ -->
+<section class="section" id="sdilena">
+<div class="section-header"><span class="section-num">14</span><h2>Sdílená paměť</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Nejflexibilnější mechanismus IPC</div>
+  <p>API definuje <strong>POSIX</strong>. Procesy jsou normálně odděleny (kromě threadů, které sdílí paměť záměrně). Sdílená paměť = <strong>shodná s částí jiného procesu</strong>.</p>
+  <ul>
+    <li>Při zápisu <strong>problém souběhu</strong> → řeší se zamykáním, synchronizačními primitivy</li>
+    <li>Programátor si komunikaci <strong>přizpůsobí dle svých potřeb</strong></li>
+    <li>Funkce pro ovládání → syscall, knihovny</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Princip – tabulky stránek</div>
+  <ul>
+    <li>Dva různé procesy mají v tabulce stránek <strong>stejnou fyzickou stránku</strong></li>
+    <li>Lze definovat omezení: <strong>jen pro čtení</strong>, i pro zápis</li>
+    <li>Jádro vrátí <strong>identifikátor</strong> sdíleného segmentu</li>
+    <li>Identifikátor je potřeba <strong>předat jinému procesu</strong> (roura, socket, fork)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 15 IMPLEMENTACE SDÍLENÉ PAMĚTI -->
+<section class="section" id="sdilena-impl">
+<div class="section-header"><span class="section-num">15</span><h2>Implementace sdílené paměti</h2></div>
+
+<h3>Postup v programu</h3>
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">Proces vytvoří sdílenou paměť o velikosti X<small>shmget() – jádro vrátí identifikátor</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">Předání identifikátoru jinému procesu<small>přes rouru, socket, nebo fork (odštěpení potomka)</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Připojení ke sdílené paměti<small>shmat() – proces získá ukazatel (adresu v paměti)</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">Čtení a zápis + řešení souběhu<small>zamykání, synchronizace (semafory, mutexy)</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Odpojení a zrušení segmentu<small>po ukončení práce je nutno sdílený úsek zrušit</small></div>
+</div>
+
+<h3>Sdílená paměť v Linuxu</h3>
+<div class="card">
+  <ul>
+    <li><code>ipcs -m</code> – výpis sdílených segmentů paměti</li>
+    <li><code>ipcrm shm &lt;shmid&gt;</code> – ruční zrušení segmentu (zůstane-li chybně po programu)</li>
+    <li>V jazyce C: funkce <code>shmget()</code>, <code>shmat()</code>, <code>shmdt()</code>, <code>shmctl()</code></li>
+    <li>Uživatel vidí jen oblasti, do kterých má přístup; <strong>root</strong> vidí všechny</li>
+    <li>Mnoho GUI programů využívá sdílenou paměť pro komunikaci</li>
+  </ul>
+</div>
+</section>
+
+<!-- 16 LOOPBACK -->
+<section class="section" id="loopback">
+<div class="section-header"><span class="section-num">16</span><h2>Komunikace přes loopback</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Totálně přenositelné</div>
+  <ul>
+    <li>IP adresa <code>127.0.0.1/255.0.0.0</code> (v IPv6 <code>::1/128</code>)</li>
+    <li>Pro funkční TCP/IP <strong>povinně vždy nastaven</strong> na vnitřním virtuálním rozhraní</li>
+    <li>Síťová komunikace <strong>jen v rámci počítače</strong> – datagram neopouští počítač</li>
+    <li>Data přicházející ze sítě <strong>nemohou na loopback dorazit</strong></li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Výhody</div>
+  <ul>
+    <li>Programátor <strong>nemusí řešit případ „když není síť"</strong></li>
+    <li><strong>Přenositelné mezi všemi OS</strong> s TCP/IP stackem</li>
+    <li>Aplikace naslouchá jen lokálním spojením → bezpečnost</li>
+    <li>Využíváno: <strong>SQL servery, Firefox, Chrome, Thunderbird…</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 17 SOUBĚH A THREADY -->
+<section class="section" id="soubeh">
+<div class="section-header"><span class="section-num">17</span><h2>Problém souběhu a thready</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problém souběhu (race condition)</div>
+  <ul>
+    <li>Dva (i více) procesů <strong>mění stejná data</strong></li>
+    <li>Při samostatném přístupu se problém neprojeví</li>
+    <li>Problémem je <strong>neatomická operace</strong>: první proces upravuje sekvenčně data → dojde ke změně kontextu → druhý proces čte <strong>nekonzistentní data</strong></li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Řešení souběhu</div>
+  <ul>
+    <li><strong>Zamykání</strong> – zámky jsou knihovní funkce → univerzální použití</li>
+    <li><strong>Atomické funkce</strong> – operace provedena celá najednou (nelze přerušit)</li>
+    <li><strong>Serializace</strong> – přístup k datům postupně, jeden po druhém</li>
+    <li><strong>RCU</strong> (Read-Copy-Update) – pokročilá technika v jádře Linuxu</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Thready a souběh</div>
+  <ul>
+    <li>Běžné procesy jsou v paměti <strong>odděleny</strong></li>
+    <li>Thready <strong>sdílí společnou paměť</strong> → při zápisu čehokoliv je souběh</li>
+    <li>Řeší se zamykáním, synchronizačními primitivy, nebo <strong>oddělené proměnné pro každý thread</strong></li>
+    <li>Chyba v jednom threadu <strong>ovlivní ostatní</strong> → typicky ukončení všech</li>
+    <li>Problém pluginů v prohlížečích: chyba ve Flashi → pád celého prohlížeče → řešení: <strong>vyvedení pluginu do samostatného procesu</strong></li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 18 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">18</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">PROČ PROCESY SPOLUPRACUJÍ</p>
+<ul>
+  <li><strong>IPC (Inter-Process Communication):</strong> procesy jsou odděleny, ale potřebují komunikovat – synchronizace, signalizace, výměna dat</li>
+  <li><strong>Důvody:</strong> multiprogramování (využití více jader CPU), clustery (výpočty na více počítačích)</li>
+  <li><strong>Příklady:</strong> systray (notifikace), webový server (rodič + potomci), GUI (správce oken posílá události aplikacím)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">SOUBOR A MMAP</p>
+<ul>
+  <li><strong>Soubor:</strong> nejjednodušší IPC, dočasné soubory v /tmp. Přenositelné, ale pomalé (režie HDD). Sticky bit, souběh</li>
+  <li><strong>mmap():</strong> mapování souboru do paměti, sdílení mezi procesy. Využívá page fault. Nutno řešit souběh</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SIGNÁLY</p>
+<ul>
+  <li><strong>Signály:</strong> asynchronní oznámení bez dat. Implementováno v jádře. Implicitní handler (jádro) × vlastní handler (proces)</li>
+  <li><strong>Důležité:</strong> SIGTERM (slušné ukončení), SIGKILL (násilné – nelze zachytit!), SIGINT (CTRL+C), SIGHUP (rekonfigurace)</li>
+  <li><strong>kill():</strong> syscall pro zaslání signálu. Příkaz: <code>kill &lt;PID&gt;</code>, <code>kill -9 &lt;PID&gt;</code>. Signály jen svým procesům, root může všem</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">ZASÍLÁNÍ ZPRÁV</p>
+<ul>
+  <li><strong>Zasílání zpráv:</strong> univerzálnější než signály, přenos dat, i přes síť. Vlastnosti: kapacita, velikost, duplex, synchronnost, spolehlivost</li>
+  <li><strong>Windows:</strong> nemají signály → PostMessage/DispatchMessage. WM_CLOSE (zavření), WM_DESTROY (zrušení okna). End Process = bez zprávy</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">ROURY A SOCKETY</p>
+<ul>
+  <li><strong>Roura (kolona):</strong> jednosměrná, příbuzné procesy, kruhový buffer v RAM. SIGPIPE při přerušení. Syntaxe: <code>cmd1 | cmd2</code></li>
+  <li><strong>Pojmenovaná roura:</strong> i nepříbuzné procesy, speciální soubor (FIFO), přežije ukončení procesů. <code>mknod ... p</code></li>
+  <li><strong>IPC socket:</strong> Unix Domain Socket, obousměrný, více klientů. Speciální soubor v RAM. Např. PostgreSQL</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">SDÍLENÁ PAMĚŤ A LOOPBACK</p>
+<ul>
+  <li><strong>Sdílená paměť:</strong> nejflexibilnější, POSIX API. Dva procesy sdílí stránku v tabulce stránek. shmget → shmat → práce → odpojení. Souběh → zámky</li>
+  <li><strong>Loopback:</strong> 127.0.0.1, komunikace přes TCP/IP jen lokálně. Data neopustí počítač. Totálně přenositelné. SQL servery, prohlížeče</li>
+  <li><strong>Souběh:</strong> neatomická operace → nekonzistentní data. Řešení: zamykání, atomické operace, serializace, RCU</li>
+  <li><strong>Thready:</strong> sdílí paměť → souběh. Chyba jednoho → pád všech. Plugin do samostatného procesu = izolace</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

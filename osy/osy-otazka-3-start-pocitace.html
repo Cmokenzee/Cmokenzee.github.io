@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 3: Start počítače</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Boot flow timeline */
+.boot-flow{margin:20px 0;padding-left:24px;border-left:3px solid var(--border);position:relative}
+.bf-step{padding:14px 0 14px 20px;position:relative}
+.bf-step::before{content:'';position:absolute;left:-33px;top:20px;width:16px;height:16px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--border)}
+.bf-step.s1::before{background:var(--accent-5);box-shadow:0 0 0 2px var(--accent-5)}
+.bf-step.s2::before{background:var(--accent-6);box-shadow:0 0 0 2px var(--accent-6)}
+.bf-step.s3::before{background:var(--accent-4);box-shadow:0 0 0 2px var(--accent-4)}
+.bf-step.s4::before{background:var(--accent-3);box-shadow:0 0 0 2px var(--accent-3)}
+.bf-step.s5::before{background:var(--accent-1);box-shadow:0 0 0 2px var(--accent-1)}
+.bf-step.s6::before{background:var(--osy);box-shadow:0 0 0 2px var(--osy)}
+.bf-step .bfs-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px}
+.bf-step .bfs-title{font-weight:700;color:var(--heading);font-size:15px;margin-bottom:4px}
+.bf-step .bfs-desc{color:var(--text-muted);font-size:13px}
+/* Disk layout visual */
+.disk-layout{display:flex;margin:16px 0;border-radius:8px;overflow:hidden;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px}
+.dl-cell{padding:12px 8px;text-align:center;color:var(--heading);font-weight:600;border-right:1px solid rgba(0,0,0,.3)}
+.dl-cell:last-child{border-right:none}
+.dl-cell small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+/* Partition ID table */
+.pid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:14px 0}
+.pid-cell{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.pid-cell .pid-hex{color:var(--osy);font-weight:700;display:block;margin-bottom:4px}
+.pid-cell .pid-name{color:var(--heading);font-size:11px}
+/* Command / code block */
+.cmd-block{background:#0a0c12;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:12px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-3);overflow-x:auto;white-space:nowrap}
+.cmd-block .prompt{color:var(--text-muted);user-select:none}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.pid-grid{grid-template-columns:repeat(2,1fr)}.disk-layout{flex-direction:column}.dl-cell{border-right:none;border-bottom:1px solid rgba(0,0,0,.3)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 3</div>
+  <h1>Start počítače</h1>
+  <p>BIOS • UEFI • CMOS • MBR • GPT • Zavaděč • Secure Boot • Mobilní zařízení</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#start">Start PC – dvě fáze</a></li>
+  <li><a href="#zapnuti">Zapnutí PC – reset, CPU, BIOS</a></li>
+  <li><a href="#bios">BIOS a jeho rozšíření</a></li>
+  <li><a href="#setup">SETUP a CMOS</a></li>
+  <li><a href="#cinnost">Činnost BIOSu při startu</a></li>
+  <li><a href="#studeny-teply">Studený × teplý start, Fast Startup</a></li>
+  <li><a href="#zavedeni">Odkud lze OS zavést</a></li>
+  <li><a href="#fdd">Start z diskety, boot sektor</a></li>
+  <li><a href="#mbr">MBR a oddíly</a></li>
+  <li><a href="#zarovnani">Zarovnání oddílů, zavaděč</a></li>
+  <li><a href="#hdd">Start z disku, CD, USB, PXE</a></li>
+  <li><a href="#uefi">UEFI a GPT</a></li>
+  <li><a href="#aktivace">Aktivace jádra OS</a></li>
+  <li><a href="#secureboot">Secure Boot</a></li>
+  <li><a href="#zabezpeceni">Zabezpečení startu PC</a></li>
+  <li><a href="#mobile">Mobilní zařízení, rooting, Knox</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 START -->
+<section class="section" id="start">
+<div class="section-header"><span class="section-num">01</span><h2>Start PC – dvě fáze</h2></div>
+
+<p>Start počítače se dá rozdělit na <strong>dvě snadno rozlišitelné části</strong>. Pro různé typy počítačů je postup specifický.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Inicializace hardware</h4>
+    <p>Řeší <strong>firmware</strong> – software od výrobce na základní desce. V IBM PC to byl <strong>BIOS</strong>, nově <strong>UEFI</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Zavedení operačního systému</h4>
+    <p>První krok provede firmware, další postup je čistě v režii použitého software.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <p style="margin-bottom:0">Filozofie u PC: <em>„zresetuj to a ono to (nejspíš) bude fungovat."</em> U pracovních stanic a serverů to někdy nestačí.</p>
+</div>
+</section>
+
+<!-- 02 ZAPNUTÍ -->
+<section class="section" id="zapnuti">
+<div class="section-header"><span class="section-num">02</span><h2>Zapnutí PC – reset, CPU, BIOS</h2></div>
+
+<div class="boot-flow">
+  <div class="bf-step s1">
+    <div class="bfs-label">FÁZE 1</div>
+    <div class="bfs-title">Reset</div>
+    <div class="bfs-desc">Po zapnutí PC nebo stisku tlačítka „reset". Reset je <strong>el. signál propojující všechny obvody</strong>. Stavové obvody se uvedou do počátečního stavu – jinak by software nevěděl, jak začít s jejich ovládáním.</div>
+  </div>
+  <div class="bf-step s2">
+    <div class="bfs-label">FÁZE 2</div>
+    <div class="bfs-title">CPU do 16bitového režimu</div>
+    <div class="bfs-desc">Jako <strong>Intel 8086</strong> – CPU „vidí" jen 1 MiB paměti. Interpretace kódu od adresy <code>0xFFFF0</code>, kde je umístěn BIOS (zajistí výrobce základní desky).</div>
+  </div>
+  <div class="bf-step s3">
+    <div class="bfs-label">FÁZE 3</div>
+    <div class="bfs-title">Provádění kódu v BIOS / UEFI</div>
+    <div class="bfs-desc">Plně kontroluje první fázi startu PC.</div>
+  </div>
+</div>
+</section>
+
+<!-- 03 BIOS -->
+<section class="section" id="bios">
+<div class="section-header"><span class="section-num">03</span><h2>BIOS a jeho rozšíření</h2></div>
+
+<p><strong>Basic Input-Output System.</strong> Uložen v ROM (dnes Flash → lze aktualizovat), na základní desce od jejího výrobce. BIOS programuje několik firem, je <strong>modulární</strong>.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Vlastnosti BIOSu</div>
+  <ul>
+    <li>Závislý na HW – přímo jej ovládá</li>
+    <li>Poskytuje jednoduché API – tzv. <strong>„služby BIOSu"</strong> (čti sektor z disku, vytiskni znak, pošli na port…)</li>
+    <li>Plně na něj spoléhal pouze <strong>DOS</strong></li>
+    <li><strong>16bitový</strong> z původního IBM PC (1981) – 32bitová rozšíření se neujala</li>
+    <li>Dnes je BIOS nahrazován <strong>UEFI</strong></li>
+  </ul>
+</div>
+
+<h3>Rozšíření BIOSu</h3>
+<div class="card purple">
+  <ul>
+    <li>Vlastní BIOS mají i doplňující karty (grafická, řadiče SATA/SCSI)</li>
+    <li>Definované rozhraní – BIOS rozšíření najde a <strong>spustí jeho inicializační kód</strong></li>
+    <li>Přidám kartu, má na sobě svoji ROM s BIOSem</li>
+    <li><strong>VideoBIOS</strong> – inicializace čipu grafické karty</li>
+    <li>Zavedení OS z jiného řadiče (SCSI, SAS, další SATA)</li>
+    <li>Start systému ze sítě (<strong>BootROM</strong>)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 SETUP / CMOS -->
+<section class="section" id="setup">
+<div class="section-header"><span class="section-num">04</span><h2>SETUP a CMOS</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">SETUP</h4>
+    <p>Aplikace pro volitelná nastavení BIOSu. Dříve samostatná aplikace (problém při ztrátě diskety → přesun do BIOSu). Vyvolání při startu stiskem <code>DEL</code>, <code>F2</code> apod. Nastavení chipsetu (frekvence, napájení), <strong>pořadí zařízení pro zavedení OS</strong>, heslo. Dříve pořadí pevně stanoveno → boot viry z disket.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">CMOS</h4>
+    <p>Paměť RAM s <strong>nízkou spotřebou</strong>, desítky až stovky bajtů. <strong>Nevolatilní</strong> – zálohována lithiovou baterií (spolu s RTC). Obsahuje jen hodnoty, žádný výkonný kód. V nouzi lze vymazat jumperem / vyndáním baterie → BIOS obnoví <strong>safe defaults</strong>.</p>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Reset CMOS nemusí fungovat</div>
+  <p style="margin-bottom:0">U pracovních stanic a serverů může být heslo BIOSu uloženo v <strong>TPM čipu</strong> – vymazání CMOS nepomůže.</p>
+</div>
+</section>
+
+<!-- 05 ČINNOST -->
+<section class="section" id="cinnost">
+<div class="section-header"><span class="section-num">05</span><h2>Činnost BIOSu při startu</h2></div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-5)">1</div>
+    <div class="step-content">
+      <div class="step-label">Detekce a inicializace hardware</div>
+      <div class="step-desc">Uvedení HW do výchozího stavu. Lze částečně přeskočit u teplého startu.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-4)">2</div>
+    <div class="step-content">
+      <div class="step-label">ACPI tabulky</div>
+      <div class="step-desc">Standard (Intel, 1996) – info o konfiguraci do speciálních tabulek v paměti. Jen nové počítače (Windows 2000+). Tabulky často chybné → problém pro Linux. Tvůrce BIOSu potřebuje jen funkční start pro Windows.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-3)">3</div>
+    <div class="step-content">
+      <div class="step-label">POST testy</div>
+      <div class="step-desc"><strong>Power On Self Test</strong> – základní kontroly funkčnosti HW.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--osy)">4</div>
+    <div class="step-content">
+      <div class="step-label">Cíl: aktivace operačního systému</div>
+      <div class="step-desc">Předání řízení zavaděči OS.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 06 STUDENÝ/TEPLÝ + FAST STARTUP -->
+<section class="section" id="studeny-teply">
+<div class="section-header"><span class="section-num">06</span><h2>Studený × teplý start, Fast Startup</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Studený start</h4>
+    <p>Počítač je vypnut a zapnut. Je aktivován <strong>signál reset</strong> pro všechny obvody.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Teplý start (restart)</h4>
+    <p>Tlačítko „restartovat" v nabídce systému. SW sekvence: <strong>ukončení činností</strong> → skok na startovací sekvenci v BIOSu. Lze vynechat některé kroky (reinicializaci obvodů) → <strong>rychlejší</strong>.</p>
+  </div>
+</div>
+
+<h3>Fast Startup (Windows)</h3>
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Hybrid boot / hybrid shutdown</div>
+  <ul>
+    <li>Na počítačích <strong>podporujících hibernaci</strong> je defaultně zapnuto</li>
+    <li>Při zavření víka notebooku nejdříve <strong>S3 (sleep)</strong>, později <strong>S4 (hibernace)</strong></li>
+    <li>„Vypnutí" ve skutečnosti dělá S4 – skutečné vypnutí: <code>SHIFT + Vypnout</code></li>
+    <li>S4 = ukončení aplikací, ale <strong>RAM s jádrem uložena na disk</strong> → soubor <code>C:\hiberfil.sys</code></li>
+    <li>Spolupráce se stejným nastavením v BIOSu (<strong>fastboot</strong>) – přeskočí test a detekci HW</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problémy Fast Startup</div>
+  <ul>
+    <li><strong>Nefunguje vstup do BIOSu</strong> (F2, Del, Esc, F10…)</li>
+    <li>Možná <strong>kolize při dual boot</strong> s Linuxem → lze vypnout v nastavení Windows</li>
+    <li>Obsah NTFS disku <strong>není konzistentní</strong> – část změn je v RAM</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 ZAVEDENÍ -->
+<section class="section" id="zavedeni">
+<div class="section-header"><span class="section-num">07</span><h2>Odkud lze OS zavést</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">BIOS – zdroje pro boot</div>
+  <ul>
+    <li><strong>Disketa</strong> – nejjednodušší, u ostatních slouží jako vzor (emulace)</li>
+    <li><strong>Pevný disk</strong> – jako disketa, ale navíc MBR</li>
+    <li><strong>CD/DVD</strong> – emulace diskety nebo přímo</li>
+    <li><strong>BootROM</strong> – emulace diskety nebo přímo (PXE ze sítě)</li>
+    <li><strong>USB mass storage</strong> – flash disk, externí HDD</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">UEFI</div>
+  <ul>
+    <li>Delší dobu jej používá <strong>Apple</strong> (EFI → Intel)</li>
+    <li>Náhrada BIOSu, umožňuje <strong>binární „ovladače" HW</strong></li>
+    <li>Problém možnosti <strong>tajit nastavování HW</strong> (kvůli DRM)</li>
+    <li>Zástupným důvodem odchodu od BIOSu jsou <strong>disky &gt; 2 TiB</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 FDD -->
+<section class="section" id="fdd">
+<div class="section-header"><span class="section-num">08</span><h2>Start z diskety a boot sektor</h2></div>
+
+<p>BIOS umí disketovou mechaniku plně ovládat. FDD je ovládána na PC jednotně – potřebujeme jen <strong>načíst požadovaný sektor</strong>.</p>
+
+<div class="boot-flow">
+  <div class="bf-step s1">
+    <div class="bfs-label">KROK 1</div>
+    <div class="bfs-title">Inicializace FDD</div>
+    <div class="bfs-desc">Nalezení a inicializace disketové mechaniky.</div>
+  </div>
+  <div class="bf-step s2">
+    <div class="bfs-label">KROK 2</div>
+    <div class="bfs-title">Načtení boot sektoru</div>
+    <div class="bfs-desc">BIOS zavede do RAM <strong>první sektor diskety</strong> – prvních 512 bajtů, LBA=0 (postaru CHS = 0,0,1). Využívá své služby → <strong>HW i SW nezávislý kód</strong>.</div>
+  </div>
+  <div class="bf-step s3">
+    <div class="bfs-label">KROK 3</div>
+    <div class="bfs-title">Skok na boot sektor</div>
+    <div class="bfs-desc">Skočí se na začátek boot sektoru a pokračuje jeho kód.</div>
+  </div>
+</div>
+
+<h3>Boot sektor</h3>
+<div class="card">
+  <p>Obsahuje <strong>kód zavaděče jádra OS</strong>. Pro různé OS je boot sektor různý.</p>
+  <ul>
+    <li><strong>DOS</strong> – různé verze (MS-DOS, IBM-DOS, FreeDOS). Typický rozdíl: různě pojmenované soubory (<code>io.sys + msdos.sys</code>, <code>ibmio.sys + ibmdos.sys</code>)</li>
+    <li><strong>Windows NT</strong> – u starších verzí šlo zavést systém ze <strong>čtyř disket</strong></li>
+    <li><strong>Linux</strong> – buď zavaděč (<strong>LILO, GRUB, syslinux</strong>) nebo každé jádro má vlastní boot sektor (prvních 512 bajtů binárky jádra)</li>
+    <li>Nenajde-li boot sektor soubory s jádrem → <code>System files not found</code></li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 MBR -->
+<section class="section" id="mbr">
+<div class="section-header"><span class="section-num">09</span><h2>MBR a oddíly</h2></div>
+
+<p>Z fungujícího startu z diskety vznikla myšlenka <strong>„diskety na disku"</strong> – a ještě lépe: <strong>několik disket na disku</strong>. Proto přidána další vrstva: <strong>MBR + oddíly</strong>.</p>
+
+<h3>Oddíly (partitions)</h3>
+<div class="card highlight">
+  <ul>
+    <li>Oddíl je <strong>logické rozčlenění pevného disku</strong> (disk je velký nebo potřebujeme více FS/OS)</li>
+    <li>Dělení <strong>bez podpory v HW</strong> – software musí respektovat (zpětná kompatibilita)</li>
+    <li>Vnitřek oddílu má <strong>stejnou strukturu jako disketa</strong></li>
+    <li>Popis rozdělení je uložen <strong>na začátku disku</strong> – prvních 512 bajtů (LBA=0)</li>
+    <li>Obsahuje zavaděč a tabulku dělení disku na oddíly</li>
+    <li>DOS MBR je <strong>nezávislý na OS</strong>, jeho nástupcem je <strong>GPT</strong></li>
+  </ul>
+</div>
+
+<h3>DOS MBR – struktura 512 bajtů</h3>
+<div class="disk-layout">
+  <div class="dl-cell" style="background:rgba(96,165,250,.2);color:var(--accent-1);flex:440">Zavaděč<small>440 B</small></div>
+  <div class="dl-cell" style="background:rgba(251,191,36,.2);color:var(--accent-4);flex:8">ID<small>8 B</small></div>
+  <div class="dl-cell" style="background:rgba(167,139,250,.2);color:var(--osy);flex:64">Tabulka oddílů<small>64 B (4 × 16 B)</small></div>
+</div>
+
+<div class="card purple">
+  <ul>
+    <li><strong>Zavaděč (440 B)</strong> boot sektoru – pro čtení z disku používá služby BIOSu → nezávislý na HW. Primitivní → alternativní zavaděče (GRUB, LILO)</li>
+    <li><strong>Tabulka rozdělení (64 B)</strong> – limit velikosti disku/oddílu <strong>2 TiB</strong> → řeší GPT</li>
+    <li>Max. <strong>4 oddíly</strong>: primary + extended. Extended lze dál dělit na <strong>logické oddíly</strong></li>
+    <li>Každý oddíl má ID – slouží k identifikaci obsahu</li>
+  </ul>
+</div>
+
+<h3>ID oddílů</h3>
+<div class="pid-grid">
+  <div class="pid-cell"><span class="pid-hex">0x05</span><span class="pid-name">Extended</span></div>
+  <div class="pid-cell"><span class="pid-hex">0x83</span><span class="pid-name">Linux (ext3)</span></div>
+  <div class="pid-cell"><span class="pid-hex">0x82</span><span class="pid-name">Linux swap</span></div>
+  <div class="pid-cell"><span class="pid-hex">0x07</span><span class="pid-name">NTFS</span></div>
+  <div class="pid-cell"><span class="pid-hex">0x04</span><span class="pid-name">FAT16</span></div>
+  <div class="pid-cell"><span class="pid-hex">0x0C</span><span class="pid-name">FAT32</span></div>
+</div>
+
+<p style="font-size:13px;color:var(--text-muted)">Windows rezervují <strong>63 bloků (31,5 KiB) až 1 MiB</strong> mezery za MBR – místo pro pokročilé zavaděče (Grub v Linuxu).</p>
+</section>
+
+<!-- 10 ZAROVNÁNÍ + ZAVADĚČ -->
+<section class="section" id="zarovnani">
+<div class="section-header"><span class="section-num">10</span><h2>Zarovnání oddílů, alternativní zavaděč</h2></div>
+
+<h3>Zarovnání oddílů</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Proč zarovnávat</div>
+  <ul>
+    <li>Nové disky mají <strong>4 KiB sektory</strong></li>
+    <li>Souborové systémy mají také <strong>4 KiB alokační jednotky</strong></li>
+    <li>Pokud je hned za MBR (512 B) první blok, disk musí <strong>přečíst sousední bloky</strong>, aby složil 4 KiB alokační jednotku → <strong>podstatné snížení výkonu</strong> (i sekvenční zápis)</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Řešení</div>
+  <ul>
+    <li>Od <strong>Windows Vista</strong> zarovnání na <strong>1 MiB</strong> – dostatečné pro jakékoliv zarovnání (stopy, cylindry, SSD, RAID stripe)</li>
+    <li>SSD: stránky 4–16 KiB, bloky 128–512 stránek</li>
+    <li>Problémy se staršími systémy a nástroji</li>
+    <li>Vzniká prostor pro <strong>speciální zavaděče</strong> (např. GRUB)</li>
+  </ul>
+</div>
+
+<h3>Alternativní zavaděč</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>Náhrada standardního MBR</strong> – umožňuje spustit různé systémy s různými volbami</li>
+    <li>Typicky poskytuje <strong>nabídkové menu</strong></li>
+    <li>Menu umí i boot zavaděč pro Windows (je jednoduchý)</li>
+  </ul>
+  <p style="margin-top:10px"><strong>GRUB</strong> – oblíbený zavaděč pro Linux:</p>
+  <ul>
+    <li>Menu, interaktivní rozhraní, změna parametrů</li>
+    <li>Předání parametrů jádru i startovacím skriptům</li>
+    <li>Umístění do MBR nebo do boot sektoru oddílu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 HDD / CD / USB / PXE -->
+<section class="section" id="hdd">
+<div class="section-header"><span class="section-num">11</span><h2>Start z disku, CD, USB, PXE</h2></div>
+
+<h3>Start z pevného disku</h3>
+<div class="boot-flow">
+  <div class="bf-step s1">
+    <div class="bfs-label">KROK 1</div>
+    <div class="bfs-title">BIOS načte MBR</div>
+    <div class="bfs-desc">Prvních 512 bajtů z HDD. Pokud je neplatný → <code>MBR not found</code>.</div>
+  </div>
+  <div class="bf-step s2">
+    <div class="bfs-label">KROK 2</div>
+    <div class="bfs-title">Skok na MBR</div>
+    <div class="bfs-desc">Skočí se na začátek MBR (zavaděč + tabulka). Kód MBR vybere <strong>aktivní oddíl</strong>.</div>
+  </div>
+  <div class="bf-step s3">
+    <div class="bfs-label">KROK 3</div>
+    <div class="bfs-title">Přístup k oddílu jako k disketě</div>
+    <div class="bfs-desc">MBR zavede z aktivního oddílu <strong>boot sektor</strong>. Není-li platný → <code>OS not found</code>.</div>
+  </div>
+  <div class="bf-step s4">
+    <div class="bfs-label">KROK 4</div>
+    <div class="bfs-title">Zavedení jádra</div>
+    <div class="bfs-desc">Boot sektor zavede jádro OS (dále jako při startu z diskety).</div>
+  </div>
+</div>
+
+<h3>Start z CD / DVD</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Emulace diskety</h4>
+    <p>Na CD/DVD je <strong>obraz diskety</strong> (soubor, max. 1,44 MB). BIOS ho zavede do paměti. Přesměrují se funkce BIOSu – čtení z diskety je ve skutečnosti z paměti.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Přímý přístup</h4>
+    <p>BIOS musí rozumět formátu <strong>ISO 9660</strong>. Sektor je <strong>2048 bajtů</strong>. Boot sektor je závislý na cílovém OS.</p>
+  </div>
+</div>
+
+<h3>BootROM (PXE)</h3>
+<div class="card highlight">
+  <ul>
+    <li>Rozšíření BIOSu <strong>na síťové kartě</strong>, tzv. <strong>PXE</strong></li>
+    <li>Kombinace <strong>DHCP + TFTP</strong> a speciálního zavaděče</li>
+    <li>BootROM zjistí přes DHCP: IP, masku, bránu + navíc <strong>IP adresu TFTP serveru</strong> a <strong>název souboru zavaděče</strong></li>
+    <li>BootROM stáhne zavaděč z TFTP a aktivuje ho, zavaděč zobrazí menu a dále stahuje jádro</li>
+    <li>Dříve <strong>NCP + IPX/SPX</strong> (Novell NetWare) – obraz diskety z NCP serveru se četl z paměti</li>
+  </ul>
+</div>
+
+<h3>Start z USB</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>UMS / MSC</strong> – USB mass storage, standard pro přístup k USB jako k HDD</li>
+    <li>Umí čtení/zápis sektoru – <strong>bez konkrétního FS</strong></li>
+    <li>Bez rozšíření (NCQ) – pro výkon je lepší <strong>eSATA</strong></li>
+    <li>Standardní UMS driver: Windows 2000, Linux od roku 2000</li>
+    <li>UMS obslouží flash disk, HDD, CD/DVD, SSD…</li>
+    <li>BIOS rozpozná UMS jako další běžný disk – start jako z disku (také přes MBR)</li>
+    <li>V BIOSu nutné zapnout <strong>USB legacy</strong> – emulace HDD nad UMS</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 UEFI + GPT -->
+<section class="section" id="uefi">
+<div class="section-header"><span class="section-num">12</span><h2>UEFI a GPT</h2></div>
+
+<h3>UEFI</h3>
+<p><strong>Unified Extensible Firmware Interface</strong> (2004). Původně <strong>EFI</strong> od Intelu (1998). První ho použil Apple.</p>
+
+<div class="card purple">
+  <ul>
+    <li>Ukončení závislosti na <strong>16bitovém režimu CPU 8086</strong></li>
+    <li>Podpora <strong>GPT</strong> (&gt; 2 TiB disky), nahrazuje boot sektor</li>
+    <li><strong>Binární moduly / zavaděče</strong> umístěny na zvláštním oddílu (<strong>FAT32</strong>)</li>
+    <li>Každý systém musí mít svůj zavaděč (Linux → Grub)</li>
+    <li>Podpora <strong>Secure Boot</strong> (šlo by to i do BIOSu, ale…)</li>
+    <li>EFI omezilo Linux – nutnost el. podpisů (Microsoft). Řeší zavaděč <strong>SHIM</strong> – je podepsaný a zavede cokoliv</li>
+    <li>Podpora <strong>grafického SETUPu</strong> (měl už i BIOS)</li>
+  </ul>
+</div>
+
+<h3>GPT – GUID Partition Table</h3>
+<div class="card highlight">
+  <ul>
+    <li><strong>34 × 512 B = 16 KiB</strong>, nástupce MBR, součást standardu EFI</li>
+    <li>Odstraňuje limit <strong>2 TiB</strong>, pracuje pouze s <strong>LBA</strong></li>
+    <li>Teoreticky až <strong>8 ZiB</strong> (8 × 10²¹ B pro blok 512 B)</li>
+    <li>Umožňuje více oddílů (Microsoft: 128 minus 4 rezervované)</li>
+    <li>Prvních 512 bajtů je <strong>falešný (ochranný) MBR</strong></li>
+    <li><strong>Záložní kopie GPT</strong> je umístěna na konci disku</li>
+    <li>Od roku <strong>2013</strong> je UEFI a GPT standardem pro PC – BIOS je už jen kvůli zpětné kompatibilitě</li>
+    <li>Windows 8 měly být původně jen pro UEFI</li>
+  </ul>
+</div>
+
+<h3>BIOS × UEFI</h3>
+<table class="compare-table">
+  <tr><th></th><th>BIOS</th><th>UEFI</th></tr>
+  <tr><td><strong>Vznik</strong></td><td>1981 (IBM PC)</td><td>2004 (EFI 1998)</td></tr>
+  <tr><td><strong>Režim CPU</strong></td><td>16bit (Intel 8086)</td><td>32/64bit</td></tr>
+  <tr><td><strong>Tabulka oddílů</strong></td><td>MBR (limit 2 TiB, 4 primary)</td><td>GPT (až 8 ZiB, 128 oddílů)</td></tr>
+  <tr><td><strong>Zavaděč</strong></td><td>Boot sektor (512 B)</td><td>Binárka na FAT32 oddílu</td></tr>
+  <tr><td><strong>Secure Boot</strong></td><td>Ne</td><td>Ano</td></tr>
+  <tr><td><strong>SETUP</strong></td><td>Textový (novější i grafický)</td><td>Grafický</td></tr>
+</table>
+</section>
+
+<!-- 13 AKTIVACE JÁDRA -->
+<section class="section" id="aktivace">
+<div class="section-header"><span class="section-num">13</span><h2>Aktivace jádra OS</h2></div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-1)">1</div>
+    <div class="step-content">
+      <div class="step-label">Jádro převezme plnou kontrolu</div>
+      <div class="step-desc">Procesor do <strong>32bitového režimu</strong> + <strong>privilegovaný režim</strong>.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-3)">2</div>
+    <div class="step-content">
+      <div class="step-label">Detekce a inicializace I/O zařízení</div>
+      <div class="step-desc">Nově pouze <strong>čtení ACPI tabulek</strong> + registrace zařízení.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-4)">3</div>
+    <div class="step-content">
+      <div class="step-label">Připojení prvního souborového systému</div>
+      <div class="step-desc"><strong>Root filesystem</strong> (kořenový FS) u unixových OS, <strong>disk C:</strong> u Windows (ale může být i jiné písmeno).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-6)">4</div>
+    <div class="step-content">
+      <div class="step-label">Spuštění prvního programu</div>
+      <div class="step-desc">Unix → <code>/sbin/init</code>. Windows → <strong>Windows Boot Manager</strong>.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--osy)">5</div>
+    <div class="step-content">
+      <div class="step-label">Zahájení startovací sekvence</div>
+      <div class="step-desc">Cíl = připravený počítač (přihlašovací dialog).</div>
+    </div>
+  </div>
+</div>
+
+<h3>Startovací sekvence OS</h3>
+<div class="card highlight">
+  <p><strong>Byl-li obraz RAM uložen na disk (hibernace):</strong></p>
+  <ul>
+    <li>Nahrání původního jádra a jeho datových struktur</li>
+    <li>Nahrání paměti se spuštěnými procesy</li>
+    <li>Předání řízení „původnímu" jádru → aktuální procesy zaniknou</li>
+    <li>Rozběhnutí původních procesů</li>
+  </ul>
+  <p style="margin-top:10px"><strong>Klasická boot sequence:</strong></p>
+  <ul>
+    <li>Unixové OS: <code>init</code> spouští <strong>startovací skripty</strong></li>
+    <li>MS Windows: <strong>Windows Boot Loader</strong> řízený záznamy v registrech</li>
+  </ul>
+</div>
+</section>
+
+<!-- 14 SECURE BOOT -->
+<section class="section" id="secureboot">
+<div class="section-header"><span class="section-num">14</span><h2>Secure Boot</h2></div>
+
+<p>Zavaděč (UEFI) <strong>kontroluje elektronický podpis</strong> – veřejný klíč je uložen v UEFI nebo v <strong>TPM čipu</strong>. Brání zavedení nepodepsaného systému.</p>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Deklarovaný cíl</div>
+  <ul>
+    <li>Ochrana proti útoku <strong>„Blue pill"</strong> (falešný hypervisor)</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Kritika</div>
+  <ul>
+    <li>Ve skutečnosti <strong>eliminace Linuxu</strong> na PC</li>
+    <li>Nakročení k prodejům OS jen ve variantě <strong>OEM-only</strong> (ke každému PC jeden systém, jako u mobilních zařízení)</li>
+    <li>U většiny PC lze v SETUPu <strong>vypnout</strong>, u firemních PC a notebooků volba někdy chybí</li>
+    <li>Zavaděč <strong>SHIM</strong> je podepsaný a umožňuje zavést nepodepsané jádro (jádro hlídá stav <code>tainted</code>)</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Certifikáty Windows – červen 2026</div>
+  <p>V červnu 2026 vyprší certifikáty ve Windows. PowerShell (jako správce) musí vrátit <code>true</code>:</p>
+  <div class="cmd-block"><span class="prompt">PS&gt;</span> [System.Text.Encoding]::ASCII.GetString((Get-SecureBootUEFI db).bytes) -match 'Windows UEFI CA 2023'</div>
+  <p style="margin-bottom:0">Automatické aktualizace nemusí být dostupné, pokud uživatel <strong>vypnul telemetrii</strong> nebo <strong>nemá podporovaný HW</strong>.</p>
+</div>
+</section>
+
+<!-- 15 ZABEZPEČENÍ -->
+<section class="section" id="zabezpeceni">
+<div class="section-header"><span class="section-num">15</span><h2>Zabezpečení startu PC</h2></div>
+
+<p>PC je <strong>modulární a implicitně moc bezpečné není</strong>.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Opatření</div>
+  <ul>
+    <li><strong>Nastavit start z disku</strong> a zaheslovat SETUP – nelze zavést alternativní systém z USB, CD, sítě</li>
+    <li><strong>Zamknout skříň</strong> (Kensington Security Slot). Poškození cizí věci je trestný čin. Uzamčení v serverovně</li>
+    <li><strong>Šifrování disku</strong></li>
+    <li><strong>Secure Boot</strong>, aktualizace systému, hesla, oprávnění</li>
+    <li><strong>Personální opatření</strong> – pracovní předpisy, odpovědnost</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">BitLocker</div>
+  <ul>
+    <li>Klíč <strong>XTS-AES</strong> délky 128 nebo 256 bitů</li>
+    <li>Nelze zpřístupnit data nebo odstranit heslo správce</li>
+    <li>Klíč v <strong>TPM</strong>, chráněn PIN nebo biometrikou + integrita systému</li>
+  </ul>
+</div>
+</section>
+
+<!-- 16 MOBILNÍ -->
+<section class="section" id="mobile">
+<div class="section-header"><span class="section-num">16</span><h2>Mobilní zařízení, rooting, Knox</h2></div>
+
+<p>Mobily nemají obdobu pevného disku – <strong>interní flash se tváří jako část paměti</strong>. Neexistuje obdoba BIOSu, MBR, GPT nebo UEFI.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Start mobilního zařízení</div>
+  <ul>
+    <li>Každý výrobce řeší start jinak</li>
+    <li>Obvykle se začne <strong>provádět začátek flash</strong> – zde je loader, který řídí start</li>
+    <li>Zavedení jádra, případně aktivace <strong>fastboot</strong> nebo <strong>recovery</strong></li>
+    <li>Jádro musí znát rozdělení flash – předáno jako <strong>parametr</strong></li>
+    <li>Flash rozdělena na „oddíly" s různým účelem</li>
+    <li>Systém je na části <strong>jen pro čtení</strong> (read-only)</li>
+    <li>Aplikace a uživatelská data v jiné části (read-write)</li>
+    <li>Uživatel normálně <strong>nemá práva správce (root)</strong></li>
+  </ul>
+</div>
+
+<h3>Android</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Fastboot („Odin mode")</h4>
+    <p>Malý program, aktivace tlačítkem při startu. Možnost <strong>flashování přes USB kabel</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Recovery</h4>
+    <p>Vymazání dat/cache, (re)flash z MicroSD. <strong>Custom recovery</strong> → flash i nepodepsaného kódu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Motorola – fyzická ochrana</h4>
+    <p>Nelze přepsat začátek flash → <strong>obtížný (nemožný) brick</strong>. Alternativní systém jako <strong>sideload</strong> (druhý OS).</p>
+  </div>
+</div>
+
+<h3>Windows Phone</h3>
+<div class="card warn">
+  <ul>
+    <li>Zařízení <strong>není rootovatelné</strong></li>
+    <li>Zavaděč není ochoten přijmout nepodepsaný kód – nelze (přes USB) nahrát jiný systém</li>
+    <li>K jádru Windows <strong>nejsou zdrojáky</strong> → těžký exploit (neznamená, že neexistuje)</li>
+    <li>Modifikace firmware jen přímým programováním přes služební kontakty na základní desce uvnitř zařízení (bez datasheetů)</li>
+    <li>Stále lze zařízení ovládnout útokem na <strong>přidružené procesory</strong> (GSM, Wi-Fi, GPS)</li>
+  </ul>
+</div>
+
+<h3>Rooting</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>Modifikace firmware</strong> mobilního zařízení – cílem získat práva správce (root, Administrator)</li>
+    <li>Využití <strong>exploitu na jádro/systém</strong> nebo přepsání systému (reflash)</li>
+    <li>Po rootu hrozí riziko <strong>nakažení systému</strong></li>
+    <li>Akce s právy správce uživatel schvaluje (příkaz <code>sudo</code>)</li>
+    <li>Systém nabízí zjištění stavu: <em>Nastavení → O telefonu → Stav systému (Oficiální)</em></li>
+    <li>Některé aplikace odmítnou pracovat (bankovní). Rootnutí lze maskovat</li>
+  </ul>
+</div>
+
+<h3>Samsung Knox</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Obdoba Secure Boot na mobilu</div>
+  <ul>
+    <li>Zavaděč detekuje nahrání <strong>neoficiálního firmware</strong></li>
+    <li>Elektronická <strong>„pojistka"</strong> → trvalá změna v zařízení</li>
+    <li>Zavaděč systému si stěžuje, Odin mode píše <code>0x01</code></li>
+    <li>Lze obejít exploitem na jádro → proto <strong>nelze návrat ke starší verzi</strong> Androidu</li>
+    <li>Aplikace mohou zjistit stav systému za běhu – při porušení odmítnou pracovat (podnikové, bankovní)</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 17 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">17</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">DVĚ FÁZE STARTU</p>
+<ul>
+  <li><strong>1. Inicializace HW</strong> (firmware – BIOS/UEFI) → <strong>2. Zavedení OS</strong> (SW)</li>
+  <li>Posloupnost: reset → CPU v 16bit režimu (jako 8086, adresa <code>0xFFFF0</code>) → BIOS</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">BIOS / UEFI / CMOS</p>
+<ul>
+  <li><strong>BIOS</strong> (1981): 16bit, ROM/Flash, služby BIOSu (API), rozšíření (VideoBIOS, SCSI, BootROM)</li>
+  <li><strong>UEFI</strong> (2004, Apple první): 32/64bit, FAT32 oddíl s binárkami, Secure Boot, GPT, grafický SETUP</li>
+  <li><strong>SETUP:</strong> vstup DEL/F2, pořadí bootovacích zařízení, nastavení chipsetu</li>
+  <li><strong>CMOS:</strong> RAM zálohovaná baterií (jen hodnoty). Reset jumperem → safe defaults</li>
+  <li><strong>Činnost:</strong> detekce HW + ACPI tabulky + POST → aktivace OS</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">STUDENÝ × TEPLÝ START</p>
+<ul>
+  <li><strong>Studený:</strong> vypnutí/zapnutí, aktivován signál reset</li>
+  <li><strong>Teplý:</strong> SW sekvence + skok do BIOSu, přeskočí reinicializaci</li>
+  <li><strong>Fast Startup</strong> (Windows): vypnutí = S4 hibernace (<code>hiberfil.sys</code>), skutečné vypnutí <code>SHIFT+Vypnout</code>. Problémy: F2 nefunguje, kolize s dual boot, NTFS nekonzistentní</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">ZAVEDENÍ OS</p>
+<ul>
+  <li><strong>Disketa:</strong> BIOS načte boot sektor (LBA=0, 512 B) → skok na něj → zavede jádro</li>
+  <li><strong>HDD:</strong> BIOS načte MBR → vybere aktivní oddíl → zavede jeho boot sektor → jádro</li>
+  <li><strong>CD/DVD:</strong> emulace diskety (obraz max 1,44 MB) nebo přímo (ISO 9660, sektor 2048 B)</li>
+  <li><strong>USB:</strong> UMS driver, BIOS vidí jako HDD (USB legacy)</li>
+  <li><strong>PXE (BootROM):</strong> DHCP → IP + TFTP server + soubor → stáhne zavaděč → jádro</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">MBR × GPT</p>
+<ul>
+  <li><strong>MBR</strong> (512 B): 440 B zavaděč + 64 B tabulka (4 oddíly, z toho extended → logické). Limit <strong>2 TiB</strong>. ID: 0x83 Linux, 0x82 swap, 0x07 NTFS, 0x0C FAT32</li>
+  <li><strong>GPT</strong> (16 KiB, UEFI): až <strong>8 ZiB</strong>, 128 oddílů, LBA-only, ochranný MBR + záložní kopie na konci disku</li>
+  <li><strong>Zarovnání:</strong> Vista+ na 1 MiB (kvůli 4 KiB sektorům/alokačním jednotkám, SSD stránkám, RAID stripe)</li>
+  <li><strong>Zavaděče:</strong> GRUB (Linux), Windows Boot Manager, LILO, syslinux, SHIM (podepsaný pro Secure Boot)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">AKTIVACE JÁDRA + SECURE BOOT + MOBILY</p>
+<ul>
+  <li><strong>5 kroků:</strong> 32bit+privileg. režim → ACPI + I/O → root FS (C:) → <code>/sbin/init</code> / Boot Manager → start skripty</li>
+  <li><strong>Secure Boot:</strong> UEFI kontroluje podpis, klíč v TPM, chrání proti Blue Pill / eliminuje Linux, lze obejít SHIM</li>
+  <li><strong>BitLocker:</strong> XTS-AES 128/256, klíč v TPM + PIN/biometrika</li>
+  <li><strong>Mobily:</strong> flash místo disku, Android fastboot/recovery, Knox (trvalá pojistka proti neoficiálnímu firmware), rooting = získání práv správce</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 13: Zabezpečení WLAN</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #2e0f17 50%, #1a0f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(248,113,113,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(167,139,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-5); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(28px, 5vw, 44px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+  .tag-broken { background: rgba(248,113,113,0.2); color: var(--accent-5); }
+  .tag-dep { background: rgba(251,146,60,0.15); color: var(--accent-6); }
+  .tag-ok { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+  .tag-best { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+
+  /* Security evolution bar */
+  .sec-evo { display: flex; gap: 6px; margin: 16px 0; }
+  .sec-evo-item { flex: 1; text-align: center; padding: 14px 8px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; }
+  .sec-evo-item .se-name { font-size: 14px; font-weight: 700; }
+  .sec-evo-item .se-year { font-size: 10px; opacity: 0.7; }
+  .sec-evo-item .se-cipher { font-size: 10px; margin-top: 4px; }
+
+  /* 802.1X flow */
+  .flow-801x { display: flex; align-items: flex-start; gap: 12px; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .flow-col { text-align: center; min-width: 90px; }
+  .flow-col-label { font-weight: 700; font-size: 12px; margin-bottom: 8px; padding: 6px 12px; border-radius: 6px; }
+  .flow-col-desc { font-size: 10px; color: var(--text-muted); font-family: 'DM Sans', sans-serif; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .sec-evo { flex-direction: column; }
+    .flow-801x { flex-direction: column; align-items: stretch; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 13</div>
+  <h1>Zabezpečení WLAN</h1>
+  <p>MAC filter • SSID • WEP/WPA/WPA2/WPA3 • PSK/TKIP/AES/CCMP • 802.1X • EAP • RADIUS</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#pillars">Tři pilíře zabezpečení</a></li>
+    <li><a href="#mac-ssid">MAC filtering a Hidden SSID</a></li>
+    <li><a href="#auth-types">Typy autentifikace (Open, OWE)</a></li>
+    <li><a href="#personal-enterprise">Osobní vs podnikové zabezpečení</a></li>
+    <li><a href="#wep">WEP – broken!</a></li>
+    <li><a href="#wpa">WPA – TKIP</a></li>
+    <li><a href="#wpa2">WPA2 – AES-CCMP</a></li>
+    <li><a href="#wpa3">WPA3 – SAE, GCMP</a></li>
+    <li><a href="#evolution">Přehled WEP → WPA → WPA2 → WPA3</a></li>
+    <li><a href="#encryption">Šifrování: PSK, TKIP, AES, CCMP</a></li>
+    <li><a href="#8021x">802.1X, EAP, RADIUS, AAA</a></li>
+    <li><a href="#eap-types">EAP typy</a></li>
+    <li><a href="#example">Příklad: Enterprise WLAN autentifikace</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 PILLARS -->
+<section class="section" id="pillars">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Tři pilíře zabezpečení</h2>
+  </div>
+
+  <p>WLAN signál se šíří vzduchem → kdokoli v dosahu může zachytit. Cílem je chránit data před neoprávněným přístupem, odposloucháním a manipulací.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Autentifikace</h4>
+      <p><strong>KDO</strong> se připojuje? Ověření totožnosti (heslo, certifikát, 802.1X).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Šifrování</h4>
+      <p><strong>CO</strong> se přenáší? Ochrana obsahu dat v přenosu (AES, TKIP).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Autorizace</h4>
+      <p><strong>CO SMÍ</strong> přihlášený dělat? Kontrola přístupu (VLAN, bandwidth, pravidla).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 MAC + SSID -->
+<section class="section" id="mac-ssid">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>MAC filtering a Hidden SSID</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">MAC Address Filtering</div>
+    <p>AP udržuje whitelist MAC adres → pouze zařízení na seznamu se připojí.</p>
+    <ul>
+      <li><strong>Slabost #1 – MAC spoofing:</strong> MAC adresa v plaintext (frame header). Útočník sniffuje → zjistí přípustné MAC → změní vlastní MAC</li>
+      <li><strong>Slabost #2 – Správa:</strong> Manuální přidávání/odebírání → neškálovatelné</li>
+    </ul>
+    <p style="margin-bottom:0;color:var(--accent-5);font-size:13px"><strong>Závěr:</strong> SLABÁ ochrana. Chrání pouze před náhodným přístupem, NE před cíleným útočníkem. Pouze jako doplněk!</p>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Hidden SSID (potlačení vysílání)</div>
+    <p>AP neoznamuje SSID v Beacon frames → síť se neobjevuje v seznamu.</p>
+    <ul>
+      <li><strong>Slabost #1 – Sniffing:</strong> SSID stále v Probe Request/Response a Association Request. Wireshark/Aircrack-ng → okamžitě odhalí</li>
+      <li><strong>Slabost #2 – Probe leak:</strong> Klient periodicky vysílá Probe Request s hidden SSID</li>
+    </ul>
+    <p style="margin-bottom:0;color:var(--accent-5);font-size:13px"><strong>Závěr:</strong> SLABÁ ochrana. Útočník se sniffer okamžitě odhalí SSID. Pouze jako doplněk!</p>
+  </div>
+</section>
+
+<!-- 03 AUTH TYPES -->
+<section class="section" id="auth-types">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Typy autentifikace</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Open Authentication</h4>
+      <p><strong>Žádná autentifikace.</strong> Kdokoli se připojí bez hesla. Žádné šifrování (pokud ne OWE/VPN). Příklad: veřejné Wi-Fi. Rizika: MITM, eavesdropping, rogue AP.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">OWE (Opportunistic Wireless Encryption)</h4>
+      <p><strong>Šifrování BEZ hesla.</strong> Diffie-Hellman key exchange (ECDH) → AES-GCM. Per-session keys. Chrání data, ale NE přístup (kdokoli se připojí). = „Encrypted open."</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PERSONAL vs ENTERPRISE -->
+<section class="section" id="personal-enterprise">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Osobní vs podnikové zabezpečení</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>Osobní (Personal)</th><th>Podnikové (Enterprise)</th></tr>
+    <tr><td><strong>Autentifikace</strong></td><td>PSK (sdílené heslo)</td><td><strong>802.1X + EAP + RADIUS</strong></td></tr>
+    <tr><td><strong>Credentials</strong></td><td>Jedno heslo pro všechny</td><td>Vlastní user/pass per klient</td></tr>
+    <tr><td><strong>Kompromitace</strong></td><td style="color:var(--accent-5)">Celá síť compromised</td><td style="color:var(--accent-3)">Pouze jeden user</td></tr>
+    <tr><td><strong>Správa</strong></td><td>Manuální na AP</td><td>Centralizovaná (RADIUS)</td></tr>
+    <tr><td><strong>Škálovabilita</strong></td><td>Malé sítě (domácnost)</td><td>Velké sítě (enterprise)</td></tr>
+    <tr><td><strong>Příklady</strong></td><td>WPA2/3-Personal, SAE</td><td>WPA2/3-Enterprise, 802.1X</td></tr>
+  </table>
+</section>
+
+<!-- 05 WEP -->
+<section class="section" id="wep">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>WEP – broken! <span class="tag tag-broken">KOMPLETNĚ BROKEN</span></h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">WEP (Wired Equivalent Privacy) – 1999</div>
+    <p>První pokus o zabezpečení WLAN. <strong>Šifrování:</strong> RC4 (stream cipher). <strong>Klíč:</strong> 40/104-bit, <strong>statický</strong> (nemění se!). <strong>IV:</strong> 24-bit (2²⁴ = 16M → brzy se opakuje). <strong>Integrita:</strong> CRC-32 (není kryptografická).</p>
+    <ul>
+      <li><strong>IV reuse:</strong> Po ~5000 paketech se IV opakuje → XOR attack → odhalení plaintextu</li>
+      <li><strong>Weak IV:</strong> Některé IV odhalují klíčové byty (Fluhrer-Mantin-Shamir attack)</li>
+      <li><strong>CRC manipulace:</strong> CRC-32 ≠ autentizace → útočník může modifikovat pakety</li>
+      <li><strong>Aircrack-ng:</strong> Cracking za minuty (10K–100K paketů)</li>
+    </ul>
+    <p style="margin-bottom:0;font-weight:700;color:var(--accent-5)">NIKDY NEPOUŽÍVAT!</p>
+  </div>
+</section>
+
+<!-- 06 WPA -->
+<section class="section" id="wpa">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>WPA – TKIP <span class="tag tag-dep">DEPRECATED</span></h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-6)">
+    <div class="card-title" style="color: var(--accent-6);">WPA (Wi-Fi Protected Access) – 2003</div>
+    <p>Rychlá záplata pro WEP (HW kompatibilní). <strong>Šifrování:</strong> TKIP (RC4 s dynamickými klíči).</p>
+    <ul>
+      <li><strong>Per-packet key mixing</strong> – každý paket jiný klíč (ne statický!)</li>
+      <li><strong>48-bit IV</strong> (vs WEP 24-bit) → 2⁴⁸ paketů</li>
+      <li><strong>MIC (Michael)</strong> – Message Integrity Code → detekce manipulace</li>
+      <li><strong>Anti-replay</strong> – sekvenční číslo → detekce replay attacks</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--accent-6)">Lepší než WEP, ale stále RC4 → known attacks (Beck-Tews). <strong>Přejít na WPA2!</strong></p>
+  </div>
+</section>
+
+<!-- 07 WPA2 -->
+<section class="section" id="wpa2">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>WPA2 – AES-CCMP <span class="tag tag-ok">AKTUÁLNÍ STANDARD</span></h2>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">WPA2 (802.11i) – 2004</div>
+    <p>Kompletní přepis zabezpečení. Povinné pro Wi-Fi certifikaci od 2006. <strong>Nejpoužívanější dnes.</strong></p>
+    <ul>
+      <li><strong>AES</strong> – silný symetrický cipher (128-bit block cipher)</li>
+      <li><strong>CCMP</strong> – AES + CTR mode (šifrování) + CBC-MAC (integrita)</li>
+      <li><strong>Dynamické klíče</strong> – per-session, generované při 4-way handshake</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>4-Way Handshake (WPA2-Personal)</summary>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">AP pošle ANonce (random)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Klient generuje SNonce + odvodí PTK</div><div class="step-desc">PTK z: PSK + ANonce + SNonce + MAC adresy → pošle AP</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">AP ověří PTK → pošle GTK (Group Temporal Key) + MIC</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Klient potvrdí → šifrovaná komunikace</div><div class="step-desc">PTK = unicast, GTK = multicast/broadcast</div></div></div>
+    </div>
+  </details>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Slabosti WPA2</div>
+    <ul>
+      <li><strong>PSK cracking:</strong> Zachytit 4-way handshake → offline dictionary/brute-force na heslo</li>
+      <li><strong>PMKID attack:</strong> Stačí jeden EAPOL frame od AP → offline crack (nepotřebuje handshake!)</li>
+      <li><strong>KRACK (2017):</strong> Key reinstallation attack → přinutí klient reinstalovat session key → replay, decrypt</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 08 WPA3 -->
+<section class="section" id="wpa3">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>WPA3 – SAE, GCMP <span class="tag tag-best">NEJBEZPEČNĚJŠÍ</span></h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-3);background:rgba(52,211,153,0.04)">
+    <div class="card-title" style="color: var(--accent-3);">WPA3 – 2018</div>
+    <p>Nejnovější standard. Řeší slabosti WPA2. Wi-Fi 6 vyžaduje WPA3.</p>
+    <p><strong>Šifrování:</strong> AES-GCMP (Galois Counter Mode). AES-256 v Enterprise, AES-128 v Personal.</p>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">SAE (Simultaneous Auth of Equals)</h4>
+      <p>Nahrazuje PSK v Personal. Dragonfly key exchange (jako DH). <strong>Offline cracking NEMOŽNÝ!</strong> I se slabým heslem bezpečný.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Forward Secrecy</h4>
+      <p>Kompromitace hesla neodhalí dříve zachytený provoz. Per-session keys.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">MFP (Management Frame Protection)</h4>
+      <p><strong>Povinné.</strong> Chrání management frames (deauth, disassoc). Řeší deauthentication attacks.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">192-bit Suite (Enterprise)</h4>
+      <p>AES-256 + SHA-384 + ECDHE. Vyšší zabezpečení pro kritické prostředí.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 EVOLUTION -->
+<section class="section" id="evolution">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Přehled WEP → WPA → WPA2 → WPA3</h2>
+  </div>
+
+  <div class="sec-evo">
+    <div class="sec-evo-item" style="background:rgba(248,113,113,0.15);color:var(--accent-5)">
+      <div class="se-name">WEP</div>
+      <div class="se-year">1999</div>
+      <div class="se-cipher">RC4 · CRC-32</div>
+    </div>
+    <div class="sec-evo-item" style="background:rgba(251,146,60,0.15);color:var(--accent-6)">
+      <div class="se-name">WPA</div>
+      <div class="se-year">2003</div>
+      <div class="se-cipher">TKIP · MIC</div>
+    </div>
+    <div class="sec-evo-item" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">
+      <div class="se-name">WPA2</div>
+      <div class="se-year">2004</div>
+      <div class="se-cipher">AES-CCMP</div>
+    </div>
+    <div class="sec-evo-item" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">
+      <div class="se-name">WPA3</div>
+      <div class="se-year">2018</div>
+      <div class="se-cipher">AES-GCMP · SAE</div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <tr><th></th><th><span class="tag tag-broken">WEP</span></th><th><span class="tag tag-dep">WPA</span></th><th><span class="tag tag-ok">WPA2</span></th><th><span class="tag tag-best">WPA3</span></th></tr>
+    <tr><td><strong>Cipher</strong></td><td>RC4</td><td>RC4 (TKIP)</td><td><strong>AES</strong> (CCMP)</td><td><strong>AES</strong> (GCMP)</td></tr>
+    <tr><td><strong>Key size</strong></td><td>40/104 b</td><td>128 b</td><td>128 b</td><td>128/256 b</td></tr>
+    <tr><td><strong>IV</strong></td><td>24-bit</td><td>48-bit</td><td>48-bit</td><td>96-bit</td></tr>
+    <tr><td><strong>Integrita</strong></td><td>CRC-32</td><td>MIC (Michael)</td><td>CBC-MAC</td><td>GCM tag</td></tr>
+    <tr><td><strong>Auth Personal</strong></td><td>Open/Shared</td><td>PSK</td><td>PSK</td><td><strong>SAE</strong></td></tr>
+    <tr><td><strong>Auth Enterprise</strong></td><td>—</td><td>802.1X</td><td>802.1X</td><td>802.1X</td></tr>
+    <tr><td><strong>Forward Secrecy</strong></td><td>NE</td><td>NE</td><td>NE</td><td><strong>ANO</strong></td></tr>
+    <tr><td><strong>MFP</strong></td><td>NE</td><td>NE</td><td>Optional</td><td><strong>Povinné</strong></td></tr>
+    <tr><td><strong>Status</strong></td><td style="color:var(--accent-5)">BROKEN</td><td style="color:var(--accent-6)">Deprecated</td><td style="color:var(--accent-1)">Aktuální</td><td style="color:var(--accent-3)"><strong>Nejnovější</strong></td></tr>
+  </table>
+</section>
+
+<!-- 10 ENCRYPTION -->
+<section class="section" id="encryption">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Šifrování: PSK, TKIP, AES, CCMP</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">PSK (Pre-Shared Key)</div>
+    <p>Sdílené heslo → <strong>ne šifrovací klíč samotný</strong>, ale základ pro derivaci klíčů:</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)">PSK (heslo) → PMK (Pairwise Master Key) → 4-way handshake → PTK (session key) → šifrování</p>
+    <p style="margin-bottom:0;font-size:13px">Délka: 8–63 znaků. Doporučení: <strong>12+ znaků</strong>, mix letters+numbers+symbols. Nejlepší: 20+ random.</p>
+  </div>
+
+  <div class="device-grid" style="margin-top:16px">
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">TKIP <span class="tag tag-dep">DEPRECATED</span></h4>
+      <p>RC4 + dynamic keys + 48-bit IV + MIC (Michael). WPA. Stále RC4 → known attacks.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">AES</h4>
+      <p>Symetrický block cipher 128/256-bit. NIST standard. <strong>Gold standard.</strong> Žádný praktický attack. WPA2/3.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">CCMP vs GCMP</div>
+    <p><strong>CCMP</strong> (WPA2) = AES + <strong>CTR mode</strong> (šifrování) + <strong>CBC-MAC</strong> (integrita). AEAD.</p>
+    <p style="margin-bottom:0"><strong>GCMP</strong> (WPA3) = AES-<strong>GCM</strong> (Galois Counter Mode). Silnější, efektivnější, HW-accelerated.</p>
+  </div>
+</section>
+
+<!-- 11 802.1X -->
+<section class="section" id="8021x">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>802.1X, EAP, RADIUS, AAA</h2>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">AAA Framework</div>
+    <ul>
+      <li><strong>Authentication</strong> (WHO?) – ověření totožnosti (username/password, certifikát)</li>
+      <li><strong>Authorization</strong> (WHAT?) – co smí user dělat (VLAN, bandwidth, access rights)</li>
+      <li><strong>Accounting</strong> (WHEN/HOW MUCH?) – logging přístupu (kdo, kdy, jak dlouho, kolik dat)</li>
+    </ul>
+  </div>
+
+  <h3>802.1X – Port-Based Access Control</h3>
+
+  <p>Framework pro autentizaci přístupu na PORT úrovni. Tři role:</p>
+
+  <div class="flow-801x">
+    <div class="flow-col">
+      <div class="flow-col-label" style="background:rgba(96,165,250,0.15);color:var(--accent-1)">Supplicant</div>
+      <div class="flow-col-desc">Klient (laptop, telefon). Posílá credentials.</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:18px;align-self:center">→</div>
+    <div class="flow-col">
+      <div class="flow-col-label" style="background:rgba(251,191,36,0.15);color:var(--accent-4)">Authenticator</div>
+      <div class="flow-col-desc">AP / Switch. Přeposílá na server. Neověřuje sám!</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:18px;align-self:center">→</div>
+    <div class="flow-col">
+      <div class="flow-col-label" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">Auth Server</div>
+      <div class="flow-col-desc">RADIUS. Skutečně ověřuje a rozhoduje.</div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)">Port před autentizací = <strong>UNAUTHORIZED</strong> (blokovaný). Po úspěchu = <strong>AUTHORIZED</strong> → provoz povolen.</p>
+
+  <div class="divider"></div>
+
+  <h3>RADIUS Server</h3>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-3);">RADIUS (Remote Authentication Dial-In User Service)</div>
+    <ul>
+      <li><strong>Protocol:</strong> UDP port <strong>1812</strong> (authentication), <strong>1813</strong> (accounting)</li>
+      <li><strong>Shared secret</strong> mezi RADIUS a Authenticator</li>
+      <li><strong>Access-Request:</strong> Authenticator → RADIUS (credentials)</li>
+      <li><strong>Access-Accept:</strong> RADIUS → Auth (povolen + atributy: VLAN, timeout)</li>
+      <li><strong>Access-Reject:</strong> RADIUS → Auth (odmítnut)</li>
+      <li><strong>Access-Challenge:</strong> RADIUS → Auth (potřeba víc info, MFA)</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>RADIUS vs TACACS+</summary>
+    <ul>
+      <li><strong>RADIUS:</strong> UDP, combined auth+authz, standard pro WLAN/LAN access</li>
+      <li><strong>TACACS+:</strong> TCP, separates auth/authz/accounting, Cisco preferred pro device management (CLI)</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 12 EAP TYPES -->
+<section class="section" id="eap-types">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>EAP typy</h2>
+  </div>
+
+  <p><strong>EAP</strong> (Extensible Authentication Protocol) = framework pro přenos autentizačních zpráv. EAP sám neautentizuje – definuje transport. Konkrétní metodu volí konfigurace.</p>
+
+  <table class="compare-table">
+    <tr><th>EAP typ</th><th>Metoda</th><th>Bezpečnost</th><th>Poznámka</th></tr>
+    <tr><td><strong>EAP-MD5</strong></td><td>Username/password hash (MD5)</td><td style="color:var(--accent-5)">Slabá</td><td>MD5 broken. Unidirectional. <strong>Nepoužívat!</strong></td></tr>
+    <tr><td><strong>EAP-CHAP</strong></td><td>Challenge-response</td><td style="color:var(--accent-6)">Lepší</td><td>Password ne plaintext. Stále unidirectional</td></tr>
+    <tr><td><strong>EAP-TLS</strong></td><td>Mutual certificates</td><td style="color:var(--accent-3)"><strong>Nejlepší!</strong></td><td>Client + server cert. Mutual TLS. Vyžaduje PKI</td></tr>
+    <tr><td><strong>EAP-TTLS</strong></td><td>TLS tunel + password</td><td style="color:var(--accent-3)">Velmi dobrá</td><td>Server cert → TLS tunel → uvnitř password. <strong>Nejpoužívanější!</strong></td></tr>
+    <tr><td><strong>EAP-PEAP</strong></td><td>TLS tunel + MSCHAPv2</td><td style="color:var(--accent-1)">Dobrá</td><td>Podobné TTLS. Microsoft standard (Windows nativní)</td></tr>
+    <tr><td><strong>EAP-FAST</strong></td><td>PAC + tunel</td><td style="color:var(--accent-1)">Dobrá</td><td>Cisco proprietary. PAC místo server cert</td></tr>
+  </table>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Doporučení</div>
+    <p><strong>Nejvyšší bezpečnost:</strong> EAP-TLS (mutual certificates) – banking, government.</p>
+    <p style="margin-bottom:0"><strong>Nejpoužívanější Enterprise:</strong> EAP-TTLS nebo EAP-PEAP (server cert + password uvnitř TLS tunelu).</p>
+  </div>
+</section>
+
+<!-- 13 EXAMPLE -->
+<section class="section" id="example">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Příklad: Enterprise WLAN autentifikace</h2>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)">WPA2-Enterprise, EAP-TTLS, RADIUS</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Kompletní proces</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Discovery + Association</div><div class="step-desc">Klient vidí SSID → Probe → Association → port UNAUTHORIZED</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">802.1X / EAP Exchange</div><div class="step-desc">AP: „Kdo jsi?" → Klient: „matej@company.com" → AP přepošle na RADIUS</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">EAP-TTLS Tunnel</div><div class="step-desc">RADIUS pošle server certificate → klient ověří CA → TLS tunel → uvnitř username+password</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">RADIUS Decision</div><div class="step-desc">RADIUS ověří credentials (AD/LDAP) → Access-Accept + VLAN=100, timeout=3600s</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">WPA2 Key Negotiation</div><div class="step-desc">EAP-Success → 4-Way Handshake (PMK → PTK + GTK) → port AUTHORIZED, VLAN 100</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Šifrovaná komunikace</div><div class="step-desc">AES-CCMP (PTK unicast, GTK multicast). Auth + šifrování + autorizace + accounting ✓</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">14</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SLABÉ OCHRANY</p>
+    <ul>
+      <li><strong>MAC filtering + Hidden SSID</strong> = slabé (MAC spoofing, sniffing). Pouze doplněk, ne hlavní ochrana!</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">AUTENTIFIKACE</p>
+    <ul>
+      <li><strong>Open:</strong> žádná. <strong>OWE:</strong> „encrypted open" (DH, bez hesla, chrání data ne přístup)</li>
+      <li><strong>Personal = PSK</strong> (jedno heslo). <strong>Enterprise = 802.1X + EAP + RADIUS</strong> (per-user, centrální)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">PROTOKOLY</p>
+    <ul>
+      <li><span class="tag tag-broken">WEP</span> RC4, 24-bit IV, CRC-32. <strong>BROKEN, nikdy nepoužívat!</strong></li>
+      <li><span class="tag tag-dep">WPA</span> TKIP (RC4 + dynamic keys + MIC). Deprecated</li>
+      <li><span class="tag tag-ok">WPA2</span> <strong>AES-CCMP</strong>, 128-bit. Aktuální standard. Slabost: PSK cracking, PMKID, KRACK</li>
+      <li><span class="tag tag-best">WPA3</span> <strong>AES-GCMP, SAE</strong> (ne PSK!), forward secrecy, MFP povinné. Nejbezpečnější</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ŠIFROVÁNÍ</p>
+    <ul>
+      <li><strong>TKIP</strong> = RC4 + dynamic keys (deprecated). <strong>AES</strong> = gold standard (128/256-bit)</li>
+      <li><strong>CCMP</strong> = AES-CTR + CBC-MAC (WPA2). <strong>GCMP</strong> = AES-GCM (WPA3, silnější)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">802.1X + EAP + RADIUS</p>
+    <ul>
+      <li><strong>802.1X:</strong> Supplicant → Authenticator → Auth Server. Port: UNAUTHORIZED → AUTHORIZED</li>
+      <li><strong>EAP:</strong> MD5 (broken), TLS (nejbezpečnější, mutual cert), <strong>TTLS (nejpoužívanější, server cert + password)</strong>, PEAP (Windows)</li>
+      <li><strong>RADIUS:</strong> UDP 1812/1813. Access-Request / Accept / Reject / Challenge</li>
+      <li><strong>AAA:</strong> Authentication (KDO) + Authorization (CO SMÍ) + Accounting (KDY/KOLIK)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

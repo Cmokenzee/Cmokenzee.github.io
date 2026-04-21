@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – George Orwell: Farma zvířat</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#15110e;
+  --bg-card:#1c1814;
+  --bg-card-alt:#241f18;
+  --border:#3a2f24;
+  --text:#c4b8a4;
+  --text-muted:#6e6050;
+  --heading:#e8dec8;
+  --accent-1:#c8292f;     /* sovětská rudá */
+  --accent-2:#d4a228;     /* stalinské zlato */
+  --accent-3:#6a2a1a;     /* tmavá krev */
+  --accent-4:#8b6a2a;     /* bronz */
+  --accent-5:#5a4a3a;     /* hnědá farmy */
+  --accent-6:#2a2418;     /* noc */
+  --accent-7:#8a7a5a;     /* sláma */
+  --accent-8:#3a2a2a;     /* saze */
+  --red:#c8292f;          /* propagandistická rudá */
+  --gold:#d4a228;         /* zlato — srp a kladivo */
+  --blood:#6a2a1a;        /* krev */
+  --farm:#5a4a3a;         /* farmářská hnědá */
+  --straw:#8a7a5a;        /* sláma */
+  --night:#2a2418;        /* totalitní noc */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(200,41,47,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(212,162,40,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — propagandistický plakát */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(21,17,14,.3) 0%,rgba(21,17,14,.9) 100%),
+    linear-gradient(135deg,#1e1410 0%,#2a1a12 30%,#1a1410 65%,#120c0a 100%);
+  border-bottom:3px solid var(--red);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 30% 80%,rgba(200,41,47,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 20%,rgba(212,162,40,.08) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Dekorativní rámeček propagandy */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:8px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--red) 0,var(--red) 20px,
+      var(--gold) 20px,var(--gold) 22px,
+      var(--red) 22px,var(--red) 42px,
+      transparent 42px,transparent 46px);
+  opacity:.6;
+}
+.hero-emblem{
+  display:inline-block;
+  color:var(--gold);
+  font-size:50px;
+  line-height:1;
+  margin-bottom:26px;
+  opacity:.8;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(212,162,40,.3));
+}
+.hero-slogan{
+  display:inline-block;
+  background:var(--red);
+  color:var(--bg);
+  padding:8px 22px;
+  font-family:'Oswald',sans-serif;
+  font-size:12px;
+  letter-spacing:4px;
+  font-weight:700;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  transform:rotate(-1deg);
+  position:relative;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(44px,8vw,80px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1;
+  position:relative;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  text-shadow:0 2px 30px rgba(200,41,47,.25);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--straw);
+  font-size:.3em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  opacity:.8;
+}
+.hero h1 .subtitle-orig{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.32em;
+  font-style:italic;
+  color:var(--gold);
+  letter-spacing:3px;
+  margin-top:14px;
+  font-weight:500;
+  text-transform:none;
+}
+.hero .author{
+  font-family:'Oswald',sans-serif;
+  color:var(--straw);
+  margin-top:30px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:4px;
+  font-weight:400;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Oswald',sans-serif;
+  color:var(--red);
+  font-size:18px;
+  margin:40px auto 0;
+  max-width:600px;
+  font-weight:600;
+  position:relative;
+  letter-spacing:2px;
+  line-height:1.5;
+  text-transform:uppercase;
+  padding:20px 24px;
+  border-top:2px solid var(--red);
+  border-bottom:2px solid var(--red);
+}
+.hero-quote em{
+  display:block;
+  font-size:.65em;
+  color:var(--text-muted);
+  margin-top:10px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:400;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — jako revoluční manifest */
+.toc{
+  background:var(--bg-card);
+  border:2px solid var(--red);
+  border-top:4px solid var(--red);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'☭ MANIFEST ☭';
+  position:absolute;
+  top:-12px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--red);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:5px;
+  font-weight:600;
+}
+.toc h2{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;text-align:center;
+  font-weight:500;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:'№' counter(toc,decimal-leading-zero) ' ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--red);
+  font-size:11px;margin-right:8px;
+  font-weight:600;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--red)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:130px;height:2px;
+  background:linear-gradient(90deg,var(--red),var(--gold));
+  opacity:.8;
+}
+.section-num{
+  font-family:'Oswald',sans-serif;
+  font-size:36px;color:var(--red);
+  font-weight:700;
+  min-width:70px;opacity:.7;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'Oswald',sans-serif;
+  font-size:26px;color:var(--heading);
+  font-weight:600;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+h3{
+  font-family:'Oswald',sans-serif;
+  font-size:19px;font-weight:500;
+  color:var(--heading);
+  margin:32px 0 14px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+h4{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--red);background:rgba(200,41,47,.05)}
+.card.key{border-left:3px solid var(--gold);background:rgba(212,162,40,.04)}
+.card.warn{border-left:3px solid var(--blood);background:rgba(106,42,26,.08)}
+.card.farm{border-left:3px solid var(--farm);background:rgba(90,74,58,.06)}
+.card.night{border-left:3px solid var(--night);background:rgba(42,36,24,.3)}
+.card.straw{border-left:3px solid var(--straw);background:rgba(138,122,90,.04)}
+
+.card-title{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:600;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--red)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(200,41,47,.1);
+  color:var(--red);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--gold);font-style:italic}
+
+/* Revoluční dělič */
+.red-divider{
+  position:relative;
+  margin:48px 0;
+  height:3px;
+  background:repeating-linear-gradient(90deg,
+    var(--red) 0,var(--red) 20px,
+    var(--gold) 20px,var(--gold) 22px,
+    var(--red) 22px,var(--red) 42px,
+    transparent 42px,transparent 46px);
+  opacity:.6;
+}
+.red-divider::before{
+  content:'☭';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:var(--bg);
+  color:var(--gold);
+  padding:0 16px;
+  font-size:20px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:12px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — jako propagandistický plakát s alegorií */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--red));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+}
+.character .char-name{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+  text-transform:none;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--red));
+  margin-bottom:10px;
+}
+.character .char-alegory{
+  display:inline-block;
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  letter-spacing:2px;
+  padding:4px 12px;
+  background:rgba(200,41,47,.1);
+  color:var(--red);
+  border:1px solid var(--red);
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--red);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Crimson Pro',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--red);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* PŘIKÁZÁNÍ — speciální blok */
+.commandments{
+  background:var(--bg-card);
+  border:2px solid var(--gold);
+  padding:30px 36px;
+  margin:28px 0;
+  position:relative;
+  background-image:
+    linear-gradient(180deg,rgba(212,162,40,.03) 0%,transparent 100%);
+}
+.commandments::before{
+  content:'7 PŘIKÁZÁNÍ';
+  position:absolute;
+  top:-14px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 18px;
+  color:var(--gold);
+  font-family:'Oswald',sans-serif;
+  font-size:12px;
+  letter-spacing:4px;
+  font-weight:600;
+}
+.commandment{
+  padding:12px 16px;
+  margin:8px 0;
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--commandment-color,var(--gold));
+  font-family:'Crimson Pro',serif;
+  font-size:15px;
+  color:var(--heading);
+  position:relative;
+}
+.commandment-num{
+  display:inline-block;
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--gold);
+  font-weight:600;
+  margin-right:12px;
+  padding:2px 8px;
+  background:rgba(212,162,40,.08);
+  border:1px solid rgba(212,162,40,.3);
+  letter-spacing:.5px;
+}
+.commandment .strikethrough{
+  text-decoration:line-through;
+  color:var(--text-muted);
+}
+.commandment .added{
+  color:var(--red);
+  font-weight:600;
+  font-style:italic;
+}
+.commandment-change{
+  display:block;
+  margin-top:8px;
+  font-size:12px;
+  color:var(--text-muted);
+  font-style:italic;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--red),var(--gold),var(--red));
+  opacity:.6;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--red);
+  background:rgba(200,41,47,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(200,41,47,.3);
+  font-weight:600;
+}
+.scene-title{
+  font-family:'Oswald',sans-serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--red);
+  background:rgba(200,41,47,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--gold)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(106,42,26,.06);
+  border-left:2px solid var(--blood);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--blood)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--red);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--red);
+  font-weight:600;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--red),transparent);
+  opacity:.7;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--red);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* ALEGORIE — srovnávací tabulka */
+.allegory-table{
+  background:var(--bg-card);
+  border:2px solid var(--red);
+  border-top:4px solid var(--red);
+  padding:28px 32px;
+  margin:28px 0;
+  position:relative;
+}
+.allegory-table::before{
+  content:'KLÍČ K ALEGORII';
+  position:absolute;
+  top:-14px;left:24px;
+  background:var(--bg);
+  padding:0 14px;
+  color:var(--red);
+  font-family:'Oswald',sans-serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:600;
+}
+.allegory-row{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:18px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  align-items:center;
+}
+.allegory-row:last-child{border-bottom:none}
+.allegory-book{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  color:var(--heading);
+  letter-spacing:1px;
+  font-weight:500;
+  text-transform:uppercase;
+}
+.allegory-arrow{
+  color:var(--red);
+  font-size:18px;
+  font-family:'Oswald',sans-serif;
+}
+.allegory-history{
+  font-family:'Crimson Pro',serif;
+  font-size:15px;
+  color:var(--text);
+  font-style:italic;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Oswald',sans-serif;
+  font-size:13px;
+  color:var(--red);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:600;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--red));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  color:var(--heading);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--red);
+  background:var(--bg);
+}
+.timeline-step.dark::before{
+  border-color:var(--blood);
+  background:rgba(106,42,26,.4);
+}
+.timeline-step.gold::before{
+  border-color:var(--gold);
+  background:rgba(212,162,40,.2);
+}
+.timeline-step .ts-title{
+  font-family:'Crimson Pro',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-chapter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--red);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.8;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--red);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .locations-list{grid-template-columns:1fr}
+  .allegory-row{grid-template-columns:1fr;gap:4px;text-align:center}
+  .allegory-arrow{transform:rotate(90deg)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.commandments{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-emblem">☭</div>
+  <div class="hero-slogan">Animal Farm · 1945</div>
+  <div class="hero-label">Maturitní rozbor · Antiutopie · Světová literatura</div>
+  <h1><em>Alegorický román · Bajka pro dospělé</em>Farma zvířat<span class="subtitle-orig">aneb Pohádka o zrazené revoluci</span></h1>
+  <div class="author">George Orwell</div>
+  <div class="subtitle">Anglie · 1943–1944 · Alegorie stalinismu</div>
+  <div class="hero-quote">Všichni zvířata jsou si rovna<br>ale některá jsou si rovnější<em>— Finální přikázání</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy · Zvířata a alegorie</a></li>
+  <li><a href="#prikazani">Sedm přikázání</a></li>
+  <li><a href="#alegorie">Klíč k alegorii</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a satira</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Farma zvířat</strong> <em>(Animal Farm)</em> je alegorický román publikovaný v roce <strong>1945</strong>. Dílo má chronologickou výstavbu zachycující vývoj zvířecí revoluce od jejího vzniku po její zradu. Orwell ho psal <strong>v letech 1943–1944</strong>, tedy v době, kdy byl <strong>SSSR spojencem západních mocností</strong> proti Hitlerovi — kniha proto měla potíže najít vydavatele. Podtitul zněl původně <em>„A Fairy Story"</em> (bajka/pohádka) — Orwell chtěl zdůraznit alegorickou povahu díla.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-chapter">Kap. 1–2</span> Úvod</div>
+    <div class="ts-desc">Major a jeho sen, příprava povstání, revoluce, sedm přikázání</div>
+  </div>
+  <div class="timeline-step gold">
+    <div class="ts-title"><span class="ts-chapter">Kap. 3–4</span> První úspěchy</div>
+    <div class="ts-desc">Budování nové společnosti, bitva u Kravína, první úspěchy</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title"><span class="ts-chapter">Kap. 5–7</span> Napoleonův vzestup</div>
+    <div class="ts-desc">Vyhnání Kuliše, čistky, teror, větrný mlýn</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title"><span class="ts-chapter">Kap. 8–10</span> Úplná zrada</div>
+    <div class="ts-desc">Boxerova smrt, prasata chodí po dvou, zvířata nerozeznatelná od lidí</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>několik let</strong> — od revoluce až po úplnou degeneraci. Alegoricky odpovídá <strong>období 1917–1943</strong> v sovětských dějinách (od Říjnové revoluce po Teheránskou konferenci).</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Kritika totalitarismu a stalinismu, zneužití revoluce, korupce moci, manipulace mas, propaganda, nerovnost, zrada ideálů, cyklus tyranie.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Revoluce</strong> — vzpoura utlačovaných</li>
+  <li><strong>Sedm přikázání</strong> — postupně měněných, přepisovaných</li>
+  <li><strong>Větrný mlýn</strong> — symbol pětiletky a industrializace</li>
+  <li><strong>Napoleon</strong> — vůdce, diktátor</li>
+  <li><strong>Prase</strong> — vládnoucí třída</li>
+  <li><strong>Squealer (Pištík)</strong> — propagandista</li>
+  <li><strong>Psi</strong> — tajná policie</li>
+  <li><strong>Ovce</strong> — nekritické masy</li>
+  <li><strong>Boxer</strong> — pracující třída, která věří</li>
+  <li><strong>Strach, lži, čistky, nerovnost</strong></li>
+  <li><strong>„Někteří jsou si rovnější"</strong> — ústřední ironie</li>
+  <li><strong>Alkohol</strong> — korupce</li>
+  <li><strong>Lidské chování prasat</strong> — zrada revoluce</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Čas</h4>
+    <p><strong>Neurčitý čas</strong> (alegoricky 1917–1943). Děj trvá několik let. Pokrývá celý vývoj od revoluce k totalitě.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--farm)">
+    <h4 style="color:var(--farm)">Prostor</h4>
+    <p><strong>Anglická venkovská farma</strong> — malé, uzavřené prostředí, které Orwell používá jako mikrokosmos celé společnosti.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--farm)">
+      <div class="location-name">Panská farma</div>
+      <div class="location-note"><em>Manor Farm</em> — před revolucí (Jones)</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--red)">
+      <div class="location-name">Zvířecí farma</div>
+      <div class="location-note"><em>Animal Farm</em> — po revoluci</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--blood)">
+      <div class="location-name">Panská farma 2</div>
+      <div class="location-note">Znovu pojmenována na konci — cyklus tyranie</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--gold)">
+      <div class="location-name">Stodola</div>
+      <div class="location-note">Místo shromáždění, popravy</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--night)">
+      <div class="location-name">Farmářský dům</div>
+      <div class="location-note">Symbol moci — prasata se do něj nastěhují</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--straw)">
+      <div class="location-name">Větrný mlýn</div>
+      <div class="location-note">Symbol pětiletky a industrializace</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — od revoluce k totalitě</li>
+  <li><strong>Alegorická struktura</strong> — každá událost odpovídá historické události</li>
+  <li><strong>Cyklická kompozice</strong> — návrat k původnímu stavu (tyranie)</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold)">Cyklická kompozice</div>
+  <p style="margin-bottom:0">Farma začíná jako <em>Panská farma</em> pod tyranií Jonese, stává se <em>Zvířecí farmou</em>, a na konci je <strong>znovu pojmenována na Panskou farmu</strong>. Zvířata si vyměnila jednoho pána za jiného (nebo za stejného). <strong>Revoluce nic nezměnila.</strong></p>
+</div>
+
+<h3>Části díla — 10 kapitol</h3>
+<div class="card farm">
+  <ul style="margin:0">
+    <li>Rozděleno na <strong>10 kapitol</strong> (číslovaných)</li>
+    <li>Každá kapitola zachycuje určité období vývoje farmy</li>
+    <li><strong>Postupná degenerace ideálů</strong></li>
+    <li>Gradace <strong>od naděje k zoufalství</strong></li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step gold">
+    <div class="ts-title">1. Sen Majora <span class="ts-chapter">Kap. 1</span></div>
+    <div class="ts-desc">Sen starého kance, příprava revoluce, vize lepšího světa</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Revoluce <span class="ts-chapter">Kap. 2</span></div>
+    <div class="ts-desc">Vyhnání Jonese, sedm přikázání, nová „ústava"</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">3. První úspěchy <span class="ts-chapter">Kap. 3–4</span></div>
+    <div class="ts-desc">Budování, bitva u Kravína — první vítězství</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">4. Napoleonův vzestup <span class="ts-chapter">Kap. 5–7</span></div>
+    <div class="ts-desc">Vyhnání Kuliše, čistky, začátek teroru</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">5. Teror a zrada <span class="ts-chapter">Kap. 8–9</span></div>
+    <div class="ts-desc">Boxerova smrt, úplná zrada ideálů</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">6. Úplná degenerace <span class="ts-chapter">Kap. 10</span></div>
+    <div class="ts-desc">Prasata = lidé, zvířata nerozeznatelná od svých utlačovatelů</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (alegoricky).</p>
+</div>
+
+<h3>Literární žánr — vícenásobné zařazení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Alegorický román</h4>
+    <p>Zvířata = historické postavy a skupiny. Každá událost má historickou paralelu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Politická satira</h4>
+    <p>Kritika totalitarismu a stalinismu — zesměšnění propagandy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--straw)">
+    <h4 style="color:var(--straw)">Bajka</h4>
+    <p>Zvířata mluví, morální ponaučení — navazuje na Ezopa a La Fontaina.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--night)">
+    <h4 style="color:var(--night)">Antiutopie / Dystopie</h4>
+    <p>Varování před totalitou, negativní vize společnosti.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Alegorické zobrazení sovětské historie</li>
+    <li>Zvířecí postavy reprezentují lidi a skupiny</li>
+    <li><strong>Satirická kritika stalinismu</strong></li>
+    <li>Morální ponaučení (jako bajka)</li>
+    <li><strong>Varování před totalitními režimy</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Vševědoucí vypravěč</strong> — zná myšlenky postav, sleduje všechny události</li>
+  <li><strong>Objektivní tón</strong> — zdánlivě neutrální vyprávění činí manipulaci ještě děsivější</li>
+  <li><strong>Ironický odstup</strong> — satirický tón</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Nestranný pozorovatel</strong></li>
+    <li>Ironický — kontrast mezi slovy a skutky</li>
+    <li>Satirický — odhaluje absurditu</li>
+    <li><strong>Jednoduchý jazyk</strong> (odpovídá bajce)</li>
+    <li>Umožňuje čtenáři <strong>vidět manipulaci</strong>, kterou postavy nevidí</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Dramatická ironie</div>
+  <p style="margin-bottom:0">Vypravěč říká věci <strong>tak, jak je vidí zvířata</strong> — ale čtenář chápe víc. Když zvířata přijmou Squealerovu lež, vypravěč ji nekomentuje. Čtenář sám vidí absurditu. <strong>To činí manipulaci ještě děsivější</strong> — protože čtenář je bezmocný pozorovatel.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy · Zvířata a alegorie</h2></div>
+
+<p>Každá postava je zároveň <strong>zvířetem i alegorií</strong> — reprezentuje konkrétní historickou osobu nebo společenskou skupinu.</p>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="♔">
+  <div class="char-name">Major <em>(Starý Major)</em></div>
+  <div class="char-role">Vedlejší postava · Kladná · Starý kanec</div>
+  <div class="char-alegory">☭ Alegorie: Lenin / Marx</div>
+  <ul style="margin:0">
+    <li><strong>Starý kanec, moudrý</strong></li>
+    <li>Inspiruje revoluci svým snem</li>
+    <li><strong>Umírá před revolucí</strong></li>
+    <li>Jeho <strong>lebka je uctívána</strong> jako relikvie (paralela k mumifikaci Lenina)</li>
+    <li>Stojí za ideály, které budou zrazeny</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--red)" data-symbol="✕">
+  <div class="char-name">Napoleon</div>
+  <div class="char-role">Hlavní postava · Záporná · Kanec · Diktátor</div>
+  <div class="char-alegory">☭ Alegorie: Josif Stalin</div>
+  <ul style="margin:0">
+    <li>Kanec, <strong>lídr farmy po revoluci</strong></li>
+    <li>Chytrý, lstivý, manipulativní</li>
+    <li>Postupně se stává <strong>diktátorem</strong></li>
+    <li>Používá <strong>psy jako tajnou policii</strong></li>
+    <li>Přepisuje historii</li>
+    <li>Na konci <strong>nerozpoznatelný od lidí</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="❄">
+  <div class="char-name">Kuliš <em>(Snowball)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Kanec · Vizionář</div>
+  <div class="char-alegory">☭ Alegorie: Lev Trockij</div>
+  <ul style="margin:0">
+    <li>Kanec, původně <strong>spoluvůdce</strong></li>
+    <li>Inteligentní, <strong>vizionář</strong> — plánuje větrný mlýn</li>
+    <li><strong>Vyhnán Napoleonem</strong> pomocí psů (jako Trockij 1929)</li>
+    <li>Později <strong>obviňován ze všeho</strong> (obětní beránek)</li>
+    <li>Přepisuje se historie — je prohlášen za zrádce od začátku</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="✎">
+  <div class="char-name">Squealer <em>(Pištík)</em></div>
+  <div class="char-role">Hlavní postava · Záporná · Kanec · Propagandista</div>
+  <div class="char-alegory">☭ Alegorie: Sovětská propaganda / deník Pravda</div>
+  <ul style="margin:0">
+    <li>Kanec, <strong>Napoleonův mluvčí</strong></li>
+    <li><strong>Mistr propagandy a manipulace</strong></li>
+    <li>Přepisuje sedm přikázání</li>
+    <li>Vysvětluje každou nespravedlnost</li>
+    <li>Dokáže přesvědčit zvířata o čemkoli</li>
+    <li>Symbol moci jazyka nad pravdou</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--farm)" data-symbol="♞">
+  <div class="char-name">Boxer</div>
+  <div class="char-role">Hlavní postava · Tragická · Kůň · Pracovitý</div>
+  <div class="char-alegory">☭ Alegorie: Pracující třída / Stachanovci</div>
+  <ul style="margin:0">
+    <li><strong>Kůň, nejsilnější zvíře</strong> farmy</li>
+    <li>Pracovitý, loajální, naivní</li>
+    <li>Hesla: <em>„Napoleon má vždycky pravdu"</em>, <em>„Budu pracovat ještě víc"</em></li>
+    <li><strong>Pracuje až do kolapsu</strong></li>
+    <li><strong>Prodán na jatka</strong> (zrazen) — Napoleon za jeho tělo koupí whisky</li>
+    <li>Symbol obyčejných lidí věřících v systém</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--straw)" data-symbol="?">
+  <div class="char-name">Benjamin</div>
+  <div class="char-role">Vedlejší postava · Kladná · Osel · Cynik</div>
+  <div class="char-alegory">☭ Alegorie: Skeptici / intelektuálové</div>
+  <ul style="margin:0">
+    <li>Osel, cynik — <em>„osli žijí dlouho"</em></li>
+    <li><strong>Jediný, kdo vidí pravdu</strong></li>
+    <li>Umí číst, ale <strong>odmítá se angažovat</strong></li>
+    <li>Skeptický k revoluci i k Napoleonovi</li>
+    <li>Kritika pasivních intelektuálů</li>
+    <li>Symbol vědění bez činu</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--straw)" data-symbol="♘">
+  <div class="char-name">Molina <em>(Mollie)</em></div>
+  <div class="char-role">Vedlejší · Neutrální · Kobyla · Marnivá</div>
+  <div class="char-alegory">☭ Alegorie: Ruská buržoazie / emigranti</div>
+  <ul style="margin:0">
+    <li>Kobyla, <strong>marnivá</strong>, touží po stuhách a cukru</li>
+    <li><strong>Opustí farmu</strong> — chce luxus</li>
+    <li>Symbol ruské buržoazie, která emigrovala po revoluci</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--straw)" data-symbol="~">
+  <div class="char-name">Ovce</div>
+  <div class="char-role">Vedlejší · Nekritická masa</div>
+  <div class="char-alegory">☭ Alegorie: Manipulovaná masa</div>
+  <ul style="margin:0">
+    <li>Hloupé, <strong>bezmyšlenkovitě opakují hesla</strong></li>
+    <li><em>„Čtyři nohy dobré, dvě nohy špatné!"</em></li>
+    <li>Později přepnuto na: <em>„Čtyři nohy dobré, dvě nohy ještě lepší!"</em></li>
+    <li>Symbol <strong>nekritických mas a propagandy</strong></li>
+    <li>Hlas davu přehluší opozici</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="ψ">
+  <div class="char-name">Psi</div>
+  <div class="char-role">Vedlejší · Záporné · Napoleonova garda</div>
+  <div class="char-alegory">☭ Alegorie: NKVD / KGB · Tajná policie</div>
+  <ul style="margin:0">
+    <li>Napoleonova <strong>osobní garda</strong></li>
+    <li>Brutální, věrní vůdci</li>
+    <li>Vychováni od štěňat v izolaci Napoleonem</li>
+    <li>Nástroj teroru a čistek</li>
+    <li>Symbol <strong>tajné policie</strong> totalitních režimů</li>
+  </ul>
+</div>
+
+<h3>Lidské postavy · Sousedé</h3>
+
+<div class="character" style="--character-color:var(--farm)" data-symbol="✖">
+  <div class="char-name">Pan Jones</div>
+  <div class="char-role">Vedlejší · Záporná · Původní majitel</div>
+  <div class="char-alegory">☭ Alegorie: Car Mikuláš II.</div>
+  <ul style="margin:0">
+    <li>Původní majitel farmy</li>
+    <li><strong>Opilec, zanedbává zvířata</strong></li>
+    <li>Vyhnán revolucí</li>
+    <li>Symbol <strong>svrženého starého režimu</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--night)" data-symbol="卐">
+  <div class="char-name">Pan Frederick</div>
+  <div class="char-role">Vedlejší · Záporná · Brutální soused</div>
+  <div class="char-alegory">☭ Alegorie: Adolf Hitler / Nacistické Německo</div>
+  <ul style="margin:0">
+    <li>Majitel sousední farmy <strong>Pinchfield</strong></li>
+    <li>Kruté zacházení se zvířaty</li>
+    <li>Napoleon s ním uzavře pakt — pak ho Frederick zradí (paralela Molotov-Ribbentrop)</li>
+    <li>Zaútočí na farmu (Operace Barbarossa 1941)</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="$">
+  <div class="char-name">Pan Pilkington</div>
+  <div class="char-role">Vedlejší · Neutrální · Kapitalistický soused</div>
+  <div class="char-alegory">☭ Alegorie: Západní kapitalistické země</div>
+  <ul style="margin:0">
+    <li>Majitel sousední farmy <strong>Foxwood</strong></li>
+    <li>Nakonec <strong>obchoduje s Napoleonem</strong></li>
+    <li>Závěrečná scéna — hraje karty s prasaty (Teheránská konference)</li>
+    <li>Symbol <strong>USA a Velké Británie</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="†">
+  <div class="char-name">Havran Moses</div>
+  <div class="char-role">Vedlejší · Mluvčí náboženství</div>
+  <div class="char-alegory">☭ Alegorie: Pravoslavná církev / Náboženství</div>
+  <ul style="margin:0">
+    <li>Mluví o <strong>Cukrové hoře</strong> — ráji po smrti</li>
+    <li>Napoleon ho nejdřív vyhnal, pak zas povolal</li>
+    <li>Symbol <strong>instrumentalizace náboženství</strong> totalitním režimem</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 SEDM PŘIKÁZÁNÍ -->
+<section class="section" id="prikazani">
+<div class="section-header"><span class="section-num">08</span><h2>Sedm přikázání</h2></div>
+
+<p>Po revoluci si zvířata vytvoří <strong>sedm přikázání</strong> — svou „ústavu". V průběhu románu jsou <strong>postupně měněna a přepisována</strong> Squealerem — zvířata si přitom nemohou vzpomenout, jak původní znění vypadalo.</p>
+
+<div class="commandments">
+  <div class="commandment" style="--commandment-color:var(--gold)">
+    <span class="commandment-num">№ 1</span>Cokoli chodí po dvou nohách, je nepřítel.
+    <span class="commandment-change">→ Později zrušeno: prasata začnou chodit po dvou</span>
+  </div>
+  <div class="commandment" style="--commandment-color:var(--gold)">
+    <span class="commandment-num">№ 2</span>Cokoli chodí po čtyřech nohách nebo má křídla, je přítel.
+  </div>
+  <div class="commandment" style="--commandment-color:var(--gold)">
+    <span class="commandment-num">№ 3</span>Žádné zvíře nebude nosit šaty.
+    <span class="commandment-change">→ Napoleon začne nosit pánovy šaty</span>
+  </div>
+  <div class="commandment" style="--commandment-color:var(--red)">
+    <span class="commandment-num">№ 4</span>Žádné zvíře nebude spát v posteli <span class="added">s prostěradly</span>.
+    <span class="commandment-change">→ Přidána dvě slova: prasata spí v posteli</span>
+  </div>
+  <div class="commandment" style="--commandment-color:var(--red)">
+    <span class="commandment-num">№ 5</span>Žádné zvíře nebude pít alkohol <span class="added">v nadměrném množství</span>.
+    <span class="commandment-change">→ Přidáno: Napoleon pije whisky</span>
+  </div>
+  <div class="commandment" style="--commandment-color:var(--red)">
+    <span class="commandment-num">№ 6</span>Žádné zvíře nezabije jiné zvíře <span class="added">bez příčiny</span>.
+    <span class="commandment-change">→ Přidáno: po čistkách a popravách</span>
+  </div>
+  <div class="commandment" style="--commandment-color:var(--red)">
+    <span class="commandment-num">№ 7</span><span class="strikethrough">Všichni zvířata jsou si rovna.</span>
+    <span class="commandment-change">→ Nahrazeno jediným finálním přikázáním ↓</span>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Finální přikázání (kap. 10)</div>
+  <p style="margin-bottom:0;font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:var(--red);text-align:center;font-weight:600"><strong>Všichni zvířata jsou si rovna, ale některá jsou si rovnější.</strong></p>
+</div>
+</section>
+
+<!-- 09 ALEGORIE -->
+<section class="section" id="alegorie">
+<div class="section-header"><span class="section-num">09</span><h2>Klíč k alegorii</h2></div>
+
+<p>Celé dílo je <strong>důslednou alegorií sovětské historie</strong> od Říjnové revoluce (1917) až po druhou světovou válku. Orwell navazuje paralelu mezi každou postavou a událostí.</p>
+
+<div class="allegory-table">
+  <div class="allegory-row">
+    <div class="allegory-book">Major</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Lenin / Karl Marx — ideologičtí otcové</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Revoluce</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Říjnová revoluce 1917</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Napoleon</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Josif Stalin</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Kuliš</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Lev Trockij</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Vyhnání Kuliše</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Vyhnání Trockého (1929) — zavražděn v Mexiku 1940</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Čistky · přiznání</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Stalinské čistky 1936–1938 — vykonstruované procesy</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Větrný mlýn</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Plány pětiletky, industrializace SSSR</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Frederick</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Adolf Hitler / nacistické Německo</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Pakt s Frederickem</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Pakt Molotov-Ribbentrop (1939)</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Frederickův útok</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Operace Barbarossa (1941) — napadení SSSR</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Boxer</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Pracující třída, Stachanovské hnutí</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Squealer</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Deník Pravda, sovětská propaganda</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Psi</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">NKVD / KGB — tajná policie</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Ovce</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Nekritické masy, propagandisticky zpracované obyvatelstvo</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Pilkington</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Západní kapitalistické země (USA, Velká Británie)</div>
+  </div>
+  <div class="allegory-row">
+    <div class="allegory-book">Závěrečná scéna</div>
+    <div class="allegory-arrow">→</div>
+    <div class="allegory-history">Teheránská konference (1943) — Stalin, Churchill, Roosevelt</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Ale pozor — univerzální dosah</div>
+  <p style="margin-bottom:0">Přestože je dílo psáno jako kritika stalinismu, Orwell sám zdůrazňoval, že alegorie je <strong>univerzální</strong>. Funguje pro <strong>jakýkoli totalitní režim</strong> — fašistický, komunistický, teokratický. Od 20. století po dnešní autoritativní vlády.</p>
+</div>
+</section>
+
+<!-- 10 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">10</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Přímá řeč · Propagandistický projev</div>
+  <div class="quote-block" style="margin:0">„Soudruzi!" křičel Squealer. „Napoleon obětoval svůj klid, aby vedl naši farmu!"<span class="quote-source">Squealerova demagogie</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--gold)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Squealer vysvětlil, že prasata potřebují mléko a jablka pro svou mozkovou práci.</p>
+</div>
+
+<div class="card farm">
+  <div class="card-title" style="color:var(--farm)">Pásmo vypravěče</div>
+  <p style="margin-bottom:0">Popis událostí, ironický komentář — převažující forma. Vypravěč <strong>zachovává odstup</strong>, takže manipulace se odhaluje sama.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)"><h4 style="color:var(--red)">Pásmo vypravěče</h4><p>Převažující forma — popis dění na farmě s ironickým odstupem.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Monolog</h4><p>Projevy Squealera, Majorův sen, Napoleonovy proklamace.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--straw)"><h4 style="color:var(--straw)">Dialog</h4><p>Rozhovory — Boxer a Benjamin, zvířata mezi sebou.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Propaganda</h4><p>Squealerovy manipulace — ukázka totalitárního jazyka.</p></div>
+</div>
+</section>
+
+<!-- 11 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">11</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Jednoduchý jazyk</h3>
+<div class="card farm">
+  <ul style="margin:0">
+    <li><strong>Krátké věty</strong></li>
+    <li>Prostý slovník</li>
+    <li>Odpovídá bajce a dětskému čtenáři</li>
+    <li><strong>Ale témata jsou dospělá a vážná</strong></li>
+    <li>Orwellův pozdější manifest: <em>„Dobrá próza je jako okenní tabule"</em></li>
+  </ul>
+</div>
+
+<h3>Hesla a slogany</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Síla opakování</div>
+  <ul style="margin:0">
+    <li><strong>„Čtyři nohy dobré, dvě nohy špatné!"</strong></li>
+    <li><strong>„Napoleon má vždycky pravdu"</strong></li>
+    <li><strong>„Budu pracovat ještě víc"</strong></li>
+    <li>Opakování = propaganda</li>
+    <li>Hesla nahrazují myšlení</li>
+  </ul>
+</div>
+
+<h3>Ironie</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li>Kontrast mezi slovy a skutky</li>
+    <li><em>„Všichni zvířata jsou si rovna"</em> — ale prasata žijí v luxusu</li>
+    <li>Každé Squealerovo „vysvětlení" je ironické</li>
+  </ul>
+</div>
+
+<h3>Eufemismy · Totalitní jazyk</h3>
+<div class="card night">
+  <ul style="margin:0">
+    <li><em>„Readjustment"</em> místo snížení přídělů</li>
+    <li><em>„Spontánní demonstrace"</em> místo nucená oslava</li>
+    <li><strong>Jazyk totalitní propagandy</strong> — předznamenává <em>newspeak</em> z románu 1984</li>
+  </ul>
+</div>
+
+<h3>Přepisování jazyka</h3>
+<ul>
+  <li>Změna sedmi přikázání</li>
+  <li>Manipulace s fakty</li>
+  <li>Orwellovský <strong>„newspeak"</strong> (v 1984)</li>
+  <li><em>Kdo ovládá minulost, ovládá budoucnost. Kdo ovládá přítomnost, ovládá minulost.</em></li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--gold)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Jednoduchý jazyk</strong> činí alegorii srozumitelnou</li>
+    <li><strong>Hesla</strong> ukazují moc propagandy</li>
+    <li><strong>Ironie</strong> odhaluje absurditu</li>
+    <li><strong>Eufemismy</strong> kritizují totalitní jazyk</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">12</span><h2>Tropy, figury a satira</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Alegorie</div>
+    <div class="trope-example">Celé dílo</div>
+    <div class="trope-note">Celé dílo je alegorií sovětské historie. Každá postava = historická osoba, každá událost = historická událost.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Větrný mlýn</div>
+    <div class="trope-note">Větrný mlýn = pětiletka. Sedm přikázání = komunistické ideály. Farmářský dům = Kreml. Alkohol = korupce.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">„Rovnější"</div>
+    <div class="trope-note">„Všichni zvířata jsou si rovna, ale některá jsou si rovnější." Prasata chodí po dvou = stala se lidmi.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Satira</div>
+    <div class="trope-example">Totalitarismus</div>
+    <div class="trope-note">Zesměšnění totalitarismu, propagandy, čistek — Orwellův ostrý meč kritiky.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Paradox</div>
+    <div class="trope-example">Revoluce = tyranie</div>
+    <div class="trope-note">Revoluce měla přinést svobodu, přinesla horší tyranii než původní režim.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Ideály vs. realita</div>
+    <div class="trope-note">Ideály vs. realita. Rovnost vs. nerovnost. Svoboda vs. útlak. Slova vs. skutky.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Mluvící zvířata</div>
+    <div class="trope-note">Zvířata mluví, organizují se, přemýšlí — reprezentují lidi a skupiny.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Kult Napoleona</div>
+    <div class="trope-note">Přehánění Napoleonovy moudrosti v propagandě — až absurdita.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Alegorie</strong> umožňuje kritiku <strong>bez přímého jmenování</strong> (Stalin). <strong>Ironie</strong> odhaluje absurditu. <strong>Satira</strong> zesměšňuje totalitarismus. Orwellova síla je v tom, že celé dílo je zároveň bajkou pro děti i ostrou politickou kritikou.</p>
+</div>
+</section>
+
+<!-- 13 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">13</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">George Orwell (1903–1950)</div>
+  <p>Vlastním jménem <strong>Eric Arthur Blair</strong>. Narozen v <strong>britské Indii</strong> (dnešní Bihár). Studoval na prestižním <strong>Etonu</strong> (stipendium). Místo univerzity šel jako <strong>policista imperiální policie do Barmy</strong> (1922–1927) — tato zkušenost v něm probudila nenávist ke kolonialismu. Po návratu žil v <strong>chudobě v Paříži a Londýně</strong> — popsal to v reportáži <em>Na dně v Paříži a Londýně</em>. Bojoval ve <strong>Španělské občanské válce</strong> (1936–1937) proti Frankovi, v jednotce trockistické POUM. <strong>Byl postřelen do krku</strong>. V Barceloně zažil <strong>stalinistickou čistku</strong> proti levicovým ne-komunistům — tato zkušenost z něj udělala nesmiřitelného kritika komunistického totalitarismu. Byl <strong>demokratický socialista</strong>, nikdy komunista. Trpěl <strong>tuberkulózou</strong>, která ho zabila. Zemřel v lednu 1950, <strong>jen půl roku po vydání 1984</strong>.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li>Napsáno <strong>1943–1944</strong>, publikováno <strong>srpen 1945</strong></li>
+  <li><strong>Předchůdce 1984</strong> (další antiutopie)</li>
+  <li>Vrcholné dílo Orwellovy politické satiry</li>
+  <li>Orwell ho napsal po svém návratu ze Španělska — když viděl, jak sovětská propaganda překrucuje pravdu</li>
+</ul>
+
+<h3>Další Orwellova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Barmské dny</strong></td><td>1934</td><td>Kritika britského imperialismu</td></tr>
+  <tr><td><strong>Na dně v Paříži a Londýně</strong></td><td>1933</td><td>Reportáž o chudobě — autobiografické</td></tr>
+  <tr><td><strong>Cesta k Wigan Pier</strong></td><td>1937</td><td>Reportáž o chudobě britské dělnické třídy</td></tr>
+  <tr><td><strong>Hold Katalánsku</strong></td><td>1938</td><td>Ze španělské občanské války</td></tr>
+  <tr><td><strong>Farma zvířat</strong></td><td>1945</td><td>Alegorická kritika stalinismu</td></tr>
+  <tr><td><strong>1984</strong></td><td>1949</td><td>Dystopie o totalitním státě — Big Brother, newspeak</td></tr>
+  <tr><td colspan="3">Navíc <strong>mnoho esejů</strong> — zejména <em>Politika a anglický jazyk</em> (1946) — manifest o moci jazyka</td></tr>
+</table>
+
+<h3>Orwellův styl</h3>
+<ul>
+  <li><strong>Politická angažovanost</strong></li>
+  <li><strong>Jasný, prostý jazyk</strong></li>
+  <li>Kritika totalitarismu (levého i pravého)</li>
+  <li><strong>Varování před manipulací jazyka</strong></li>
+  <li>Demokratický socialismus — v opozici ke komunismu</li>
+</ul>
+</section>
+
+<!-- 14 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">14</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Napsáno během <strong>2. světové války</strong> (1943–1944)</li>
+    <li>Publikováno <strong>srpen 1945</strong> (konec války)</li>
+    <li><strong>SSSR byl spojenec</strong> — těžké najít vydavatele</li>
+    <li><strong>Studená válka</strong> začínala</li>
+    <li>Umělecký sloh: <strong>ANTIUTOPIE / DYSTOPIE</strong></li>
+  </ul>
+</div>
+
+<h3>Charakteristika antiutopie</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)"><h4 style="color:var(--red)">Negativní vize</h4><p>Společnost jako varování, ne ideál.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Totalitarismus</h4><p>Kritika kontroly, teroru, propagandy.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Alegorie</h4><p>Kritika současnosti skrze alegorii nebo budoucnost.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--night)"><h4 style="color:var(--night)">Pesimismus</h4><p>Zlo nelze porazit — jen mu svědčit.</p></div>
+</div>
+
+<h3>Klíčové události sovětské historie</h3>
+<details>
+  <summary>Říjnová revoluce (1917) → Vyhnání Jonese</summary>
+  <p><strong>7. listopadu 1917</strong> (podle tehdy používaného juliánského kalendáře 25. října — odtud jméno) bolševici pod vedením Lenina svrhli provizorní vládu v Petrohradě. <strong>Car Mikuláš II.</strong> byl sesazen dříve (únor 1917) a s celou rodinou popraven v červenci 1918.</p>
+</details>
+<details>
+  <summary>Stalin vs. Trockij → Napoleon vs. Kuliš</summary>
+  <p>Po Leninově smrti (1924) se rozpoutal boj o moc. Trockij byl <strong>oficiální dědic</strong>, ale Stalin ho politicky přelstil. <strong>Trockij byl vyhnán z SSSR 1929</strong>, žil v Turecku, Francii, Norsku, Mexiku. V <strong>srpnu 1940 byl zavražděn v Mexiku</strong> Ramónem Mercaderem — stalinský agent ho zabil cepínem.</p>
+</details>
+<details>
+  <summary>Stalinské čistky (1936–1938)</summary>
+  <p><strong>„Velký teror"</strong> — vykonstruované procesy, nucená přiznání, popravy. Popraveni téměř všichni původní bolševici, včetně Zinověva, Kameněva, Bucharina. <strong>Odhadem 600 000 až 1 milion popravených</strong>, miliony poslaných do gulagů. V románu: zvířata se přiznávají ke spojení s Kulišem a psi je hned tam zabíjejí.</p>
+</details>
+<details>
+  <summary>Pakt Molotov-Ribbentrop (1939) → Napoleon a Frederick</summary>
+  <p><strong>23. srpna 1939</strong> uzavřel Stalin s Hitlerem pakt o neútočení. V tajném dodatku si rozdělili střední Evropu. V románu: Napoleon uzavře obchod s Frederickem — pak ho Frederick zradí (napadne farmu = Operace Barbarossa, 22. června 1941).</p>
+</details>
+
+<h3>Další antiutopie / dystopie</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Rok</th></tr>
+  <tr><td><strong>Jevgenij Zamjatin</strong></td><td><em>My</em> (inspirace Orwella)</td><td>1924</td></tr>
+  <tr><td><strong>Aldous Huxley</strong></td><td><em>Konec civilizace / Brave New World</em></td><td>1932</td></tr>
+  <tr><td><strong>George Orwell</strong></td><td><em>1984</em></td><td>1949</td></tr>
+  <tr><td><strong>Ray Bradbury</strong></td><td><em>451 stupňů Fahrenheita</em></td><td>1953</td></tr>
+  <tr><td><strong>Margaret Atwood</strong></td><td><em>Příběh služebnice</em></td><td>1985</td></tr>
+  <tr><td><strong>Karel Čapek</strong></td><td><em>R.U.R., Válka s mloky</em></td><td>1920, 1936</td></tr>
+</table>
+</section>
+
+<div class="red-divider"></div>
+
+<!-- 15 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">15</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(212,162,40,.1);border-color:var(--gold);color:var(--gold)">★ 01 · Kap. 1 · MAJORŮV SEN ★</span>
+  <div class="scene-title">Majorův sen — Začátek revoluce</div>
+  <div class="scene-text">Soudruzi! Máte představu o skutečné povaze našich životů? Tato bída, do níž jsme zrozeni, není přirozený řád věcí. Anglická půda může uživit mnohem více zvířat v hojnosti. Tak proč žijeme v neustálé bídě? Protože plody naší práce jsou ukradeny lidmi!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Starý Major svolá shromáždění a inspiruje zvířata k revoluci.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Komunistický manifest</strong> (Marx/Lenin)</li>
+      <li>Analýza třídního útlaku</li>
+      <li>Inspirace k revoluci</li>
+      <li>Slibuje lepší budoucnost</li>
+      <li><strong>Ideály, které budou později zrazeny</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Kap. 3 · Privilegia</span>
+  <div class="scene-title">Mléko a jablka pro prasata</div>
+  <div class="scene-text">„Soudruzi!" vykřikl Squealer. „Vy si přece nemyslíte, že to děláme ze sobectví? Mnoho z nás vlastně mléko a jablka nesnáší. Náš jediný cíl je uchovat naše zdraví. My, prasata, jsme mozky farmy. Celé řízení závisí na nás. Je tedy naprosto nezbytné, abychom měli mléko a jablka."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Prasata si přivlastní mléko a jablka.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>První zrada ideálů rovnosti</strong></li>
+      <li>Prasata = privilegovaná třída</li>
+      <li><strong>Squealerova manipulace</strong></li>
+      <li>Zvířata to přijmou (propaganda funguje)</li>
+      <li>Začátek nerovnosti</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Kap. 5 · Slepá loajalita</span>
+  <div class="scene-title">„Napoleon má vždycky pravdu"</div>
+  <div class="scene-context">Boxer si osvojil dvě hesla. První bylo: <em>„Budu pracovat ještě víc."</em> A kdykoli bylo něco nejasného, říkal: <em>„Napoleon má vždycky pravdu."</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Symbol <strong>slepé víry v vůdce</strong></li>
+      <li>Tragická naivita pracující třídy</li>
+      <li><strong>Kult osobnosti</strong></li>
+      <li>Předznamenání Boxerova osudu</li>
+      <li>Kritika nekritického myšlení</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red)">
+  <span class="scene-label" style="background:rgba(200,41,47,.1);border-color:var(--red);color:var(--red)">★ 04 · Kap. 5 · VYHNÁNÍ KULIŠE ★</span>
+  <div class="scene-title">Vyhnání Kuliše</div>
+  <div class="scene-context">V tom okamžiku Napoleon vyslovil pronikavé zavytí a <strong>devět obrovských psů</strong> vběhlo do stodoly. Vrhli se přímo na Kuliše. Ten sotva unikl čelistím. Běžel přes pole. Psi ho pronásledovali. Všichni zvířata viděla Kuliše běžet směrem k díře v živém plotě. Protlačil se skrz a zmizel. <strong>Už ho nikdy nikdo neviděl.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Státní převrat</strong> (Stalin vs. Trockij)</li>
+      <li>Tajná policie (NKVD)</li>
+      <li>Konec demokracie</li>
+      <li><strong>Začátek diktatury</strong></li>
+      <li>Násilí jako nástroj moci</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Kap. 7 · Přepisování historie</span>
+  <div class="scene-title">Kuliš jako zrádce</div>
+  <div class="scene-text">„Kuliš byl Jonesův agent od samého začátku!" křičel Squealer. „Všechny dokumenty to dokazují. Bitvu u Kravína vlastně vedl Jones a Kuliš!"
+Zvířata byla šokována. Ale když to Squealer řekl, muselo to být pravda.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Orwellovské <em>„Kdo ovládá minulost, ovládá budoucnost"</em></li>
+      <li><strong>Manipulace s historií</strong></li>
+      <li>Kuliš = obětní beránek za všechny problémy</li>
+      <li>Zvířata věří (propaganda)</li>
+      <li>Totalitní technika</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(106,42,26,.1);border-color:var(--blood);color:var(--blood)">★ 06 · Kap. 7 · ČISTKY ★</span>
+  <div class="scene-title">Přiznání a popravy</div>
+  <div class="scene-text">Čtyři prasata přišla vpřed a přiznala se, že spolupracovala s Kulišem. Psi jim okamžitě roztrhali krky. Pak tři slepice přiznaly. Pak ovce. Pak husy. Těla se hromadila před Napoleonovýma nohama a vzduch byl těžký od zápachu krve.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Teror jako nástroj kontroly</strong></li>
+      <li>Vykonstruovaná přiznání</li>
+      <li>Reference ke <strong>stalinským čistkám (1936–1938)</strong></li>
+      <li>Smrt „nevinných"</li>
+      <li>Strach paralyzuje odpor</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Kap. 6 · Přepsání přikázání</span>
+  <div class="scene-title">Změna čtvrtého přikázání</div>
+  <div class="scene-context">Clover si pamatovala, že čtvrté přikázání znělo: <em>„Žádné zvíře nebude spát v posteli."</em> Ale na zdi bylo napsáno: <em>„Žádné zvíře nebude spát v posteli <strong>s prostěradly</strong>."</em><br><em>„Určitě to tam bylo vždycky,"</em> řekl Squealer.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Manipulace s „ústavou"</strong></li>
+      <li>Gaslighting — zvířata si nejsou jistá pamětí</li>
+      <li>Postupná eroze ideálů</li>
+      <li><strong>Orwellovská změna jazyka</strong></li>
+      <li>„S prostěradly" — absurdní detail</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(106,42,26,.12);border-color:var(--blood);color:var(--blood)">★ 08 · Kap. 9 · BOXEROVA SMRT ★</span>
+  <div class="scene-title">Boxerova smrt</div>
+  <div class="scene-text">Boxer zkolaboval při stavbě mlýna. „Zavoláme veterináře," řekl Napoleon. Přijel vůz. Benjamin četl nápis: „Alfred Simmonds, Bourák koní a výrobce kožené galanterie."
+„Hlupáci! Hlupáci!" křičel Benjamin. „Nepozorujete, kam jej odvážejí? Na jatka!"
+Ale bylo pozdě. Vůz odjel.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Boxer je prodán na jatka, když už není užitečný.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Zrada nejloajálnějšího</strong></li>
+      <li>Cynické využití pracující třídy</li>
+      <li>Boxer = symbol věrných, kteří jsou zrazeni</li>
+      <li><strong>Emocionální vrchol díla</strong></li>
+      <li>Kritika systému, který ničí lidi</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Kap. 9 · Squealerova lež</span>
+  <div class="scene-title">Squealerovo vysvětlení Boxerovy smrti</div>
+  <div class="scene-text">„Soudruzi! Boxer zemřel v nemocnici navzdory nejlepší péči. Jeho poslední slova byla: 'Napoleon má vždycky pravdu.'"
+(Ve skutečnosti byl prodán na jatka a Napoleon koupil whisky za peníze.)</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Propaganda zneužívá i smrt</strong></li>
+      <li>Cynické lži</li>
+      <li>Zvířata věří (chtějí věřit)</li>
+      <li>Totalitní kontrola narativu</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red)">
+  <span class="scene-label" style="background:rgba(200,41,47,.1);border-color:var(--red);color:var(--red)">★ 10 · Kap. 10 · PRASATA PO DVOU ★</span>
+  <div class="scene-title">Prasata chodí po dvou</div>
+  <div class="scene-context">Bylo to prasátko, kráčející po dvou nohách. Ano, to byl Squealer. A pak, v průvodu, přicházela dlouhá řada prasat, všechna kráčela po dvou nohách… A v tomto okamžiku, jako na povel, ovce vyrazily: <em>„Čtyři nohy dobré, dvě nohy ještě lepší!"</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Úplná zrada revoluce</strong></li>
+      <li>Prasata se stala lidmi</li>
+      <li>Změna hesla (propaganda přizpůsobená)</li>
+      <li>Vizuální šok</li>
+      <li><strong>Symbol degenerace</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:3px solid var(--gold);background:linear-gradient(180deg,rgba(212,162,40,.05),transparent)">
+  <span class="scene-label" style="background:rgba(212,162,40,.15);border-color:var(--gold);color:var(--gold)">★★ 11 · Kap. 10 · NEJSLAVNĚJŠÍ CITÁT ★★</span>
+  <div class="scene-title">Finální přikázání</div>
+  <div class="scene-text" style="font-family:'Oswald',sans-serif;font-size:22px;text-align:center;font-style:normal;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-weight:600;background:rgba(200,41,47,.05);border:1px solid var(--red)">Všichni zvířata jsou si rovna
+ale některá jsou si rovnější</div>
+  <div class="scene-context"><strong>Kontext:</strong> Všechna ostatní přikázání smazána, zůstalo jen jedno — změněné.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Nejslavnější citát z díla</strong></li>
+      <li>Dokonalý paradox</li>
+      <li>Orwellovská <strong>logika totalitarismu</strong></li>
+      <li>Ironie rovnosti</li>
+      <li>Symbol zrady ideálů</li>
+      <li><strong>Univerzální pravda o moci</strong></li>
+      <li>Dnes běžný výraz v mnoha jazycích</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--night);background:rgba(42,36,24,.2)">
+  <span class="scene-label" style="background:rgba(42,36,24,.5);border-color:var(--night);color:var(--straw)">★ 12 · Kap. 10 · ZÁVĚREČNÁ SCÉNA ★</span>
+  <div class="scene-title">Prasata a lidé</div>
+  <div class="scene-text">Dvanáct hlasů křičelo v hněvu a všechny byly stejné. Nebylo pochyb o tom, co se stalo s prasečími obličeji. Zvířata venku hleděla z prasete na člověka a z člověka na prase a z prasete na člověka znovu; ale už nebylo možné rozeznat, kdo je kdo.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Prasata hrají karty s lidmi, jsou k nerozeznání.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Závěrečný obraz díla</strong></li>
+      <li>Úplná transformace</li>
+      <li><strong>Cyklus tyranie</strong> — nová vládnoucí třída = stará</li>
+      <li>Prasata = lidé (komunističtí vůdci = kapitalisté)</li>
+      <li>Revoluce nepřinesla změnu</li>
+      <li><strong>Pesimistické poselství</strong></li>
+      <li>Alegorie Teheránské konference (Stalin + Churchill + Roosevelt)</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="red-divider"></div>
+
+<!-- 16 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">16</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--red)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Každá revoluce nese riziko, že bude zrazena.</strong> Moc korumpuje i ty, kdo začínali s ušlechtilými ideály. <strong>Manipulace jazyka a historie</strong> umožňuje totalitní kontrolu. Nekritické masy mohou být ovládány propagandou. Nová vládnoucí třída často jen nahradí starou — <strong>nic se nezmění</strong>.</p>
+</div>
+
+<h3>Hlavní témata díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)"><h4 style="color:var(--red)">Korupce moci</h4><p>Absolutní moc korumpuje absolutně. (Parafráze Lorda Actona.)</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Zrada revoluce</h4><p>Revoluční ideály jsou zrazeny vůdci.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Manipulace</h4><p>Propaganda může přesvědčit masy o čemkoli.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--straw)"><h4 style="color:var(--straw)">Nerovnost</h4><p>„Rovnost" zneužitá k vytvoření nové elity.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--night)"><h4 style="color:var(--night)">Cyklus tyranie</h4><p>Nová vládnoucí třída = stará.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--farm)"><h4 style="color:var(--farm)">Jazyk a moc</h4><p>Kontrola jazyka = kontrola myšlení.</p></div>
+</div>
+
+<h3>Orwellův záměr</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>Kritika stalinského Sovětského svazu</li>
+    <li>Varování před totalitarismem <strong>(levým i pravým)</strong></li>
+    <li>Obhajoba <strong>demokratického socialismu</strong></li>
+    <li>Kritika zneužití revolučních ideálů</li>
+    <li><strong>NENÍ to kritika socialismu jako takového</strong></li>
+  </ul>
+</div>
+
+<h3>Problém s publikací</h3>
+<details>
+  <summary>Proč měla kniha potíže najít vydavatele</summary>
+  <p>Napsáno 1943–1944. <strong>SSSR byl spojenec proti Hitlerovi</strong> — kritika Stalina byla politicky <strong>nepřijatelná</strong>. Několik vydavatelů odmítlo (<strong>Faber &amp; Faber</strong> s T. S. Eliotem jako editorem odmítli). Eliot napsal Orwellovi, že prasata jsou příliš chytrá a zvířata by potřebovala <em>„více veřejných prasat"</em> — politicky opatrný postoj. Publikováno až <strong>17. srpna 1945</strong> (konec války), okamžitý úspěch.</p>
+</details>
+
+<h3>Filmové a divadelní adaptace</h3>
+<details>
+  <summary>Film 1954 — CIA tajně financovala</summary>
+  <p><strong>První britský animovaný celovečerní film</strong>. CIA <strong>tajně financovala</strong> produkci přes figuranta — chtěli použít film jako <strong>protikomunistickou propagandu</strong>. Závěr byl změněn — v knize jsou prasata i lidé nerozeznatelní, ve filmu zvířata znovu povstanou proti prasatům. Tato změna byla motivována studenou válkou.</p>
+</details>
+<details>
+  <summary>Další adaptace</summary>
+  <p><strong>1999</strong> — hraný TV film. Mnoho <strong>divadelních adaptací</strong>, rozhlasové hry, opery. Slavná je inscenace londýnského <strong>National Theatre</strong>.</p>
+</details>
+
+<h3>Vztah k 1984</h3>
+<div class="card night">
+  <ul style="margin:0">
+    <li>Oba romány jsou antiutopie</li>
+    <li>Oba kritikou totalitarismu</li>
+    <li><strong>Farma = jak vzniká totalita</strong></li>
+    <li><strong>1984 = jak funguje totalita</strong></li>
+    <li>Oba zdůrazňují kontrolu jazyka</li>
+    <li><em>„Doublethink"</em> v 1984 = změna přikázání ve Farmě</li>
+    <li>Orwell zemřel brzy po 1984 — na tuberkulózu</li>
+  </ul>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li>Varování před <strong>totalitarismem</strong> — stále aktuální</li>
+    <li>Manipulace s pravdou — <strong>„fake news"</strong></li>
+    <li>Kontrola jazyka — „politická korektnost", newspeak</li>
+    <li>Propaganda — reklama, sociální sítě, algoritmy</li>
+    <li><strong>Kult osobnosti</strong> — současní autoritářští vůdci</li>
+    <li>„Někteří jsou si rovnější" — <strong>nerovnost</strong></li>
+    <li>Univerzální — použitelné pro <strong>jakýkoli režim</strong></li>
+  </ul>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Orwellův pseudonym</summary>
+  <p>Vlastním jménem <strong>Eric Arthur Blair</strong>. Pseudonym „George Orwell" si zvolil podle <strong>řeky Orwell v Suffolku</strong>, kterou miloval. George — nejanglickejší jméno. Pseudonym přijal v roce 1933 pro svou první knihu <em>Down and Out in Paris and London</em>.</p>
+</details>
+<details>
+  <summary>Španělská zkušenost</summary>
+  <p>Orwell bojoval ve <strong>Španělské občanské válce (1936–1937)</strong> v trockistické milici POUM proti Frankovi. <strong>Byl postřelen odstřelovačem do krku</strong> — kulka minula vitální orgány o milimetry. V <strong>Barceloně 1937 zažil stalinistickou čistku</strong>, kdy komunisté pronásledovali a popravovali své levicové spojence. Tato zkušenost ho přesvědčila, že <strong>stalinismus je zradou socialismu</strong>. Popsal to v knize <em>Hold Katalánsku</em>.</p>
+</details>
+<details>
+  <summary>Zákaz v SSSR</summary>
+  <p>Farma zvířat byla v SSSR <strong>zakázána až do perestrojky</strong> (konec 80. let). Poprvé oficiálně vydána v ruštině v roce 1988. Podobně byla <strong>zakázána ve všech komunistických zemích</strong>, včetně Československa.</p>
+</details>
+<details>
+  <summary>Kulturní dědictví</summary>
+  <p><strong>„Všichni jsou si rovni, ale někteří rovnější"</strong> — běžný výraz v mnoha jazycích. <strong>„Orwellovský"</strong> — přídavné jméno pro totalitní manipulaci. <strong>„Big Brother"</strong> (z 1984) — synonymum pro státní dozor. Orwellovy výrazy <strong>vstoupily do politického slovníku</strong> napříč jazyky.</p>
+</details>
+<details>
+  <summary>Orwellova smrt</summary>
+  <p>Orwell trpěl <strong>tuberkulózou</strong> — pravděpodobně ji získal v chudobě 30. let. Psal Farmu zvířat a 1984 již nemocný. <strong>Zemřel 21. ledna 1950 v Londýně</strong>, ve věku 46 let, několik měsíců po vydání 1984. Pohřben v Sutton Courtenay.</p>
+</details>
+
+<div class="card warn" style="margin-top:36px;border:2px solid var(--red);background:rgba(200,41,47,.05)">
+  <div class="card-title" style="color:var(--red);text-align:center;font-size:12px">Finální citát</div>
+  <p style="margin:0;text-align:center;font-family:'Oswald',sans-serif;font-size:20px;letter-spacing:2px;color:var(--red);font-weight:600;text-transform:uppercase">Všichni zvířata jsou si rovna<br>ale některá jsou si rovnější</p>
+  <p style="margin:12px 0 0;text-align:center;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">George Orwell · Farma zvířat · Kapitola 10</p>
+</div>
+</section>
+
+<div class="red-divider" style="margin-top:50px"></div>
+
+</div>
+</body>
+</html>

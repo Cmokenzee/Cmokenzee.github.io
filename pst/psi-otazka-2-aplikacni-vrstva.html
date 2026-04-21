@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 2: Aplikační vrstva TCP/IP</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1d2e 50%, #1e1528 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(167,139,250,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(52,211,153,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--heading);
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+  }
+  .hero p {
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-size: 15px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .toc h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    margin-bottom: 16px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li {
+    counter-increment: toc;
+    padding: 4px 0;
+    font-size: 14px;
+    break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero) ' ';
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-right: 6px;
+  }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    min-width: 24px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--heading);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 28px 0 12px;
+  }
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin: 20px 0 8px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key {
+    border-left: 3px solid var(--accent-4);
+    background: rgba(251,191,36,0.04);
+  }
+  .card.warn {
+    border-left: 3px solid var(--accent-5);
+    background: rgba(248,113,113,0.04);
+  }
+  .card.green {
+    border-left: 3px solid var(--accent-3);
+    background: rgba(52,211,153,0.04);
+  }
+  .card.purple {
+    border-left: 3px solid var(--accent-2);
+    background: rgba(167,139,250,0.04);
+  }
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(96,165,250,0.1);
+    color: var(--accent-1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .compare-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42,46,61,0.5);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-3);
+    min-width: 20px;
+    padding-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .device-card {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--heading);
+    padding: 10px 0;
+    font-size: 14px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details summary::before {
+    content: '▸';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-1);
+    transition: transform 0.2s;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .tag-tcp { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+  .tag-udp { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+  .tag-danger { background: rgba(248,113,113,0.15); color: var(--accent-5); }
+  .tag-safe { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+
+  /* Email flow */
+  .flow-chain {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .flow-item {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .flow-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* SMTP conversation */
+  .smtp-conv {
+    background: var(--bg-card-alt);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 2;
+    margin: 14px 0;
+    overflow-x: auto;
+  }
+  .smtp-s { color: var(--accent-3); }
+  .smtp-c { color: var(--accent-1); }
+
+  .mnemonic {
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(52,211,153,0.08));
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .mnemonic .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 8px;
+  }
+  .mnemonic .phrase {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--heading);
+  }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .flow-chain { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 2</div>
+  <h1>Aplikační vrstva TCP/IP</h1>
+  <p>Klient-Server • P2P • HTTP/S • FTP • SSH • Email • SMTP • DNS</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#intro">Úvod do aplikační vrstvy</a></li>
+    <li><a href="#client-server">Klient-Server model</a></li>
+    <li><a href="#p2p">P2P (Peer-to-Peer) model</a></li>
+    <li><a href="#http">HTTP a HTTPS</a></li>
+    <li><a href="#webservers">Webservery</a></li>
+    <li><a href="#ftp">FTP, TFTP, SFTP</a></li>
+    <li><a href="#smb-nfs">SMB a NFS</a></li>
+    <li><a href="#telnet-ssh">Telnet a SSH</a></li>
+    <li><a href="#ntp">NTP</a></li>
+    <li><a href="#email">Email protokoly (SMTP, POP3, IMAP)</a></li>
+    <li><a href="#email-path">Cesta emailu od zdroje k cíli</a></li>
+    <li><a href="#email-security">Zabezpečení emailu</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Úvod do aplikační vrstvy</h2>
+  </div>
+
+  <p><strong>Aplikační vrstva</strong> je nejvyšší vrstva TCP/IP modelu. Poskytuje síťové služby přímo uživatelským aplikacím. V OSI odpovídá vrstvám L5+L6+L7 (Session + Presentation + Application).</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Porty – adresování aplikací</div>
+    <p>Každý aplikační protokol používá TCP nebo UDP port (16-bit, 0–65535).</p>
+    <ul>
+      <li><strong>Well-known</strong> (0–1023) – HTTP 80, HTTPS 443, SSH 22, FTP 21, SMTP 25, DNS 53</li>
+      <li><strong>Registered</strong> (1024–49151) – registrované aplikace</li>
+      <li><strong>Dynamic/Private</strong> (49152–65535) – dočasné (ephemeral)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 KLIENT-SERVER -->
+<section class="section" id="client-server">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Klient-Server model</h2>
+  </div>
+
+  <p><strong>Centralizovaný</strong> model. Server poskytuje služby (always-on, stálá IP), klienti je konzumují (připojují se podle potřeby). Klienti nekomunikují přímo mezi sebou.</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p>Centrální správa (data, zálohy). Bezpečnost (auth, ACL). Konzistence dat. Škálovatelnost upgradem serveru.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p><strong>Single Point of Failure</strong> – server padne → všichni bez služby. Bottleneck při přetížení. Drahý HW a údržba.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Příklady</div>
+    <p style="margin-bottom:0">Web (prohlížeč ↔ Apache/Nginx), Email (Outlook ↔ Exchange), Databáze (app ↔ MySQL), Soubory (PC ↔ file server), DNS (resolver ↔ DNS server)</p>
+  </div>
+</section>
+
+<!-- 03 P2P -->
+<section class="section" id="p2p">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>P2P (Peer-to-Peer) model</h2>
+  </div>
+
+  <p><strong>Decentralizovaný</strong> model. Žádný centrální server. Každý peer je současně klient i server. Přímá komunikace peer ↔ peer, dynamická topologie.</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p>Žádný single point of failure. Více peerů = více zdrojů. Nízké náklady. Censorship resistant.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p>Těžká správa, žádná centrální kontrola. Bezpečnost (důvěra?). Konzistence dat. Výkon závisí na peerech.</p>
+    </div>
+  </div>
+
+  <h4>Typy P2P</h4>
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Pure P2P</h4>
+      <p>Žádný centrální koordinátor. Peery si najdou sami (flooding, DHT). Příklad: Gnutella.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">Hybrid P2P</h4>
+      <p>Centrální server pro indexování/hledání, přenos dat P2P. Příklad: BitTorrent s trackerem.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">Structured (DHT)</h4>
+      <p>Distributed Hash Table – každý peer zodpovědný za část keyspace. Příklad: BitTorrent DHT, Kademlia.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Příklady P2P</div>
+    <p style="margin-bottom:0">BitTorrent (file sharing), Bitcoin/Ethereum (blockchain), IPFS (decentralizovaný storage), Tor (anonymní browsing)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Klient-Server vs. P2P – srovnání</h3>
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>Klient-Server</th><th>P2P</th></tr>
+    <tr><td>Architektura</td><td>Centralizovaná</td><td>Decentralizovaná</td></tr>
+    <tr><td>Server</td><td>Always-on, stálá IP</td><td>Peer = klient + server</td></tr>
+    <tr><td>Odolnost</td><td>Single point of failure</td><td>Velmi odolné</td></tr>
+    <tr><td>Správa</td><td>Snadná, centrální</td><td>Těžká, distribuovaná</td></tr>
+    <tr><td>Náklady</td><td>Drahé (server HW)</td><td>Levné</td></tr>
+    <tr><td>Data</td><td>Konzistentní</td><td>Nekonzistentní (sync)</td></tr>
+  </table>
+
+  <div class="mnemonic">
+    <div class="label">Hybridní přístupy</div>
+    <div class="phrase">Moderní aplikace často kombinují oba modely.<br><span style="font-size:14px;color:var(--text-muted)">Spotify: streaming ze serverů (klient-server) + P2P v LAN pro snížení bandwidth.</span></div>
+  </div>
+</section>
+
+<!-- 04 HTTP -->
+<section class="section" id="http">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>HTTP a HTTPS</h2>
+  </div>
+
+  <h3>HTTP (HyperText Transfer Protocol)</h3>
+  <p>Protokol pro přenos webových stránek. Základ World Wide Web.</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Vlastnosti HTTP</div>
+    <ul>
+      <li><strong>Port:</strong> TCP 80 (HTTP), TCP 443 (HTTPS)</li>
+      <li><strong>Stateless</strong> – server si nepamatuje předchozí requesty</li>
+      <li><strong>Request-Response</strong> model, text-based protokol</li>
+    </ul>
+  </div>
+
+  <h4>HTTP Request metody</h4>
+  <table class="compare-table">
+    <tr><th>Metoda</th><th>Účel</th><th>Poznámka</th></tr>
+    <tr><td><code>GET</code></td><td>Získej zdroj (stránka, obrázek)</td><td>SAFE – nemění data</td></tr>
+    <tr><td><code>POST</code></td><td>Pošli data na server (formulář)</td><td>Vytváří nové zdroje</td></tr>
+    <tr><td><code>PUT</code></td><td>Nahraď zdroj (update)</td><td>Idempotentní</td></tr>
+    <tr><td><code>DELETE</code></td><td>Smaž zdroj</td><td>Idempotentní</td></tr>
+    <tr><td><code>HEAD</code></td><td>Jako GET, ale jen hlavičky</td><td>Bez těla odpovědi</td></tr>
+  </table>
+
+  <h4>HTTP Status kódy</h4>
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">2xx – Success</h4>
+      <p>200 OK, 201 Created, 204 No Content</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">3xx – Redirect</h4>
+      <p>301 Moved Permanently, 302 Found, 304 Not Modified</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">4xx – Client Error</h4>
+      <p>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">5xx – Server Error</h4>
+      <p>500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>HTTP verze</summary>
+    <table class="compare-table">
+      <tr><th>Verze</th><th>Rok</th><th>Klíčové změny</th></tr>
+      <tr><td>HTTP/1.0</td><td>1996</td><td>Nové TCP spojení pro každý request</td></tr>
+      <tr><td>HTTP/1.1</td><td>1997</td><td>Persistent connections, pipelining, chunked transfer</td></tr>
+      <tr><td>HTTP/2</td><td>2015</td><td>Binary, multiplexing, server push, header compression</td></tr>
+      <tr><td>HTTP/3</td><td>2022</td><td>QUIC (UDP-based), rychlejší, odolnější</td></tr>
+    </table>
+  </details>
+
+  <div class="divider"></div>
+
+  <h3>HTTPS (HTTP Secure)</h3>
+  <p>HTTP + <strong>TLS/SSL</strong> šifrování. Port <strong>TCP 443</strong>. Chrání důvěrnost (encryption), integritu (tampering detection), autentizaci (certifikáty).</p>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">TLS Handshake (zjednodušeně)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Client Hello</div><div class="step-desc">Podporované šifrovací sady, TLS verze</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Server Hello + certifikát</div><div class="step-desc">Vybraný cipher, X.509 certifikát od CA</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Klient ověří certifikát</div><div class="step-desc">Podepsán důvěryhodnou CA?</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Key Exchange (Diffie-Hellman / RSA)</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Finished → šifrovaná komunikace</div><div class="step-desc">Symetrické šifrování (AES-GCM) pro data</div></div></div>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Proč HTTPS?</div>
+    <p style="margin-bottom:0">Ochrana hesel a platebních dat. Google SEO preference. Důvěra uživatelů (zámek v prohlížeči). Nutné pro HTTP/2 v prohlížečích.</p>
+  </div>
+</section>
+
+<!-- 05 WEBSERVERS -->
+<section class="section" id="webservers">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Webservery</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Apache</h4>
+      <p>Open-source (1995). Modulární (.htaccess). Process-based (MPM prefork/worker). ~30 % webů.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Nginx</h4>
+      <p>Event-driven, asynchronní. Vyšší výkon (static content, reverse proxy). Nižší RAM. <strong>~35 % webů, nejpopulárnější.</strong></p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">IIS</h4>
+      <p>Microsoft Windows Server. Integrace s .NET, ASP.NET. GUI správa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 FTP -->
+<section class="section" id="ftp">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>FTP, TFTP, SFTP</h2>
+  </div>
+
+  <h3>FTP (File Transfer Protocol)</h3>
+  <p>Přenos souborů mezi klientem a serverem. Upload, download, directory listing.</p>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Dvě spojení!</div>
+    <ul>
+      <li><strong>Control connection</strong> – TCP port <strong>21</strong> (příkazy: USER, PASS, LIST, RETR, STOR)</li>
+      <li><strong>Data connection</strong> – TCP port <strong>20</strong> (přenos souborů)</li>
+    </ul>
+    <p style="margin-bottom:0"><span class="tag tag-danger">POZOR</span> Klasické FTP je <strong>nešifrované</strong> – hesla i data plaintext!</p>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Active mode</h4>
+      <p>Server iniciuje data connection zpět ke klientovi. <strong>Problém s NAT/firewall</strong> (klient za NAT).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Passive mode (PASV)</h4>
+      <p>Klient iniciuje obě spojení. <strong>Řeší NAT.</strong> Běžnější dnes. Server sdělí port pro data.</p>
+    </div>
+  </div>
+
+  <h4>Bezpečné alternativy</h4>
+  <table class="compare-table">
+    <tr><th>Protokol</th><th>Port</th><th>Popis</th></tr>
+    <tr><td><strong>FTPS</strong></td><td>990 / 21</td><td>FTP + TLS/SSL šifrování (implicit / explicit STARTTLS)</td></tr>
+    <tr><td><strong>SFTP</strong></td><td>22</td><td><strong>NENÍ FTP!</strong> Běží přes SSH. Jedno spojení. Šifrované. Bezpečnější.</td></tr>
+    <tr><td><strong>SCP</strong></td><td>22</td><td>Secure Copy přes SSH. Jednoduchý přenos souborů.</td></tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <h3>TFTP (Trivial File Transfer Protocol)</h3>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Velmi jednoduchý protokol</div>
+    <ul>
+      <li><strong>Port:</strong> <span class="tag tag-udp">UDP</span> 69 (connectionless)</li>
+      <li>Žádná autentizace, žádný directory listing</li>
+      <li>Lock-step: pošli block (512 B) → čekej ACK → další block</li>
+      <li><strong>Použití:</strong> PXE boot, firmware update Cisco, IP telefony</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 SMB/NFS -->
+<section class="section" id="smb-nfs">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>SMB a NFS</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">SMB (Server Message Block)</h4>
+      <p>Port TCP 445. Windows file sharing, tiskárny. UNC cesta: <code>\\server\share</code>. Verze: SMB1 (unsafe!), SMB2, SMB3 (šifrování). Auth: NTLM, Kerberos. Linux: Samba.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">NFS (Network File System)</h4>
+      <p>Port TCP/UDP 2049. Unix/Linux sdílení souborů. Mount vzdáleného FS jako lokální. NFSv3 (stateless), NFSv4 (stateful). Použití: NAS, datacentra, home dirs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 TELNET/SSH -->
+<section class="section" id="telnet-ssh">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Telnet a SSH</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top: 3px solid var(--accent-5);">
+      <h4><span class="tag tag-danger">NEBEZPEČNÉ</span> Telnet</h4>
+      <p>Port TCP 23. Vzdálený terminál. <strong>Vše plaintext</strong> – hesla viditelná! Man-in-the-Middle triviální. <strong>Nahrazeno SSH.</strong> Jediné použití dnes: testování TCP (<code>telnet host 80</code>).</p>
+    </div>
+    <div class="device-card" style="border-top: 3px solid var(--accent-3);">
+      <h4><span class="tag tag-safe">BEZPEČNÉ</span> SSH</h4>
+      <p>Port TCP 22. Šifrovaný tunel (AES, ChaCha20). Autentizace: heslo nebo <strong>public-key</strong> (lepší!). SSH-2 = aktuální verze.</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">SSH Public-key autentizace</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Vygeneruj klíčový pár</div><div class="step-desc"><code>ssh-keygen</code> → private key + public key</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Public key nahraj na server</div><div class="step-desc">Do <code>~/.ssh/authorized_keys</code></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Private key drž TAJNÝ (na klientovi)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Připoj se: <code>ssh user@server</code></div><div class="step-desc">Server ověří signature → přihlášen BEZ hesla</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Další SSH funkce</div>
+    <ul>
+      <li><strong>SCP</strong> – kopírování souborů: <code>scp file.txt user@server:/path/</code></li>
+      <li><strong>SFTP</strong> – SSH File Transfer Protocol (ne FTP!)</li>
+      <li><strong>Port forwarding</strong> (tunneling) – SSH tunel pro jiné protokoly</li>
+      <li><strong>X11 forwarding</strong> – vzdálené GUI aplikace</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 09 NTP -->
+<section class="section" id="ntp">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>NTP (Network Time Protocol)</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Synchronizace času v síti</div>
+    <ul>
+      <li><strong>Port:</strong> <span class="tag tag-udp">UDP</span> 123</li>
+      <li><strong>Hierarchie stratum:</strong> 0 (atomic clock) → 1 (sync ze stratum 0) → 2 → 3 …</li>
+      <li><strong>Přesnost:</strong> sub-milisekundy LAN, ~10 ms WAN</li>
+      <li><strong>Servery:</strong> <code>pool.ntp.org</code>, <code>time.google.com</code></li>
+      <li><strong>Použití:</strong> OS, servery, routery, security logy (korelace událostí)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 10 EMAIL -->
+<section class="section" id="email">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Email protokoly</h2>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Komponenty email systému</div>
+    <ul>
+      <li><strong>MUA</strong> (Mail User Agent) – email klient (Outlook, Thunderbird, Gmail web)</li>
+      <li><strong>MTA</strong> (Mail Transfer Agent) – mail server, přenáší mezi servery</li>
+      <li><strong>MDA</strong> (Mail Delivery Agent) – doručuje do mailboxu</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>SMTP (Simple Mail Transfer Protocol)</h3>
+  <p><strong>Odesílání emailů.</strong> MUA → MTA, MTA → MTA. Push protokol, text-based.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">SMTP porty</div>
+    <ul>
+      <li><strong>Port 25</strong> – server ↔ server (relay)</li>
+      <li><strong>Port 587</strong> – klient → server (submission, STARTTLS)</li>
+      <li><strong>Port 465</strong> – SMTPS (deprecated)</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>Příklad SMTP konverzace</summary>
+    <div class="smtp-conv">
+      <span class="smtp-s">S: 220 mail.server.com SMTP ready</span><br>
+      <span class="smtp-c">C: EHLO client.com</span><br>
+      <span class="smtp-s">S: 250 Hello client.com</span><br>
+      <span class="smtp-c">C: MAIL FROM:&lt;alice@client.com&gt;</span><br>
+      <span class="smtp-s">S: 250 OK</span><br>
+      <span class="smtp-c">C: RCPT TO:&lt;bob@server.com&gt;</span><br>
+      <span class="smtp-s">S: 250 OK</span><br>
+      <span class="smtp-c">C: DATA</span><br>
+      <span class="smtp-s">S: 354 Send message, end with CRLF.CRLF</span><br>
+      <span class="smtp-c">C: Subject: Hello ... (tělo zprávy) ... .</span><br>
+      <span class="smtp-s">S: 250 Message accepted</span><br>
+      <span class="smtp-c">C: QUIT</span>
+    </div>
+  </details>
+
+  <div class="divider"></div>
+
+  <h3>POP3 vs. IMAP</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top: 3px solid var(--accent-6);">
+      <h4 style="color:var(--accent-6)">POP3 (Post Office Protocol v3)</h4>
+      <p>Port 110 / 995 (SSL). <strong>Download-and-delete.</strong> Emaily lokálně, smaže ze serveru. Offline přístup. Žádná synchronizace mezi zařízeními. Jednoduché – 1 zařízení.</p>
+    </div>
+    <div class="device-card" style="border-top: 3px solid var(--accent-3);">
+      <h4 style="color:var(--accent-3)">IMAP (Internet Message Access Protocol)</h4>
+      <p>Port 143 / 993 (SSL). <strong>Emaily zůstávají na serveru.</strong> Synchronizace mezi zařízeními. Složky (INBOX, Sent, Trash). Partial fetch, search na serveru. <strong>MODERNÍ standard.</strong></p>
+    </div>
+  </div>
+
+  <table class="compare-table" style="margin-top:20px">
+    <tr><th>Vlastnost</th><th>POP3</th><th>IMAP</th></tr>
+    <tr><td>Emaily</td><td>Stáhne a smaže ze serveru</td><td>Zůstávají na serveru</td></tr>
+    <tr><td>Zařízení</td><td>1 zařízení</td><td>Multi-device sync</td></tr>
+    <tr><td>Přístup</td><td>Offline</td><td>Online/offline</td></tr>
+    <tr><td>Složky</td><td>Ne</td><td>Ano (INBOX, Sent, vlastní)</td></tr>
+    <tr><td>Port</td><td>110 / 995</td><td>143 / 993</td></tr>
+  </table>
+</section>
+
+<!-- 11 EMAIL PATH -->
+<section class="section" id="email-path">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Cesta emailu od zdroje k cíli</h2>
+  </div>
+
+  <p>Scénář: <strong>Alice</strong> (alice@company.com) posílá email <strong>Bobovi</strong> (bob@example.org).</p>
+
+  <div class="flow-chain">
+    <span class="flow-item" style="background:rgba(244,114,182,0.15);color:var(--accent-7);">Alice MUA</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(96,165,250,0.15);color:var(--accent-1);">SMTP :587</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(251,191,36,0.15);color:var(--accent-4);">DNS MX</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(52,211,153,0.15);color:var(--accent-3);">SMTP :25</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(251,146,60,0.15);color:var(--accent-6);">MDA</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(167,139,250,0.15);color:var(--accent-2);">IMAP :993</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(244,114,182,0.15);color:var(--accent-7);">Bob MUA</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Podrobný průchod</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Alice napíše email v MUA (Outlook), klikne Send</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">MUA → smtp.company.com:587</div><div class="step-desc">STARTTLS šifrování, autentizace, SMTP příkazy (MAIL FROM, RCPT TO, DATA)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">SMTP server: DNS dotaz na MX record</div><div class="step-desc">„Který mail server obsluhuje example.org?" → mx1.example.org (priority 10)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">SMTP relay: company.com → mx1.example.org:25</div><div class="step-desc">Server-to-server SMTP konverzace. Každý MTA přidá Received: header.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">MDA doručí do Bobova mailboxu</div><div class="step-desc">Spam/virus filtry, uložení do databáze/souboru.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Bob otevře MUA → IMAP imap.example.org:993</div><div class="step-desc">Autentizace, SELECT INBOX, stáhne nový email.</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Received headers</div>
+    <p style="margin-bottom:0">Každý MTA přidá <code>Received:</code> header s timestampem. Čtení <strong>zdola nahoru</strong> = cesta emailu. Slouží k debuggingu – kde se email zasekl.</p>
+  </div>
+</section>
+
+<!-- 12 EMAIL SECURITY -->
+<section class="section" id="email-security">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Zabezpečení emailu</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">SPF</h4>
+      <p><strong>Sender Policy Framework.</strong> DNS TXT record – které IP adresy mohou odesílat za doménu. Ochrana proti spoofingu.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">DKIM</h4>
+      <p><strong>DomainKeys Identified Mail.</strong> Kryptografický podpis emailu. Public key v DNS, private key na mail serveru. Ověří, že email nebyl změněn.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">DMARC</h4>
+      <p><strong>Domain-based Message Authentication.</strong> Policy pro emaily které selžou SPF/DKIM. DNS TXT record. Quarantine nebo reject podezřelé.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+    <ul>
+      <li><strong>Klient-Server</strong> = centrální, single point of failure. <strong>P2P</strong> = decentralizovaný, odolné, peer=klient+server</li>
+      <li><strong>HTTP</strong> = stateless, port 80, GET/POST/PUT/DELETE. Kódy: 2xx OK, 3xx redirect, 4xx client error, 5xx server error</li>
+      <li><strong>HTTPS</strong> = HTTP + TLS, port 443. TLS handshake → symetrické šifrování (AES). Certifikáty X.509</li>
+      <li><strong>HTTP/2</strong> = binary, multiplexing. <strong>HTTP/3</strong> = QUIC (UDP)</li>
+      <li><strong>Nginx</strong> = event-driven, nejpopulárnější webserver (~35 %)</li>
+      <li><strong>FTP</strong> = DVĚ spojení! Port 21 (control) + 20 (data). Passive mode řeší NAT. <strong>Nešifrované!</strong></li>
+      <li><strong>SFTP</strong> = přes SSH (port 22), NENÍ FTP. <strong>FTPS</strong> = FTP + TLS</li>
+      <li><strong>TFTP</strong> = UDP 69, žádná auth, 512 B blocky, PXE boot, firmware update</li>
+      <li><strong>SMB</strong> = port 445, Windows sharing. <strong>NFS</strong> = port 2049, Linux/Unix</li>
+      <li><strong>Telnet</strong> = port 23, plaintext, <strong>NEBEZPEČNÉ!</strong> → nahrazeno <strong>SSH</strong> (port 22, šifrované, public-key auth)</li>
+      <li><strong>NTP</strong> = UDP 123, synchronizace času, stratum hierarchie</li>
+      <li><strong>SMTP</strong> = port 587 (submission) / 25 (relay), odesílání emailů</li>
+      <li><strong>POP3</strong> = port 110/995, download-delete, 1 zařízení</li>
+      <li><strong>IMAP</strong> = port 143/993, emaily na serveru, multi-device sync, <strong>MODERNÍ</strong></li>
+      <li><strong>Cesta emailu:</strong> MUA → SMTP :587 → DNS MX → SMTP :25 relay → MDA → IMAP :993 → MUA</li>
+      <li><strong>Email security:</strong> SPF (kdo smí odesílat), DKIM (podpis), DMARC (policy pro neplatné)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

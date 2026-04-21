@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 11: Paměti</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8}
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .hero{background:linear-gradient(135deg,#0f1117 0%,#0f2e2e 40%,#2e0f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(56,189,248,.07) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(244,114,182,.06) 0%,transparent 50%);pointer-events:none}
+  .hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px;position:relative}
+  .hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+  .hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+  .container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+  .toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px}
+  .toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+  .toc li::before{content:counter(toc,decimal-leading-zero)' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+  .toc a{color:var(--text);text-decoration:none;transition:color .2s}.toc a:hover{color:var(--accent-8)}
+  .section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+  .section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+  h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+  .card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+  .card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+  .card.purple{border-left:3px solid var(--accent-2);background:rgba(167,139,250,.04)}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+  ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(96,165,250,.1);color:var(--accent-1);padding:2px 6px;border-radius:4px}
+  strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+  .compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+  .compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+  .device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+  .device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+  .device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+  .steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}.step:last-child{border-bottom:none}
+  .step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--accent-3);min-width:24px;padding-top:2px}
+  .step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+  details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+  details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-8);transition:transform .2s}
+  details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+  .cli{background:#0d0f14;border:1px solid var(--border);border-radius:8px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;margin:14px 0;overflow-x:auto;color:var(--text-muted)}
+  .cli .comment{color:#4b5563}.cli .kw{color:var(--accent-4)}.cli .val{color:var(--accent-6)}.cli .reg{color:var(--accent-1)}.cli .cmd{color:var(--accent-3)}
+  .formula{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:14px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;color:var(--accent-1);font-weight:600}
+  .formula .f-small{font-size:11px;color:var(--text-muted);font-weight:400;margin-top:6px}
+  /* Hierarchy pyramid */
+  .pyramid{margin:20px 0}.py-row{display:flex;justify-content:center;margin:3px 0}
+  .py-box{padding:8px 12px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-align:center;display:flex;justify-content:space-between;gap:16px}
+  .py-box .py-speed{opacity:.7;font-size:9px}
+  /* Cell visual */
+  .cell-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  .cell-box{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;font-family:'JetBrains Mono',monospace}
+  .cell-box .cb-icon{font-size:28px;margin-bottom:8px}.cell-box .cb-name{font-weight:700;font-size:14px;margin-bottom:4px}
+  .cell-box .cb-struct{font-size:11px;opacity:.7}.cell-box .cb-desc{font-size:11px;color:var(--text-muted);margin-top:8px}
+  /* Hit/miss bar */
+  .hm-bar{display:flex;height:28px;border-radius:6px;overflow:hidden;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600}
+  .hm-seg{display:flex;align-items:center;justify-content:center}
+  @media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.cell-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 11</div>
+  <h1>Paměti</h1>
+  <p>DDR SDRAM • SRAM • DRAM • Cache • Paměťová hierarchie • Hit / Miss / Rate</p>
+</div>
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2><ol>
+  <li><a href="#uvod">Úvod do pamětí</a></li>
+  <li><a href="#ddr">DDR SDRAM – generace</a></li>
+  <li><a href="#dimm-timing">DIMM, Timings a kanály</a></li>
+  <li><a href="#sram">SRAM (Static RAM)</a></li>
+  <li><a href="#dram">DRAM (Dynamic RAM)</a></li>
+  <li><a href="#sram-vs-dram">SRAM vs DRAM srovnání</a></li>
+  <li><a href="#hierarchie">Paměťová hierarchie</a></li>
+  <li><a href="#cache-urovne">Cache – úrovně L1 / L2 / L3</a></li>
+  <li><a href="#cache-org">Cache – organizace a mapping</a></li>
+  <li><a href="#hit-miss">Hit, Miss, Hit Rate</a></li>
+  <li><a href="#amat">AMAT a write politiky</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol></nav>
+
+<!-- 01 -->
+<section class="section" id="uvod">
+  <div class="section-header"><span class="section-num">01</span><h2>Úvod do pamětí</h2></div>
+  <p><strong>Paměť</strong> uchovává data a instrukce. Rychlost a kapacita paměti zásadně ovlivňuje výkon celého systému.</p>
+  <div class="card"><div class="card-title" style="color:var(--accent-1)">Základní dělení</div>
+    <ul>
+      <li><strong>Volatilní</strong> – data zmizí po odpojení napájení (RAM)</li>
+      <li><strong>Non-volatilní</strong> – data zůstanou (Flash, SSD, HDD)</li>
+    </ul>
+  </div>
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">RAM (Random Access Memory)</div>
+    <p>Volatilní paměť pro aktivní data. „Random Access" = přístup k libovolné adrese trvá stejně dlouho.</p>
+    <ul>
+      <li><strong>SRAM</strong> (Static RAM) – rychlá, drahá → <strong>cache</strong></li>
+      <li><strong>DRAM</strong> (Dynamic RAM) – pomalejší, levnější → <strong>hlavní paměť</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="section" id="ddr">
+  <div class="section-header"><span class="section-num">02</span><h2>DDR SDRAM – generace</h2></div>
+  <p><strong>DDR</strong> (Double Data Rate) – data přenášena na <strong>OBOU hranách</strong> clock (rising + falling). 2× data per cycle vs SDR.</p>
+
+  <table class="compare-table">
+    <tr><th>Generace</th><th>Rok</th><th>Napětí</th><th>Frekvence</th><th>Max BW (per modul)</th><th>Piny</th></tr>
+    <tr><td style="color:var(--text-muted)">DDR1</td><td>2000</td><td>2.5 V</td><td>200–400 MHz</td><td>3.2 GB/s</td><td>184</td></tr>
+    <tr><td style="color:var(--text-muted)">DDR2</td><td>2003</td><td>1.8 V</td><td>400–1066 MHz</td><td>8.5 GB/s</td><td>240</td></tr>
+    <tr><td>DDR3</td><td>2007</td><td>1.5 V</td><td>800–2133 MHz</td><td>17 GB/s</td><td>240</td></tr>
+    <tr><td><strong>DDR4</strong></td><td>2014</td><td>1.2 V</td><td>2133–5000+ MHz</td><td style="color:var(--accent-4)">25.6 GB/s</td><td>288</td></tr>
+    <tr><td><strong style="color:var(--accent-3)">DDR5</strong></td><td>2020</td><td>1.1 V</td><td>4800–8400+ MHz</td><td style="color:var(--accent-3)"><strong>67.2+ GB/s</strong></td><td>288*</td></tr>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">* DDR5 má 288 pinů ale JINÝ notch (key position) než DDR4 – nelze zaměnit!</p>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">DDR5 novinky</div>
+    <ul>
+      <li><strong>On-die ECC</strong> – error correction přímo na čipu</li>
+      <li><strong>Dual-channel per DIMM</strong> – 2× 32-bit subkanály na 1 modulu</li>
+      <li><strong>PMIC</strong> (Power Management IC) na modulu – lepší regulace napětí</li>
+      <li>Příklad: G.Skill Trident Z5 DDR5-6000 32 GB (CL30)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="section" id="dimm-timing">
+  <div class="section-header"><span class="section-num">03</span><h2>DIMM, Timings a kanály</h2></div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">DIMM (Desktop)</h4>
+      <p>Plná velikost ~133 mm. 288 pinů (DDR4/DDR5).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">SO-DIMM (Laptop)</h4>
+      <p>Poloviční ~67 mm. 260 pinů (DDR4), 262 (DDR5). Stejné frekvence.</p>
+    </div>
+  </div>
+
+  <h3>CAS Latency (CL) a Timings</h3>
+  <p><strong>CL</strong> = počet clock cycles mezi příkazem READ a prvním bitem dat. <strong>NIŽŠÍ = LEPŠÍ.</strong></p>
+  <div class="card"><div class="card-title" style="color:var(--accent-6)">Timing notace: DDR4-3200 CL16-18-18-38</div>
+    <ul>
+      <li><strong>CL</strong> (CAS Latency): 16 cycles</li>
+      <li><strong>tRCD</strong> (RAS to CAS Delay): 18 cycles</li>
+      <li><strong>tRP</strong> (RAS Precharge): 18 cycles</li>
+      <li><strong>tRAS</strong> (Row Active Time): 38 cycles</li>
+    </ul>
+  </div>
+
+  <div class="formula">
+    Latence (ns) = (CL / Frekvence) × 2000
+    <div class="f-small">DDR4-3200 CL16: (16/3200)×2000 = <strong>10 ns</strong> │ DDR5-6000 CL30: (30/6000)×2000 = <strong>10 ns</strong></div>
+  </div>
+
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">DDR5 vs DDR4 latence</div>
+    <p style="margin-bottom:0">DDR5 má vyšší CL čísla, ale díky vyšší frekvenci je <strong>skutečná latence podobná</strong> (~10 ns). DDR5 ale nabízí <strong>2× bandwidth!</strong></p>
+  </div>
+
+  <div class="divider"></div>
+  <h3>Dual-Channel, Quad-Channel</h3>
+  <table class="compare-table">
+    <tr><th>Konfigurace</th><th>Kanály</th><th>Šířka</th><th>Příklad BW (DDR4-3200)</th></tr>
+    <tr><td>Single-channel</td><td>1×</td><td>64-bit</td><td>25.6 GB/s</td></tr>
+    <tr><td><strong>Dual-channel</strong></td><td>2×</td><td>128-bit</td><td style="color:var(--accent-3)"><strong>51.2 GB/s</strong></td></tr>
+    <tr><td>Quad-channel</td><td>4×</td><td>256-bit</td><td>102.4 GB/s (HEDT/servery)</td></tr>
+  </table>
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Dual-channel pravidlo</div>
+    <p style="margin-bottom:0">Potřeba <strong>2 moduly ve správných slotech</strong> (typicky slot 2 + 4). Dual-channel = <strong>2× bandwidth</strong> zdarma! DDR5: dual-channel per DIMM → MB dual-channel = 4× 32-bit = 128-bit total.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="section" id="sram">
+  <div class="section-header"><span class="section-num">04</span><h2>SRAM (Static RAM)</h2></div>
+
+  <div class="cell-grid">
+    <div class="cell-box" style="border-color:var(--accent-1);color:var(--accent-1)">
+      <div class="cb-icon">⬡⬡⬡⬡⬡⬡</div>
+      <div class="cb-name">6T SRAM Cell</div>
+      <div class="cb-struct">6 tranzistorů per bit</div>
+      <div class="cb-desc">4× cross-coupled invertery (flip-flop)<br>2× access transistory (BL/BL̄)</div>
+    </div>
+    <div class="cell-box" style="border-color:var(--accent-3);color:var(--accent-3)">
+      <div class="cb-icon">⚡</div>
+      <div class="cb-name">Vlastnosti</div>
+      <div class="cb-struct">Bistabilní klopný obvod</div>
+      <div class="cb-desc">Data drží STATICKY<br>ŽÁDNÝ refresh potřeba!</div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-1)">SRAM parametry</div>
+    <ul>
+      <li><strong>RYCHLÁ</strong> – typicky <strong>&lt;1 ns</strong> access time</li>
+      <li><strong>Žádný refresh</strong> – jednodušší kontrolér</li>
+      <li><strong>Nízká latence</strong> – okamžitá odezva</li>
+      <li><strong>DRAHÁ</strong> – 6 tranzistorů per bit! (~$100/MB)</li>
+      <li><strong>Velká plocha</strong> – nízká density</li>
+    </ul>
+  </div>
+
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">Kde se používá SRAM</div>
+    <ul>
+      <li><strong>CPU Cache</strong> (L1, L2, L3)</li>
+      <li>Registry procesoru</li>
+      <li>Network switch buffery, FPGA block RAM</li>
+    </ul>
+    <p style="margin-bottom:0">Typické velikosti: L1 = 32–64 KB, L2 = 256–512 KB, L3 = 16–96 MB.</p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="section" id="dram">
+  <div class="section-header"><span class="section-num">05</span><h2>DRAM (Dynamic RAM)</h2></div>
+
+  <div class="cell-grid">
+    <div class="cell-box" style="border-color:var(--accent-6);color:var(--accent-6)">
+      <div class="cb-icon">⬡ ⊡</div>
+      <div class="cb-name">1T1C DRAM Cell</div>
+      <div class="cb-struct">1 tranzistor + 1 kondenzátor</div>
+      <div class="cb-desc">Kondenzátor drží náboj = bit 1<br>Bez náboje = bit 0</div>
+    </div>
+    <div class="cell-box" style="border-color:var(--accent-5);color:var(--accent-5)">
+      <div class="cb-icon">🔄</div>
+      <div class="cb-name">Refresh nutný!</div>
+      <div class="cb-struct">Kondenzátor se vybíjí</div>
+      <div class="cb-desc">Data zmizí za ~64 ms<br>Refresh overhead: ~5% času</div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-6)">DRAM parametry</div>
+    <ul>
+      <li><strong>POMALEJŠÍ</strong> než SRAM – typicky <strong>10–50 ns</strong> access</li>
+      <li><strong>Potřeba refresh</strong> – každých ~64 ms pro celou paměť</li>
+      <li><strong>LEVNÁ</strong> – jen 1 tranzistor per bit! (~$0.01/MB)</li>
+      <li><strong>Vysoká density</strong> – velká kapacita na malé ploše</li>
+    </ul>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-2)">Kde se používá DRAM</div>
+    <ul>
+      <li><strong>Hlavní RAM systému</strong> (DDR4/DDR5)</li>
+      <li><strong>GPU VRAM</strong> (GDDR6, HBM)</li>
+      <li><strong>Smartphone RAM</strong> (LPDDR)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="section" id="sram-vs-dram">
+  <div class="section-header"><span class="section-num">06</span><h2>SRAM vs DRAM srovnání</h2></div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th style="color:var(--accent-1)">SRAM</th><th style="color:var(--accent-6)">DRAM</th></tr>
+    <tr><td>Cell</td><td><strong>6 tranzistorů</strong></td><td><strong>1T + 1C</strong></td></tr>
+    <tr><td>Rychlost</td><td style="color:var(--accent-3)"><strong>&lt;1 ns</strong></td><td>10–50 ns</td></tr>
+    <tr><td>Refresh</td><td style="color:var(--accent-3)"><strong>NE</strong></td><td style="color:var(--accent-5)">ANO (každých 64 ms)</td></tr>
+    <tr><td>Density</td><td style="color:var(--accent-5)">Nízká</td><td style="color:var(--accent-3)"><strong>Vysoká</strong></td></tr>
+    <tr><td>Cena</td><td style="color:var(--accent-5)">~$100/MB (drahá)</td><td style="color:var(--accent-3)"><strong>~$0.01/MB (levná)</strong></td></tr>
+    <tr><td>Použití</td><td>Cache (L1/L2/L3)</td><td>Hlavní RAM (DDR)</td></tr>
+  </table>
+
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Proč ne všechno SRAM?</div>
+    <p style="margin-bottom:0">32 GB SRAM by stálo <strong>~$3 000 000</strong> a fyzicky by se nevešlo na motherboard! Proto existuje <strong>hierarchie</strong>: malá rychlá SRAM cache + velká levná DRAM.</p>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="section" id="hierarchie">
+  <div class="section-header"><span class="section-num">07</span><h2>Paměťová hierarchie</h2></div>
+  <p>Trade-off <strong>rychlost vs. kapacita vs. cena</strong>. Malá rychlá drahá blízko CPU, velká pomalá levná dále.</p>
+
+  <div class="pyramid">
+    <div class="py-row"><div class="py-box" style="width:200px;background:rgba(248,113,113,.2);color:var(--accent-5)"><span>Registry</span><span class="py-speed">&lt;0.5 ns │ ~bytes</span></div></div>
+    <div class="py-row"><div class="py-box" style="width:280px;background:rgba(251,146,60,.15);color:var(--accent-6)"><span>L1 Cache (SRAM)</span><span class="py-speed">~1 ns │ 32–64 KB</span></div></div>
+    <div class="py-row"><div class="py-box" style="width:360px;background:rgba(251,191,36,.12);color:var(--accent-4)"><span>L2 Cache (SRAM)</span><span class="py-speed">~3–5 ns │ 256–512 KB</span></div></div>
+    <div class="py-row"><div class="py-box" style="width:440px;background:rgba(96,165,250,.12);color:var(--accent-1)"><span>L3 Cache (SRAM)</span><span class="py-speed">~10–20 ns │ 16–96 MB</span></div></div>
+    <div class="py-row"><div class="py-box" style="width:520px;background:rgba(167,139,250,.1);color:var(--accent-2)"><span>RAM (DRAM – DDR5)</span><span class="py-speed">~50–100 ns │ 8–128 GB</span></div></div>
+    <div class="py-row"><div class="py-box" style="width:600px;background:rgba(52,211,153,.08);color:var(--accent-3)"><span>SSD (Flash NAND)</span><span class="py-speed">~10–100 μs │ 256 GB – 4 TB</span></div></div>
+    <div class="py-row"><div class="py-box" style="width:680px;background:rgba(107,114,128,.1);color:var(--text-muted)"><span>HDD (magnetické)</span><span class="py-speed">~5–10 ms │ 1–20 TB</span></div></div>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Proč hierarchie funguje – Locality</div>
+    <ul>
+      <li><strong>Temporal Locality</strong> (časová) – data právě použitá budou brzy znovu. Příklad: loop variable <code>i</code></li>
+      <li><strong>Spatial Locality</strong> (prostorová) – data blízko právě použitých budou brzy použita. Příklad: array prvky vedle sebe</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="section" id="cache-urovne">
+  <div class="section-header"><span class="section-num">08</span><h2>Cache – úrovně L1 / L2 / L3</h2></div>
+  <p><strong>Cache</strong> = malá rychlá paměť mezi CPU a RAM. Kopíruje často používaná data. <strong>Transparentní</strong> pro software.</p>
+
+  <table class="compare-table">
+    <tr><th>Úroveň</th><th>Velikost</th><th>Latence</th><th>Typ</th><th>Sdílení</th></tr>
+    <tr><td><strong style="color:var(--accent-5)">L1</strong></td><td>32–64 KB per core</td><td style="color:var(--accent-3)"><strong>~1 ns</strong> (4–5 cycles)</td><td>Split: L1i + L1d</td><td>Per-core</td></tr>
+    <tr><td><strong style="color:var(--accent-4)">L2</strong></td><td>256 KB – 2 MB per core</td><td>~3–5 ns (12–15 cycles)</td><td>Unified</td><td>Per-core</td></tr>
+    <tr><td><strong style="color:var(--accent-1)">L3</strong></td><td>16–96 MB</td><td>~10–20 ns (40–50 cycles)</td><td>Unified</td><td><strong>Sdílená</strong> (všechna jádra)</td></tr>
+  </table>
+
+  <details>
+    <summary>Příklad: Intel Core i9-13900K</summary>
+    <div class="cli">
+      <span class="reg">L1:</span> <span class="val">80 KB</span> per P-core <span class="comment">(48 KB L1i + 32 KB L1d)</span><br>
+      <span class="reg">L2:</span> <span class="val">2 MB</span> per P-core, <span class="val">2 MB</span> per E-core cluster<br>
+      <span class="reg">L3:</span> <span class="val">36 MB</span> sdílená <span class="comment">(všechna jádra)</span>
+    </div>
+  </details>
+
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">AMD 3D V-Cache</div>
+    <p style="margin-bottom:0">Extra L3 cache vertikálně stackovaná nad CPU die. Ryzen 7 5800X3D: <strong>96 MB L3</strong> (64 MB 3D + 32 MB standard). Masivní boost pro gaming!</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="section" id="cache-org">
+  <div class="section-header"><span class="section-num">09</span><h2>Cache – organizace a mapping</h2></div>
+
+  <h3>Cache Line</h3>
+  <p>Základní jednotka přenosu. Typicky <strong>64 bytů</strong>. Cache VŽDY načítá celou line → využívá spatial locality.</p>
+
+  <h3>Cache Mapping – 3 typy</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Direct Mapped</h4>
+      <p>Každá adresa → přesně 1 cache line. <strong>Jednoduchý</strong>, ale konflikty (thrashing).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Fully Associative</h4>
+      <p>Jakákoli adresa → jakákoli line. <strong>Žádné konflikty</strong>, ale drahé (prohledání všech).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">N-way Set Associative ✓</h4>
+      <p><strong>STANDARD!</strong> Adresa → 1 set, ale libovolná line v setu. Typicky 8-way nebo 16-way. Dobrý kompromis.</p>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-4)">Replacement Policy – co vyhodit?</div>
+    <ul>
+      <li><strong>LRU (Least Recently Used)</strong> – vyhazuj nejdéle nepoužitou. <strong>Nejběžnější!</strong></li>
+      <li>FIFO (First In First Out)</li>
+      <li>Random, LFU (Least Frequently Used)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="section" id="hit-miss">
+  <div class="section-header"><span class="section-num">10</span><h2>Hit, Miss, Hit Rate</h2></div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Cache Hit ✓</h4>
+      <p>Data V cache → rychlé čtení (~1–20 ns).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Cache Miss ✗</h4>
+      <p>Data MIMO cache → čtení z RAM (~50–100 ns) nebo nižší úrovně.</p>
+    </div>
+  </div>
+
+  <h3>Typy Cache Miss</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Cold Miss (Compulsory)</h4>
+      <p>První přístup – cache ještě nemá data. Program startuje, cache prázdná.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Capacity Miss</h4>
+      <p>Cache příliš malá – data vyhozena kvůli kapacitě. Working set &gt; cache size.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Conflict Miss</h4>
+      <p>2 adresy mapují na stejný set a vyhazují se navzájem (thrashing).</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <h3>Hit Rate a Miss Rate</h3>
+
+  <div class="formula">
+    Hit Rate = Hits / Total &nbsp;&nbsp;│&nbsp;&nbsp; Miss Rate = Misses / Total
+    <div class="f-small">Hit Rate + Miss Rate = 1 (100%)</div>
+  </div>
+
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Příklad</div>
+    <p>1000 přístupů: 950 hitů, 50 missů</p>
+    <div class="hm-bar">
+      <div class="hm-seg" style="width:95%;background:rgba(52,211,153,.3);color:var(--accent-3)">Hit Rate = 95%</div>
+      <div class="hm-seg" style="width:5%;background:rgba(248,113,113,.3);color:var(--accent-5)">5%</div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Cache úroveň</th><th>Typický Hit Rate</th></tr>
+    <tr><td>L1</td><td style="color:var(--accent-3)"><strong>95–99%</strong></td></tr>
+    <tr><td>L2 (z L1 missů)</td><td>90–95%</td></tr>
+    <tr><td>L3 (z L2 missů)</td><td>80–90%</td></tr>
+  </table>
+</section>
+
+<!-- 11 -->
+<section class="section" id="amat">
+  <div class="section-header"><span class="section-num">11</span><h2>AMAT a write politiky</h2></div>
+
+  <h3>Average Memory Access Time (AMAT)</h3>
+  <div class="formula">
+    AMAT = Hit_Time + (Miss_Rate × Miss_Penalty)
+  </div>
+
+  <details>
+    <summary>Příklad: jednoúrovňová cache</summary>
+    <div class="cli">
+      <span class="reg">L1 Hit Time</span> = <span class="val">1 ns</span><br>
+      <span class="reg">L1 Miss Rate</span> = <span class="val">5%</span><br>
+      <span class="reg">RAM (miss penalty)</span> = <span class="val">100 ns</span><br><br>
+      <span class="cmd">AMAT</span> = 1 + (0.05 × 100) = 1 + 5 = <span class="kw">6 ns</span>
+    </div>
+  </details>
+
+  <details>
+    <summary>Příklad: víceúrovňová cache (L1 + L2)</summary>
+    <div class="cli">
+      <span class="reg">L1 Hit</span> = <span class="val">1 ns</span>, Miss Rate = <span class="val">5%</span><br>
+      <span class="reg">L2 Hit</span> = <span class="val">5 ns</span>, Miss Rate = <span class="val">20%</span> (z L1 missů)<br>
+      <span class="reg">RAM</span> = <span class="val">100 ns</span><br><br>
+      <span class="cmd">AMAT</span> = 1 + 0.05 × (5 + 0.20 × 100)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; = 1 + 0.05 × 25 = <span class="kw">2.25 ns</span> <span class="comment">(mnohem lepší!)</span>
+    </div>
+  </details>
+
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Dopad Hit Rate na výkon</div>
+    <p>I <strong>malé zlepšení</strong> hit rate má MASIVNÍ dopad!</p>
+    <p>95% hit rate → AMAT = <strong>6 ns</strong></p>
+    <p style="margin-bottom:0">99% hit rate → AMAT = <strong>2 ns</strong> (3× rychlejší!)</p>
+  </div>
+
+  <div class="divider"></div>
+  <h3>Write politiky</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Write-Through</h4>
+      <p>Zápis do cache <strong>A SOUČASNĚ</strong> do RAM. Vždy konzistentní. <strong>Pomalé</strong> – každý write jde do RAM.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Write-Back ✓ (moderní CPU)</h4>
+      <p>Zápis <strong>JEN do cache</strong>. Do RAM až při eviction. <strong>Dirty bit</strong> značí změněná data. Rychlé!</p>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-2)">Write Miss – co když adresa není v cache?</div>
+    <ul>
+      <li><strong>Write-Allocate:</strong> načti line z RAM do cache, pak zapiš (s write-back)</li>
+      <li><strong>No-Write-Allocate:</strong> zapiš přímo do RAM, cache neaktualizuj (s write-through)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="section" id="summary">
+  <div class="section-header"><span class="section-num">12</span><h2>Shrnutí klíčových bodů</h2></div>
+
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-8);margin-bottom:8px">DDR SDRAM</p>
+    <ul>
+      <li><strong>DDR3:</strong> 1.5 V, 800–2133 MHz, ~17 GB/s</li>
+      <li><strong>DDR4:</strong> 1.2 V, 2133–5000 MHz, ~25.6 GB/s. Mainstream 2015–2023</li>
+      <li><strong>DDR5:</strong> 1.1 V, 4800–8400 MHz, <strong>~67.2 GB/s</strong>. On-die ECC, dual-channel per DIMM</li>
+      <li><strong>Timings:</strong> CL-tRCD-tRP-tRAS. Latence = (CL/freq)×2000 ns</li>
+      <li><strong>Dual-channel</strong> = 2× bandwidth (správné sloty!)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">SRAM vs DRAM</p>
+    <ul>
+      <li><strong>SRAM:</strong> 6T cell, &lt;1 ns, žádný refresh, drahá → <strong>cache</strong> (L1/L2/L3)</li>
+      <li><strong>DRAM:</strong> 1T1C cell, 10–50 ns, refresh každých 64 ms, levná → <strong>hlavní RAM</strong></li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PAMĚŤOVÁ HIERARCHIE</p>
+    <ul>
+      <li>Registry (&lt;0.5 ns) → L1 (1 ns, 32–64 KB) → L2 (3–5 ns, 256–512 KB) → L3 (10–20 ns, 16–96 MB) → RAM (50–100 ns) → SSD (μs) → HDD (ms)</li>
+      <li>Funguje díky <strong>locality:</strong> temporal (brzy znovu) + spatial (blízko sebe)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">CACHE</p>
+    <ul>
+      <li><strong>L1:</strong> per-core, split i/d, ~1 ns │ <strong>L2:</strong> per-core, unified, ~3–5 ns │ <strong>L3:</strong> shared, ~10–20 ns</li>
+      <li><strong>Cache line:</strong> 64 bytů │ <strong>Mapping:</strong> N-way set associative (8/16-way)</li>
+      <li><strong>Replacement:</strong> LRU (Least Recently Used) – nejběžnější</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">HIT / MISS / AMAT</p>
+    <ul>
+      <li><strong>Hit:</strong> data v cache (rychlé) │ <strong>Miss:</strong> data mimo cache (pomalé)</li>
+      <li><strong>Miss typy:</strong> cold (první přístup), capacity (malá cache), conflict (thrashing)</li>
+      <li><strong>Hit Rate:</strong> L1 = 95–99%. I malé zlepšení = masivní dopad!</li>
+      <li><strong>AMAT</strong> = Hit_Time + (Miss_Rate × Miss_Penalty). Příklad: 1 + 0.05×100 = <strong>6 ns</strong></li>
+      <li><strong>Write:</strong> Write-Through (pomalé, konzistentní) vs <strong>Write-Back</strong> (rychlé, dirty bit, moderní CPU)</li>
+    </ul>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Zlatá pravidla</div>
+    <ul>
+      <li><strong>DDR5</strong> = budoucnost (67 GB/s, on-die ECC)</li>
+      <li><strong>SRAM</strong> rychlá/drahá (cache), <strong>DRAM</strong> pomalá/levná (RAM) – proto hierarchie</li>
+      <li><strong>Locality</strong> (temporal + spatial) = důvod proč cache funguje</li>
+      <li><strong>Hit rate 95% → 99% = 3× rychlejší!</strong> I malé zlepšení se počítá</li>
+      <li><strong>N-way set associative + LRU</strong> = standard moderních cache</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

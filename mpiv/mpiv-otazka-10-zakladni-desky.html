@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 10: Základní desky</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8}
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .hero{background:linear-gradient(135deg,#0f1117 0%,#1a2e0f 40%,#0f1a2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(52,211,153,.07) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(96,165,250,.06) 0%,transparent 50%);pointer-events:none}
+  .hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-6);margin-bottom:16px;position:relative}
+  .hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+  .hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+  .container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+  .toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px}
+  .toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+  .toc li::before{content:counter(toc,decimal-leading-zero)' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+  .toc a{color:var(--text);text-decoration:none;transition:color .2s}.toc a:hover{color:var(--accent-8)}
+  .section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+  .section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+  h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}h4{font-size:15px;font-weight:600;color:var(--accent-1);margin:20px 0 8px}p{margin-bottom:12px}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+  .card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+  .card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+  .card.purple{border-left:3px solid var(--accent-2);background:rgba(167,139,250,.04)}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+  ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(96,165,250,.1);color:var(--accent-1);padding:2px 6px;border-radius:4px}
+  strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+  .compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+  .compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+  .device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+  .device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+  .device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+  .formula{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:14px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;color:var(--accent-1);font-weight:600}
+  .formula .f-small{font-size:11px;color:var(--text-muted);font-weight:400;margin-top:6px}
+  .arch-flow{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:11px;overflow-x:auto}
+  .arch-label{font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:12px;text-align:center}
+  .ff-grid{display:flex;gap:14px;margin:16px 0;align-items:flex-end;flex-wrap:wrap}
+  .ff-box{border:2px solid;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:10px;text-align:center}
+  .ff-box .ff-size{font-size:9px;opacity:.6;margin-top:4px}.ff-box .ff-slots{font-size:9px;opacity:.6}
+  .pcie-bars{margin:16px 0}.pcie-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .pb-label{min-width:70px;color:var(--text-muted);font-size:11px}
+  .pb-fill{height:24px;border-radius:4px;display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:600}
+  .pb-value{min-width:80px;text-align:right;font-size:11px}
+  .usb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0}
+  .usb-card{text-align:center;border-radius:10px;padding:18px 14px;background:var(--bg-card-alt);border:1px solid var(--border)}
+  .usb-icon{font-size:28px;margin-bottom:6px}.usb-name{font-weight:700;font-size:14px}.usb-desc{font-size:11px;color:var(--text-muted);margin-top:4px}
+  @media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.ff-grid{justify-content:center}.usb-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 10</div>
+  <h1>Základní desky</h1>
+  <p>Chipset • Socket • Form Factors • PCI • PCI Express • USB • Thunderbolt</p>
+</div>
+<div class="container">
+<nav class="toc"><h2>Obsah</h2><ol>
+  <li><a href="#co-je-mb">Co je základní deska</a></li>
+  <li><a href="#platformy">Intel a AMD platformy</a></li>
+  <li><a href="#form-factors">Form Factors</a></li>
+  <li><a href="#chipset">Chipset a VRM</a></li>
+  <li><a href="#pci-legacy">PCI (Legacy)</a></li>
+  <li><a href="#pcie-princip">PCIe – princip a lanes</a></li>
+  <li><a href="#pcie-generace">PCIe – generace a rychlosti</a></li>
+  <li><a href="#pcie-lanes">PCIe – distribuce lanes</a></li>
+  <li><a href="#usb-verze">USB – verze a rychlosti</a></li>
+  <li><a href="#usb-konektory">USB – konektory a Power Delivery</a></li>
+  <li><a href="#thunderbolt">Thunderbolt</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol></nav>
+
+<section class="section" id="co-je-mb">
+  <div class="section-header"><span class="section-num">01</span><h2>Co je základní deska</h2></div>
+  <p><strong>Motherboard</strong> (základní deska) je hlavní PCB počítače. Propojuje všechny komponenty – CPU, RAM, GPU, storage, periférie. Je to „nervový systém" PC.</p>
+  <div class="card"><div class="card-title" style="color:var(--accent-1)">Klíčové komponenty</div>
+    <ul>
+      <li><strong>CPU Socket</strong> – patice pro procesor</li>
+      <li><strong>Chipset</strong> – řídí komunikaci mezi komponentami</li>
+      <li><strong>RAM sloty</strong> – DIMM pro paměť (2–8 slotů)</li>
+      <li><strong>Expansion sloty</strong> – PCIe pro GPU, NIC, zvukové karty</li>
+      <li><strong>Storage konektory</strong> – M.2, SATA</li>
+      <li><strong>Power konektory</strong> – 24-pin ATX, 8-pin CPU</li>
+      <li><strong>I/O panel</strong> – USB, HDMI, Ethernet, audio</li>
+      <li><strong>BIOS/UEFI chip</strong> – firmware pro inicializaci HW</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="platformy">
+  <div class="section-header"><span class="section-num">02</span><h2>Intel a AMD platformy</h2></div>
+  <h3>Intel – Socket LGA1700</h3>
+  <p>Pro 12th–14th Gen Core (Alder Lake, Raptor Lake). DDR5, PCIe 5.0.</p>
+  <table class="compare-table">
+    <tr><th>Chipset</th><th>Tier</th><th>OC CPU</th><th>M.2</th><th>Klíčové features</th></tr>
+    <tr><td><strong style="color:var(--accent-5)">Z790</strong></td><td>High-end</td><td style="color:var(--accent-3)">Ano</td><td>Až 5×</td><td>PCIe 5.0, DDR5, WiFi 6E/7</td></tr>
+    <tr><td><strong style="color:var(--accent-4)">B760</strong></td><td>Mainstream</td><td style="color:var(--accent-5)">Ne</td><td>Až 3×</td><td>RAM OC ano, DDR5/DDR4</td></tr>
+    <tr><td><strong>H770</strong></td><td>Business</td><td style="color:var(--accent-5)">Ne</td><td>3×</td><td>vPro, remote management</td></tr>
+    <tr><td><strong style="color:var(--text-muted)">H610</strong></td><td>Budget</td><td style="color:var(--accent-5)">Ne</td><td>1×</td><td>Entry-level, DDR4</td></tr>
+  </table>
+  <h3>AMD – Socket AM5</h3>
+  <p>Pro Ryzen 7000/8000/9000. LGA design, <strong>DDR5 only</strong>, PCIe 5.0.</p>
+  <table class="compare-table">
+    <tr><th>Chipset</th><th>Tier</th><th>OC CPU</th><th>PCIe GPU</th><th>Klíčové features</th></tr>
+    <tr><td><strong style="color:var(--accent-5)">X870E / X870</strong></td><td>High-end</td><td style="color:var(--accent-3)">Ano</td><td>5.0</td><td>USB4, WiFi 7, 10G ETH</td></tr>
+    <tr><td><strong style="color:var(--accent-4)">B650E / B650</strong></td><td>Mainstream</td><td style="color:var(--accent-3)">Ano</td><td>5.0 (E) / 4.0</td><td>AMD tradičně OC i na B-series!</td></tr>
+    <tr><td><strong style="color:var(--text-muted)">A620</strong></td><td>Budget</td><td style="color:var(--accent-5)">Ne</td><td>4.0</td><td>Entry-level</td></tr>
+  </table>
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">AMD AM4 (stále prodáváno)</div>
+    <p style="margin-bottom:0">Starší platforma (Ryzen 1000–5000), stále populární. DDR4, PCIe 4.0. Výborná upgrade path – <strong>stejný socket 2017–2022!</strong></p>
+  </div>
+</section>
+
+<section class="section" id="form-factors">
+  <div class="section-header"><span class="section-num">03</span><h2>Form Factors</h2></div>
+  <div class="ff-grid">
+    <div class="ff-box" style="width:155px;height:155px;border-color:var(--accent-3);color:var(--accent-3);background:rgba(52,211,153,.05)">Mini-ITX<div class="ff-size">170 × 170 mm</div><div class="ff-slots">1× PCIe slot</div></div>
+    <div class="ff-box" style="width:185px;height:185px;border-color:var(--accent-4);color:var(--accent-4);background:rgba(251,191,36,.05)">Micro-ATX<div class="ff-size">244 × 244 mm</div><div class="ff-slots">4× PCIe sloty</div></div>
+    <div class="ff-box" style="width:215px;height:200px;border-color:var(--accent-1);color:var(--accent-1);background:rgba(96,165,250,.05)">ATX<div class="ff-size">305 × 244 mm</div><div class="ff-slots">7× PCIe slotů</div></div>
+    <div class="ff-box" style="width:245px;height:220px;border-color:var(--accent-2);color:var(--accent-2);background:rgba(167,139,250,.05)">E-ATX<div class="ff-size">305 × 330+ mm</div><div class="ff-slots">8× RAM, high-end</div></div>
+  </div>
+  <table class="compare-table">
+    <tr><th>Form Factor</th><th>Rozměry</th><th>PCIe</th><th>RAM</th><th>Použití</th></tr>
+    <tr><td><strong>ATX</strong></td><td>305 × 244 mm</td><td>7</td><td>4</td><td>Gaming, workstation – <strong>standard</strong></td></tr>
+    <tr><td><strong>Micro-ATX</strong></td><td>244 × 244 mm</td><td>4</td><td>2–4</td><td>Kompromis velikost/features</td></tr>
+    <tr><td><strong>Mini-ITX</strong></td><td>170 × 170 mm</td><td>1</td><td>2</td><td>SFF buildy, HTPC</td></tr>
+    <tr><td><strong>E-ATX</strong></td><td>305 × 330+ mm</td><td>7+</td><td>Až 8</td><td>Extrémní high-end, server</td></tr>
+  </table>
+</section>
+
+<section class="section" id="chipset">
+  <div class="section-header"><span class="section-num">04</span><h2>Chipset a VRM</h2></div>
+  <p><strong>Chipset</strong> řídí komunikaci mezi CPU, RAM, storage a perifériemi. Dříve 2 čipy (Northbridge + Southbridge), dnes jeden <strong>Platform Controller Hub (PCH)</strong>.</p>
+  <div class="arch-flow">
+    <div class="arch-label">MODERNÍ ARCHITEKTURA (INTEL 13TH GEN)</div>
+    <div style="text-align:center;font-size:11px;line-height:2.2">
+      <span style="color:var(--accent-1)">CPU</span><span style="color:var(--text-muted)"> ─┬─→ </span><span style="color:var(--accent-4)">RAM (DDR5)</span><span style="color:var(--text-muted)"> &nbsp;direct attach</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─→ </span><span style="color:var(--accent-5)">PCIe 5.0 ×16</span><span style="color:var(--text-muted)"> &nbsp;GPU (z CPU)</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─→ </span><span style="color:var(--accent-3)">M.2 PCIe 4.0 ×4</span><span style="color:var(--text-muted)"> &nbsp;storage</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─→ </span><span style="color:var(--accent-6)">DMI 4.0 ×8</span><span style="color:var(--text-muted)"> → </span><span style="color:var(--accent-2)">Chipset (Z790 PCH)</span><br><br>
+      <span style="color:var(--accent-2)">Chipset</span><span style="color:var(--text-muted)"> ─┬─→ PCIe 4.0/3.0 (M.2, sloty)</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─→ SATA (6 Gbps)</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─→ USB 3.2 / 2.0</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─→ Ethernet, Audio</span>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <h3>VRM (Voltage Regulator Module)</h3>
+  <p>VRM převádí 12 V z PSU na nižší napětí pro CPU (<strong>0.8–1.4 V</strong>). Kritické pro stabilitu při OC.</p>
+  <table class="compare-table">
+    <tr><th>Tier</th><th>Fáze VRM</th><th>Poznámka</th></tr>
+    <tr><td>Budget</td><td>6–8</td><td>Základní, non-OC</td></tr>
+    <tr><td>Mainstream</td><td>12–14</td><td>Dobrá regulace</td></tr>
+    <tr><td><strong>High-end</strong></td><td>16–20+</td><td>Nejlepší, nízké teploty, OC</td></tr>
+  </table>
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">BIOS/UEFI</div>
+    <p style="margin-bottom:0"><strong>UEFI</strong> = moderní náhrada BIOS. Grafické rozhraní, Secure Boot, rychlejší boot. Funkce: HW detekce, boot order, overclocking, fan curves (PWM), RGB.</p>
+  </div>
+</section>
+
+<section class="section" id="pci-legacy">
+  <div class="section-header"><span class="section-num">05</span><h2>PCI (Legacy)</h2></div>
+  <p><strong>PCI</strong> (Peripheral Component Interconnect) – Intel (1992). Nahradil ISA. Plug and Play.</p>
+  <div class="card"><div class="card-title" style="color:var(--accent-6)">PCI klasický</div>
+    <ul>
+      <li><strong>32-bit / 64-bit</strong> paralelní sběrnice, <strong>33 / 66 MHz</strong></li>
+      <li>Bandwidth: <strong>133 MB/s</strong> (32-bit@33) až <strong>533 MB/s</strong> (64-bit@66)</li>
+      <li><strong>Shared bus</strong> – všechny karty sdílí bandwidth</li>
+    </ul>
+  </div>
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Proč nahrazeno PCIe</div>
+    <ul>
+      <li><strong>Shared bus</strong> → dělený bandwidth</li>
+      <li>Nízká rychlost pro moderní GPU</li>
+      <li>Paralelní přenos → clock skew, EMI</li>
+    </ul>
+    <p style="margin-bottom:0">Nahrazeno <strong>PCIe od 2004</strong>. Moderní MB nemají PCI sloty (~2015).</p>
+  </div>
+</section>
+
+<section class="section" id="pcie-princip">
+  <div class="section-header"><span class="section-num">06</span><h2>PCIe – princip a lanes</h2></div>
+  <p><strong>PCI Express</strong> = SÉRIOVÝ <strong>point-to-point</strong> standard. Dedikované lanes per zařízení → <strong>žádné sdílení!</strong></p>
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Co je Lane?</div>
+    <p style="margin-bottom:0"><strong>1 lane = 4 vodiče</strong> (TX+, TX−, RX+, RX−). Diferenciální signalizace. Full-duplex.</p>
+  </div>
+  <table class="compare-table">
+    <tr><th>Konfigurace</th><th>Lanes</th><th>Vodiče</th><th>Typické použití</th></tr>
+    <tr><td><code>×1</code></td><td>1</td><td>4</td><td>NIC, zvukovka, SATA řadič</td></tr>
+    <tr><td><code>×4</code></td><td>4</td><td>16</td><td>M.2 NVMe SSD</td></tr>
+    <tr><td><code>×8</code></td><td>8</td><td>32</td><td>RAID řadič</td></tr>
+    <tr><td><code>×16</code></td><td>16</td><td>64</td><td><strong>GPU</strong></td></tr>
+  </table>
+  <div class="formula">Bandwidth roste lineárně s počtem lanes<div class="f-small">×16 = 16× rychlost ×1 slotu</div></div>
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">PCI vs PCIe</div>
+    <p><strong>PCI:</strong> paralelní, shared bus → dělený bandwidth</p>
+    <p style="margin-bottom:0"><strong>PCIe:</strong> sériový, point-to-point → <strong>dedikovaný bandwidth!</strong></p>
+  </div>
+</section>
+
+<section class="section" id="pcie-generace">
+  <div class="section-header"><span class="section-num">07</span><h2>PCIe – generace a rychlosti</h2></div>
+  <p>Každá generace <strong>zdvojnásobuje rychlost</strong> per lane.</p>
+  <div class="pcie-bars">
+    <div class="pcie-bar"><span class="pb-label">Gen 1.0</span><div class="pb-fill" style="width:4%;background:rgba(107,114,128,.3);color:var(--text-muted)"></div><span class="pb-value" style="color:var(--text-muted)">×16 = 4 GB/s</span></div>
+    <div class="pcie-bar"><span class="pb-label">Gen 2.0</span><div class="pb-fill" style="width:7%;background:rgba(107,114,128,.3);color:var(--text-muted)"></div><span class="pb-value" style="color:var(--text-muted)">×16 = 8 GB/s</span></div>
+    <div class="pcie-bar"><span class="pb-label">Gen 3.0</span><div class="pb-fill" style="width:14%;background:rgba(96,165,250,.3);color:var(--accent-1)">3.0</div><span class="pb-value" style="color:var(--accent-1)">×16 = 16 GB/s</span></div>
+    <div class="pcie-bar"><span class="pb-label">Gen 4.0</span><div class="pb-fill" style="width:28%;background:rgba(52,211,153,.3);color:var(--accent-3)">Gen 4.0</div><span class="pb-value" style="color:var(--accent-3)">×16 = 32 GB/s</span></div>
+    <div class="pcie-bar"><span class="pb-label">Gen 5.0</span><div class="pb-fill" style="width:55%;background:rgba(251,191,36,.3);color:var(--accent-4)">Gen 5.0</div><span class="pb-value" style="color:var(--accent-4)">×16 = 64 GB/s</span></div>
+    <div class="pcie-bar"><span class="pb-label">Gen 6.0</span><div class="pb-fill" style="width:100%;background:rgba(167,139,250,.3);color:var(--accent-2)">Gen 6.0 (budoucnost)</div><span class="pb-value" style="color:var(--accent-2)">×16 = 128 GB/s</span></div>
+  </div>
+  <table class="compare-table">
+    <tr><th>Generace</th><th>GT/s</th><th>Encoding</th><th>Per lane</th><th>×4 (M.2)</th><th>×16 (GPU)</th></tr>
+    <tr><td>PCIe 1.0 (2003)</td><td>2.5</td><td>8b/10b</td><td>250 MB/s</td><td>1 GB/s</td><td>4 GB/s</td></tr>
+    <tr><td>PCIe 2.0 (2007)</td><td>5</td><td>8b/10b</td><td>500 MB/s</td><td>2 GB/s</td><td>8 GB/s</td></tr>
+    <tr><td><strong>PCIe 3.0</strong> (2010)</td><td>8</td><td>128b/130b</td><td>~1 GB/s</td><td>~4 GB/s</td><td><strong>16 GB/s</strong></td></tr>
+    <tr><td><strong>PCIe 4.0</strong> (2017)</td><td>16</td><td>128b/130b</td><td>~2 GB/s</td><td>~8 GB/s</td><td><strong>32 GB/s</strong></td></tr>
+    <tr><td><strong>PCIe 5.0</strong> (2019)</td><td>32</td><td>128b/130b</td><td>~4 GB/s</td><td>~16 GB/s</td><td><strong>64 GB/s</strong></td></tr>
+    <tr><td>PCIe 6.0 (2022)</td><td>64</td><td>PAM4</td><td>~8 GB/s</td><td>~32 GB/s</td><td>128 GB/s</td></tr>
+  </table>
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Encoding: 8b/10b vs 128b/130b</div>
+    <p><strong>8b/10b</strong> (Gen 1–2): 20% overhead. <strong>128b/130b</strong> (Gen 3+): jen ~1.5% overhead → efektivnější!</p>
+  </div>
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Backward / Forward kompatibilita</div>
+    <p style="margin-bottom:0">PCIe 4.0 karta v 3.0 slotu → běží na 3.0 rychlosti. PCIe 3.0 karta v 4.0 slotu → běží na 3.0. RTX 4090 (4.0) v PCIe 3.0 ×16 → mírná degradace (~5%).</p>
+  </div>
+</section>
+
+<section class="section" id="pcie-lanes">
+  <div class="section-header"><span class="section-num">08</span><h2>PCIe – distribuce lanes</h2></div>
+  <p>CPU a chipset mají <strong>OMEZENÝ počet lanes</strong>. Musí se dělit mezi GPU, M.2, sloty.</p>
+  <div class="card"><div class="card-title" style="color:var(--accent-1)">Příklad: Intel i9-13900K</div>
+    <p><strong>CPU:</strong> 20× PCIe (16× Gen 5.0 + 4× Gen 4.0). Typicky: 16× GPU + 4× M.2.</p>
+    <p style="margin-bottom:0"><strong>Chipset Z790:</strong> 20–28× PCIe 4.0/3.0 → další M.2, sloty, SATA.</p>
+  </div>
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Lane sharing!</div>
+    <p>Některé sloty <strong>SDÍLÍ lanes</strong>. M.2 slot #3 může sdílet s SATA porty. <strong>→ Vždy čti manuál!</strong></p>
+  </div>
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">PCIe Bifurcation</div>
+    <p>Rozdělení ×16 → 2×(×8) nebo 4×(×4). Pro multi-GPU nebo M.2 adaptér (4× SSD v 1 slotu). Musí být v BIOS!</p>
+  </div>
+</section>
+
+<section class="section" id="usb-verze">
+  <div class="section-header"><span class="section-num">09</span><h2>USB – verze a rychlosti</h2></div>
+  <p><strong>USB</strong> – univerzální standard. Plug-and-Play, hot-swappable, napájení. <strong>Nejrozšířenější interface.</strong></p>
+  <table class="compare-table">
+    <tr><th>Verze</th><th>Marketing</th><th>Rychlost</th><th>Propust</th></tr>
+    <tr><td style="color:var(--text-muted)">USB 1.1</td><td>Full Speed</td><td>12 Mbps</td><td>1.5 MB/s</td></tr>
+    <tr><td><strong>USB 2.0</strong></td><td>High Speed</td><td>480 Mbps</td><td>~60 MB/s</td></tr>
+    <tr><td><strong>USB 3.2 Gen 1</strong></td><td>SuperSpeed 5G</td><td style="color:var(--accent-1)"><strong>5 Gbps</strong></td><td>~625 MB/s</td></tr>
+    <tr><td><strong>USB 3.2 Gen 2</strong></td><td>SuperSpeed+ 10G</td><td style="color:var(--accent-3)"><strong>10 Gbps</strong></td><td>~1.25 GB/s</td></tr>
+    <tr><td><strong>USB 3.2 Gen 2×2</strong></td><td>SuperSpeed+ 20G</td><td style="color:var(--accent-4)"><strong>20 Gbps</strong></td><td>~2.5 GB/s</td></tr>
+    <tr><td><strong>USB4</strong></td><td>USB4 40G</td><td style="color:var(--accent-6)"><strong>40 Gbps</strong></td><td>~5 GB/s</td></tr>
+  </table>
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">USB naming = CHAOS!</div>
+    <p>USB 3.0 → přejmenováno na USB 3.2 Gen 1. USB 3.1 → USB 3.2 Gen 2.</p>
+    <p style="margin-bottom:0"><strong>Tip:</strong> Koukej na <strong>rychlost (Gbps)</strong>, ne na název!</p>
+  </div>
+</section>
+
+<section class="section" id="usb-konektory">
+  <div class="section-header"><span class="section-num">10</span><h2>USB – konektory a Power Delivery</h2></div>
+  <div class="usb-grid">
+    <div class="usb-card" style="border-top:3px solid var(--accent-1)"><div class="usb-icon">▬</div><div class="usb-name" style="color:var(--accent-1)">Type-A</div><div class="usb-desc">Klasický obdélník. Není reversible. USB 2.0–3.2.</div></div>
+    <div class="usb-card" style="border-top:3px solid var(--accent-4)"><div class="usb-icon">▭</div><div class="usb-name" style="color:var(--accent-4)">Type-B</div><div class="usb-desc">Čtvercový. Tiskárny, scannery.</div></div>
+    <div class="usb-card" style="border-top:3px solid var(--accent-6)"><div class="usb-icon">╌</div><div class="usb-name" style="color:var(--accent-6)">Micro-B</div><div class="usb-desc">Starší Android. Nahrazeno USB-C.</div></div>
+    <div class="usb-card" style="border-top:3px solid var(--accent-3)"><div class="usb-icon">⬮</div><div class="usb-name" style="color:var(--accent-3)">Type-C</div><div class="usb-desc"><strong>REVERSIBLE!</strong> USB4, TB3/4. PD 240W. DP Alt Mode. Budoucnost.</div></div>
+  </div>
+  <div class="divider"></div>
+  <h3>USB Power Delivery</h3>
+  <table class="compare-table">
+    <tr><th>Standard</th><th>Max výkon</th><th>Parametry</th></tr>
+    <tr><td>USB 2.0</td><td>2.5 W</td><td>5 V / 0.5 A</td></tr>
+    <tr><td>USB 3.0</td><td>4.5 W</td><td>5 V / 0.9 A</td></tr>
+    <tr><td><strong>USB PD 2.0</strong></td><td style="color:var(--accent-4)"><strong>100 W</strong></td><td>20 V / 5 A (USB-C)</td></tr>
+    <tr><td><strong>USB PD 3.1</strong></td><td style="color:var(--accent-5)"><strong>240 W!</strong></td><td>48 V / 5 A (USB-C)</td></tr>
+  </table>
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">USB PD vlastnosti</div>
+    <ul>
+      <li><strong>Obousměrné</strong> – laptop nabíjí mobil i je nabíjen</li>
+      <li><strong>Negociace napětí</strong> – zařízení si řeknou V/A</li>
+      <li><strong>Monitory s USB-C</strong> – nabíjení + obraz jedním kabelem</li>
+    </ul>
+  </div>
+  <div class="divider"></div>
+  <h3>USB Host, Device, Hub</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)"><h4 style="color:var(--accent-1)">Host</h4><p>PC, laptop – řídí komunikaci, napájí.</p></div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Device</h4><p>Flash disk, myš – přijímá příkazy.</p></div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)"><h4 style="color:var(--accent-6)">USB OTG</h4><p>Zařízení = host i device. Mobil + flash disk.</p></div>
+  </div>
+  <div class="card"><div class="card-title" style="color:var(--accent-4)">USB Hub – sdílení bandwidth</div>
+    <p style="margin-bottom:0">1 port → 4–7 portů. <strong>Sdílí bandwidth!</strong> USB 3.0 hub (625 MB/s) se 4 disky → každý ~156 MB/s.</p>
+  </div>
+</section>
+
+<section class="section" id="thunderbolt">
+  <div class="section-header"><span class="section-num">11</span><h2>Thunderbolt</h2></div>
+  <p><strong>Thunderbolt</strong> – Intel/Apple. Kombinuje <strong>PCIe + DisplayPort</strong> v jednom USB-C kabelu.</p>
+  <table class="compare-table">
+    <tr><th>Verze</th><th>Rychlost</th><th>Video</th><th>Features</th></tr>
+    <tr><td><strong>TB3</strong> (2015)</td><td style="color:var(--accent-1)">40 Gbps</td><td>2× 4K@60</td><td>PCIe 3.0 ×4 tunneling, 100W PD, <strong>eGPU!</strong></td></tr>
+    <tr><td><strong>TB4</strong> (2020)</td><td style="color:var(--accent-1)">40 Gbps</td><td>2×4K / 1×8K</td><td>Vyšší min PCIe (32 Gbps), wake from sleep</td></tr>
+    <tr><td><strong>TB5</strong> (2023)</td><td style="color:var(--accent-3)"><strong>80 Gbps</strong></td><td>3×4K@144</td><td>120 Gbps asymmetric, budoucnost</td></tr>
+  </table>
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">Použití Thunderbolt</div>
+    <ul>
+      <li><strong>eGPU</strong> – externí grafika přes TB3/4</li>
+      <li><strong>Docking stations</strong> – 1 kabel = napájení + video + data</li>
+      <li><strong>High-speed storage</strong> – NVMe přes TB</li>
+      <li><strong>Professional video</strong> – capture cards, multi-monitor</li>
+    </ul>
+  </div>
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">USB4 vs Thunderbolt</div>
+    <p style="margin-bottom:0"><strong>USB4</strong> = založen na TB3 protokolu, 40 Gbps. TB4/5 mají <strong>vyšší min. požadavky</strong> a certifikaci → zaručeně lepší kvalita.</p>
+  </div>
+</section>
+
+<section class="section" id="summary">
+  <div class="section-header"><span class="section-num">12</span><h2>Shrnutí klíčových bodů</h2></div>
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">ZÁKLADNÍ DESKA + PLATFORMY</p>
+    <ul>
+      <li><strong>Motherboard</strong> = nervový systém PC. Socket, chipset, RAM, PCIe, M.2, VRM, UEFI</li>
+      <li><strong>Intel LGA1700:</strong> Z790 (OC), B760 (mainstream), H610 (budget). DDR5, PCIe 5.0</li>
+      <li><strong>AMD AM5:</strong> X870E (high-end), B650E (mainstream), A620 (budget). DDR5, OC i na B</li>
+      <li><strong>Form factors:</strong> ATX (standard, 7 slotů), mATX (4), Mini-ITX (1, SFF)</li>
+    </ul>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">PCI (LEGACY)</p>
+    <ul><li>Paralelní, <strong>shared bus</strong>, 133–533 MB/s. Vyřazeno ~2015</li></ul>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">PCIe</p>
+    <ul>
+      <li>Sériový, <strong>point-to-point</strong>. Lane = 4 vodiče (TX±, RX±). ×1/×4/×8/×16</li>
+      <li>Každá gen <strong>2× rychlost:</strong> Gen 3 = 1 GB/s/lane → Gen 4 = 2 → Gen 5 = 4 → Gen 6 = 8</li>
+      <li>Encoding: 8b/10b (20%) → 128b/130b (~1.5%). Backward/forward compatible</li>
+      <li><strong>Lane sharing</strong> – čti manuál! Bifurcation pro split ×16</li>
+    </ul>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">USB</p>
+    <ul>
+      <li><strong>2.0:</strong> 480 Mbps │ <strong>3.2G1:</strong> 5 Gbps │ <strong>G2:</strong> 10 │ <strong>G2×2:</strong> 20 │ <strong>USB4:</strong> 40 Gbps</li>
+      <li><strong>Type-C</strong> = REVERSIBLE, PD až 240W, DisplayPort Alt, budoucnost</li>
+      <li>Hub sdílí bandwidth. USB OTG = host i device</li>
+    </ul>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">THUNDERBOLT</p>
+    <ul>
+      <li><strong>TB3/4:</strong> 40 Gbps, PCIe tunneling, eGPU, USB-C</li>
+      <li><strong>TB5:</strong> 80 Gbps (120 asymmetric). USB4 = založen na TB3</li>
+    </ul>
+  </div>
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Zlatá pravidla</div>
+    <ul>
+      <li><strong>Chipset</strong> určuje features – vyber podle potřeb (OC, lanes, USB)</li>
+      <li><strong>PCIe lanes omezené</strong> – plánuj! Každá gen = 2× rychlost</li>
+      <li><strong>USB-C</strong> = budoucnost. Reversible, PD 240W, DP, TB kompatibilní</li>
+      <li><strong>Thunderbolt</strong> = PCIe přes kabel. 1 kabel = vše</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

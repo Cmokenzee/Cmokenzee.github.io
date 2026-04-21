@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Jaroslav Vrchlický: Noc na Karlštejně</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0e14;
+  --bg-card:#181722;
+  --bg-card-alt:#1f1d2b;
+  --border:#2e2a3d;
+  --text:#c9c2d4;
+  --text-muted:#7a7388;
+  --heading:#e9e2f0;
+  --accent-1:#d4af37;     /* zlato koruny */
+  --accent-2:#6b1f3a;     /* královské bordó */
+  --accent-3:#8b7355;     /* pískovec hradu */
+  --accent-4:#a88860;     /* zašlé zlato */
+  --accent-5:#9c2a3a;     /* krev rytířů */
+  --accent-6:#5c4a7a;     /* královská fialová */
+  --accent-7:#3a5a7a;     /* noční modř */
+  --accent-8:#7a6b8c;     /* šero */
+  --gold:#d4af37;         /* zlato */
+  --crown:#f0c850;        /* zlatá koruna - jasná */
+  --wine:#6b1f3a;         /* bordó */
+  --stone:#8b7355;        /* kámen */
+  --night:#3a5a7a;        /* noční modř */
+  --candle:#e8b858;       /* světlo svíčky */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(107,31,58,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(58,90,122,.05) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — hrad v noci */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(15,14,20,.3) 0%,rgba(15,14,20,.85) 100%),
+    linear-gradient(135deg,#181020 0%,#2a1828 35%,#18141e 70%,#100c14 100%);
+  border-bottom:2px solid var(--gold);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 80%,rgba(232,184,88,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 30%,rgba(107,31,58,.08) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Dekorativní siluety věží */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:60px;
+  background:
+    linear-gradient(90deg,
+      transparent 0%,transparent 10%,
+      rgba(212,175,55,.04) 10%,rgba(212,175,55,.04) 11%,
+      transparent 11%,transparent 25%,
+      rgba(212,175,55,.06) 25%,rgba(212,175,55,.06) 26%,
+      transparent 26%,transparent 50%,
+      rgba(212,175,55,.08) 50%,rgba(212,175,55,.08) 51%,
+      transparent 51%,transparent 75%,
+      rgba(212,175,55,.06) 75%,rgba(212,175,55,.06) 76%,
+      transparent 76%,transparent 90%,
+      rgba(212,175,55,.04) 90%,rgba(212,175,55,.04) 91%,
+      transparent 91%);
+  pointer-events:none;
+}
+.hero-crown{
+  display:inline-block;
+  margin-bottom:20px;
+  color:var(--crown);
+  font-size:36px;
+  opacity:.7;
+  position:relative;
+  letter-spacing:8px;
+  filter:drop-shadow(0 0 12px rgba(232,184,88,.3));
+}
+.hero-label{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--crown);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+  font-weight:500;
+}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(34px,5.5vw,54px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1.15;
+  position:relative;
+  letter-spacing:3px;
+  text-shadow:0 2px 20px rgba(212,175,55,.2);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--accent-4);
+  font-size:.38em;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:16px;
+  opacity:.8;
+}
+.hero .author{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--accent-4);
+  margin-top:24px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:2px;
+  font-style:italic;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:14px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2px;
+}
+.hero-quote{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--crown);
+  font-size:18px;
+  margin-top:34px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:1px;
+  opacity:.85;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before,.toc::after{
+  content:'❧';
+  position:absolute;
+  color:var(--gold);
+  font-size:18px;
+  top:-12px;
+  background:var(--bg);
+  padding:0 10px;
+  opacity:.7;
+}
+.toc::before{left:30px}
+.toc::after{right:30px;transform:scaleX(-1)}
+.toc h2{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;text-align:center;
+  font-weight:600;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,upper-roman) '. ';
+  font-family:'Cinzel',serif;
+  color:var(--gold);
+  font-size:13px;margin-right:6px;
+  font-weight:600;
+  opacity:.8;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--crown)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:100px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--wine));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Cinzel',serif;
+  font-size:32px;color:var(--gold);
+  font-weight:700;
+  min-width:60px;opacity:.6;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'Cinzel',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Cinzel',serif;
+  font-size:15px;font-weight:600;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1px;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--gold);background:rgba(212,175,55,.04)}
+.card.key{border-left:3px solid var(--accent-4);background:rgba(168,136,96,.05)}
+.card.warn{border-left:3px solid var(--wine);background:rgba(107,31,58,.06)}
+.card.green{border-left:3px solid var(--accent-6);background:rgba(92,74,122,.05)}
+.card.stone{border-left:3px solid var(--stone);background:rgba(139,115,85,.05)}
+.card.night{border-left:3px solid var(--night);background:rgba(58,90,122,.06)}
+
+.card-title{
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:600;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--gold)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(212,175,55,.08);
+  color:var(--gold);
+  padding:2px 7px;border-radius:2px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-4);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+/* Gotický dělič */
+.gothic-divider{
+  text-align:center;
+  margin:44px 0;
+  color:var(--gold);
+  font-size:16px;
+  letter-spacing:24px;
+  opacity:.4;
+  font-family:serif;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:14px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — středověké portréty */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--gold));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:20px;
+  transform:translateY(-50%);
+  font-size:60px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:serif;
+}
+.character .char-name{
+  font-family:'Cinzel',serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:1px;
+}
+.character .char-name em{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  letter-spacing:0;
+  font-style:italic;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--gold));
+  margin-bottom:14px;
+}
+
+/* REPLIKA — divadelní scénář */
+.replica{
+  margin:14px 0;
+  padding:14px 20px;
+  background:var(--bg-card-alt);
+  border-radius:2px;
+  border-left:2px solid var(--gold);
+}
+.replica .speaker{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+.replica .line{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;
+  line-height:1.8;
+  white-space:pre-line;
+}
+.replica .stage{
+  font-size:13px;
+  color:var(--text-muted);
+  font-style:italic;
+  font-weight:normal;
+  text-transform:none;
+  letter-spacing:0;
+  margin-left:4px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--gold);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--gold);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* SCÉNA — divadelní scéna */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--wine),var(--gold));
+  opacity:.4;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  background:rgba(212,175,55,.06);
+  padding:5px 12px;border-radius:2px;
+  margin-bottom:16px;
+  border:1px solid rgba(212,175,55,.2);
+  font-weight:600;
+}
+.scene-title{
+  font-family:'Cinzel',serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1px;
+}
+.scene-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--gold);
+  background:rgba(212,175,55,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--accent-4)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(107,31,58,.05);
+  border-left:2px solid var(--wine);
+  border-radius:0 2px 2px 0;
+}
+.scene-meaning strong{color:var(--accent-5)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--gold);
+  font-weight:600;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* TŘI DĚJSTVÍ — divadelní struktura */
+.acts-three{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;margin:24px 0;
+}
+.act-three{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-top:3px solid var(--act-color,var(--gold));
+  border-radius:2px;
+  padding:20px 18px;
+  text-align:center;
+}
+.act-three .act-num{
+  font-family:'Cinzel',serif;
+  font-size:26px;
+  color:var(--act-color,var(--gold));
+  font-weight:700;
+  display:block;margin-bottom:6px;
+  letter-spacing:2px;
+}
+.act-three .act-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:10px;
+}
+.act-three .act-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-style:italic;
+  line-height:1.4;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  background:var(--bg);
+}
+.timeline-step .ts-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+
+/* BLANKVERS — vizualizace metra */
+.blankvers-demo{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  padding:20px 24px;
+  margin:16px 0;
+  font-family:'Cormorant Garamond',serif;
+  text-align:center;
+}
+.blankvers-line{
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  margin:12px 0 4px;
+}
+.blankvers-meter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;
+  letter-spacing:16px;
+  color:var(--gold);
+  margin-bottom:8px;
+  opacity:.7;
+}
+.blankvers-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:var(--text-muted);
+  text-transform:uppercase;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--gold);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .acts-three{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+  .blankvers-meter{letter-spacing:10px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-crown">♕ ⚜ ♕</div>
+  <div class="hero-label">Maturitní rozbor · Česká literatura</div>
+  <h1><em>Veršovaná historická komedie</em>Noc na Karlštejně</h1>
+  <div class="author">Jaroslav Vrchlický</div>
+  <div class="subtitle">1884 · Karlštejn · Lumírovci</div>
+  <div class="hero-quote">„Láska je mocnější než všechny zákony."</div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč a promluvy</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#versova">Veršová výstavba · Blankvers</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Noc na Karlštejně</strong> je <strong>veršovaná historická komedie ve třech dějstvích</strong>, napsaná v roce <strong>1884</strong>. Vrchlický ji psal <strong>na objednávku pro Národní divadlo</strong> (otevřené v roce 1881), s cílem vytvořit českou národní komedii, která by mohla stát vedle Shakespearových a Molièrových děl.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">Úvod · I. dějství</div>
+    <div class="ts-desc">Představení zákazu vstupu žen na Karlštejn, plán Alžběty</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Střed · II. dějství</div>
+    <div class="ts-desc">Proniknutí žen na hrad v přestrojení za jezdce, komické situace</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Závěr · III. dějství</div>
+    <div class="ts-desc">Odhalení přestrojení, císařovo odpuštění, zrušení zákazu</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Klasická divadelní struktura</div>
+  <p style="margin-bottom:0">Děj se odehrává <strong>během jedné noci na hradě Karlštejně</strong> — maximální koncentrace času a prostoru podle antických pravidel.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Hlavní téma</div>
+  <p style="margin-bottom:0">Vtipný příběh o tom, <strong>jak ženy pronikly na hrad Karlštejn</strong> navzdory zákazu. Láska a věrnost, <strong>lidskost historických postav</strong>, humorné zobrazení českých dějin, vztah mezi muži a ženami.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Karlštejn</strong> – symbolický hrad, místo moci i samoty</li>
+  <li><strong>Zákaz vstupu žen</strong> – absurdní premisa komedie</li>
+  <li><strong>Přestrojení</strong> – klasický divadelní motiv</li>
+  <li><strong>Korunní klenoty</strong> – důvod zákazu</li>
+  <li><strong>Císař Karel IV.</strong> – hlavní historická postava</li>
+  <li><strong>Královna Alžběta Pomořanská</strong> – ústřední ženská postava</li>
+  <li>Architekti <strong>Petr Parléř a Matěj z Arrasu</strong></li>
+  <li><strong>Rytířství, věrnost</strong>, překonávání překážek</li>
+  <li><strong>Láska, odpuštění</strong> – hlavní hodnoty díla</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Čas</h4>
+    <p><strong>14. století</strong>, konkrétně rok 1355 (vláda Karla IV.). Děj se odehrává během <strong>jediné noci</strong> — dodržení aristotelské jednoty času.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--stone)">
+    <h4 style="color:var(--stone)">Prostor</h4>
+    <p><strong>Hrad Karlštejn</strong> nedaleko Prahy. Hradní komnaty, věž s korunními klenoty, hradby — dodržení aristotelské jednoty místa.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Aristotelské jednoty</div>
+  <ul style="margin:0">
+    <li><strong>Jednota času</strong> – vše se odehraje během jedné noci</li>
+    <li><strong>Jednota místa</strong> – vše na hradě Karlštejně</li>
+    <li><strong>Jednota děje</strong> – jeden hlavní příběh (proniknutí žen na Karlštejn)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Klasická trojaktová struktura</h3>
+<div class="acts-three">
+  <div class="act-three" style="--act-color:var(--accent-3)">
+    <span class="act-num">I.</span>
+    <div class="act-label">Expozice</div>
+    <div class="act-title">Představení situace, zákazu, plánu Alžběty</div>
+  </div>
+  <div class="act-three" style="--act-color:var(--gold)">
+    <span class="act-num">II.</span>
+    <div class="act-label">Kolize</div>
+    <div class="act-title">Proniknutí žen na hrad, komické situace</div>
+  </div>
+  <div class="act-three" style="--act-color:var(--wine)">
+    <span class="act-num">III.</span>
+    <div class="act-label">Rozuzlení</div>
+    <div class="act-title">Odhalení, odpuštění, šťastný konec</div>
+  </div>
+</div>
+
+<h3>Způsob řazení a části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Chronologický postup</strong> – děj plyne lineárně během jedné noci</li>
+    <li>Rozděleno na <strong>3 dějství (akty)</strong></li>
+    <li>Každé dějství obsahuje několik <strong>výstupů (scén)</strong></li>
+    <li>Psáno v <strong>blankversu</strong> – nerýmovaný pětistopý jamb</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Drama</strong> – má děj, předvádí skutečnost, je určeno pro divadelní provedení.</p>
+</div>
+
+<h3>Literární žánr — trojí charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Veršovaná komedie</h4>
+    <p>Psáno ve verších (blankvers), má veselý charakter. Vysoký literární styl.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--stone)">
+    <h4 style="color:var(--stone)">Historická komedie</h4>
+    <p>Zasazeno do konkrétní historické doby (Karel IV., 14. století).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Společenská fraška</h4>
+    <p>Lehká zábava s komickými prvky — převleky, záměny, kvipropo.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Dílo je psáno <strong>pro divadelní provedení</strong></li>
+    <li>Má <strong>komické prvky</strong>, vtipné situace, slovní hříčky</li>
+    <li>Zobrazuje historické postavy v humorném světle</li>
+    <li>Končí <strong>šťastně</strong> (odpuštění, smíření)</li>
+    <li>Lehký, zábavný tón</li>
+    <li>Psáno ve verších (blankvers)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč a typy promluv</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">V dramatu není vypravěč!</div>
+  <p style="margin-bottom:0">Příběh je prezentován přímo skrze jednání a mluvu postav — bez zprostředkujícího vypravěče.</p>
+</div>
+
+<h3>Prostředky prezentace děje</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Repliky</h4><p>Přímé promluvy postav <strong>ve verších</strong>.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Monology</h4><p>Samostatné úvahy postavy (Karlův o práci, Alžbětin o lásce).</p></div>
+  <div class="device-card" style="border-top:2px solid var(--wine)"><h4 style="color:var(--accent-5)">Dialogy</h4><p>Rozhovory mezi postavami — nositel humoru.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--stone)"><h4 style="color:var(--stone)">Didaskálie</h4><p>Scénické poznámky pro herce a režiséra.</p></div>
+</div>
+
+<h3>Typy promluv</h3>
+<ul>
+  <li><strong>Replika</strong> – základní jednotka dramatického textu</li>
+  <li><strong>Monolog</strong> – delší promluva jedné postavy</li>
+  <li><strong>Dialog</strong> – rozhovor dvou postav</li>
+  <li><strong>Polylog</strong> – rozhovor více postav</li>
+  <li><strong>Aparté (stranou)</strong> – postava mluví tak, že ji slyší publikum, ale ostatní postavy na jevišti ne. <em>Klíčový prostředek komiky v této hře!</em></li>
+</ul>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy</h2></div>
+
+<p>V díle vystupují <strong>reálné historické postavy</strong> v humorně zlidštěném podání. Vrchlický jim dává lidský rozměr bez narušení jejich historické důstojnosti.</p>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="♛">
+  <div class="char-name">Karel IV.</div>
+  <div class="char-role">Hlavní postava · Kladná · Císař</div>
+  <ul style="margin:0">
+    <li><strong>Císař Svaté říše římské</strong>, král český</li>
+    <li>Moudrý, vzdělaný vladař</li>
+    <li>Autoritativní, ale spravedlivý</li>
+    <li>Má rád svou ženu Alžbětu</li>
+    <li>Vydal zákaz vstupu žen na Karlštejn (aby mohl v klidu pracovat)</li>
+    <li>Nakonec <strong>odpustí a projeví humor</strong></li>
+    <li><strong>Lidský, ne idealizovaný</strong> vladař</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--wine)" data-symbol="♕">
+  <div class="char-name">Alžběta Pomořanská</div>
+  <div class="char-role">Hlavní postava · Kladná · Královna</div>
+  <ul style="margin:0">
+    <li><strong>Čtvrtá manželka Karla IV.</strong> (skutečně čtvrtá, ne třetí)</li>
+    <li>Chytrá, odvážná, vtipná</li>
+    <li>Stýská se jí po manželovi</li>
+    <li>Vymyslí plán, jak proniknout na Karlštejn</li>
+    <li><strong>Převleče se za jezdce</strong></li>
+    <li>Symbol aktivní, inteligentní ženy</li>
+    <li>Proslulá svou fyzickou silou — dokázala ohýbat podkovy!</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--stone)" data-symbol="⚒">
+  <div class="char-name">Petr Parléř</div>
+  <div class="char-role">Hlavní postava · Kladná · Architekt</div>
+  <ul style="margin:0">
+    <li><strong>Slavný architekt a stavitel</strong></li>
+    <li>Mladý, zamilovaný do Anny</li>
+    <li>Pomáhá ženám proniknout na hrad</li>
+    <li>Romantický, idealistický</li>
+    <li>Historická postava – <strong>skutečně stavěl katedrálu sv. Víta i Karlštejn</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="△">
+  <div class="char-name">Matěj z Arrasu</div>
+  <div class="char-role">Vedlejší · Kladná · Starší architekt</div>
+  <ul style="margin:0">
+    <li><strong>Starší architekt, předchůdce Parléře</strong></li>
+    <li>Moudrý, zkušený</li>
+    <li>Sympatizuje s ženami</li>
+    <li>Historická postava – první architekt katedrály sv. Víta</li>
+    <li>V hře funguje jako mentor mladého Parléře</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="❀">
+  <div class="char-name">Anna</div>
+  <div class="char-role">Vedlejší · Kladná · Mladá milenka</div>
+  <ul style="margin:0">
+    <li>Mladá šlechtična, milenka Petra Parléře</li>
+    <li>Doprovází Alžbětu na Karlštejn</li>
+    <li>Odvážná, vtipná</li>
+    <li>Paralelní milostná zápletka k hlavnímu páru</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-symbol="§">
+  <div class="char-name">Pešek z Dubé</div>
+  <div class="char-role">Vedlejší · Komická · Purkrabí</div>
+  <ul style="margin:0">
+    <li><strong>Purkrabí (správce)</strong> Karlštejna</li>
+    <li>Brání hrad proti ženám</li>
+    <li>Přísný, ale nakonec pochopí</li>
+    <li>Komická postava – svědomitý byrokrat</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-8)" data-symbol="♦">
+  <div class="char-name">Štěpán</div>
+  <div class="char-role">Vedlejší · Komická · Služebník</div>
+  <ul style="margin:0">
+    <li>Služebník</li>
+    <li>Poskytuje <strong>komickou úlevu</strong></li>
+    <li>Prostý, ale věrný</li>
+    <li>Lidový typ v kontrastu se šlechtou</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VERSOVA VYSTAVBA -->
+<section class="section" id="versova">
+<div class="section-header"><span class="section-num">VIII</span><h2>Veršová výstavba · Blankvers</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Forma</div>
+  <p style="margin-bottom:0"><strong>Blankvers</strong> — nerýmovaný pětistopý jamb. Verš Shakespeara a klasického dramatu.</p>
+</div>
+
+<h3>Ukázka metra</h3>
+<div class="blankvers-demo">
+  <div class="blankvers-label">Pětistopý jamb · 10 slabik</div>
+  <div class="blankvers-meter">u − u − u − u − u −</div>
+  <div class="blankvers-line">„Co plat-no vzdy-chat, slzet a na-ří-kat?"</div>
+  <div class="blankvers-label">Nedůrazná ( u ) — Důrazná ( − )</div>
+</div>
+
+<h3>Charakteristika blankversu</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Pětistopý jamb</strong> – verš má 10 slabik, důraz na sudých slabikách</li>
+    <li><strong>Nerýmovaný</strong> – verše se nerýmují</li>
+    <li>Přirozený rytmus, připomíná běžnou řeč</li>
+    <li><strong>Ušlechtilý, literární tón</strong></li>
+    <li>Typický pro Shakespeara a klasická dramata</li>
+  </ul>
+</div>
+
+<h3>Funkce blankversu</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>Dodává dílu <strong>vznešenost</strong></li>
+    <li>Odlišuje od běžné mluvy</li>
+    <li><strong>Historická atmosféra</strong></li>
+    <li>Rytmus usnadňuje zapamatování</li>
+    <li>Literární tradice — propojení s evropským dramatem</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Vrchlický a blankvers</div>
+  <p style="margin-bottom:0">Vrchlický byl v češtině <strong>mistrem blankversu</strong>. Noc na Karlštejně je důkazem, že veršované drama může být zábavné a populární, ne jen vznešené.</p>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">IX</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>hrad, noc, láska, císař</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>vladař, komnata, srdce</em></td></tr>
+  <tr><td><strong>Poetismy</strong></td><td><em>luna, zora, lůna</em></td></tr>
+</table>
+
+<h3>Archaismy</h3>
+<div class="card stone">
+  <div class="card-title" style="color:var(--stone)">Pro historickou atmosféru 14. století</div>
+  <ul style="margin:0">
+    <li><em>„Což"</em> (co), <em>„jsouc"</em> (jsem), <em>„neprav"</em> (nelži)</li>
+    <li><em>„Vy"</em> jako zdvořilé oslovení</li>
+    <li>Historické termíny: <em>purkrabí</em> (správce hradu), <em>korunní klenoty</em>, <em>císařský titul</em></li>
+  </ul>
+</div>
+
+<h3>Citově zabarvená slova a slovní hříčky</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Zdrobněliny</h4>
+    <p><em>„zlatíčko", „srdéčko"</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Oslovení</h4>
+    <p><em>„má paní", „můj pane"</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--wine)">
+    <h4 style="color:var(--accent-5)">Slovní hříčky</h4>
+    <p>Vtipné dvojznačnosti, hry se slovy, komické nadsázky.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Vznešený styl</h4>
+    <p>Blankvers vytváří ušlechtilý tón, poetické obrazy, metafory.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Archaismy</strong> navozují historickou atmosféru 14. století</li>
+    <li><strong>Blankvers</strong> dodává dílu literární hodnotu</li>
+    <li><strong>Slovní hříčky</strong> vytvářejí komický efekt</li>
+    <li><strong>Poetický jazyk</strong> odlišuje dílo od běžné prózy</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">X</span><h2>Tropy a figury</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Karlštejn = klid</div>
+    <div class="trope-note">Hrad jako místo klidu a práce. Žena = zdroj rozptýlení (v Karlově pohledu).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Jitřní hvězda</div>
+    <div class="trope-note">Alžběta je „krásná jako jitřní hvězda" — poetický obraz ženské krásy.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Přehánění</div>
+    <div class="trope-note">Přehánění při popisu císařovy moudrosti nebo ženské lsti.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Situační ironie</div>
+    <div class="trope-note">Císař neví, že mluví se svou ženou v přestrojení — <strong>dramatická ironie</strong>, kterou divák vidí.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Apostrofa</div>
+    <div class="trope-example">„Ó měsíci!"</div>
+    <div class="trope-note">Oslovení měsíce, noci, lásky — poetická figura.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Muži vs. ženy</div>
+    <div class="trope-note">Protiklady: muži vs. ženy, práce vs. odpočinek, zákaz vs. touha po lásce.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Tichá noc</div>
+    <div class="trope-note">Noc má lidské vlastnosti — „tajemná", „naslouchá", „skrývá".</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">Slavný císař</div>
+    <div class="trope-note">Básnický přívlastek — „slavný císař", „krásná královna".</div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy <strong>dodávají dílu poetičnost</strong>, vytvářejí humorné situace (zejména dramatická ironie přestrojení), a zvýrazňují kontrast mezi muži a ženami.</p>
+</div>
+</section>
+
+<!-- 11 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XI</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Jaroslav Vrchlický (1853–1912)</div>
+  <p>Vlastním jménem <strong>Emil Frída</strong>. Básník, dramatik, překladatel, profesor Karlovy univerzity. Jeden z největších českých literátů 19. století. <strong>Neuvěřitelně plodný autor</strong> – napsal přes 80 svazků poezie, desítky dramat, překládal z 14 jazyků. Přeložil Dantovu <em>Božskou komedii</em>, Goethova <em>Fausta</em>, Hugovy <em>Bídníky</em>, Baudelairovy <em>Květy zla</em>. Do češtiny zavedl světovou poezii – z jeho knihovny vycházeli všichni pozdější modernisté. Jeho osobní život byl tragický – manželství s Ludmilou Podlipskou (dcerou Sofie Podlipské, neteř Karolíny Světlé) bylo nešťastné. V roce 1908 utrpěl <strong>mozkovou mrtvici</strong> a jako literát zmlkl. Zemřel v Domažlicích.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Vrchlického nejslavnější drama</strong></li>
+  <li>Napsáno v roce <strong>1884</strong></li>
+  <li>Vrchol autorovy dramatické tvorby</li>
+  <li><strong>Nejhranější česká veršovaná hra</strong></li>
+</ul>
+
+<h3>Další Vrchlického díla</h3>
+
+<h4>Dramata</h4>
+<ul>
+  <li><strong>Hippodamie</strong> – dramatická trilogie s hudbou Zdeňka Fibicha (melodram)</li>
+  <li><strong>Soud lásky</strong> – milostné drama</li>
+  <li><strong>Noc na Karlštejně</strong> – nejznámější</li>
+</ul>
+
+<h4>Poezie</h4>
+<ul>
+  <li><strong>Zlomky epopeje</strong> – filozofická lyrika</li>
+  <li><strong>Okna v bouři</strong> – sbírka básní</li>
+  <li>Mnoho dalších sbírek — Vrchlický byl velmi plodný (<strong>přes 80 svazků</strong>!)</li>
+</ul>
+
+<h4>Překlady</h4>
+<div class="card stone">
+  <ul style="margin:0">
+    <li>Překládal z <strong>14 jazyků</strong></li>
+    <li><strong>Dante</strong> – Božská komedie</li>
+    <li><strong>Goethe</strong> – Faust</li>
+    <li><strong>Hugo</strong> – Bídníci</li>
+    <li><strong>Baudelaire</strong> – Květy zla</li>
+    <li>Zavedl do češtiny <strong>světovou poezii</strong></li>
+  </ul>
+</div>
+
+<h3>Vrchlického styl</h3>
+<ul>
+  <li><strong>Kosmopolitní vzdělanost</strong></li>
+  <li>Optimismus, víra v pokrok</li>
+  <li><strong>Virtuózní ovládání formy</strong></li>
+  <li>Blankvers jako typický prostředek</li>
+  <li>Historická témata</li>
+  <li>Filozofické myšlenky</li>
+</ul>
+</section>
+
+<!-- 12 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Konec 19. století</strong> (1853–1912 Vrchlického život)</li>
+    <li>Období pozdního národního obrození a rané moderny</li>
+    <li><strong>Rozkvět českého divadla</strong></li>
+    <li>Doba <strong>Národního divadla</strong> (otevřeno 1881, obnoveno 1883 po požáru)</li>
+  </ul>
+</div>
+
+<h3>Umělecký sloh: Lumírovci</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Lumírovci — kosmopolitní proud české literatury</div>
+  <p style="margin-bottom:10px">Literární skupina soustředěná kolem časopisu <em>Lumír</em>. Vrchlický byl její hlavní osobností.</p>
+</div>
+
+<h3>Základní rysy lumírovců</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Kosmopolitismus</h4><p>Zájem o světovou kulturu, otevřenost Evropě.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Umění pro umění</h4><p>Ne nutně s národním posláním.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--wine)"><h4 style="color:var(--accent-5)">Forma</h4><p>Důraz na formu, virtuozitu, literární řemeslo.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Optimismus</h4><p>Víra v pokrok lidstva.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--stone)"><h4 style="color:var(--stone)">Kultivovanost</h4><p>Kultivovaný jazyk, vysoký styl.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--night)"><h4 style="color:var(--night)">Inspirace</h4><p>Inspirace světovou literaturou.</p></div>
+</div>
+
+<h3>Lumírovci vs. Ruchovci</h3>
+<table class="compare-table">
+  <tr><th>Lumírovci</th><th>Ruchovci</th></tr>
+  <tr><td><strong>Kosmopolitní</strong> orientace</td><td><strong>Vlastenecká</strong> orientace</td></tr>
+  <tr><td>Důraz na <strong>formu</strong></td><td>Důraz na <strong>obsah</strong></td></tr>
+  <tr><td>Vrchlický, Zeyer, Sládek</td><td>Sv. Čech, Jirásek</td></tr>
+  <tr><td>Otevřenost světu</td><td>České historické téma</td></tr>
+</table>
+
+<h3>Další zástupci lumírovců</h3>
+<ul>
+  <li><strong>Svatopluk Čech</strong> – <em>Nový epochální výlet pana Broučka</em> (formálně blíž ruchovcům, ale překrývají se)</li>
+  <li><strong>Julius Zeyer</strong> – <em>Radúz a Mahulena</em></li>
+  <li><strong>Josef Václav Sládek</strong> – básník, překladatel Shakespeara</li>
+</ul>
+
+<h3>Světová literatura přelomu století</h3>
+<table class="compare-table">
+  <tr><th>Země</th><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>Anglie</strong></td><td>Oscar Wilde</td><td><em>Jak je důležité míti Filipa</em></td></tr>
+  <tr><td><strong>Norsko</strong></td><td>Henrik Ibsen</td><td><em>Nora</em></td></tr>
+  <tr><td><strong>Rusko</strong></td><td>A. P. Čechov</td><td><em>Višňový sad</em></td></tr>
+  <tr><td><strong>Francie</strong></td><td>Edmond Rostand</td><td><em>Cyrano z Bergeracu</em></td></tr>
+</table>
+
+<div class="card night">
+  <div class="card-title" style="color:var(--night)">Cyrano a Karlštejn</div>
+  <p style="margin-bottom:0">Noc na Karlštejně má blízko k <strong>Rostandově Cyranovi z Bergeracu</strong> (1897) — obě díla jsou veršované historické hry s prvky komedie, přestrojení a romantické lásky. Vrchlický byl v tomto tedy <strong>o 13 let napřed</strong> před Rostandem.</p>
+</div>
+</section>
+
+<div class="gothic-divider">⚜ ♕ ⚜</div>
+
+<!-- 13 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIII</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene">
+  <span class="scene-label">01 · I. dějství · Expozice</span>
+  <div class="scene-title">Zákaz vstupu žen</div>
+  <div class="replica">
+    <div class="speaker">Pešek z Dubé</div>
+    <div class="line">Pamatujte! Žádná žena nesmí vstoupit
+na Karlštejn! Tak rozhodl císař Karel.
+Kdo poruší zákaz, bude přísně potrestán!</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Purkrabí Pešek připomíná zákaz vstupu žen na Karlštejn.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Expozice — představení základní situace</li>
+      <li>Vytvoření <strong>komické premisy</strong> — absurdní zákaz</li>
+      <li>Předznamenání konfliktu</li>
+      <li>Historická zajímavost (zákaz skutečně existoval)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--wine)">
+  <span class="scene-label" style="background:rgba(107,31,58,.1);border-color:var(--wine);color:var(--wine)">★ 02 · I. dějství · ALŽBĚTIN PLÁN ★</span>
+  <div class="scene-title">Alžbětin plán</div>
+  <div class="replica">
+    <div class="speaker">Alžběta</div>
+    <div class="line">Co platno vzdychat, slzet a naříkat?
+Chci jednat! Žena jsouc, mám ženský rozum.
+Když nesmím jít tam jako královna,
+půjdu tam přestrojena jako muž!</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Alžběta se rozhodne proniknout na Karlštejn v přestrojení.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Charakterizace Alžběty — <strong>aktivní, odvážná žena</strong></li>
+      <li><em>„Ženský rozum"</em> — inteligence, vynalézavost</li>
+      <li>Základní dějová zápletka</li>
+      <li><strong>Feministický prvek</strong> — žena si nenechá zakázat</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · I. dějství · Karlův monolog</span>
+  <div class="scene-title">Karlův monolog o práci</div>
+  <div class="replica">
+    <div class="speaker">Karel</div>
+    <div class="line">Zde v tichu pracuji, zde myslím, tvořím,
+zde není nikdo, kdo by rušil mé dílo.
+Chci pro svou zemi vybudovat říši,
+jež bude věčná jako tyto kameny.</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Karel vysvětluje, proč potřebuje klid na Karlštejně.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Charakterizace Karla — pracovitý, zodpovědný vladař</li>
+      <li>Jeho motivace je <strong>čistá</strong> (ne zlá vůle vůči ženám)</li>
+      <li>Historický kontext — Karel skutečně budoval říši</li>
+      <li>Lidský rozměr — i císař potřebuje klid k práci</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · I. dějství · Láska</span>
+  <div class="scene-title">Petr Parléř a láska</div>
+  <div class="replica">
+    <div class="speaker">Petr Parléř</div>
+    <div class="line">Miluji! A co je proti lásce
+veškerá moudrost světa? Jsem architekt,
+stavím chrámy kamenné — a v srdci mám
+chrám lásky, který nikdy nespadne!</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Petr Parléř vyznává lásku Anně.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Romantická zápletka</li>
+      <li>Kontrast — <strong>stavitel kamenných chrámů vs. chrám v srdci</strong></li>
+      <li>Mladý idealismus</li>
+      <li>Poetické vyjádření lásky</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · II. dějství · Průnik</span>
+  <div class="scene-title">Proniknutí na hrad</div>
+  <div class="replica">
+    <div class="speaker">Alžběta <span class="stage">(přestrojená)</span></div>
+    <div class="line">Jsem jezdec z Čech, přijel jsem k císaři
+s důležitou zprávou!</div>
+  </div>
+  <div class="replica">
+    <div class="speaker">Pešek</div>
+    <div class="line">Vstupte, pane! Císař vás přijme.</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Alžběta v převleku za muže vstupuje na Karlštejn.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Komická situace — žena přestrojená za muže</li>
+      <li>Napětí — bude odhalena?</li>
+      <li>Ironie — <strong>purkrabí nepozná královnu</strong></li>
+      <li>Převlek jako klasický divadelní motiv (Shakespeare)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · II. dějství · Dialog</span>
+  <div class="scene-title">Dialog mezi Karlem a „neznámým jezdcem"</div>
+  <div class="replica">
+    <div class="speaker">Karel</div>
+    <div class="line">Co přinášíte za zprávy?</div>
+  </div>
+  <div class="replica">
+    <div class="speaker">Alžběta <span class="stage">(stranou)</span></div>
+    <div class="line">Ach, jak těžko mluvit s vlastním manželem
+a předstírat, že jsem někdo jiný!</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Karel mluví s Alžbětou, aniž by ji poznal.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Dramatická ironie</strong> — divák ví víc než Karel</li>
+      <li>Komická situace</li>
+      <li><em>Aparté (stranou)</em> odhaluje Alžbětiny myšlenky</li>
+      <li>Napětí — jak dlouho vydrží převlek?</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(212,175,55,.15);border-color:var(--gold)">★ 07 · III. dějství · ODHALENÍ ★</span>
+  <div class="scene-title">Odhalení pravdy</div>
+  <div class="replica">
+    <div class="speaker">Alžběta <span class="stage">(sundává klobouk)</span></div>
+    <div class="line">Nuže, pane císaři,
+poznáváš svou ženu?</div>
+  </div>
+  <div class="replica">
+    <div class="speaker">Karel <span class="stage">(užasle)</span></div>
+    <div class="line">Alžběto! Ty zde? Jak jsi se odvážila?</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Alžběta se odhalí před Karlem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Peripetie (obrat)</strong> — odhalení tajemství</li>
+      <li><strong>Komický vrchol</strong></li>
+      <li>Karlův šok</li>
+      <li>Napětí — jak zareaguje?</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · III. dějství · Konflikt</span>
+  <div class="scene-title">Karlův hněv a pochopení</div>
+  <div class="replica">
+    <div class="speaker">Karel</div>
+    <div class="line">Porušila jsi zákaz! To je vzpoura!</div>
+  </div>
+  <div class="replica">
+    <div class="speaker">Alžběta</div>
+    <div class="line">Není vzpoura milovat svého muže
+a toužit po jeho blízkosti.</div>
+  </div>
+  <div class="replica">
+    <div class="speaker">Karel <span class="stage">(po přemýšlení)</span></div>
+    <div class="line">Máš pravdu. Láska je silnější než zákaz.</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Karel nejprve se hněvá, pak pochopí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Vnitřní konflikt</strong> Karla — zákon vs. láska</li>
+      <li>Alžběta obhajuje svou lásku</li>
+      <li>Karlova lidskost — dokáže připustit chybu</li>
+      <li>Emocionální vrchol</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · III. dějství · Katarze</span>
+  <div class="scene-title">Odpuštění</div>
+  <div class="replica">
+    <div class="speaker">Karel</div>
+    <div class="line">Odpouštím ti. Ne, odpouštím sobě,
+že jsem zapomněl, co je důležitější
+než práce a povinnost — láska a štěstí!</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Karel odpouští Alžbětě a uvědomí si svou chybu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Katarze</strong> — očista, poučení</li>
+      <li>Karel se mění — pochopí, že láska je důležitější</li>
+      <li>Morální ponaučení</li>
+      <li><strong>Humanizace historické postavy</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">10 · III. dějství · Zrušení zákazu</span>
+  <div class="scene-title">Zrušení zákazu</div>
+  <div class="replica">
+    <div class="speaker">Karel</div>
+    <div class="line">Zákaz je zrušen! Ženy smějí na Karlštejn!
+Neboť co je hrad bez lásky a smíchu?</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Karel zruší svůj zákaz vstupu žen.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Šťastný konec</strong></li>
+      <li>Zvítězila láska nad přísností</li>
+      <li>Symbolické — otevření se životu</li>
+      <li>Společenské poselství — <strong>ženy patří do společnosti</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">11 · III. dějství · Mladí</span>
+  <div class="scene-title">Petr a Anna</div>
+  <div class="replica">
+    <div class="speaker">Petr</div>
+    <div class="line">A my? Smíme se vzít?</div>
+  </div>
+  <div class="replica">
+    <div class="speaker">Karel</div>
+    <div class="line">Smíte! Ať láska vítězí!</div>
+  </div>
+  <div class="scene-context"><strong>Kontext:</strong> Mladí milenci dostávají požehnání.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Vedlejší zápletka se šťastně rozřeší</li>
+      <li>Paralela hlavního příběhu</li>
+      <li><strong>Generační smír</strong> — mladí dostanou šanci</li>
+      <li>Dvojité šťastné zakončení</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--crown)">
+  <span class="scene-label" style="background:rgba(240,200,80,.1);border-color:var(--crown);color:var(--crown)">★ 12 · III. dějství · ZÁVĚREČNÁ PÍSEŇ ★</span>
+  <div class="scene-title">Závěrečná píseň</div>
+  <div class="scene-text">Láska je mocnější než všechny zákony,
+láska je světlem v temnotách,
+láska spojuje srdce navěky!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Společná píseň všech postav na závěr.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Oslava lásky</strong> jako nejvyšší hodnoty</li>
+      <li>Sjednocení všech postav</li>
+      <li>Divadelní konvence — závěrečná píseň</li>
+      <li><strong>Poselství díla v kondenzované formě</strong></li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="gothic-divider">⚜ ♕ ⚜</div>
+
+<!-- 14 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XIV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Láska a lidskost jsou důležitější než přísnost a zákazy.</strong> I velcí vládci jsou lidé s city a mohou se mýlit. Ženy mají právo být rovnoprávnými partnery mužů. Humor a laskavost vedou k lepším vztahům než přísnost.</p>
+</div>
+
+<h3>Historické pozadí</h3>
+<details>
+  <summary>Skutečně existoval zákaz vstupu žen na Karlštejn?</summary>
+  <p><strong>Ano</strong> — Karel IV. skutečně vydal zákaz vstupu žen na Karlštejn, a to z důvodu <strong>ochrany korunních klenotů</strong>, které byly na hradě uloženy. Karlštejn byl jeho <strong>klenotnicí a místem rozjímání</strong>, ne běžným obytným hradem. Alžběta tam však skutečně občas pobývala — Vrchlický vzal historický fakt a vytvořil z něj zábavný příběh.</p>
+</details>
+<details>
+  <summary>Karel IV. (1316–1378)</summary>
+  <p>Významný český a římský král, jeden z největších českých panovníků. Za jeho vlády se Praha stala <strong>hlavním městem Svaté říše římské</strong>. Založil Karlovu univerzitu (1348), Nové Město pražské, dal postavit Karlštejn (1348–1365), Karlův most, katedrálu sv. Víta. Byl mnohojazyčný (čeština, němčina, latina, francouzština, italština).</p>
+</details>
+<details>
+  <summary>Alžběta Pomořanská (1347–1393)</summary>
+  <p><strong>Čtvrtá manželka Karla IV.</strong> (ne třetí, jak někdy uváděno). Byla <strong>proslulá svou fyzickou silou</strong> – podle kronikáře Beneše Krabice z Weitmile dokázala holýma rukama ohýbat podkovy a trhat brnění. Matka českého krále Zikmunda Lucemburského. Pocházela z Pomořan (dnešní Polsko/Německo).</p>
+</details>
+<details>
+  <summary>Petr Parléř (1332–1399) a Matěj z Arrasu (†1352)</summary>
+  <p>Oba byli <strong>skuteční architekti</strong>. Matěj z Arrasu (Francouz) začal stavět katedrálu sv. Víta v roce 1344. Po jeho smrti v r. 1352 práci převzal <strong>Petr Parléř</strong> (Němec z Gmündu), který kromě katedrály postavil také Karlův most, Staroměstskou mosteckou věž a spolupracoval na Karlštejně. V hře se setkávají — chronologicky je to drobný divadelní posun, protože Matěj byl o 30 let starší.</p>
+</details>
+
+<h3>Blankvers v češtině</h3>
+<div class="card night">
+  <ul style="margin:0">
+    <li>Nerýmovaný pětistopý jamb</li>
+    <li>Typický pro vysoké drama (<strong>Shakespeare</strong>)</li>
+    <li>V češtině <strong>zdokonalen Vrchlickým</strong></li>
+    <li>Dodává dílu vznešenost a literární kvalitu</li>
+    <li>Přirozený rytmus blízký mluvené řeči</li>
+  </ul>
+</div>
+
+<h3>Symbol díla</h3>
+<div class="card stone">
+  <div class="card-title" style="color:var(--stone)">Karlštejn</div>
+  <p style="margin-bottom:0"><strong>Karlštejn</strong> = místo oddělenosti, které musí být otevřeno lásce. <strong>Zákaz vstupu žen</strong> = symbol všech nepřirozených zákazů, které omezují lásku a svobodu.</p>
+</div>
+
+<h3>Divadelní úspěch</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Premiéra</h4>
+    <p>V <strong>Národním divadle 1884</strong>, obrovský úspěch u publika.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--wine)">
+    <h4 style="color:var(--accent-5)">Hraní dodnes</h4>
+    <p>Jedna z <strong>nejhranějších českých her</strong> všech dob.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--stone)">
+    <h4 style="color:var(--stone)">Film 1973</h4>
+    <p>Slavná filmová adaptace s <strong>Vlastimilem Brodským</strong> jako Karel IV.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Opereta a muzikál</h4>
+    <p>Více adaptací — televizní verze, opereta, muzikál.</p>
+  </div>
+</div>
+
+<details>
+  <summary>Slavný film z roku 1973</summary>
+  <p>Režii ujal Zdeněk Podskalský, hlavní role: <strong>Vlastimil Brodský</strong> (Karel IV.), <strong>Jana Brejchová</strong> (Alžběta), <strong>Miloš Kopecký</strong> (Pešek z Dubé), Waldemar Matuška (Petr Parléř). Jde o <strong>kultovní film</strong> — řada citátů vstoupila do obecného povědomí. Píseň <em>„Lásko má, já stůňu"</em> od Karla Svobody se stala šlágrem.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <p style="margin-bottom:0">Dílo je <strong>nadčasové</strong> — mluví o rovnosti žen a mužů, o důležitosti lásky, o nebezpečí přílišné přísnosti. Téma <strong>konfliktu mezi povinností a osobním štěstím</strong> je stále aktuální. Divákům přináší humor, poezii i morální poselství v jednom.</p>
+</div>
+
+<h3>Literární význam</h3>
+<ul>
+  <li>Ukázka <strong>mistrovství blankversu</strong> v češtině</li>
+  <li>Spojení <strong>historického tématu s komedií</strong></li>
+  <li>Důkaz, že veršované drama může být populární</li>
+  <li>Inspirace pro další autory</li>
+  <li>Vytvoření <strong>českého divadelního kánonu</strong></li>
+  <li><strong>Humanizace českých dějin</strong> — vládce jako člověk</li>
+</ul>
+
+<div class="quote-block" style="margin-top:40px;text-align:center">
+Láska je mocnější než všechny zákony,<br>
+láska je světlem v temnotách,<br>
+láska spojuje srdce navěky!
+<span class="quote-source">Závěrečná píseň · III. dějství</span>
+</div>
+</section>
+
+<div class="gothic-divider" style="margin-top:50px">⚜ ♕ ⚜</div>
+
+</div>
+</body>
+</html>

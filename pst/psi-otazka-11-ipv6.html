@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 11: Protokol IPv6</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #0f172e 50%, #1a0f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(96,165,250,0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(167,139,250,0.07) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(28px, 5vw, 44px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+
+  /* Compression demo */
+  .compress-demo { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 2.2; margin: 14px 0; overflow-x: auto; }
+  .compress-demo .cd-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .compress-demo .cd-full { color: var(--text-muted); }
+  .compress-demo .cd-step { color: var(--accent-4); }
+  .compress-demo .cd-final { color: var(--accent-3); font-weight: 600; }
+  .compress-demo .cd-hi { color: var(--accent-5); text-decoration: line-through; opacity: 0.6; }
+
+  /* NDP message cards */
+  .ndp-card { position: relative; overflow: hidden; border-radius: 10px; padding: 18px 22px; margin: 10px 0; background: var(--bg-card); border: 1px solid var(--border); }
+  .ndp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+  .ndp-rs::before { background: var(--accent-1); }
+  .ndp-ra::before { background: var(--accent-3); }
+  .ndp-ns::before { background: var(--accent-4); }
+  .ndp-na::before { background: var(--accent-6); }
+  .ndp-rd::before { background: var(--accent-2); }
+  .ndp-card .ndp-type { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; font-weight: 600; margin-bottom: 6px; }
+
+  /* Flag visual */
+  .flag-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+  .flag-item { text-align: center; padding: 14px 10px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; }
+  .flag-item .flag-letter { font-size: 28px; font-weight: 700; display: block; }
+  .flag-item .flag-name { font-size: 10px; margin-top: 4px; opacity: 0.8; }
+  .flag-item .flag-desc { font-size: 11px; margin-top: 6px; font-family: 'DM Sans', sans-serif; }
+
+  /* Combo table */
+  .combo-row { display: grid; grid-template-columns: 100px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); font-size: 13px; align-items: center; }
+  .combo-row:last-child { border-bottom: none; }
+  .combo-flags { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .flag-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 11</div>
+  <h1>Protokol IPv6</h1>
+  <p>Specifikace • Migrace • Adresy • Vysílání • NDP • DHCPv6 • Příznaky A/O/M</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#spec">Specifikace a vlastnosti IPv6</a></li>
+    <li><a href="#vs-ipv4">Srovnání IPv6 vs IPv4</a></li>
+    <li><a href="#migration">Migrace (Dual-Stack, Tunel, NAT64)</a></li>
+    <li><a href="#format">Formát adresy a komprimace nul</a></li>
+    <li><a href="#prefixes">Skupiny adres a globální prefixy</a></li>
+    <li><a href="#cast-types">Druhy vysílání (Unicast, Multicast, Anycast)</a></li>
+    <li><a href="#address-types">Druhy IPv6 adres v detailu</a></li>
+    <li><a href="#icmpv6">ICMPv6</a></li>
+    <li><a href="#ndp">NDP – Neighbor Discovery Protocol</a></li>
+    <li><a href="#dhcpv6">DHCPv6 a příznakové bity A, O, M</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 SPEC -->
+<section class="section" id="spec">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Specifikace a vlastnosti IPv6</h2>
+  </div>
+
+  <p><strong>IPv6</strong> = Internet Protocol version 6. Náhrada za IPv4 (vyčerpáno 2011). Standard: RFC 8200.</p>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Proč IPv6?</div>
+    <p><strong>IPv4:</strong> 4.3 miliardy adres (2³²) – nestačí! NAT řeší dočasně, ale komplikuje end-to-end komunikaci.</p>
+    <p style="margin-bottom:0"><strong>IPv6:</strong> 2¹²⁸ = <strong>340 undecillion</strong> adres. Každé zařízení na planetě může mít unikátní veřejnou IP.</p>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Základní vlastnosti</div>
+    <ul>
+      <li><strong>128 bitů</strong> adresní prostor (8 hextetů, hex zápis)</li>
+      <li><strong>Header 40 B fixní</strong> (vs IPv4 20–60 B proměnná) → jednodušší, rychlejší forwarding</li>
+      <li><strong>No fragmentation</strong> routerem (pouze source, Path MTU Discovery povinné)</li>
+      <li><strong>No broadcast</strong> – nahrazeno multicastem</li>
+      <li><strong>No checksum</strong> v IP headeru (redundantní – L2 + L4 mají checksums)</li>
+      <li><strong>SLAAC</strong> – autoconfiguration bez DHCP serveru</li>
+      <li><strong>IPsec povinné</strong> (v IPv4 volitelné)</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>IPv6 Header (40 B)</summary>
+    <ul>
+      <li><strong>Version</strong> (4 b) = 6</li>
+      <li><strong>Traffic Class</strong> (8 b) – QoS</li>
+      <li><strong>Flow Label</strong> (20 b) – identifikace flow pro QoS</li>
+      <li><strong>Payload Length</strong> (16 b) – délka payloadu (bez headeru)</li>
+      <li><strong>Next Header</strong> (8 b) – typ dalšího headeru (TCP=6, UDP=17, ICMPv6=58)</li>
+      <li><strong>Hop Limit</strong> (8 b) – ekvivalent TTL (decremented každým routerem)</li>
+      <li><strong>Source / Destination Address</strong> (128 + 128 b)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Extension Headers: volitelné, chainované pomocí Next Header field (routing, fragmentation, security).</p>
+  </details>
+</section>
+
+<!-- 02 VS IPv4 -->
+<section class="section" id="vs-ipv4">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Srovnání IPv6 vs IPv4</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>IPv4</th><th>IPv6</th></tr>
+    <tr><td><strong>Adresní prostor</strong></td><td>32 b (4.3 mld)</td><td><strong>128 b (340 undecillion)</strong></td></tr>
+    <tr><td><strong>Zápis</strong></td><td>Decimal (192.168.1.1)</td><td>Hex (2001:db8::1)</td></tr>
+    <tr><td><strong>Header</strong></td><td>20–60 B proměnná</td><td><strong>40 B fixní</strong></td></tr>
+    <tr><td><strong>Fragmentace</strong></td><td>Router fragmentuje</td><td><strong>Pouze source</strong> (PMTUD)</td></tr>
+    <tr><td><strong>Broadcast</strong></td><td>ANO</td><td><strong>NE</strong> (multicast místo toho)</td></tr>
+    <tr><td><strong>Checksum</strong></td><td>ANO</td><td><strong>NE</strong> (odstraněno)</td></tr>
+    <tr><td><strong>ARP → ?</strong></td><td>ARP</td><td><strong>NDP</strong> (Neighbor Discovery)</td></tr>
+    <tr><td><strong>Konfigurace</strong></td><td>Manuální / DHCP</td><td><strong>SLAAC</strong> / DHCPv6</td></tr>
+    <tr><td><strong>NAT</strong></td><td>Běžně</td><td><strong>Není potřeba</strong></td></tr>
+    <tr><td><strong>IPsec</strong></td><td>Volitelné</td><td><strong>Povinné</strong></td></tr>
+  </table>
+</section>
+
+<!-- 03 MIGRATION -->
+<section class="section" id="migration">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Migrace (Dual-Stack, Tunel, NAT64)</h2>
+  </div>
+
+  <p>IPv6 <strong>není backward compatible</strong> s IPv4 → potřeba migračních technik.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">1. Dual-Stack</h4>
+      <p>Zařízení má <strong>IPv4 i IPv6 současně</strong>. Happy Eyeballs: IPv6 first, fallback IPv4. <strong>Nejběžnější</strong> (Google, Facebook, ISP). Nevýhoda: dvojí konfigurace.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">2. Tunelování</h4>
+      <p>IPv6 paket <strong>enkapsulován do IPv4</strong> (protocol=41) → přenesen přes IPv4 síť → dekapsulován. Manuální tunely (site-to-site). 6to4/Teredo = <strong>deprecated</strong>. Dočasné řešení.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">3. NAT64 + DNS64</h4>
+      <p>IPv6-only síť ↔ IPv4-only server. DNS64 syntetizuje AAAA z A recordu (prefix <code>64:ff9b::</code>). NAT64 gateway překládá IPv6↔IPv4. Použití: <strong>mobile networks</strong> (LTE/5G).</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>NAT64 – jak to funguje krok za krokem</summary>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">IPv6 klient chce přistoupit na IPv4 server (93.184.216.34)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">DNS64 syntetizuje AAAA record</div><div class="step-desc">64:ff9b:: + 93.184.216.34 → 64:ff9b::5db8:d822</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Klient pošle IPv6 paket na 64:ff9b::5db8:d822</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">NAT64 gateway přeloží IPv6 → IPv4 a přepošle</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Server odpoví IPv4 → NAT64 přeloží zpět → klient přijme IPv6</div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 04 FORMAT -->
+<section class="section" id="format">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Formát adresy a komprimace nul</h2>
+  </div>
+
+  <p><strong>128 bitů</strong> = 8 skupin po 16 bitech (hextetů), hexadecimální, odděleno dvojtečkami. Prefix notation: CIDR (např. <code>/64</code>).</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Dvě pravidla komprimace</div>
+    <p><strong>Pravidlo 1:</strong> Vedoucí nuly v hextetu můžeš vynechat → <code>0db8</code> → <code>db8</code>, <code>0042</code> → <code>42</code>, <code>0000</code> → <code>0</code></p>
+    <p style="margin-bottom:0"><strong>Pravidlo 2:</strong> Souvislou sekvenci nulových hextetů nahraď <code>::</code> → ale <strong>pouze JEDNOU!</strong> (jinak nejasné kolik nul)</p>
+  </div>
+
+  <div class="compress-demo">
+    <div class="cd-label">Příklad komprimace</div>
+    <span class="cd-full">Full: 2001:<span class="cd-hi">0</span>db8:<span class="cd-hi">000</span>0:<span class="cd-hi">000</span>0:<span class="cd-hi">000</span>0:ff00:<span class="cd-hi">00</span>42:8329</span><br>
+    <span class="cd-step">Krok 1: 2001:db8:0:0:0:ff00:42:8329</span><br>
+    <span class="cd-final">Krok 2: 2001:db8::ff00:42:8329</span>
+  </div>
+
+  <div class="compress-demo">
+    <div class="cd-label">Další příklady</div>
+    <span class="cd-full">fe80:0000:0000:0000:0000:0000:0000:0001</span> → <span class="cd-final">fe80::1</span><br>
+    <span class="cd-full">0000:0000:0000:0000:0000:0000:0000:0001</span> → <span class="cd-final">::1</span> <span style="color:var(--text-muted)">(loopback)</span><br>
+    <span class="cd-full">0000:0000:0000:0000:0000:0000:0000:0000</span> → <span class="cd-final">::</span> <span style="color:var(--text-muted)">(unspecified)</span>
+  </div>
+
+  <p><strong>Typické prefixy:</strong> <code>/64</code> (subnet), <code>/48</code> (site/organizace), <code>/32</code> (ISP allocation).</p>
+</section>
+
+<!-- 05 PREFIXES -->
+<section class="section" id="prefixes">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Skupiny adres a globální prefixy</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Prefix</th><th>Typ</th><th>Popis</th></tr>
+    <tr><td><code style="color:var(--accent-3)">2000::/3</code></td><td><strong>Global Unicast (GUA)</strong></td><td>Veřejné routovatelné adresy (Internet)</td></tr>
+    <tr><td><code style="color:var(--accent-6)">fd00::/8</code></td><td><strong>Unique Local (ULA)</strong></td><td>Privátní (jako 10.x / 192.168.x v IPv4)</td></tr>
+    <tr><td><code style="color:var(--accent-4)">fe80::/10</code></td><td><strong>Link-Local</strong></td><td>Auto-generated, vždy přítomna, ne routovatelná</td></tr>
+    <tr><td><code style="color:var(--accent-2)">ff00::/8</code></td><td><strong>Multicast</strong></td><td>Skupinová komunikace</td></tr>
+    <tr><td><code>::1/128</code></td><td>Loopback</td><td>Jako 127.0.0.1 v IPv4</td></tr>
+    <tr><td><code>::/128</code></td><td>Unspecified</td><td>Jako 0.0.0.0 (před získáním adresy)</td></tr>
+    <tr><td><code>::ffff:0:0/96</code></td><td>IPv4-mapped</td><td>IPv4 v IPv6 formátu (::ffff:192.0.2.1)</td></tr>
+    <tr><td><code>2001:db8::/32</code></td><td>Documentation</td><td>Pouze pro příklady, NE produkce!</td></tr>
+  </table>
+
+  <div class="card warn">
+    <p style="margin-bottom:0"><strong>Žádný broadcast!</strong> IPv6 nemá broadcast adresy. Místo toho <code>ff02::1</code> (all nodes multicast). Interface může mít <strong>více adres</strong> současně (link-local + GUA + ULA).</p>
+  </div>
+</section>
+
+<!-- 06 CAST TYPES -->
+<section class="section" id="cast-types">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Druhy vysílání</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Unicast (1:1)</h4>
+      <p>One-to-one. Paket doručen jednomu příjemci. Typy: <strong>GUA</strong> (veřejná), <strong>ULA</strong> (privátní), <strong>Link-Local</strong> (lokální).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Multicast (1:many)</h4>
+      <p>One-to-many. Prefix <code>ff00::/8</code>. Scope: link-local (2), site (5), global (e). <strong>ff02::1</strong> = all nodes. <strong>ff02::2</strong> = all routers. Efektivnější než broadcast.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Anycast (1:nearest)</h4>
+      <p>One-to-nearest. Více zařízení se stejnou adresou → routing vybere nejbližší. Load balancing, DNS root servery. Vypadá jako unicast (stejný formát).</p>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <p style="margin-bottom:0"><strong>NO BROADCAST!</strong> IPv6 nemá broadcast. Místo toho multicast <code>ff02::1</code> (all nodes on link) = náhrada za broadcast.</p>
+  </div>
+</section>
+
+<!-- 07 ADDRESS TYPES -->
+<section class="section" id="address-types">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Druhy IPv6 adres v detailu</h2>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">GUA – Global Unicast Address (2000::/3)</div>
+    <p>Veřejné routovatelné (jako public IPv4). Struktura: <strong>Prefix /48</strong> (ISP→org) + <strong>Subnet ID 16 b</strong> (65536 subnetů!) + <strong>Interface ID 64 b</strong>.</p>
+    <p><strong>Generování Interface ID:</strong></p>
+    <ul>
+      <li><strong>EUI-64</strong> – z MAC adresy (48→64 b, vložení fffe, inverzní U/L bit). Bezpečnostní riziko (MAC trackovatelné)</li>
+      <li><strong>Privacy Extensions</strong> (RFC 4941) – náhodné ID, mění se periodicky. Výchozí Windows/Linux</li>
+      <li><strong>Manual/Static</strong> – administrátor nastaví ručně (::1)</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-6)">
+    <div class="card-title" style="color: var(--accent-6);">ULA – Unique Local Address (fd00::/8)</div>
+    <p>Privátní, ne routovatelné v internetu (jako 10.x, 192.168.x). Struktura: <code>fd</code> + 40-bit Global ID (pseudo-random) + 16-bit Subnet + 64-bit Interface ID.</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Příklad: <code>fd12:3456:789a:1::1</code>. Použití: interní komunikace, VPN, lab.</p>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-4)">
+    <div class="card-title" style="color: var(--accent-4);">Link-Local (fe80::/10)</div>
+    <p>Auto-generated, <strong>vždy přítomna</strong> (i bez DHCP/SLAAC). Ne routovatelná. Formát: <code>fe80::/64</code> + 64-bit Interface ID.</p>
+    <p style="margin-bottom:0">Použití: NDP, routing protocols (OSPF, EIGRP source), lokální komunikace. <strong>Pozor:</strong> při komunikaci nutno specifikovat interface: <code>ping fe80::1%eth0</code></p>
+  </div>
+
+  <details>
+    <summary>Další typy (Loopback, Unspecified, IPv4-mapped, Multicast)</summary>
+    <ul>
+      <li><strong>::1/128</strong> (Loopback) – ekvivalent 127.0.0.1, self-test</li>
+      <li><strong>::/128</strong> (Unspecified) – source před získáním adresy (DHCP/SLAAC request)</li>
+      <li><strong>::ffff:0:0/96</strong> (IPv4-mapped) – IPv4 v IPv6 formátu, dual-stack aplikace</li>
+      <li><strong>ff00::/8</strong> (Multicast) – ff02::1 all nodes, ff02::2 all routers, ff02::1:ffxx:xxxx solicited-node</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 08 ICMPv6 -->
+<section class="section" id="icmpv6">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>ICMPv6</h2>
+  </div>
+
+  <p>Nová verze ICMP pro IPv6. Protocol number: <strong>58</strong> (v Next Header). Error reporting + diagnostika + <strong>Neighbor Discovery</strong>.</p>
+
+  <table class="compare-table">
+    <tr><th>Type</th><th>Název</th><th>Účel</th></tr>
+    <tr><td>1</td><td>Destination Unreachable</td><td>Nedostupný cíl</td></tr>
+    <tr><td>2</td><td>Packet Too Big</td><td>MTU exceeded (Path MTU Discovery)</td></tr>
+    <tr><td>3</td><td>Time Exceeded</td><td>Hop Limit = 0 (traceroute)</td></tr>
+    <tr><td>128</td><td>Echo Request</td><td>ping request</td></tr>
+    <tr><td>129</td><td>Echo Reply</td><td>ping response</td></tr>
+    <tr><td style="color:var(--accent-3)"><strong>133</strong></td><td><strong>Router Solicitation</strong></td><td>NDP – žádost o router info</td></tr>
+    <tr><td style="color:var(--accent-3)"><strong>134</strong></td><td><strong>Router Advertisement</strong></td><td>NDP – router oznamuje sebe</td></tr>
+    <tr><td style="color:var(--accent-4)"><strong>135</strong></td><td><strong>Neighbor Solicitation</strong></td><td>NDP – IPv6→MAC (ARP replacement)</td></tr>
+    <tr><td style="color:var(--accent-4)"><strong>136</strong></td><td><strong>Neighbor Advertisement</strong></td><td>NDP – odpověď na NS</td></tr>
+    <tr><td>137</td><td>Redirect</td><td>NDP – lepší cesta</td></tr>
+  </table>
+</section>
+
+<!-- 09 NDP -->
+<section class="section" id="ndp">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>NDP – Neighbor Discovery Protocol (RFC 4861)</h2>
+  </div>
+
+  <p><strong>NDP</strong> = náhrada za ARP v IPv6. Používá ICMPv6 messages. Funkce: address resolution (IPv6→MAC), router discovery, SLAAC, DAD, redirect.</p>
+
+  <!-- RS -->
+  <div class="ndp-card ndp-rs">
+    <div class="ndp-type" style="color:var(--accent-1)">RS – Router Solicitation (Type 133)</div>
+    <p>Host žádá router o konfigurační informace. Při bootu (místo čekání na RA).</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Source: host link-local (fe80::) nebo :: | Dest: <strong>ff02::2</strong> (all routers multicast)</p>
+  </div>
+
+  <!-- RA -->
+  <div class="ndp-card ndp-ra">
+    <div class="ndp-type" style="color:var(--accent-3)">RA – Router Advertisement (Type 134)</div>
+    <p>Router oznamuje svou přítomnost a síťové parametry.</p>
+    <ul>
+      <li><strong>Prefix(y)</strong> pro SLAAC (např. 2001:db8::/64)</li>
+      <li><strong>Default gateway</strong> (router link-local = source)</li>
+      <li><strong>Flags: M, O, A</strong> – řídí SLAAC vs DHCPv6 (viz níže)</li>
+      <li>MTU, Hop Limit</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Periodicky (200 s) NEBO odpověď na RS (okamžitě). Dest: <strong>ff02::1</strong> (all nodes) nebo unicast.</p>
+  </div>
+
+  <!-- NS -->
+  <div class="ndp-card ndp-ns">
+    <div class="ndp-type" style="color:var(--accent-4)">NS – Neighbor Solicitation (Type 135)</div>
+    <p><strong>ARP replacement!</strong> Zjištění MAC adresy pro IPv6. Také pro <strong>DAD</strong> (Duplicate Address Detection).</p>
+    <p><strong>Address resolution:</strong> „Kdo má 2001:db8::1? Pošli mi svou MAC!"</p>
+    <p><strong>DAD:</strong> Před použitím nové adresy → NS s target=nová adresa, source=:: → pokud někdo odpoví → duplicitní IP → nesmí se použít!</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Dest: <strong>solicited-node multicast</strong> (ff02::1:ffxx:xxxx) – efektivnější než broadcast. Jen zařízení s matching adresou zpracovávají.</p>
+  </div>
+
+  <!-- NA -->
+  <div class="ndp-card ndp-na">
+    <div class="ndp-type" style="color:var(--accent-6)">NA – Neighbor Advertisement (Type 136)</div>
+    <p>Odpověď na NS. Obsahuje: target IPv6, <strong>link-layer (MAC) adresa</strong>, flags R/S/O.</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Dest: unicast (source z NS) NEBO ff02::1 (unsolicited NA – oznámení změny MAC).</p>
+  </div>
+
+  <!-- Redirect -->
+  <div class="ndp-card ndp-rd">
+    <div class="ndp-type" style="color:var(--accent-2)">Redirect (Type 137)</div>
+    <p style="margin-bottom:0">Router informuje host o <strong>lepší cestě</strong>. „Pro tento cíl použij router B místo mě!"</p>
+  </div>
+</section>
+
+<!-- 10 DHCPv6 -->
+<section class="section" id="dhcpv6">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>DHCPv6 a příznakové bity A, O, M</h2>
+  </div>
+
+  <p><strong>DHCPv6</strong> = alternativa k SLAAC. Dva módy: <strong>Stateful</strong> (přiděluje IP + DNS) a <strong>Stateless</strong> (jen DNS, IP z SLAAC).</p>
+
+  <h3>Příznakové bity v Router Advertisement</h3>
+  <p>RA obsahuje flags které řídí, jak host získá konfiguraci:</p>
+
+  <div class="flag-grid">
+    <div class="flag-item" style="background:rgba(52,211,153,0.12);color:var(--accent-3)">
+      <span class="flag-letter">A</span>
+      <span class="flag-name">Autonomous</span>
+      <span class="flag-desc">A=1 → použij prefix pro <strong>SLAAC</strong> (auto-generate IP)</span>
+    </div>
+    <div class="flag-item" style="background:rgba(96,165,250,0.12);color:var(--accent-1)">
+      <span class="flag-letter">M</span>
+      <span class="flag-name">Managed</span>
+      <span class="flag-desc">M=1 → použij <strong>Stateful DHCPv6</strong> pro IP adresu</span>
+    </div>
+    <div class="flag-item" style="background:rgba(251,191,36,0.12);color:var(--accent-4)">
+      <span class="flag-letter">O</span>
+      <span class="flag-name">Other</span>
+      <span class="flag-desc">O=1 → použij <strong>Stateless DHCPv6</strong> pro DNS/NTP</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Kombinace flags</h3>
+
+  <div class="combo-row">
+    <span class="combo-flags" style="color:var(--accent-3)">M=0 O=0 A=1</span>
+    <span><strong>Pouze SLAAC.</strong> Host generuje IP z RA prefix. Žádný DHCPv6. DNS manuálně nebo RDNSS v RA.</span>
+  </div>
+  <div class="combo-row" style="background:rgba(52,211,153,0.04);border-radius:6px;padding:12px">
+    <span class="combo-flags" style="color:var(--accent-3)">M=0 O=1 A=1</span>
+    <span><strong>SLAAC + Stateless DHCPv6</strong> <span style="font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(251,191,36,0.15);color:var(--accent-4);padding:2px 6px;border-radius:3px">NEJBĚŽNĚJŠÍ</span><br><span style="font-size:13px;color:var(--text-muted)">IP z SLAAC (A=1). DNS/NTP z DHCPv6 (O=1). Gateway z RA.</span></span>
+  </div>
+  <div class="combo-row">
+    <span class="combo-flags" style="color:var(--accent-1)">M=1 O=0 A=0</span>
+    <span><strong>Pouze Stateful DHCPv6.</strong> IP + DNS z DHCPv6 serveru. SLAAC nepoužito (A=0). Gateway z RA.</span>
+  </div>
+  <div class="combo-row">
+    <span class="combo-flags" style="color:var(--accent-2)">M=1 O=1 A=0</span>
+    <span><strong>Stateful DHCPv6</strong> (redundantní, M=1 implikuje O=1). Vše z DHCPv6.</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <details>
+    <summary>Příklad: SLAAC + Stateless DHCPv6 (M=0, O=1, A=1)</summary>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Host boot → pošle RS (Router Solicitation)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Router odpoví RA: M=0, O=1, A=1, Prefix=2001:db8::/64</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Host generuje IP (SLAAC): 2001:db8::interface-id</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">DAD check (NS s source ::) → ověří unikátnost</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Host kontaktuje DHCPv6 (O=1): INFORMATION-REQUEST</div><div class="step-desc">DHCPv6 odpoví: DNS servers, NTP, domain name.</div></div></div>
+      <div class="step"><div class="step-num">✓</div><div class="step-content"><div class="step-label">Host má: IP (SLAAC), DNS (DHCPv6), gateway (RA link-local)</div></div></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Příklad: Pouze Stateful DHCPv6 (M=1, O=0, A=0)</summary>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Host boot → RS → Router RA: M=1, A=0</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Host kontaktuje DHCPv6: SOLICIT</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">DHCPv6 server: ADVERTISE → host REQUEST → server REPLY</div><div class="step-desc">IP adresa, DNS, NTP – vše z DHCPv6.</div></div></div>
+      <div class="step"><div class="step-num">✓</div><div class="step-content"><div class="step-label">Host má: IP (DHCPv6), DNS (DHCPv6), gateway (RA link-local)</div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 11 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">SPECIFIKACE A MIGRACE</p>
+    <ul>
+      <li><strong>128 bitů</strong> (8 hextetů, hex). Header 40 B fixní. No broadcast, no checksum, no fragmentace routerem. IPsec povinné, SLAAC</li>
+      <li><strong>Komprimace:</strong> vedoucí 0 ven, <code>::</code> pro souvislé nuly (<strong>pouze 1×!</strong>)</li>
+      <li><strong>Migrace:</strong> Dual-Stack (nejběžnější), Tunelování (IPv6-in-IPv4), NAT64+DNS64 (mobile)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PREFIXY A VYSÍLÁNÍ</p>
+    <ul>
+      <li><strong>2000::/3</strong> = GUA (veřejné). <strong>fd00::/8</strong> = ULA (privátní). <strong>fe80::/10</strong> = Link-Local (auto, vždy)</li>
+      <li><strong>ff00::/8</strong> = Multicast. <strong>::1</strong> = Loopback. <strong>::</strong> = Unspecified</li>
+      <li><strong>Unicast</strong> (1:1), <strong>Multicast</strong> (1:many), <strong>Anycast</strong> (1:nearest). <strong>NO broadcast!</strong></li>
+      <li><code>ff02::1</code> = all nodes (náhrada broadcast). <code>ff02::2</code> = all routers</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-4);margin-bottom:8px">NDP (RFC 4861)</p>
+    <ul>
+      <li><strong>RS (133):</strong> Host → ff02::2 „pošli RA"</li>
+      <li><strong>RA (134):</strong> Router → ff02::1 – prefix, gateway, flags M/O/A</li>
+      <li><strong>NS (135):</strong> IPv6→MAC (ARP replacement) + <strong>DAD</strong> (source ::). Dest: solicited-node multicast</li>
+      <li><strong>NA (136):</strong> Odpověď na NS – MAC adresa</li>
+      <li><strong>Redirect (137):</strong> Lepší cesta k cíli</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">DHCPv6 FLAGS</p>
+    <ul>
+      <li><strong>A=1</strong> (Autonomous) → SLAAC povoleno (auto-generate IP z prefix)</li>
+      <li><strong>M=1</strong> (Managed) → Stateful DHCPv6 pro IP adresu</li>
+      <li><strong>O=1</strong> (Other) → Stateless DHCPv6 pro DNS/NTP</li>
+      <li><strong>M=0, O=0, A=1</strong> = pouze SLAAC</li>
+      <li><strong>M=0, O=1, A=1</strong> = SLAAC + Stateless DHCPv6 → <strong>NEJBĚŽNĚJŠÍ!</strong></li>
+      <li><strong>M=1, O=0, A=0</strong> = pouze Stateful DHCPv6</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

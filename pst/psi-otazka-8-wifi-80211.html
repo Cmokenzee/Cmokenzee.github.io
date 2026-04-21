@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 8: IEEE 802.11 – Wi-Fi</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #0f1a2e 50%, #0f2e2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(96,165,250,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(52,211,153,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(28px, 5vw, 44px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 20px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+
+  /* QAM bar */
+  .qam-bar { display: flex; gap: 4px; margin: 14px 0; flex-wrap: wrap; }
+  .qam-item { flex: 1; min-width: 70px; text-align: center; padding: 10px 6px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; }
+  .qam-item .qam-name { font-size: 10px; opacity: 0.8; }
+  .qam-item .qam-bits { font-size: 16px; font-weight: 700; margin-top: 2px; }
+  .qam-item .qam-unit { font-size: 9px; opacity: 0.6; }
+
+  /* Band comparison */
+  .band-card { position: relative; overflow: hidden; }
+  .band-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+  .band-24::before { background: var(--accent-6); }
+  .band-5::before { background: var(--accent-1); }
+  .band-6::before { background: var(--accent-3); }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .qam-bar { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 8</div>
+  <h1>Sítě IEEE 802.11<br>Wi-Fi</h1>
+  <p>CSMA/CA • Standardy • OFDM/OFDMA • MIMO • Beamforming • Topologie</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#csma">Přístup k médiu – CSMA/CA</a></li>
+    <li><a href="#standards">IEEE 802.11 standardy</a></li>
+    <li><a href="#modulation">Modulace a kódování</a></li>
+    <li><a href="#channels">Kanály a frekvenční pásma</a></li>
+    <li><a href="#mimo">MIMO a MU-MIMO</a></li>
+    <li><a href="#wifi6">Wi-Fi 6 (802.11ax) – nové technologie</a></li>
+    <li><a href="#beamforming">Beamforming</a></li>
+    <li><a href="#topology">Topologie Wi-Fi sítí</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 CSMA/CA -->
+<section class="section" id="csma">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Přístup k médiu – CSMA/CA</h2>
+  </div>
+
+  <p>Bezdrátové médium je sdílené → více zařízení na stejné frekvenci → možné kolize. Wi-Fi používá <strong>CSMA/CA</strong> (Collision Avoidance).</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">CSMA/CA vs CSMA/CD</div>
+    <p><strong>Ethernet (CSMA/CD):</strong> Collision Detection – detekuje kolize PŘI přenosu (full-duplex na switchích).</p>
+    <p style="margin-bottom:0"><strong>Wi-Fi (CSMA/CA):</strong> Collision Avoidance – snaží se PŘEDEJÍT kolizím PŘED vysíláním. Wi-Fi je <strong>half-duplex</strong> → nemůže vysílat a přijímat současně → nemůže detekovat kolize během vysílání.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Jak CSMA/CA funguje</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Carrier Sense – poslouchá médium (CCA)</div><div class="step-desc">Busy → čeká. Free → pokračuje.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Random Backoff</div><div class="step-desc">I když free, nesmí vysílat okamžitě! Počká náhodný čas → snižuje pravděpodobnost kolize.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Vysílání</div><div class="step-desc">Frame obsahuje Duration field → informuje ostatní, jak dlouho bude médium busy.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">ACK (Acknowledgment)</div><div class="step-desc">Příjemce potvrdí přijetí. Žádné ACK → předpokládá kolizi → retransmit.</div></div></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>RTS/CTS – řešení Hidden Node problému</summary>
+    <p><strong>Problém:</strong> Stanice A a C nevidí navzájem, ale obě vidí AP → mohou vysílat současně → kolize u AP.</p>
+    <p><strong>Řešení:</strong> A pošle <strong>RTS</strong> (Request to Send) → AP odpoví <strong>CTS</strong> (Clear to Send) → všechny stanice slyší CTS → vědí, že mají čekat. Používá se pro velké frames (overhead pro malé).</p>
+  </details>
+</section>
+
+<!-- 02 STANDARDS -->
+<section class="section" id="standards">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>IEEE 802.11 standardy</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Standard</th><th>Název</th><th>Rok</th><th>Pásmo</th><th>Max rychlost</th><th>Klíčové</th></tr>
+    <tr><td>802.11b</td><td>Wi-Fi 1</td><td>1999</td><td>2.4 GHz</td><td>11 Mbps</td><td>DSSS</td></tr>
+    <tr><td>802.11a</td><td>Wi-Fi 2</td><td>1999</td><td>5 GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
+    <tr><td>802.11g</td><td>Wi-Fi 3</td><td>2003</td><td>2.4 GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
+    <tr><td><strong>802.11n</strong></td><td><strong>Wi-Fi 4</strong></td><td>2009</td><td>2.4/5</td><td><strong>600 Mbps</strong></td><td>MIMO, 40 MHz</td></tr>
+    <tr><td><strong>802.11ac</strong></td><td><strong>Wi-Fi 5</strong></td><td>2013</td><td>5 GHz</td><td><strong>6.9 Gbps</strong></td><td>MU-MIMO, 160 MHz, 256-QAM</td></tr>
+    <tr><td><strong>802.11ax</strong></td><td><strong>Wi-Fi 6/6E</strong></td><td>2019</td><td>2.4/5/6</td><td><strong>9.6 Gbps</strong></td><td>OFDMA, 1024-QAM, BSS Coloring</td></tr>
+  </table>
+
+  <p style="font-size:13px;color:var(--text-muted)">Max rychlost = teoretické maximum. Reálné rychlosti: 40–60 % (overhead, interference, vzdálenost).</p>
+</section>
+
+<!-- 03 MODULATION -->
+<section class="section" id="modulation">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Modulace a kódování</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">FHSS</h4>
+      <p>Frequency Hopping Spread Spectrum. Přeskakuje mezi frekvencemi. Max 2 Mbps. <strong>Zastaralé.</strong></p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">DSSS</h4>
+      <p>Direct Sequence Spread Spectrum. Rozšíří signál přes 22 MHz (Barker code). 802.11b, 11 Mbps.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">OFDM</h4>
+      <p>Orthogonal Frequency Division Multiplexing. Data na desítky/stovky subcarriers. <strong>802.11a/g/n/ac/ax.</strong> Vysoká efektivita, odolné proti multipath.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>QAM (Quadrature Amplitude Modulation)</h3>
+  <p>Modulační schéma pro subcarriers v OFDM. Kombinuje amplitudu + fázi → více bitů per symbol.</p>
+
+  <div class="qam-bar">
+    <div class="qam-item" style="background:rgba(248,113,113,0.12);color:var(--accent-5);">
+      <div class="qam-name">BPSK</div><div class="qam-bits">1</div><div class="qam-unit">bit/symbol</div>
+    </div>
+    <div class="qam-item" style="background:rgba(251,146,60,0.12);color:var(--accent-6);">
+      <div class="qam-name">QPSK</div><div class="qam-bits">2</div><div class="qam-unit">bity/symbol</div>
+    </div>
+    <div class="qam-item" style="background:rgba(251,191,36,0.12);color:var(--accent-4);">
+      <div class="qam-name">16-QAM</div><div class="qam-bits">4</div><div class="qam-unit">bity/symbol</div>
+    </div>
+    <div class="qam-item" style="background:rgba(96,165,250,0.12);color:var(--accent-1);">
+      <div class="qam-name">64-QAM</div><div class="qam-bits">6</div><div class="qam-unit">bitů/symbol</div>
+    </div>
+    <div class="qam-item" style="background:rgba(167,139,250,0.12);color:var(--accent-2);">
+      <div class="qam-name">256-QAM</div><div class="qam-bits">8</div><div class="qam-unit">bitů/symbol</div>
+    </div>
+    <div class="qam-item" style="background:rgba(52,211,153,0.12);color:var(--accent-3);">
+      <div class="qam-name">1024-QAM</div><div class="qam-bits">10</div><div class="qam-unit">bitů/symbol</div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Trade-off</div>
+    <p style="margin-bottom:0">Vyšší QAM = víc bitů = <strong>vyšší rychlost</strong>, ALE citlivější na šum → vyžaduje silný signál. <strong>Adaptive Modulation:</strong> blízko AP → 1024-QAM (rychlé), daleko → QPSK (pomalé, spolehlivé).</p>
+  </div>
+</section>
+
+<!-- 04 CHANNELS -->
+<section class="section" id="channels">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Kanály a frekvenční pásma</h2>
+  </div>
+
+  <div class="card band-card band-24" style="background:var(--bg-card)">
+    <h4 style="color:var(--accent-6);margin-top:0">2.4 GHz (2.400–2.4835 GHz)</h4>
+    <ul>
+      <li><strong>Kanály:</strong> 14 (USA/EU: 1–11/13), ale <strong>pouze 3 non-overlapping</strong> (1, 6, 11)</li>
+      <li><strong>Výhody:</strong> lepší průnik stěnami (delší dosah), široká kompatibilita</li>
+      <li><strong>Nevýhody:</strong> přeplněné (mikrovlnky, Bluetooth, sousední Wi-Fi), jen 3 kanály</li>
+      <li><strong>Doporučení:</strong> používej <strong>20 MHz</strong> šířku (40 MHz → žádný non-overlapping kanál!)</li>
+    </ul>
+  </div>
+
+  <div class="card band-card band-5" style="background:var(--bg-card)">
+    <h4 style="color:var(--accent-1);margin-top:0">5 GHz (5.150–5.825 GHz)</h4>
+    <ul>
+      <li><strong>Kanály:</strong> <strong>24 non-overlapping</strong> (20 MHz) v USA, 19 v EU</li>
+      <li><strong>Výhody:</strong> méně rušení, VÍCE kanálů (24 vs 3!), vyšší rychlosti (širší kanály)</li>
+      <li><strong>Nevýhody:</strong> kratší dosah (horší průnik stěnami), DFS požadavek (detekce radarů)</li>
+      <li><strong>Doporučení:</strong> 40/80 MHz OK (dost non-overlapping kanálů)</li>
+    </ul>
+  </div>
+
+  <div class="card band-card band-6" style="background:var(--bg-card)">
+    <h4 style="color:var(--accent-3);margin-top:0">6 GHz (5.925–7.125 GHz) – Wi-Fi 6E</h4>
+    <ul>
+      <li><strong>Šířka:</strong> 1200 MHz (obrovské vs 83.5 MHz na 2.4 GHz)</li>
+      <li><strong>Kanály:</strong> 59 (20 MHz), 14 (80 MHz), <strong>7 (160 MHz)</strong></li>
+      <li><strong>Výhody:</strong> žádná interference (nové pásmo, žádná legacy zařízení), obrovská kapacita</li>
+      <li><strong>Nevýhody:</strong> kratší dosah, vyžaduje Wi-Fi 6E zařízení</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Šířka kanálu (Channel Width)</h3>
+  <table class="compare-table">
+    <tr><th>Šířka</th><th>Standardy</th><th>Poznámka</th></tr>
+    <tr><td><strong>20 MHz</strong></td><td>Všechny</td><td>Základ, nejlepší kompatibilita</td></tr>
+    <tr><td><strong>40 MHz</strong></td><td>n/ac/ax</td><td>2× rychlejší, channel bonding</td></tr>
+    <tr><td><strong>80 MHz</strong></td><td>ac/ax</td><td>4× 20 MHz, pouze 5 GHz</td></tr>
+    <tr><td><strong>160 MHz</strong></td><td>ac/ax</td><td>Nejvyšší rychlosti, pouze 5/6 GHz</td></tr>
+    <tr><td><strong>320 MHz</strong></td><td>Wi-Fi 7</td><td>Budoucnost, pouze 6 GHz</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--text-muted)">Širší kanál = vyšší rychlost, ALE více interference a méně dostupných kanálů.</p>
+</section>
+
+<!-- 05 MIMO -->
+<section class="section" id="mimo">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>MIMO a MU-MIMO</h2>
+  </div>
+
+  <p><strong>MIMO</strong> (Multiple Input Multiple Output) = více antén na vysílači i přijímači → více datových toků (spatial streams) současně → vyšší propustnost.</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">MIMO konfigurace (TxR:S)</div>
+    <p>Notace: <strong>T×R:S</strong> kde T = Tx antény, R = Rx antény, S = spatial streams.</p>
+    <ul>
+      <li><strong>2×2:2</strong> → 2 antény, 2 toky (802.11n běžné)</li>
+      <li><strong>4×4:4</strong> → 4 antény, 4 toky (802.11ac high-end)</li>
+      <li><strong>8×8:8</strong> → 8 antén, 8 toků (802.11ac/ax max)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Max streams: 802.11n = 4 (600 Mbps), 802.11ac = 8 (6.9 Gbps), 802.11ax = 8 (9.6 Gbps)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">SU-MIMO (Single-User)</h4>
+      <p>AP komunikuje s <strong>jedním klientem najednou</strong>. Všechny streamy → 1 klient. Ostatní čekají. 802.11n/ac.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">MU-MIMO (Multi-User)</h4>
+      <p>AP komunikuje s <strong>více klienty současně</strong>! Rozdělí spatial streams. 802.11ac Wave 2: max 4 klienti, downlink only. <strong>802.11ax: 8 klientů, downlink + uplink!</strong></p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Výhody MU-MIMO</div>
+    <p style="margin-bottom:0">Vyšší celková propustnost, nižší latence (klienti nečekají), efektivnější využití spektra. Wi-Fi 6 kombinuje MU-MIMO + OFDMA → nejvyšší efektivita.</p>
+  </div>
+</section>
+
+<!-- 06 WIFI 6 -->
+<section class="section" id="wifi6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Wi-Fi 6 (802.11ax) – nové technologie</h2>
+  </div>
+
+  <p>Revoluce v efektivitě a kapacitě. Hlavně lepší fungování v <strong>hustých sítích</strong> (mnoho zařízení).</p>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">OFDMA (Orthogonal Frequency Division Multiple Access)</div>
+    <p><strong>Problém s OFDM:</strong> Celý kanál alokován jednomu uživateli → malý IoT packet zabere celý 80 MHz → plýtvání!</p>
+    <p><strong>OFDMA řešení:</strong> Kanál rozdělen na menší <strong>RU (Resource Units)</strong>. AP alokuje různé RU různým uživatelům <strong>současně</strong>!</p>
+    <ul>
+      <li>RU velikosti: 26-tone (IoT), 52-tone, 106-tone, 242-tone, 484-tone, 996-tone</li>
+      <li>20 MHz kanál → až <strong>9 uživatelů současně</strong> (9× 26-tone RU)</li>
+      <li>Ideální pro IoT, smart home (mnoho zařízení, malé packety)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>MU-MIMO</strong> rozděluje spatial streams (prostor). <strong>OFDMA</strong> rozděluje frekvence (RU). Wi-Fi 6 kombinuje oba!</p>
+  </div>
+
+  <div class="device-grid" style="margin-top:20px">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">BSS Coloring</h4>
+      <p>Každá BSS dostane unikátní color (0–63). Zařízení ignoruje frames z jiné BSS → <strong>spatial reuse</strong> → vyšší propustnost v hustých prostředích (bytovky, konference).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">1024-QAM</h4>
+      <p>10 bitů/symbol (vs 8 u 256-QAM). +25 % rychlost. Vyžaduje velmi silný signál → praktické jen blízko AP.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Target Wake Time (TWT)</h4>
+      <p>Klient a AP dohodnou schedule → klient spí, budí se jen v naplánovaných časech. Baterie vydrží <strong>měsíce/roky</strong> (IoT sensors).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 BEAMFORMING -->
+<section class="section" id="beamforming">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Beamforming</h2>
+  </div>
+
+  <p>Běžné Wi-Fi vysílá <strong>omnidirectionally</strong> (všemi směry). Beamforming <strong>zaměří signál přímo na klienta</strong> → silnější signál, méně interference.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Jak to funguje</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">AP zjistí polohu klienta (channel sounding)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Vypočítá fázové posuny pro každou anténu</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Constructive interference u klienta → silný signál</div><div class="step-desc">Signály ze všech antén dorazí ve fázi → sečtou se (např. 4 antény → 4× silnější)</div></div></div>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Výhody</div>
+    <ul>
+      <li><strong>Vyšší throughput</strong> – silnější signál → vyšší modulace (256/1024-QAM)</li>
+      <li><strong>Delší dosah</strong> – zaměřený signál dosáhne dál</li>
+      <li><strong>Nižší interference</strong> – nezasahuje ostatní směry</li>
+    </ul>
+  </div>
+
+  <p><strong>Explicit Beamforming</strong> (802.11ac/ax): klient posílá feedback (CSI) → přesné zaměření. <strong>Implicit</strong> (802.11n): AP odhaduje bez feedbacku → méně přesné.</p>
+</section>
+
+<!-- 08 TOPOLOGY -->
+<section class="section" id="topology">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Topologie Wi-Fi sítí</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Ad-hoc (IBSS)</h4>
+      <p>P2P bez AP. Zařízení komunikují přímo. Omezený dosah, nižší rychlosti, slabší security. <strong>Zastaralé</strong> (nahrazeno Wi-Fi Direct).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">Wi-Fi Direct</h4>
+      <p>Moderní P2P. Jedno zařízení = virtuální AP (Group Owner). WPA2, moderní features. Tisk, screen mirroring, sdílení souborů.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Infrastrukturní sítě (BSS / ESS)</h3>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">BSS (Basic Service Set)</div>
+    <p><strong>1 Access Point + připojení klienti</strong> = 1 BSS. Star topologie.</p>
+    <ul>
+      <li><strong>BSSID</strong> = MAC adresa AP (unikátní identifikátor BSS)</li>
+      <li><strong>SSID</strong> = název sítě (lidsky čitelný, např. „MyWiFi")</li>
+      <li>Dosah: 30–100 m indoor, 300+ m outdoor</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--accent-4)">SSID ≠ BSSID! SSID = název, BSSID = MAC adresa AP.</p>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">ESS (Extended Service Set)</div>
+    <p><strong>Více AP se stejným SSID</strong> = 1 ESS. Rozšíření pokrytí (budova, campus). Každý AP má vlastní BSSID, ale sdílí SSID + security.</p>
+    <ul>
+      <li><strong>Roaming:</strong> klient se pohybuje mezi AP → automatické přepnutí → bezešvá konektivita</li>
+      <li><strong>DS (Distribution System):</strong> backbone spojující AP v ESS (typicky Ethernet)</li>
+      <li><strong>ESSID:</strong> = SSID pro ESS. V praxi termíny SSID a ESSID zaměnitelné.</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>Příklad ESS – firemní budova</summary>
+    <p>5 pater, 3 AP, všechny SSID = „CompanyWiFi", stejné WPA2 heslo:</p>
+    <ul>
+      <li>AP1 (1. patro): BSSID AA:BB:CC:11:11:11</li>
+      <li>AP2 (2. patro): BSSID AA:BB:CC:22:22:22</li>
+      <li>AP3 (3. patro): BSSID AA:BB:CC:33:33:33</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Klient vidí jednu síť „CompanyWiFi", ale interně 3 BSS. Pohyb mezi patry → automatický handoff.</p>
+  </details>
+</section>
+
+<!-- 09 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">CSMA/CA</p>
+    <ul>
+      <li><strong>CSMA/CA</strong> = Collision <strong>Avoidance</strong> (ne Detection!). Half-duplex. Poslouchá → backoff → vysílá → ACK</li>
+      <li><strong>RTS/CTS</strong> = řešení hidden node problému</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">STANDARDY A MODULACE</p>
+    <ul>
+      <li><strong>802.11n</strong> (Wi-Fi 4) = MIMO, 2.4/5 GHz, 600 Mbps</li>
+      <li><strong>802.11ac</strong> (Wi-Fi 5) = MU-MIMO, 5 GHz only, 6.9 Gbps, 256-QAM, 160 MHz</li>
+      <li><strong>802.11ax</strong> (Wi-Fi 6) = OFDMA, 1024-QAM, BSS Coloring, TWT, 9.6 Gbps</li>
+      <li><strong>OFDM</strong> = více subcarriers (802.11a/g/n/ac/ax). <strong>QAM</strong> = modulace per subcarrier</li>
+      <li>Vyšší QAM = víc bitů/symbol = rychlejší, ale citlivější na šum</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">KANÁLY</p>
+    <ul>
+      <li><strong>2.4 GHz</strong> = 3 non-overlapping kanály (1, 6, 11). Lepší dosah. Přeplněné</li>
+      <li><strong>5 GHz</strong> = 24 non-overlapping kanálů. Kratší dosah. Méně rušení</li>
+      <li><strong>6 GHz</strong> (Wi-Fi 6E) = 59 kanálů, žádná interference, nová zařízení</li>
+      <li>Širší kanál = vyšší rychlost, ale víc interference. 2.4 GHz → jen 20 MHz!</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">MIMO, WI-FI 6, BEAMFORMING</p>
+    <ul>
+      <li><strong>MIMO</strong> = více antén → více spatial streams. Konfigurace: T×R:S (např. 4×4:4)</li>
+      <li><strong>SU-MIMO</strong> = 1 klient najednou. <strong>MU-MIMO</strong> = více klientů současně (Wi-Fi 5/6)</li>
+      <li><strong>OFDMA</strong> = kanál rozdělen na RU, více uživatelů současně (ideální IoT)</li>
+      <li><strong>BSS Coloring</strong> = ignoruje jiné BSS → spatial reuse</li>
+      <li><strong>Beamforming</strong> = zaměřený signál na klienta → vyšší throughput, delší dosah</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">TOPOLOGIE</p>
+    <ul>
+      <li><strong>BSS</strong> = 1 AP + klienti. <strong>BSSID</strong> = MAC AP. <strong>SSID</strong> = název sítě</li>
+      <li><strong>ESS</strong> = více AP, stejný SSID → roaming. <strong>ESSID</strong> ≈ SSID</li>
+      <li><strong>Ad-hoc</strong> (IBSS) = P2P bez AP, zastaralé → <strong>Wi-Fi Direct</strong> = moderní náhrada</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

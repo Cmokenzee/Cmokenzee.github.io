@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 3: Čítačové podsystémy MCU</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #2e1a0f 40%, #1a0f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 25% 50%, rgba(251,146,60,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(167,139,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-6); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+  .cli .kw { color: var(--accent-4); }
+  .cli .val { color: var(--accent-6); }
+  .cli .reg { color: var(--accent-1); }
+
+  /* Timer block diagram */
+  .timer-block {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .timer-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    justify-content: center;
+  }
+  .tf-box {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 80px;
+  }
+  .tf-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* Waveform visualization */
+  .waveform {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    overflow-x: auto;
+  }
+  .wf-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px; }
+  .wf-row { display: flex; align-items: end; gap: 0; height: 50px; margin: 6px 0; }
+  .wf-name { min-width: 50px; font-size: 10px; color: var(--text-muted); display: flex; align-items: center; }
+
+  /* SVG-like waveform using divs */
+  .pwm-visual {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 14px 0;
+  }
+  .pwm-row { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+  .pwm-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; min-width: 60px; color: var(--text-muted); }
+  .pwm-bar { display: flex; height: 24px; border-radius: 3px; overflow: hidden; flex: 1; }
+  .pwm-high { display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; }
+  .pwm-low { display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+  .pwm-pct { font-family: 'JetBrains Mono', monospace; font-size: 11px; min-width: 40px; text-align: right; font-weight: 600; }
+
+  /* Formula box */
+  .formula {
+    background: rgba(96,165,250,0.08);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    text-align: center;
+    color: var(--accent-1);
+    font-weight: 600;
+  }
+  .formula .f-small { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 6px; }
+
+  /* Servo visual */
+  .servo-visual {
+    display: flex;
+    gap: 16px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+  }
+  .servo-pos {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .servo-pos .sp-angle { font-size: 22px; font-weight: 700; display: block; }
+  .servo-pos .sp-pulse { font-size: 11px; margin-top: 4px; opacity: 0.7; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .timer-flow { flex-direction: column; }
+    .servo-visual { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 3</div>
+  <h1>Čítačové podsystémy MCU</h1>
+  <p>Timer / Counter • Předdělička • Capture • Compare • PWM</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#intro">Timer vs Counter</a></li>
+    <li><a href="#architecture">Architektura Timer/Counter</a></li>
+    <li><a href="#prescaler">Předdělička (Prescaler)</a></li>
+    <li><a href="#normal">Normal Mode (Overflow)</a></li>
+    <li><a href="#ctc">CTC Mode (Compare Match)</a></li>
+    <li><a href="#capture">Input Capture Mode</a></li>
+    <li><a href="#compare">Output Compare Mode</a></li>
+    <li><a href="#pwm-intro">PWM – princip</a></li>
+    <li><a href="#fast-pwm">Fast PWM</a></li>
+    <li><a href="#phase-pwm">Phase-Correct PWM</a></li>
+    <li><a href="#pwm-apps">PWM aplikace</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Timer vs Counter</h2>
+  </div>
+
+  <p><strong>Timer/Counter</strong> = hardwarový modul MCU, který autonomně počítá na základě hodinového signálu nebo externích událostí. Běží nezávisle na CPU!</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">TIMER (Časovač)</h4>
+      <p>Počítá <strong>interní clock</strong> (CPU clock / prescaler). Měření času – delay, periodic interrupts, PWM.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">COUNTER (Čítač)</h4>
+      <p>Počítá <strong>externí události</strong> na pinu (T0, T1). Rotační enkodér, flow meter, frequency counter.</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Proč hardware timer (ne software delay)?</div>
+    <ul>
+      <li><strong>Přesnost</strong> – HW timer běží nezávisle na CPU</li>
+      <li><strong>Autonomie</strong> – CPU může dělat jiné věci</li>
+      <li><strong>Deterministický</strong> – přesný timing bez jitteru</li>
+      <li><strong>Efektivita</strong> – žádné plýtvání CPU cykly na <code>while(delay--)</code></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 ARCHITECTURE -->
+<section class="section" id="architecture">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Architektura Timer/Counter</h2>
+  </div>
+
+  <!-- Timer block diagram -->
+  <div class="timer-block">
+    <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:14px">TIMER/COUNTER BLOKOVÝ DIAGRAM</div>
+    <div class="timer-flow">
+      <div class="tf-box" style="background:rgba(251,146,60,0.15);color:var(--accent-6)">
+        Clock Source
+        <div style="font-size:9px;opacity:0.7">CPU clk / Ext pin</div>
+      </div>
+      <div class="tf-arrow">→</div>
+      <div class="tf-box" style="background:rgba(251,191,36,0.15);color:var(--accent-4)">
+        Prescaler
+        <div style="font-size:9px;opacity:0.7">÷1, ÷8, ÷64, ÷256, ÷1024</div>
+      </div>
+      <div class="tf-arrow">→</div>
+      <div class="tf-box" style="background:rgba(96,165,250,0.15);color:var(--accent-1);min-width:100px">
+        TCNTx
+        <div style="font-size:9px;opacity:0.7">Počítací registr (8/16-bit)</div>
+      </div>
+      <div class="tf-arrow">→</div>
+      <div class="tf-box" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">
+        Compare / Capture
+        <div style="font-size:9px;opacity:0.7">OCRx / ICR</div>
+      </div>
+      <div class="tf-arrow">→</div>
+      <div class="tf-box" style="background:rgba(167,139,250,0.15);color:var(--accent-2)">
+        Output / IRQ
+        <div style="font-size:9px;opacity:0.7">Pin akce / Interrupt</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Klíčové registry</div>
+    <table class="compare-table">
+      <tr><th>Registr</th><th>Funkce</th></tr>
+      <tr><td><code>TCNTx</code></td><td>Hlavní počítací registr (R/W). Overflow: 255→0 (8-bit) / 65535→0 (16-bit)</td></tr>
+      <tr><td><code>TCCRx</code></td><td>Control – nastavuje mode, clock source, prescaler</td></tr>
+      <tr><td><code>OCRx</code></td><td>Output Compare Register – hodnota pro compare match</td></tr>
+      <tr><td><code>ICRx</code></td><td>Input Capture Register – zachycená hodnota TCNT při edge</td></tr>
+      <tr><td><code>TIMSKx</code></td><td>Interrupt Mask – povoluje/zakazuje interrupty</td></tr>
+      <tr><td><code>TIFRx</code></td><td>Interrupt Flags – příznaky událostí (overflow, compare, capture)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 03 PRESCALER -->
+<section class="section" id="prescaler">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Předdělička (Prescaler)</h2>
+  </div>
+
+  <p>Dělička frekvence před timerem. Snižuje clock → umožňuje měřit delší časy.</p>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém bez prescaleru</div>
+    <p>8-bit timer, CPU 16 MHz, prescaler = 1: Max count = 255. Overflow time = 255 / 16 000 000 = <strong>15.9 μs</strong> → příliš rychlé!</p>
+    <p style="margin-bottom:0">S prescalerem 1024: Timer clock = 16 MHz / 1024 = 15 625 Hz. Overflow = 255 / 15 625 = <strong>16.3 ms</strong> → rozumné!</p>
+  </div>
+
+  <div class="formula">
+    Timer_freq = CPU_clock / Prescaler
+    <div class="f-small">Overflow_time = Max_count × (1 / Timer_freq)</div>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Prescaler</th><th>Timer freq (16 MHz CPU)</th><th>8-bit overflow</th><th>16-bit overflow</th></tr>
+    <tr><td>1</td><td>16 MHz</td><td>16 μs</td><td>4.1 ms</td></tr>
+    <tr><td>8</td><td>2 MHz</td><td>128 μs</td><td>32.8 ms</td></tr>
+    <tr><td>64</td><td>250 kHz</td><td>1.02 ms</td><td>262 ms</td></tr>
+    <tr><td>256</td><td>62.5 kHz</td><td>4.1 ms</td><td>1.05 s</td></tr>
+    <tr><td>1024</td><td>15.6 kHz</td><td>16.3 ms</td><td>4.19 s</td></tr>
+  </table>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Trade-off</div>
+    <p style="margin-bottom:0"><strong>Menší prescaler</strong> = vyšší rozlišení, kratší max čas. <strong>Větší prescaler</strong> = nižší rozlišení, delší max čas.</p>
+  </div>
+</section>
+
+<!-- 04 NORMAL -->
+<section class="section" id="normal">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Normal Mode (Overflow)</h2>
+  </div>
+
+  <p>Nejjednodušší režim. Timer počítá od 0 do MAX, pak <strong>overflow</strong> → interrupt → vrátí se na 0.</p>
+
+  <div class="waveform">
+    <div class="wf-label">NORMAL MODE – 8-BIT TIMER</div>
+    <div style="font-size:12px;color:var(--accent-1)">
+      TCNT: 0 → 1 → 2 → ... → <span style="color:var(--accent-4)">254</span> → <span style="color:var(--accent-5)">255</span> → <span style="color:var(--accent-5)">0 (OVF!)</span> → 1 → 2 → ...
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:6px">↑ TOV flag nastaven → interrupt (pokud povolen)</div>
+  </div>
+
+  <p><strong>Použití:</strong> Periodické interrupty, software RTC, periodic task execution.</p>
+
+  <details>
+    <summary>Příklad kódu (AVR – Timer0 Overflow)</summary>
+    <div class="cli">
+      <span class="comment">// Timer0, prescaler 1024 → overflow každých 16.3 ms</span><br>
+      <span class="reg">TCCR0B</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">CS02</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">CS00</span>);  <span class="comment">// Prescaler 1024</span><br>
+      <span class="reg">TIMSK0</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">TOIE0</span>);  <span class="comment">// Enable overflow interrupt</span><br><br>
+      <span class="kw">ISR</span>(<span class="val">TIMER0_OVF_vect</span>) {<br>
+      &nbsp;&nbsp;<span class="comment">// Volá se každých ~16.3 ms</span><br>
+      }
+    </div>
+  </details>
+</section>
+
+<!-- 05 CTC -->
+<section class="section" id="ctc">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>CTC Mode (Clear Timer on Compare Match)</h2>
+  </div>
+
+  <p>Timer počítá od 0 do <strong>OCRx</strong>, pak se automaticky resetuje na 0. Přesné periodické intervaly!</p>
+
+  <div class="waveform">
+    <div class="wf-label">CTC MODE</div>
+    <div style="font-size:12px;color:var(--accent-1)">
+      TCNT: 0 → 1 → 2 → ... → <span style="color:var(--accent-3)">OCRx (match!)</span> → <span style="color:var(--accent-3)">0</span> → 1 → 2 → ... → <span style="color:var(--accent-3)">OCRx</span> → <span style="color:var(--accent-3)">0</span>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:6px">↑ OCF flag → interrupt + TCNT reset. Nastavitelná perioda změnou OCRx!</div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Výhoda oproti Normal mode</div>
+    <p style="margin-bottom:0"><strong>Přesný interval</strong> – nemusíš čekat na overflow (255). Změň OCRx = změň interval. Žádný offset error.</p>
+  </div>
+
+  <div class="formula">
+    OCRx = (CPU_clock / (Prescaler × Desired_freq)) − 1
+    <div class="f-small">Příklad: 1 kHz interrupt, 16 MHz CPU, prescaler 64 → OCR = (16M / (64 × 1000)) − 1 = <strong>249</strong></div>
+  </div>
+
+  <details>
+    <summary>Příklad kódu (AVR – CTC 1 kHz)</summary>
+    <div class="cli">
+      <span class="comment">// CTC mode, 1 kHz interrupt (každou 1 ms)</span><br>
+      <span class="reg">TCCR0A</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">WGM01</span>);  <span class="comment">// CTC mode</span><br>
+      <span class="reg">TCCR0B</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">CS01</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">CS00</span>);  <span class="comment">// Prescaler 64</span><br>
+      <span class="reg">OCR0A</span> = <span class="val">249</span>;  <span class="comment">// Compare value</span><br>
+      <span class="reg">TIMSK0</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">OCIE0A</span>);  <span class="comment">// Compare match interrupt</span><br><br>
+      <span class="kw">ISR</span>(<span class="val">TIMER0_COMPA_vect</span>) {<br>
+      &nbsp;&nbsp;<span class="comment">// Volá se přesně každou 1 ms</span><br>
+      }
+    </div>
+  </details>
+</section>
+
+<!-- 06 CAPTURE -->
+<section class="section" id="capture">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Input Capture Mode</h2>
+  </div>
+
+  <p>Zachytí (capture) aktuální hodnotu timeru při <strong>edge na pinu</strong> (ICP). Měření času mezi událostmi – hardwarově, bez CPU intervention!</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Jak to funguje</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Timer běží kontinuálně (free-running)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Edge na ICP pinu (rising/falling)</div><div class="step-desc">ICES bit: 1 = rising edge, 0 = falling edge</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">TCNT okamžitě zkopírován do ICR (Input Capture Register)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">ICF flag → interrupt (pokud povolen)</div></div></div>
+    </div>
+  </div>
+
+  <h3>Aplikace Input Capture</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Měření frekvence</h4>
+      <p>Čas mezi dvěma rising edges → perioda → freq = 1/perioda. Rising 1: time1 → Rising 2: time2 → Period = time2 − time1.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Měření duty cycle</h4>
+      <p>Rising: t1 → Falling: t2 → Rising: t3. HIGH_time = t2−t1. Period = t3−t1. Duty = HIGH/Period × 100%.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Ultrazvuk (HC-SR04)</h4>
+      <p>Echo pin: rising → start, falling → end. Duration = end − start. Distance = Duration_μs / 58 [cm].</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 COMPARE -->
+<section class="section" id="compare">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Output Compare Mode</h2>
+  </div>
+
+  <p>Timer porovnává TCNT s OCRx. Když <strong>TCNT == OCRx</strong> → automatická akce na output pinu. Základ pro PWM!</p>
+
+  <table class="compare-table">
+    <tr><th>Akce při match</th><th>Popis</th></tr>
+    <tr><td><strong>Normal</strong></td><td>Žádná akce na pinu (jen interrupt)</td></tr>
+    <tr><td><strong>Toggle</strong></td><td>Pin se přepne (LOW↔HIGH) → square wave</td></tr>
+    <tr><td><strong>Clear</strong></td><td>Pin → LOW</td></tr>
+    <tr><td><strong>Set</strong></td><td>Pin → HIGH</td></tr>
+  </table>
+
+  <div class="formula">
+    Toggle: Output_freq = Timer_freq / (2 × (OCRx + 1))
+    <div class="f-small">Příklad: 1 kHz tone, 250 kHz timer → OCR = (250000 / (2 × 1000)) − 1 = <strong>124</strong></div>
+  </div>
+</section>
+
+<!-- 08 PWM INTRO -->
+<section class="section" id="pwm-intro">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>PWM – princip</h2>
+  </div>
+
+  <p><strong>PWM</strong> (Pulse Width Modulation) = simulace analogového výstupu digitálním signálem. Mění <strong>duty cycle</strong> (poměr HIGH/LOW) při konstantní frekvenci.</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Klíčové parametry</div>
+    <ul>
+      <li><strong>Frequency</strong> – jak rychle se opakuje cyklus (Hz)</li>
+      <li><strong>Duty Cycle</strong> – % času kdy signál HIGH</li>
+      <li><strong>Resolution</strong> – kolik kroků (8-bit = 256 kroků)</li>
+    </ul>
+  </div>
+
+  <!-- PWM duty cycle visualization -->
+  <div class="pwm-visual">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:12px">DUTY CYCLE VIZUALIZACE</div>
+
+    <div class="pwm-row">
+      <span class="pwm-label" style="color:var(--accent-5)">0%</span>
+      <div class="pwm-bar">
+        <div class="pwm-low" style="background:rgba(107,114,128,0.15);color:var(--text-muted);flex:1">LOW</div>
+      </div>
+      <span class="pwm-pct" style="color:var(--accent-5)">0 V</span>
+    </div>
+
+    <div class="pwm-row">
+      <span class="pwm-label" style="color:var(--accent-4)">25%</span>
+      <div class="pwm-bar">
+        <div class="pwm-high" style="background:rgba(251,191,36,0.3);color:var(--accent-4);flex:1">HIGH</div>
+        <div class="pwm-low" style="background:rgba(107,114,128,0.15);color:var(--text-muted);flex:3"></div>
+      </div>
+      <span class="pwm-pct" style="color:var(--accent-4)">1.25 V</span>
+    </div>
+
+    <div class="pwm-row">
+      <span class="pwm-label" style="color:var(--accent-6)">50%</span>
+      <div class="pwm-bar">
+        <div class="pwm-high" style="background:rgba(251,146,60,0.3);color:var(--accent-6);flex:1">HIGH</div>
+        <div class="pwm-low" style="background:rgba(107,114,128,0.15);color:var(--text-muted);flex:1"></div>
+      </div>
+      <span class="pwm-pct" style="color:var(--accent-6)">2.5 V</span>
+    </div>
+
+    <div class="pwm-row">
+      <span class="pwm-label" style="color:var(--accent-1)">75%</span>
+      <div class="pwm-bar">
+        <div class="pwm-high" style="background:rgba(96,165,250,0.3);color:var(--accent-1);flex:3">HIGH</div>
+        <div class="pwm-low" style="background:rgba(107,114,128,0.15);color:var(--text-muted);flex:1"></div>
+      </div>
+      <span class="pwm-pct" style="color:var(--accent-1)">3.75 V</span>
+    </div>
+
+    <div class="pwm-row">
+      <span class="pwm-label" style="color:var(--accent-3)">100%</span>
+      <div class="pwm-bar">
+        <div class="pwm-high" style="background:rgba(52,211,153,0.3);color:var(--accent-3);flex:1">HIGH</div>
+      </div>
+      <span class="pwm-pct" style="color:var(--accent-3)">5 V</span>
+    </div>
+  </div>
+
+  <div class="formula">
+    V_avg = Vcc × Duty_cycle
+    <div class="f-small">Příklad: 50% duty @ 5 V → V_avg = 5 × 0.5 = 2.5 V</div>
+  </div>
+</section>
+
+<!-- 09 FAST PWM -->
+<section class="section" id="fast-pwm">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Fast PWM</h2>
+  </div>
+
+  <p>Timer počítá od 0 do MAX (255), pak se okamžitě resetuje. <strong>Nejvyšší frekvence</strong> PWM.</p>
+
+  <div class="waveform">
+    <div class="wf-label">FAST PWM (NON-INVERTED)</div>
+    <div style="font-size:12px;margin-top:8px">
+      <span style="color:var(--accent-1)">TCNT:</span> <span style="color:var(--text-muted)">0 ──▲── </span><span style="color:var(--accent-4)">OCRx</span><span style="color:var(--text-muted)"> ──▲── </span><span style="color:var(--accent-5)">MAX</span><span style="color:var(--text-muted)"> → 0</span><br>
+      <span style="color:var(--accent-3)">OCx pin:</span> <span style="color:var(--accent-3)">▔▔▔▔▔▔▔▔</span><span style="color:var(--text-muted)">▁▁▁▁▁▁▁▁▁</span>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:6px">TCNT=0 → pin HIGH | TCNT=OCRx → pin LOW | TCNT=MAX → reset</div>
+  </div>
+
+  <div class="formula">
+    Duty_cycle = OCRx / (MAX + 1) × 100%
+    <div class="f-small">PWM_freq = Timer_freq / (MAX + 1)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Příklad: 8-bit Fast PWM</div>
+    <p>CPU 16 MHz, prescaler 64: Timer_freq = 250 kHz. PWM_freq = 250000 / 256 = <strong>976 Hz</strong>.</p>
+    <ul>
+      <li>OCR = 0 → <strong>0%</strong> duty</li>
+      <li>OCR = 128 → <strong>50%</strong> duty</li>
+      <li>OCR = 255 → <strong>100%</strong> duty (téměř)</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>Příklad kódu (AVR – Fast PWM Timer0)</summary>
+    <div class="cli">
+      <span class="comment">// Fast PWM, non-inverted, prescaler 64</span><br>
+      <span class="reg">TCCR0A</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">WGM01</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">WGM00</span>);  <span class="comment">// Fast PWM</span><br>
+      <span class="reg">TCCR0A</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">COM0A1</span>);  <span class="comment">// Non-inverted output</span><br>
+      <span class="reg">TCCR0B</span> <span class="kw">|=</span> (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">CS01</span>) | (<span class="val">1</span><span class="kw">&lt;&lt;</span><span class="val">CS00</span>);  <span class="comment">// Prescaler 64</span><br><br>
+      <span class="reg">OCR0A</span> = <span class="val">128</span>;  <span class="comment">// 50% duty cycle</span><br>
+      <span class="comment">// OC0A pin (PD6) nyní generuje PWM!</span>
+    </div>
+  </details>
+</section>
+
+<!-- 10 PHASE CORRECT -->
+<section class="section" id="phase-pwm">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Phase-Correct PWM</h2>
+  </div>
+
+  <p>Timer počítá <strong>UP (0→MAX)</strong>, pak <strong>DOWN (MAX→0)</strong>. Symetrický PWM. Polovina frekvence Fast PWM, ale lepší pro motory.</p>
+
+  <div class="waveform">
+    <div class="wf-label">PHASE-CORRECT PWM</div>
+    <div style="font-size:12px;margin-top:8px">
+      <span style="color:var(--accent-1)">TCNT:</span> <span style="color:var(--text-muted)">0 → </span><span style="color:var(--accent-4)">MAX</span><span style="color:var(--text-muted)"> → 0 → </span><span style="color:var(--accent-4)">MAX</span><span style="color:var(--text-muted)"> → 0 ...</span><br>
+      <span style="color:var(--text-muted)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▲&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼&nbsp;&nbsp;&nbsp;▲&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼</span>
+    </div>
+  </div>
+
+  <div class="formula">
+    PWM_freq = Timer_freq / (2 × MAX)
+    <div class="f-small">→ Polovina frekvence Fast PWM</div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Kdy co použít?</div>
+    <p><strong>Fast PWM</strong> – LED dimming, audio, high-freq signály (max frekvence).</p>
+    <p style="margin-bottom:0"><strong>Phase-Correct</strong> – motor control, když potřebuješ symetrii (méně harmonických).</p>
+  </div>
+</section>
+
+<!-- 11 PWM APPS -->
+<section class="section" id="pwm-apps">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>PWM aplikace</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">LED Dimming</h4>
+      <p>Oko vidí průměrný jas. PWM > 100 Hz → žádné blikání. OCR0A = brightness (0–255). Pin → [R 220Ω] → LED → GND.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">DC Motor Speed</h4>
+      <p>Duty cycle = rychlost. Motor driver nutný (L293D, MOSFET). 0% = stojí, 100% = plná rychlost.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Audio/Tone</h4>
+      <p>50% duty = square wave. Změň frekvenci = změň tón. Střední C (261 Hz): OCR ≈ 477.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Analog Output (DAC)</h4>
+      <p>PWM + RC low-pass filter → analogové napětí. V_out = Vcc × (OCR/255).</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Servo Motor Control</h3>
+  <p>Servo potřebuje PWM s periodou <strong>20 ms (50 Hz)</strong>. Pozice = délka HIGH pulzu (1–2 ms).</p>
+
+  <div class="servo-visual">
+    <div class="servo-pos" style="background:rgba(248,113,113,0.12);color:var(--accent-5)">
+      <span class="sp-angle">0°</span>
+      <span class="sp-pulse">1.0 ms pulse</span>
+    </div>
+    <div class="servo-pos" style="background:rgba(251,191,36,0.12);color:var(--accent-4)">
+      <span class="sp-angle">90°</span>
+      <span class="sp-pulse">1.5 ms pulse</span>
+    </div>
+    <div class="servo-pos" style="background:rgba(52,211,153,0.12);color:var(--accent-3)">
+      <span class="sp-angle">180°</span>
+      <span class="sp-pulse">2.0 ms pulse</span>
+    </div>
+  </div>
+
+  <details>
+    <summary>Servo konfigurace (16-bit timer)</summary>
+    <div class="cli">
+      <span class="comment">// 50 Hz PWM, CPU 16 MHz, prescaler 8</span><br>
+      <span class="comment">// Timer freq = 2 MHz → 20 ms = 40000 ticks</span><br>
+      <span class="reg">ICR1</span> = <span class="val">40000</span>;  <span class="comment">// TOP (20 ms period)</span><br><br>
+      <span class="reg">OCR1A</span> = <span class="val">2000</span>;  <span class="comment">// 0°  (1.0 ms)</span><br>
+      <span class="reg">OCR1A</span> = <span class="val">3000</span>;  <span class="comment">// 90° (1.5 ms)</span><br>
+      <span class="reg">OCR1A</span> = <span class="val">4000</span>;  <span class="comment">// 180° (2.0 ms)</span>
+    </div>
+  </details>
+</section>
+
+<!-- 12 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">TIMER / COUNTER / PRESCALER</p>
+    <ul>
+      <li><strong>Timer</strong> = interní clock (měření času). <strong>Counter</strong> = externí události (počítání pulzů)</li>
+      <li><strong>Prescaler</strong> dělí clock → delší časy. Trade-off: rozlišení vs rozsah</li>
+      <li>Registry: <code>TCNTx</code> (počítá), <code>TCCRx</code> (config), <code>OCRx</code> (compare), <code>ICRx</code> (capture)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">REŽIMY</p>
+    <ul>
+      <li><strong>Normal</strong> – overflow interrupt (0→MAX→0). Periodické úlohy</li>
+      <li><strong>CTC</strong> – compare match (0→OCRx→0). <strong>Přesné intervaly!</strong> OCR = (CPU / (Prescaler × freq)) − 1</li>
+      <li><strong>Input Capture</strong> – zachytí TCNT při edge. Měření frekvence, duty cycle, ultrazvuk</li>
+      <li><strong>Output Compare</strong> – akce na pinu (Toggle/Clear/Set). Základ pro PWM</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PWM</p>
+    <ul>
+      <li><strong>Fast PWM</strong> – max frekvence (0→MAX→0). freq = Timer_freq / (MAX+1). LED, audio</li>
+      <li><strong>Phase-Correct</strong> – symetrický (0→MAX→0→MAX). freq = Timer/(2×MAX). Motory</li>
+      <li><strong>Duty cycle</strong> = OCRx / (MAX+1) × 100%. V_avg = Vcc × duty</li>
+      <li><strong>Aplikace:</strong> LED dimming (>100 Hz), servo (50 Hz, 1–2 ms), DC motor, audio, DAC (+ RC filtr)</li>
+      <li><strong>Servo:</strong> 20 ms perioda. 1 ms = 0°, 1.5 ms = 90°, 2 ms = 180°</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

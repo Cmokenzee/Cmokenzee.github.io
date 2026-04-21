@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 4: Referenční model OSI/ISO</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --l1: #f87171;
+    --l2: #fb923c;
+    --l3: #fbbf24;
+    --l4: #34d399;
+    --l5: #60a5fa;
+    --l6: #a78bfa;
+    --l7: #f472b6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    padding: 0;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1d2e 50%, #1e1528 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(96,165,250,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(167,139,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--heading);
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+  }
+  .hero p {
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-size: 15px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .toc h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    margin-bottom: 16px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li {
+    counter-increment: toc;
+    padding: 4px 0;
+    font-size: 14px;
+    break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero) ' ';
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-right: 6px;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .toc a:hover { color: var(--accent-1); }
+
+  /* Sections */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    min-width: 24px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--heading);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 28px 0 12px;
+  }
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin: 20px 0 8px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  /* Layer stack */
+  .layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 20px 0 28px;
+  }
+  .layer-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr 1fr;
+    gap: 2px;
+    font-size: 13px;
+    align-items: stretch;
+  }
+  .layer-row.header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .layer-row.header > div {
+    padding: 6px 10px;
+  }
+  .layer-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 6px 0 0 6px;
+  }
+  .layer-name, .layer-func, .layer-proto {
+    padding: 10px 14px;
+    background: var(--bg-card);
+  }
+  .layer-name { font-weight: 600; color: var(--heading); }
+  .layer-func { color: var(--text); }
+  .layer-proto {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .l7 .layer-num { background: var(--l7); color: #0f1117; }
+  .l6 .layer-num { background: var(--l6); color: #0f1117; }
+  .l5 .layer-num { background: var(--l5); color: #0f1117; }
+  .l4 .layer-num { background: var(--l4); color: #0f1117; }
+  .l3 .layer-num { background: var(--l3); color: #0f1117; }
+  .l2 .layer-num { background: var(--l2); color: #0f1117; }
+  .l1 .layer-num { background: var(--l1); color: #0f1117; }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .card.highlight {
+    border-left: 3px solid var(--accent-1);
+  }
+  .card.key {
+    border-left: 3px solid var(--accent-4);
+    background: rgba(251,191,36,0.04);
+  }
+  .card.warn {
+    border-left: 3px solid var(--accent-5);
+    background: rgba(248,113,113,0.04);
+  }
+
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Layer detail cards */
+  .layer-detail {
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .layer-detail::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  .layer-detail.dl1::before { background: var(--l1); }
+  .layer-detail.dl2::before { background: var(--l2); }
+  .layer-detail.dl3::before { background: var(--l3); }
+  .layer-detail.dl4::before { background: var(--l4); }
+  .layer-detail.dl5::before { background: var(--l5); }
+  .layer-detail.dl6::before { background: var(--l6); }
+  .layer-detail.dl7::before { background: var(--l7); }
+
+  .layer-detail .layer-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .dl1 .layer-badge { background: rgba(248,113,113,0.15); color: var(--l1); }
+  .dl2 .layer-badge { background: rgba(251,146,60,0.15); color: var(--l2); }
+  .dl3 .layer-badge { background: rgba(251,191,36,0.15); color: var(--l3); }
+  .dl4 .layer-badge { background: rgba(52,211,153,0.15); color: var(--l4); }
+  .dl5 .layer-badge { background: rgba(96,165,250,0.15); color: var(--l5); }
+  .dl6 .layer-badge { background: rgba(167,139,250,0.15); color: var(--l6); }
+  .dl7 .layer-badge { background: rgba(244,114,182,0.15); color: var(--l7); }
+
+  .layer-detail h3 {
+    margin-top: 0;
+    font-size: 19px;
+  }
+  .layer-detail .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .layer-detail .meta span {
+    margin-right: 18px;
+  }
+
+  /* Bullet lists */
+  ul {
+    padding-left: 20px;
+    margin: 8px 0 14px;
+  }
+  li {
+    margin-bottom: 5px;
+    line-height: 1.6;
+  }
+  li::marker {
+    color: var(--text-muted);
+  }
+
+  /* Inline code */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(96,165,250,0.1);
+    color: var(--accent-1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Comparison table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .compare-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  /* PDU flow */
+  .pdu-flow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .pdu-item {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .pdu-arrow {
+    color: var(--text-muted);
+    font-size: 16px;
+  }
+
+  /* Handshake steps */
+  .steps {
+    margin: 14px 0;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42,46,61,0.5);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-3);
+    min-width: 20px;
+    padding-top: 2px;
+  }
+  .step-content {
+    flex: 1;
+  }
+  .step-label {
+    font-weight: 600;
+    color: var(--heading);
+    font-size: 14px;
+  }
+  .step-desc {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 3px;
+  }
+
+  /* Device cards grid */
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .device-card {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .device-card h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+  }
+  .device-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Tools list */
+  .tool-item {
+    display: grid;
+    grid-template-columns: 120px 80px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(42,46,61,0.5);
+    font-size: 13px;
+    align-items: baseline;
+  }
+  .tool-item:last-child { border-bottom: none; }
+  .tool-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--accent-1);
+    font-size: 13px;
+  }
+  .tool-layer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Mnemonic */
+  .mnemonic {
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(96,165,250,0.08));
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .mnemonic .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 8px;
+  }
+  .mnemonic .phrase {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--heading);
+    letter-spacing: 0.5px;
+  }
+  .mnemonic .phrase b {
+    color: var(--accent-2);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .layer-row { grid-template-columns: 32px 1fr; }
+    .layer-row.header { display: none; }
+    .layer-func, .layer-proto { display: none; }
+    .tool-item { grid-template-columns: 1fr; gap: 4px; }
+    .device-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Collapsible */
+  details {
+    margin: 12px 0;
+  }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--heading);
+    padding: 10px 0;
+    font-size: 14px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details summary::before {
+    content: '▸';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-1);
+    transition: transform 0.2s;
+  }
+  details[open] summary::before {
+    transform: rotate(90deg);
+  }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .tag-tcp { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+  .tag-udp { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+
+  strong { color: var(--heading); }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 4</div>
+  <h1>Referenční model OSI/ISO<br>a síťové prvky</h1>
+  <p>Studijní materiál • 7 vrstev • zapouzdření • zařízení • diagnostika</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#intro">Co je OSI model a proč existuje</a></li>
+    <li><a href="#layers">7 vrstev – přehled</a></li>
+    <li><a href="#pdu">PDU a zapouzdření</a></li>
+    <li><a href="#l1">L1 – Fyzická vrstva</a></li>
+    <li><a href="#l2">L2 – Linková vrstva</a></li>
+    <li><a href="#l3">L3 – Síťová vrstva</a></li>
+    <li><a href="#l4">L4 – Transportní vrstva</a></li>
+    <li><a href="#l567">L5–L7 – Session, Presentation, Application</a></li>
+    <li><a href="#tcpip">OSI vs TCP/IP</a></li>
+    <li><a href="#devices">Síťové prvky a průchod dat</a></li>
+    <li><a href="#tools">Diagnostické nástroje</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Co je OSI model a proč existuje</h2>
+  </div>
+  <p>OSI (Open Systems Interconnection) je referenční model od ISO (1984). Rozděluje síťovou komunikaci do <strong>7 vrstev</strong>, z nichž každá má jasně definovanou odpovědnost.</p>
+  
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Proč existuje?</div>
+    <ul>
+      <li><strong>Standardizace</strong> – zařízení různých výrobců spolu komunikují</li>
+      <li><strong>Modularita</strong> – změna v jedné vrstvě neovlivní ostatní</li>
+      <li><strong>Troubleshooting</strong> – izoluješ problém na konkrétní vrstvu</li>
+    </ul>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Protokol vs. Rozhraní</div>
+    <p><strong>Protokol</strong> = horizontální komunikace → stejná vrstva, <em>různá zařízení</em> (např. HTTP mezi prohlížečem a serverem)</p>
+    <p style="margin-bottom:0;"><strong>Rozhraní</strong> = vertikální komunikace → různé vrstvy, <em>stejné zařízení</em> (např. aplikace volá <code>send()</code> přes socket API)</p>
+  </div>
+</section>
+
+<!-- 02 LAYERS OVERVIEW -->
+<section class="section" id="layers">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>7 vrstev – přehled</h2>
+  </div>
+
+  <div class="mnemonic">
+    <div class="label">Mnemotechnická pomůcka (zdola nahoru)</div>
+    <div class="phrase">"<b>P</b>lease <b>D</b>o <b>N</b>ot <b>T</b>hrow <b>S</b>ausage <b>P</b>izza <b>A</b>way"</div>
+  </div>
+
+  <div class="layer-stack">
+    <div class="layer-row header">
+      <div></div>
+      <div>Vrstva</div>
+      <div>Funkce</div>
+      <div>Protokoly</div>
+    </div>
+    <div class="layer-row l7">
+      <div class="layer-num">7</div>
+      <div class="layer-name">Aplikační</div>
+      <div class="layer-func">Síťové služby pro aplikace</div>
+      <div class="layer-proto">HTTP, FTP, DNS, SMTP, SSH</div>
+    </div>
+    <div class="layer-row l6">
+      <div class="layer-num">6</div>
+      <div class="layer-name">Prezentační</div>
+      <div class="layer-func">Formátování, šifrování, komprese</div>
+      <div class="layer-proto">TLS/SSL, JPEG, MIME</div>
+    </div>
+    <div class="layer-row l5">
+      <div class="layer-num">5</div>
+      <div class="layer-name">Relační</div>
+      <div class="layer-func">Řízení relací, synchronizace</div>
+      <div class="layer-proto">NetBIOS, RPC, SIP</div>
+    </div>
+    <div class="layer-row l4">
+      <div class="layer-num">4</div>
+      <div class="layer-name">Transportní</div>
+      <div class="layer-func">End-to-end spojení, spolehlivost</div>
+      <div class="layer-proto">TCP, UDP</div>
+    </div>
+    <div class="layer-row l3">
+      <div class="layer-num">3</div>
+      <div class="layer-name">Síťová</div>
+      <div class="layer-func">Logické adresování, routing</div>
+      <div class="layer-proto">IP, ICMP, ARP</div>
+    </div>
+    <div class="layer-row l2">
+      <div class="layer-num">2</div>
+      <div class="layer-name">Linková</div>
+      <div class="layer-func">Fyzické adresování, rámce</div>
+      <div class="layer-proto">Ethernet, Wi-Fi, MAC</div>
+    </div>
+    <div class="layer-row l1">
+      <div class="layer-num">1</div>
+      <div class="layer-name">Fyzická</div>
+      <div class="layer-func">Přenos bitů, signály</div>
+      <div class="layer-proto">Kabely, konektory, huby</div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 PDU -->
+<section class="section" id="pdu">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>PDU a zapouzdření</h2>
+  </div>
+
+  <p><strong>PDU</strong> (Protocol Data Unit) je jednotka dat specifická pro každou vrstvu. Každá vrstva přidává svou hlavičku (header) – tomu říkáme <strong>zapouzdření (encapsulation)</strong>.</p>
+
+  <div class="pdu-flow">
+    <span class="pdu-item" style="background:rgba(244,114,182,0.15);color:var(--l7);">L7–L5: DATA</span>
+    <span class="pdu-arrow">→</span>
+    <span class="pdu-item" style="background:rgba(52,211,153,0.15);color:var(--l4);">L4: SEGMENT / DATAGRAM</span>
+    <span class="pdu-arrow">→</span>
+    <span class="pdu-item" style="background:rgba(251,191,36,0.15);color:var(--l3);">L3: PAKET</span>
+    <span class="pdu-arrow">→</span>
+    <span class="pdu-item" style="background:rgba(251,146,60,0.15);color:var(--l2);">L2: RÁMEC</span>
+    <span class="pdu-arrow">→</span>
+    <span class="pdu-item" style="background:rgba(248,113,113,0.15);color:var(--l1);">L1: BITY</span>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Zapouzdření vs. dekapsulace</div>
+    <p><strong>Zapouzdření</strong> = odesílání: L7→L1, každá vrstva přidává svůj header.</p>
+    <p style="margin-bottom:0"><strong>Dekapsulace</strong> = příjem: L1→L7, každá vrstva odstraňuje svůj header.</p>
+  </div>
+
+  <details>
+    <summary>Příklad zapouzdření HTTP požadavku</summary>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">L7</div>
+        <div class="step-content">
+          <div class="step-label">Aplikace vytvoří HTTP GET požadavek</div>
+          <div class="step-desc">PDU = DATA (HTTP zpráva)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">L4</div>
+        <div class="step-content">
+          <div class="step-label">Přidá TCP hlavičku (+20 B)</div>
+          <div class="step-desc">Source port, dest port (80), sequence number, flags → PDU = SEGMENT</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">L3</div>
+        <div class="step-content">
+          <div class="step-label">Přidá IP hlavičku (+20 B)</div>
+          <div class="step-desc">Source IP, dest IP, TTL, protocol (6=TCP) → PDU = PAKET</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">L2</div>
+        <div class="step-content">
+          <div class="step-label">Přidá Ethernet header (+14 B) a FCS trailer (+4 B)</div>
+          <div class="step-desc">Dest MAC, source MAC, EtherType (0x0800) → PDU = RÁMEC</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">L1</div>
+        <div class="step-content">
+          <div class="step-label">Převod na signály</div>
+          <div class="step-desc">Elektrické / optické / rádiové → PDU = BITY</div>
+        </div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- 04 L1 -->
+<section class="section" id="l1">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Vrstvy v detailu</h2>
+  </div>
+
+  <div class="layer-detail dl1">
+    <span class="layer-badge">L1 — FYZICKÁ</span>
+    <h3>Physical Layer</h3>
+    <div class="meta">
+      <span>PDU: Bity</span>
+      <span>Zařízení: Hub, Repeater</span>
+    </div>
+    <p>Přenos surových bitů (0 a 1) přes fyzické médium. Definuje elektrické, mechanické a funkční parametry spojení.</p>
+    <ul>
+      <li><strong>Kódování</strong> – Manchester, NRZ, 4B/5B</li>
+      <li><strong>Modulace</strong> – ASK, FSK, PSK (modemy, Wi-Fi)</li>
+      <li><strong>Synchronizace</strong> hodin odesílatele a příjemce</li>
+      <li><strong>Multiplexing</strong> – TDM, FDM, WDM</li>
+    </ul>
+    <details>
+      <summary>Přenosová média</summary>
+      <ul>
+        <li><strong>Měděný kabel</strong> – UTP (Cat5e = 1 Gbps, Cat6 = 10 Gbps), STP, koaxiální</li>
+        <li><strong>Optické vlákno</strong> – Single-mode (desítky km, laser), Multi-mode (do 2 km, LED). Imunní vůči EMI, 100 Gbps+</li>
+        <li><strong>Bezdrátové</strong> – Wi-Fi (802.11), Bluetooth, 4G/5G, satelit</li>
+      </ul>
+    </details>
+  </div>
+</section>
+
+<!-- 05 L2 -->
+<section class="section" id="l2">
+  <div class="layer-detail dl2">
+    <span class="layer-badge">L2 — LINKOVÁ</span>
+    <h3>Data Link Layer</h3>
+    <div class="meta">
+      <span>PDU: Rámec (Frame)</span>
+      <span>Zařízení: Switch, Bridge, AP</span>
+    </div>
+    <p>Spolehlivý přenos rámců mezi <em>přímo spojenými</em> uzly. Přidává MAC adresování a detekci chyb.</p>
+    
+    <h4>Dvě podvrstvy</h4>
+    <ul>
+      <li><strong>LLC</strong> (Logical Link Control) – multiplexování protokolů, flow control</li>
+      <li><strong>MAC</strong> (Media Access Control) – MAC adresy, přístup k médiu, formátování rámců</li>
+    </ul>
+
+    <h4>MAC adresa</h4>
+    <p>48-bit (6 B) unikátní adresa síťové karty. Formát: <code>AA:BB:CC:DD:EE:FF</code>. První 3 B = OUI (výrobce), poslední 3 B = unikátní číslo. Broadcast: <code>FF:FF:FF:FF:FF:FF</code>.</p>
+
+    <h4>Přístup k médiu</h4>
+    <ul>
+      <li><strong>CSMA/CD</strong> – Ethernet (detekce kolizí, dnes full-duplex → není potřeba)</li>
+      <li><strong>CSMA/CA</strong> – Wi-Fi (vyhýbání se kolizím)</li>
+    </ul>
+
+    <h4>Detekce chyb</h4>
+    <p><strong>FCS</strong> (Frame Check Sequence) – 4 B CRC-32 na konci rámce. Chyba → rámec zahozen (neopravuje, oprava je na TCP).</p>
+
+    <details>
+      <summary>Struktura Ethernet rámce</summary>
+      <ul>
+        <li>Preamble (7 B) + SFD (1 B) – synchronizace</li>
+        <li>Destination MAC (6 B) + Source MAC (6 B)</li>
+        <li>EtherType (2 B) – <code>0x0800</code> = IPv4, <code>0x0806</code> = ARP, <code>0x86DD</code> = IPv6</li>
+        <li>Payload (46–1500 B) – min. 46 B (jinak padding)</li>
+        <li>FCS (4 B) – CRC-32</li>
+        <li>Celkem: 64–1518 B (bez preamble). Jumbo frames: až 9000 B</li>
+      </ul>
+    </details>
+  </div>
+</section>
+
+<!-- 06 L3 -->
+<section class="section" id="l3">
+  <div class="layer-detail dl3">
+    <span class="layer-badge">L3 — SÍŤOVÁ</span>
+    <h3>Network Layer</h3>
+    <div class="meta">
+      <span>PDU: Paket (Packet)</span>
+      <span>Zařízení: Router, L3 Switch</span>
+    </div>
+    <p>Logické adresování a směrování paketů přes různé sítě. Umožňuje komunikaci mezi zařízeními v různých LAN/WAN.</p>
+
+    <h4>IP adresy</h4>
+    <ul>
+      <li><strong>IPv4</strong> – 32 bit, 4.3 mld adres, formát: <code>192.168.1.1</code></li>
+      <li><strong>IPv6</strong> – 128 bit, formát: <code>2001:0db8:85a3::8a2e:0370:7334</code></li>
+    </ul>
+
+    <h4>Routing</h4>
+    <p>Routery používají <strong>routing tabulky</strong> (destination network, next hop, metric). Routing protokoly: <strong>RIP</strong> (distance vector, max 15 hopů), <strong>OSPF</strong> (link state), <strong>BGP</strong> (internet backbone), EIGRP (Cisco).</p>
+
+    <h4>Fragmentace</h4>
+    <p>Pokud paket > MTU (Ethernet = 1500 B) → fragmentace. IPv4: routery mohou fragmentovat. IPv6: fragmentuje POUZE zdroj.</p>
+
+    <h4>TTL (Time To Live)</h4>
+    <p>Každý router sníží TTL o 1. Když TTL = 0 → paket zahozen + ICMP Time Exceeded. Využívá <code>traceroute</code>.</p>
+
+    <details>
+      <summary>IPv4 hlavička (20 B)</summary>
+      <p>Version, IHL, DSCP, Total Length, Identification, Flags (DF, MF), Fragment Offset, TTL, Protocol (1=ICMP, 6=TCP, 17=UDP), Header Checksum, Source IP, Destination IP, Options</p>
+    </details>
+  </div>
+</section>
+
+<!-- 07 L4 -->
+<section class="section" id="l4">
+  <div class="layer-detail dl4">
+    <span class="layer-badge">L4 — TRANSPORTNÍ</span>
+    <h3>Transport Layer</h3>
+    <div class="meta">
+      <span>PDU: Segment (TCP) / Datagram (UDP)</span>
+      <span>Implementace: v koncových zařízeních (ne routerech!)</span>
+    </div>
+    <p>End-to-end spojení mezi aplikacemi. Segmentace dat, multiplexing portů, spolehlivý (TCP) nebo nespolehlivý (UDP) přenos.</p>
+
+    <h4>Porty (16 bit, 0–65535)</h4>
+    <ul>
+      <li><strong>Well-known</strong> (0–1023): HTTP 80, HTTPS 443, SSH 22, FTP 21, DNS 53, SMTP 25</li>
+      <li><strong>Registered</strong> (1024–49151): registrované aplikace</li>
+      <li><strong>Dynamic/Ephemeral</strong> (49152–65535): dočasné</li>
+    </ul>
+
+    <div class="device-grid">
+      <div class="device-card">
+        <h4><span class="tag tag-tcp">TCP</span> Connection-oriented</h4>
+        <p>Spolehlivý – ACK, sequence numbers, retransmission, flow control, congestion control. Header 20 B.</p>
+      </div>
+      <div class="device-card">
+        <h4><span class="tag tag-udp">UDP</span> Connectionless</h4>
+        <p>Nespolehlivý – žádné ACK, žádné pořadí. Rychlý, nízký overhead. Header 8 B. DNS, VoIP, streaming, hry.</p>
+      </div>
+    </div>
+
+    <details>
+      <summary>TCP Three-way Handshake</summary>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-label">SYN → (klient → server)</div>
+            <div class="step-desc">SYN=1, seq=1000. „Chci navázat spojení."</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-label">SYN-ACK ← (server → klient)</div>
+            <div class="step-desc">SYN=1, ACK=1, seq=5000, ack=1001. „Souhlasím, potvrzuji tvé 1000."</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-label">ACK → (klient → server)</div>
+            <div class="step-desc">ACK=1, seq=1001, ack=5001. „Potvrzuji, spojení navázáno!"</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>TCP Four-way Handshake (ukončení)</summary>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">FIN → klient chce ukončit</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">ACK ← server potvrzuje FIN</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">FIN ← server chce ukončit</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">ACK → klient potvrzuje, spojení uzavřeno</div></div></div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 08 L5-L7 -->
+<section class="section" id="l567">
+  <div class="layer-detail dl5">
+    <span class="layer-badge">L5 — RELAČNÍ (Session)</span>
+    <h3>Session Layer</h3>
+    <div class="meta"><span>PDU: Data</span><span style="color:var(--accent-5);">V TCP/IP neexistuje samostatně!</span></div>
+    <p>Spravuje relace – navázání, udržování, ukončení. Dialog control (half/full-duplex), checkpointing (restart od posledního bodu, ne od začátku).</p>
+    <p>Příklady: NetBIOS, RPC, SIP, web cookies/session IDs, JWT tokeny.</p>
+  </div>
+
+  <div class="layer-detail dl6">
+    <span class="layer-badge">L6 — PREZENTAČNÍ (Presentation)</span>
+    <h3>Presentation Layer</h3>
+    <div class="meta"><span>PDU: Data</span><span style="color:var(--accent-5);">V TCP/IP neexistuje samostatně!</span></div>
+    <ul>
+      <li><strong>Kódování</strong> – ASCII, Unicode (UTF-8), byte order</li>
+      <li><strong>Šifrování</strong> – TLS/SSL (HTTPS), AES, RSA</li>
+      <li><strong>Komprese</strong> – gzip, JPEG, H.264, MP3</li>
+      <li><strong>Serializace</strong> – JSON, XML, Protocol Buffers</li>
+    </ul>
+  </div>
+
+  <div class="layer-detail dl7">
+    <span class="layer-badge">L7 — APLIKAČNÍ (Application)</span>
+    <h3>Application Layer</h3>
+    <div class="meta"><span>PDU: Data / Message</span><span>V TCP/IP zahrnuje L5+L6+L7</span></div>
+    <p>Síťové služby přímo pro uživatelské aplikace.</p>
+
+    <table class="compare-table">
+      <tr><th>Protokol</th><th>Port</th><th>Funkce</th></tr>
+      <tr><td><strong>HTTP/S</strong></td><td>80 / 443</td><td>Web (GET, POST, PUT, DELETE)</td></tr>
+      <tr><td><strong>FTP</strong></td><td>21 / 20</td><td>Přenos souborů (SFTP na portu 22)</td></tr>
+      <tr><td><strong>SMTP</strong></td><td>25 / 587</td><td>Odesílání emailů</td></tr>
+      <tr><td><strong>POP3 / IMAP</strong></td><td>110 / 143</td><td>Stahování emailů (POP3 maže, IMAP sync)</td></tr>
+      <tr><td><strong>DNS</strong></td><td>53</td><td>Překlad doménových jmen → IP</td></tr>
+      <tr><td><strong>DHCP</strong></td><td>67/68</td><td>Automatické přidělování IP</td></tr>
+      <tr><td><strong>SSH</strong></td><td>22</td><td>Šifrovaný vzdálený přístup</td></tr>
+      <tr><td><strong>RDP</strong></td><td>3389</td><td>Vzdálená plocha Windows</td></tr>
+      <tr><td><strong>SNMP</strong></td><td>161/162</td><td>Monitoring síťových zařízení</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 09 OSI vs TCP/IP -->
+<section class="section" id="tcpip">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>OSI vs. TCP/IP</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>OSI (7 vrstev)</th><th>TCP/IP (4 vrstvy)</th><th>Poznámka</th></tr>
+    <tr><td>L7 + L6 + L5</td><td><strong>Application</strong></td><td>Vše v jedné vrstvě</td></tr>
+    <tr><td>L4 Transport</td><td><strong>Transport</strong></td><td>Stejné – TCP, UDP</td></tr>
+    <tr><td>L3 Network</td><td><strong>Internet</strong></td><td>Stejné – IP, ICMP</td></tr>
+    <tr><td>L2 + L1</td><td><strong>Network Access</strong></td><td>Ethernet + fyzická v jedné</td></tr>
+  </table>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Rozdíly</div>
+    <ul>
+      <li><strong>OSI</strong> = teoretický standard (ISO, 1984), 7 vrstev, obecné popisy funkcí</li>
+      <li><strong>TCP/IP</strong> = praktická implementace internetu (DARPA, 1970s), 4 vrstvy, konkrétní protokoly</li>
+      <li>OSI se stále používá pro <strong>výuku, troubleshooting a komunikaci</strong> mezi odborníky</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 10 DEVICES -->
+<section class="section" id="devices">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Síťové prvky a průchod dat</h2>
+  </div>
+
+  <!-- HUB -->
+  <h3>L1 – Hub / Repeater <span style="color:var(--accent-5);font-size:12px;font-weight:400;"> (zastaralé)</span></h3>
+  <p>Pracují POUZE s bity. Nerozumí adresám. Hub přijme signál → pošle <strong>kopii na VŠECHNY porty</strong> (broadcast). Sdílený collision domain.</p>
+
+  <div class="divider"></div>
+
+  <!-- SWITCH -->
+  <h3>L2 – Switch</h3>
+  <p>Pracuje s <strong>rámci a MAC adresami</strong>. Unicast forwarding podle MAC tabulky (CAM table). Odděluje collision domains.</p>
+  
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Průchod dat switchem</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Přijme rámec, zkontroluje FCS (CRC)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">MAC learning – uloží source MAC → port do tabulky</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Lookup destination MAC v tabulce</div><div class="step-desc">Nalezeno → unicast na správný port. Nenalezeno → flooding na všechny porty kromě příchozího. Broadcast MAC → flood.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Přepošle rámec beze změny (MAC adresy NEMĚNÍ!)</div></div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ROUTER -->
+  <h3>L3 – Router</h3>
+  <p>Pracuje s <strong>pakety a IP adresami</strong>. Směruje mezi sítěmi. Odděluje broadcast domains.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Průchod dat routerem</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Přijme rámec, zkontroluje dest MAC (musí být MAC routeru)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Odstraní L2 header → zbyde IP paket</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Routing decision – lookup dest IP v routing tabulce (longest prefix match)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Sníží TTL o 1 (TTL=0 → zahodí + ICMP)</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">ARP lookup pro next hop MAC (nebo cache)</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Vytvoří NOVÝ L2 rámec (nové source + dest MAC!), IP paket NEZMĚNĚN</div></div></div>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Klíčový rozdíl!</div>
+    <p><strong>Router MĚNÍ MAC adresy</strong> na každém hopu. <strong>IP adresy zůstávají STEJNÉ</strong> ze zdroje do cíle.<br>
+    <strong>TTL se snižuje</strong> na každém routeru (L3), ne na switchi (L2).</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- L3 Switch -->
+  <h3>L3 Switch (Multilayer)</h3>
+  <p>Kombinace L2 switche + L3 routeru. Stejná VLAN → chová se jako L2 switch (MAC forwarding). Různé VLANy → chová se jako router (IP routing, mění MAC, snižuje TTL). Hardware-based = rychlejší než separátní router. Používá se v Enterprise LAN (inter-VLAN routing).</p>
+
+  <div class="divider"></div>
+
+  <!-- Firewall -->
+  <h3>Firewall (L3–L7)</h3>
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Packet Filtering (L3/L4)</h4>
+      <p>Filtruje podle IP, portů, protokolu. Stateless – každý paket samostatně.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">Stateful (L3/L4)</h4>
+      <p>Sleduje TCP spojení (connection table). Povolí jen pakety patřící existujícímu spojení.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Application / NGFW (L7)</h4>
+      <p>DPI – kontrola obsahu. WAF, IPS. Detekce malware, SQL injection, XSS.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Summary table -->
+  <h3>Přehled kategorií switchů</h3>
+  <table class="compare-table">
+    <tr><th>Kategorie</th><th>Vrstva</th><th>Funkce</th></tr>
+    <tr><td>L1 Hub</td><td>Physical</td><td>Broadcast, žádná inteligence – zastaralé</td></tr>
+    <tr><td>L2 Switch</td><td>Data Link</td><td>MAC forwarding, VLAN, STP, unicast</td></tr>
+    <tr><td>L3 Switch</td><td>Network</td><td>L2 + IP routing, inter-VLAN, OSPF/BGP</td></tr>
+    <tr><td>L4–7 Switch</td><td>Transport–App</td><td>Load balancing, SSL offload, content switching</td></tr>
+  </table>
+</section>
+
+<!-- 11 TOOLS -->
+<section class="section" id="tools">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Diagnostické nástroje</h2>
+  </div>
+
+  <div class="tool-item">
+    <span class="tool-name">Wireshark</span>
+    <span class="tool-layer">L1–L7</span>
+    <span>GUI packet capture & analýza. Display/capture filters, protocol dissectors, Follow TCP Stream.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">tcpdump</span>
+    <span class="tool-layer">L2–L4</span>
+    <span>CLI packet capture (Linux). Lehký, rychlý, ukládá .pcap.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">ping</span>
+    <span class="tool-layer">L3</span>
+    <span>ICMP Echo Request/Reply. Test reachability, měření RTT, packet loss.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">traceroute</span>
+    <span class="tool-layer">L3</span>
+    <span>Mapování cesty hop-by-hop pomocí TTL. Identifikace kde paket „padá".</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">netstat / ss</span>
+    <span class="tool-layer">L3–L4</span>
+    <span>Aktivní spojení, listening porty, routing tabulka. <code>ss</code> = modernější náhrada.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">nslookup / dig</span>
+    <span class="tool-layer">L7</span>
+    <span>DNS dotazy – překlad doménových jmen → IP. Troubleshooting DNS.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">iperf</span>
+    <span class="tool-layer">L4</span>
+    <span>Měření propustnosti sítě (bandwidth, jitter, packet loss). Client-server.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">nmap</span>
+    <span class="tool-layer">L3–L4</span>
+    <span>Port scanning, host discovery, OS detection. Security audit.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">MTR</span>
+    <span class="tool-layer">L3</span>
+    <span>Kombinace ping + traceroute. Continuous monitoring per hop.</span>
+  </div>
+  <div class="tool-item">
+    <span class="tool-name">arp / arp-scan</span>
+    <span class="tool-layer">L2–L3</span>
+    <span>ARP cache, skenování LAN, detekce IP konfliktů a ARP spoofing.</span>
+  </div>
+</section>
+
+<!-- 12 TROUBLESHOOTING -->
+<section class="section" id="troubleshooting">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Troubleshooting</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--l1)">Bottom-Up (L1→L7)</h4>
+      <p>Začni od kabelů a fyziky → MAC → IP → porty → aplikace. Dobré pro hardware problémy.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--l7)">Top-Down (L7→L1)</h4>
+      <p>Začni od aplikace → DNS → porty → IP → MAC → kabely. Rychlejší pro app problémy.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">Divide & Conquer</h4>
+      <p>Začni kde suspektuješ problém, pak nahoru/dolů podle potřeby. Nejefektivnější.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Příklad: „Web stránka se nenačítá"</summary>
+    <div class="steps">
+      <div class="step"><div class="step-num">L7</div><div class="step-content"><div class="step-desc">Zkontroluj DNS: <code>nslookup domena.cz</code></div></div></div>
+      <div class="step"><div class="step-num">L4</div><div class="step-content"><div class="step-desc">Zkontroluj porty: <code>netstat -tuln</code>, firewall povoluje port 80/443?</div></div></div>
+      <div class="step"><div class="step-num">L3</div><div class="step-content"><div class="step-desc">Ping serveru: <code>ping server-ip</code>, <code>traceroute</code></div></div></div>
+      <div class="step"><div class="step-num">L2</div><div class="step-content"><div class="step-desc">Zkontroluj MAC/VLAN: <code>arp -a</code>, switch port status</div></div></div>
+      <div class="step"><div class="step-num">L1</div><div class="step-content"><div class="step-desc">Zkontroluj kabely, link lights, konektory</div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+    <ul>
+      <li><strong>Router MĚNÍ MAC, NEMĚNÍ IP</strong> – IP adresy jsou stejné ze zdroje do cíle, MAC se mění na každém hopu</li>
+      <li><strong>Switch = L2 (MAC)</strong>, Router = L3 (IP)</li>
+      <li><strong>TTL se snižuje na routeru</strong> (L3), ne na switchi (L2)</li>
+      <li><strong>Broadcast domain odděluje</strong> router/L3 switch. <strong>Collision domain odděluje</strong> switch/bridge</li>
+      <li><strong>PDU:</strong> Data → Segment/Datagram → Packet → Frame → Bits</li>
+      <li><strong>TCP = spolehlivý</strong> (ACK, handshake, 20 B header). <strong>UDP = rychlý</strong> (žádné ACK, 8 B header)</li>
+      <li><strong>OSI = 7 vrstev</strong> (teorie). <strong>TCP/IP = 4 vrstvy</strong> (praxe). L5+L6 v TCP/IP neexistují samostatně</li>
+      <li><strong>Zapouzdření</strong> = shora dolů (L7→L1). <strong>Dekapsulace</strong> = zdola nahoru (L1→L7)</li>
+      <li><strong>L2 detekuje chyby</strong> (FCS/CRC), ale neopravuje – opravu řeší TCP na L4</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 6: Šifrování a kryptografie</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#0f1a2e 40%,#2e0f28 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(96,165,250,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(232,121,249,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Crypto flow diagrams */
+.dia{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0}
+.dia-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;text-align:center;margin-bottom:14px}
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px}
+.flow-box{padding:10px 14px;border-radius:8px;font-weight:600;text-align:center;min-width:70px}
+.flow-arrow{color:var(--text-muted);font-size:14px}
+/* Hash demo */
+.hash-demo{background:#0d0f14;border:1px solid var(--border);border-radius:8px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;margin:14px 0;overflow-x:auto}
+.hash-in{color:var(--accent-4)}.hash-arrow{color:var(--text-muted)}.hash-out{color:var(--accent-3);font-size:11px}
+/* TLS handshake */
+.tls-step{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(42,46,61,.4);align-items:flex-start}
+.tls-step:last-child{border-bottom:none}
+.tls-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;min-width:20px;padding-top:2px}
+.tls-dir{font-family:'JetBrains Mono',monospace;font-size:18px;min-width:28px;text-align:center}
+.tls-content{flex:1}.tls-name{font-weight:600;font-size:13px;color:var(--heading)}.tls-desc{font-size:12px;color:var(--text-muted)}
+/* Cert chain */
+.cert-chain{display:flex;flex-direction:column;align-items:center;gap:4px;margin:14px 0}
+.cert-box{padding:10px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-align:center}
+.cert-arrow{color:var(--text-muted);font-size:12px}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.flow{flex-direction:column}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 6</div>
+  <h1>Šifrování a kryptografie</h1>
+  <p>Symetrická • Asymetrická • Hash • Certifikáty • Digitální podpis • VPN • SSL/TLS</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#sym">Symetrická kryptografie</a></li>
+  <li><a href="#asym">Asymetrická kryptografie</a></li>
+  <li><a href="#hybrid">Hybridní šifrování</a></li>
+  <li><a href="#hash">Hashování</a></li>
+  <li><a href="#certs">Certifikáty a CA</a></li>
+  <li><a href="#signature">Elektronický podpis</a></li>
+  <li><a href="#vpn">VPN</a></li>
+  <li><a href="#tls">SSL/TLS – implementace</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 SYM -->
+<section class="section" id="sym">
+<div class="section-header"><span class="section-num">01</span><h2>Symetrická kryptografie</h2></div>
+
+<p><strong>Stejný klíč</strong> pro šifrování i dešifrování. Rychlá, efektivní pro velké objemy dat.</p>
+
+<div class="dia">
+  <div class="dia-title">Symetrické šifrování – 1 klíč</div>
+  <div class="flow">
+    <div class="flow-box" style="background:rgba(96,165,250,.12);color:var(--accent-1)">Plaintext<div style="font-size:9px;opacity:.7">"Ahoj Bob"</div></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box" style="background:rgba(251,191,36,.15);color:var(--accent-4)">🔑 Klíč<div style="font-size:9px;opacity:.7">stejný</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="background:rgba(248,113,113,.12);color:var(--accent-5)">Ciphertext<div style="font-size:9px;opacity:.7">"X7k2Qp9"</div></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box" style="background:rgba(251,191,36,.15);color:var(--accent-4)">🔑 Klíč<div style="font-size:9px;opacity:.7">stejný</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="background:rgba(52,211,153,.12);color:var(--accent-3)">Plaintext<div style="font-size:9px;opacity:.7">"Ahoj Bob"</div></div>
+  </div>
+</div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-3)">Výhody</h4><p>Velmi rychlá. Efektivní pro velká data. Jednodušší implementace.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-5)">Nevýhody</h4><p><strong>Key distribution problem</strong> – jak bezpečně sdílet klíč? Škálovabilita: N uživatelů = N(N−1)/2 klíčů. Žádné non-repudiation.</p></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Algoritmy</div>
+  <ul>
+    <li><strong>AES (128/192/256-bit):</strong> Nejpoužívanější. WPA2/3, VPN, BitLocker. Standard od 2001</li>
+    <li><strong>DES (56-bit):</strong> Zastaralé, NEZABEZPEČENÉ (brute force). Nahrazeno 3DES → AES</li>
+    <li><strong>ChaCha20:</strong> Moderní stream cipher. Rychlý na mobilech. Chrome, WireGuard</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 ASYM -->
+<section class="section" id="asym">
+<div class="section-header"><span class="section-num">02</span><h2>Asymetrická kryptografie</h2></div>
+
+<p><strong>Dva klíče:</strong> PUBLIC KEY (veřejný, sdílíš) + PRIVATE KEY (soukromý, tajný). Co zašifruješ jedním, dešifruješ druhým.</p>
+
+<div class="dia">
+  <div class="dia-title">Scénář 1: Šifrování (Confidentiality)</div>
+  <div class="flow">
+    <div class="flow-box" style="background:rgba(96,165,250,.12);color:var(--accent-1)">Alice</div>
+    <div class="flow-arrow">šifruje</div>
+    <div class="flow-box" style="background:rgba(52,211,153,.15);color:var(--accent-3)">🔓 Bob PUBLIC<div style="font-size:9px;opacity:.7">veřejný</div></div>
+    <div class="flow-arrow">→→→</div>
+    <div class="flow-box" style="background:rgba(167,139,250,.12);color:var(--accent-2)">Bob</div>
+    <div class="flow-arrow">dešifruje</div>
+    <div class="flow-box" style="background:rgba(248,113,113,.12);color:var(--accent-5)">🔐 Bob PRIVATE<div style="font-size:9px;opacity:.7">tajný!</div></div>
+  </div>
+  <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">Šifruješ PUBLIC → Dešifruješ PRIVATE. Jen Bob může přečíst.</div>
+</div>
+
+<div class="dia">
+  <div class="dia-title">Scénář 2: Digitální podpis (Authentication)</div>
+  <div class="flow">
+    <div class="flow-box" style="background:rgba(96,165,250,.12);color:var(--accent-1)">Bob</div>
+    <div class="flow-arrow">podepisuje</div>
+    <div class="flow-box" style="background:rgba(248,113,113,.12);color:var(--accent-5)">🔐 Bob PRIVATE<div style="font-size:9px;opacity:.7">tajný!</div></div>
+    <div class="flow-arrow">→→→</div>
+    <div class="flow-box" style="background:rgba(167,139,250,.12);color:var(--accent-2)">Alice</div>
+    <div class="flow-arrow">ověřuje</div>
+    <div class="flow-box" style="background:rgba(52,211,153,.15);color:var(--accent-3)">🔓 Bob PUBLIC<div style="font-size:9px;opacity:.7">veřejný</div></div>
+  </div>
+  <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">Podepisuješ PRIVATE → Ověřuješ PUBLIC. Důkaz že zpráva je od Boba.</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-2)">Algoritmy</div>
+  <ul>
+    <li><strong>RSA (2048–4096-bit):</strong> Nejpoužívanější. Faktorizace prvočísel. SSL/TLS, SSH, PGP</li>
+    <li><strong>ECC (256-bit):</strong> Kratší klíče = stejná bezpečnost (256-bit ECC ≈ 3072-bit RSA). Bitcoin, moderní TLS</li>
+    <li><strong>Diffie-Hellman:</strong> Key exchange protocol (ne šifrování!). Sdílený klíč přes nezabezpečený kanál. TLS, IPsec</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 HYBRID -->
+<section class="section" id="hybrid">
+<div class="section-header"><span class="section-num">03</span><h2>Hybridní šifrování</h2></div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Best of both worlds – tohle dělá HTTPS!</div>
+  <ul>
+    <li><strong>1.</strong> Asymetrická (RSA/ECDHE) pro bezpečnou <strong>výměnu session key</strong></li>
+    <li><strong>2.</strong> Symetrická (AES) pro <strong>rychlé šifrování dat</strong> s tímto klíčem</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Bezpečnost asymetrické + rychlost symetrické.</p>
+</div>
+
+<table class="compare-table">
+  <tr><th></th><th>Symetrická</th><th>Asymetrická</th></tr>
+  <tr><td><strong>Klíče</strong></td><td>1 sdílený klíč</td><td>2 klíče (public + private)</td></tr>
+  <tr><td><strong>Rychlost</strong></td><td><strong>Velmi rychlá</strong></td><td>100–1000× pomalejší</td></tr>
+  <tr><td><strong>Velikost klíče</strong></td><td>128–256 bit</td><td>2048–4096 bit</td></tr>
+  <tr><td><strong>Distribuce</strong></td><td>Problém! (sdílení)</td><td><strong>Snadná</strong> (public key)</td></tr>
+  <tr><td><strong>Non-repudiation</strong></td><td>Ne</td><td><strong>Ano</strong> (digitální podpis)</td></tr>
+  <tr><td><strong>Použití</strong></td><td>Šifrování dat (AES)</td><td>Výměna klíčů, podpisy</td></tr>
+  <tr><td><strong>Příklady</strong></td><td>AES, ChaCha20, DES</td><td>RSA, ECC, DH</td></tr>
+</table>
+</section>
+
+<!-- 04 HASH -->
+<section class="section" id="hash">
+<div class="section-header"><span class="section-num">04</span><h2>Hashování</h2></div>
+
+<p><strong>Jednosměrná</strong> funkce: vstup libovolné délky → výstup fixní délky. <strong>Nelze zpětně dešifrovat!</strong></p>
+
+<div class="hash-demo">
+  <span class="hash-in">"Ahoj"</span> <span class="hash-arrow">→ SHA-256 →</span> <span class="hash-out">3c59dc048e8850243be8079a5c74d079...</span><br>
+  <span class="hash-in">"Ahoj!"</span> <span class="hash-arrow">→ SHA-256 →</span> <span class="hash-out">8f4e33f3dc3e414ff94e5fb6905cba8c...</span> <span style="color:var(--accent-5);font-size:10px">← úplně jiný! (avalanche)</span>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Vlastnosti hash funkce</div>
+  <ul>
+    <li><strong>Deterministická:</strong> Stejný vstup → vždy stejný hash</li>
+    <li><strong>Jednosměrná:</strong> Z hashe nelze získat původní data</li>
+    <li><strong>Fixní délka:</strong> 1 byte nebo 1 GB → hash stejně dlouhý</li>
+    <li><strong>Avalanche effect:</strong> Změna 1 bitu → změní 50 % hashe</li>
+    <li><strong>Collision resistant:</strong> Extrémně těžké najít 2 vstupy se stejným hashem</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">Algoritmy</div>
+  <ul>
+    <li><strong>SHA-256:</strong> 256-bit, bezpečný, široce používaný (Bitcoin, TLS, podpisy)</li>
+    <li><strong>SHA-1 (160-bit):</strong> DEPRECATED – kolize nalezeny 2017</li>
+    <li><strong>MD5 (128-bit):</strong> NEZABEZPEČENÝ – jen pro checksums, NE bezpečnost</li>
+    <li><strong>bcrypt / Argon2:</strong> Pro HESLA – záměrně pomalé + salt (ochrana proti brute force)</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Použití + Salting</div>
+  <p><strong>Hesla:</strong> DB ukládá hash, ne plaintext. <strong>Integrita:</strong> Checksums stažených souborů. <strong>Podpisy:</strong> Podepisuje se hash (rychlejší). <strong>Blockchain:</strong> Hash předchozího bloku → řetězec.</p>
+  <p style="margin-bottom:0"><strong>Salt</strong> = náhodná data přidaná k heslu před hashováním. 2 uživatelé se stejným heslem → <strong>různé hashe</strong>. Ochrana proti rainbow table útokům.</p>
+</div>
+</section>
+
+<!-- 05 CERTS -->
+<section class="section" id="certs">
+<div class="section-header"><span class="section-num">05</span><h2>Certifikáty a CA</h2></div>
+
+<p><strong>Digitální certifikát (X.509)</strong> = elektronický dokument vázající PUBLIC KEY k identitě. Jako „digitální občanský průkaz".</p>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-1)">Co obsahuje certifikát</div>
+  <p style="margin-bottom:0"><strong>Public Key</strong> majitele. <strong>Identita</strong> (doména, organizace). <strong>Issuer</strong> (kdo vydal – CA). Sériové číslo. <strong>Platnost</strong> (1–2 roky). <strong>Digitální podpis CA.</strong></p>
+</div>
+
+<h3>Chain of Trust</h3>
+<div class="cert-chain">
+  <div class="cert-box" style="background:rgba(248,113,113,.12);color:var(--accent-5);width:70%">🏛️ Root CA<div style="font-size:9px;opacity:.7">Předinstalovaná v prohlížeči (DigiCert, Let's Encrypt)</div></div>
+  <div class="cert-arrow">↓ podepisuje</div>
+  <div class="cert-box" style="background:rgba(251,191,36,.1);color:var(--accent-4);width:80%">📋 Intermediate CA</div>
+  <div class="cert-arrow">↓ podepisuje</div>
+  <div class="cert-box" style="background:rgba(52,211,153,.12);color:var(--accent-3);width:90%">🔒 End-entity certifikát (google.com)</div>
+</div>
+
+<details><summary>Typy certifikátů + CRL/OCSP</summary>
+<ul>
+  <li><strong>DV:</strong> Domain Validated – jen ověření domény (základní)</li>
+  <li><strong>OV:</strong> Organization Validated – CA zkontroluje firmu</li>
+  <li><strong>EV:</strong> Extended Validation – nejvyšší level (zelený proužek s názvem)</li>
+</ul>
+<p><strong>CRL</strong> = seznam zrušených certifikátů. <strong>OCSP</strong> = real-time ověření platnosti. Důvod: private key mohl být ukraden → certifikát musí být okamžitě zrušen.</p>
+</details>
+</section>
+
+<!-- 06 SIGNATURE -->
+<section class="section" id="signature">
+<div class="section-header"><span class="section-num">06</span><h2>Elektronický podpis</h2></div>
+
+<p>Kryptografická metoda zajišťující <strong>autenticitu, integritu a non-repudiation</strong>.</p>
+
+<div class="dia">
+  <div class="dia-title">Proces digitálního podpisu</div>
+  <div class="flow">
+    <div class="flow-box" style="background:rgba(96,165,250,.12);color:var(--accent-1)">Dokument</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="background:rgba(251,191,36,.12);color:var(--accent-4)">SHA-256<div style="font-size:9px;opacity:.7">hash</div></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box" style="background:rgba(248,113,113,.12);color:var(--accent-5)">🔐 PRIVATE<div style="font-size:9px;opacity:.7">šifrování</div></div>
+    <div class="flow-arrow">=</div>
+    <div class="flow-box" style="background:rgba(52,211,153,.15);color:var(--accent-3)">✍️ Podpis</div>
+  </div>
+  <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">Ověření: příjemce dešifruje podpis PUBLIC KEY → porovná hashe → match = validní</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-3)">Co zajišťuje</div>
+  <ul>
+    <li><strong>Autentizace:</strong> Dokument je od Alice (jen ona má private key)</li>
+    <li><strong>Integrita:</strong> Nebyl změněn (hash by nesouhlasil)</li>
+    <li><strong>Non-repudiation:</strong> Alice nemůže popřít podpis</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Použití: DocuSign, code signing, S/MIME email, e-banking, datové schránky.</p>
+</div>
+</section>
+
+<!-- 07 VPN -->
+<section class="section" id="vpn">
+<div class="section-header"><span class="section-num">07</span><h2>VPN (Virtual Private Network)</h2></div>
+
+<p>Šifrovaný tunnel přes nezabezpečenou síť. Veškerá komunikace zašifrovaná + IP adresa skrytá.</p>
+
+<div class="dia">
+  <div class="dia-title">VPN – šifrovaný tunnel</div>
+  <div class="flow">
+    <div class="flow-box" style="background:rgba(96,165,250,.12);color:var(--accent-1)">💻 Ty<div style="font-size:9px;opacity:.7">kavárna Wi-Fi</div></div>
+    <div class="flow-arrow">═══</div>
+    <div class="flow-box" style="background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)">🔒 Šifrovaný tunnel<div style="font-size:9px;opacity:.7">útočník nevidí nic!</div></div>
+    <div class="flow-arrow">═══</div>
+    <div class="flow-box" style="background:rgba(167,139,250,.12);color:var(--accent-2)">🖥️ VPN server<div style="font-size:9px;opacity:.7">jiná IP</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="background:rgba(251,191,36,.1);color:var(--accent-4)">🌐 Internet</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-2)">Typy a protokoly</div>
+  <table class="compare-table">
+    <tr><th>Protokol</th><th>Vlastnosti</th></tr>
+    <tr><td><strong>OpenVPN</strong></td><td>Open-source, velmi bezpečný, SSL/TLS. Podporován všude</td></tr>
+    <tr><td><strong>WireGuard</strong></td><td>Moderní, velmi rychlý (~4000 lines kódu). ChaCha20 + Curve25519</td></tr>
+    <tr><td><strong>IPsec</strong></td><td>Site-to-site VPN. Transport/Tunnel režim. Komplexní ale bezpečný</td></tr>
+    <tr><td style="color:var(--accent-5)"><strong>PPTP</strong></td><td style="color:var(--accent-5)"><strong>NEZABEZPEČENÝ – nepoužívat!</strong></td></tr>
+  </table>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Remote Access:</strong> Zaměstnanec → firemní síť. <strong>Site-to-Site:</strong> Pobočka A ↔ Pobočka B. <strong>Split Tunneling:</strong> Jen firemní provoz přes VPN, Netflix přímo.</p>
+</div>
+</section>
+
+<!-- 08 TLS -->
+<section class="section" id="tls">
+<div class="section-header"><span class="section-num">08</span><h2>SSL/TLS – implementace</h2></div>
+
+<p><strong>TLS</strong> (Transport Layer Security) = protokol pro zabezpečení komunikace přes internet. HTTPS = HTTP + TLS. Aktuálně: <strong>TLS 1.3</strong> (2018).</p>
+
+<div class="card" style="border-left:3px solid var(--kb);background:rgba(232,121,249,.04)">
+  <div class="card-title" style="color:var(--kb)">TLS Handshake – krok za krokem (https://google.com)</div>
+  <div style="margin-top:10px">
+    <div class="tls-step"><span class="tls-num" style="color:var(--accent-1)">1</span><span class="tls-dir" style="color:var(--accent-1)">→</span><div class="tls-content"><div class="tls-name">Client Hello</div><div class="tls-desc">Prohlížeč: „Podporuju TLS 1.3, 1.2. Můj random number XYZ. Cipher suites…"</div></div></div>
+    <div class="tls-step"><span class="tls-num" style="color:var(--accent-3)">2</span><span class="tls-dir" style="color:var(--accent-3)">←</span><div class="tls-content"><div class="tls-name">Server Hello + Certificate</div><div class="tls-desc">Server: „OK, TLS 1.3. Cipher: AES_256_GCM_SHA384." Pošle SSL certifikát (public key).</div></div></div>
+    <div class="tls-step"><span class="tls-num" style="color:var(--accent-4)">3</span><span class="tls-dir" style="color:var(--accent-4)">✓</span><div class="tls-content"><div class="tls-name">Certificate Verify</div><div class="tls-desc">Prohlížeč ověří certifikát: platnost, doména, podpis CA (vestavěná v browseru).</div></div></div>
+    <div class="tls-step"><span class="tls-num" style="color:var(--accent-2)">4</span><span class="tls-dir" style="color:var(--accent-2)">↔</span><div class="tls-content"><div class="tls-name">Key Exchange (ECDHE)</div><div class="tls-desc">Obě strany vytvoří sdílený <strong>session key</strong> (pro AES). Nikdo jiný ho nezná. Perfect Forward Secrecy!</div></div></div>
+    <div class="tls-step"><span class="tls-num" style="color:var(--accent-6)">5</span><span class="tls-dir" style="color:var(--accent-6)">✓</span><div class="tls-content"><div class="tls-name">Finished</div><div class="tls-desc">Oba pošlou „Finished" zašifrovanou session key. Handshake OK.</div></div></div>
+    <div class="tls-step"><span class="tls-num" style="color:var(--accent-3)">6</span><span class="tls-dir" style="color:var(--accent-3)">↔</span><div class="tls-content"><div class="tls-name">Secure Communication</div><div class="tls-desc">Veškerá komunikace <strong>AES šifrovaná</strong> se session key. Rychlé + bezpečné.</div></div></div>
+  </div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Perfect Forward Secrecy (PFS)</div>
+  <p style="margin-bottom:0"><strong>ECDHE</strong> zajišťuje unikátní klíč pro KAŽDOU session. I když někdo v budoucnu ukradne private key serveru, <strong>nemůže dešifrovat staré zachycené komunikace</strong>. Každá session je nezávislá.</p>
+</div>
+</section>
+
+<!-- 09 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">09</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">SYMETRICKÁ vs ASYMETRICKÁ</p>
+<ul>
+  <li><strong>Symetrická:</strong> 1 klíč, rychlá, pro data. AES (128/256-bit), ChaCha20. Problém: distribuce klíče</li>
+  <li><strong>Asymetrická:</strong> 2 klíče (public+private), pomalá, pro klíče+podpisy. RSA (2048+), ECC (256). Non-repudiation</li>
+  <li><strong>Hybridní (HTTPS):</strong> Asymetrická pro výměnu klíče → symetrická pro data = best of both</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">HASH</p>
+<ul>
+  <li><strong>Jednosměrná,</strong> fixní délka, avalanche effect, collision resistant. NELZE dešifrovat!</li>
+  <li><strong>SHA-256</strong> (bezpečný), SHA-1 (deprecated), MD5 (broken). <strong>bcrypt/Argon2</strong> pro hesla (+salt)</li>
+  <li>Použití: hesla, checksums, digitální podpisy, blockchain</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">CERTIFIKÁTY & PODPIS</p>
+<ul>
+  <li><strong>Certifikát (X.509):</strong> Váže public key k identitě. Vydává CA (DigiCert, Let's Encrypt). Chain of Trust: Root → Intermediate → End-entity</li>
+  <li><strong>Digitální podpis:</strong> Hash dokumentu + šifrování PRIVATE KEY. Zajišťuje: autentizace + integrita + non-repudiation</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">VPN & TLS</p>
+<ul>
+  <li><strong>VPN:</strong> Šifrovaný tunnel. OpenVPN (SSL/TLS), WireGuard (moderní, rychlý), IPsec (site-to-site). PPTP = broken!</li>
+  <li><strong>TLS Handshake:</strong> Client Hello → Server Hello + Cert → Verify → <strong>ECDHE key exchange</strong> → AES session</li>
+  <li><strong>PFS:</strong> Unikátní session key → krádež private key neodhalí staré komunikace</li>
+  <li><strong>TLS 1.3</strong> (aktuální), TLS 1.0/1.1 deprecated. HTTPS = HTTP + TLS = zelený zámek</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

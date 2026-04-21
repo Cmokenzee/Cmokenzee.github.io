@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 5: Síťové útoky</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#0f172e 40%,#2e0f1a 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(96,165,250,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(248,113,113,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-1);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,44px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Attack card */
+.atk{position:relative;overflow:hidden;border-radius:10px;padding:18px 22px;margin:12px 0;background:var(--bg-card);border:1px solid var(--border)}
+.atk::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.atk-h{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.atk-icon{font-size:20px}.atk-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+.atk-tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;margin-left:auto}
+/* MITM diagram */
+.mitm-dia{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px}
+.mitm-box{padding:12px 16px;border-radius:8px;font-weight:600;text-align:center;min-width:70px}
+.mitm-arrow{color:var(--text-muted);font-size:14px}
+/* DDoS visual */
+.ddos-vis{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0}
+.ddos-bots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+.ddos-bot{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.ddos-target{text-align:center;padding:14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;margin-top:8px}
+/* Defense layers */
+.def-layers{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0}
+.def-layer{padding:10px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-align:center}
+/* Spoofing grid */
+.spoof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0}
+.spoof-item{text-align:center;padding:12px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.spoof-item .si-type{font-weight:700;font-size:12px;display:block;margin-bottom:4px}
+.spoof-item .si-desc{font-family:'DM Sans',sans-serif;font-size:10px;opacity:.8}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.mitm-dia{flex-direction:column}.spoof-grid{grid-template-columns:repeat(2,1fr)}.def-layers .def-layer{width:100%!important}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 5</div>
+  <h1>Síťové útoky</h1>
+  <p>MITM • DoS/DDoS • Spoofing • Sniffing • SEO Poisoning • Rogue AP • Port Scanning</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#mitm">Man-in-the-Middle (MITM)</a></li>
+  <li><a href="#mitmo">Man-in-the-Mobile (MitMo)</a></li>
+  <li><a href="#dos">DoS a DDoS</a></li>
+  <li><a href="#sniffing">Sniffing a Port Scanning</a></li>
+  <li><a href="#spoofing">Spoofing (všechny typy)</a></li>
+  <li><a href="#seo">SEO Poisoning, Browser Hijacker</a></li>
+  <li><a href="#grayware">Grayware</a></li>
+  <li><a href="#rogue">Rogue AP / Evil Twin</a></li>
+  <li><a href="#defense">Komplexní ochrana</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 MITM -->
+<section class="section" id="mitm">
+<div class="section-header"><span class="section-num">01</span><h2>Man-in-the-Middle (MITM)</h2></div>
+
+<p>Útočník se tajně umístí <strong>mezi dvě komunikující strany</strong> a odposlouchává nebo modifikuje komunikaci. Oběti si myslí, že spolu mluví přímo.</p>
+
+<div class="mitm-dia">
+  <div class="mitm-box" style="background:rgba(96,165,250,.15);color:var(--accent-1)">Alice</div>
+  <div class="mitm-arrow">→</div>
+  <div class="mitm-box" style="background:rgba(248,113,113,.2);color:var(--accent-5);border:1px dashed rgba(248,113,113,.4)">Eve<div style="font-size:9px;opacity:.7">útočník</div></div>
+  <div class="mitm-arrow">→</div>
+  <div class="mitm-box" style="background:rgba(52,211,153,.15);color:var(--accent-3)">Bob</div>
+  <div style="width:100%;text-align:center;font-size:10px;color:var(--text-muted);margin-top:6px">Alice si myslí, že mluví přímo s Bobem. Eve čte/mění vše.</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-5)">Typy MITM útoků</div>
+  <ul>
+    <li><strong>ARP Spoofing:</strong> Falešné ARP zprávy → přesměrování provozu na útočníka</li>
+    <li><strong>DNS Spoofing:</strong> Změněné DNS odpovědi → falešná stránka</li>
+    <li><strong>SSL Stripping:</strong> Downgrade HTTPS → HTTP (nešifrované!)</li>
+    <li><strong>Wi-Fi Eavesdropping:</strong> Odposlech na veřejné Wi-Fi</li>
+    <li><strong>Session Hijacking:</strong> Krádež session cookie</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Lenovo Superfish (2015):</strong> Předinstalovaný adware prováděl MITM na VŠECHNY HTTPS spojení. Vložil vlastní certifikát.</p>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Ochrana</div>
+  <p style="margin-bottom:0"><strong>HTTPS</strong> všude (zelený zámek). <strong>VPN</strong> na veřejné Wi-Fi. Certificate pinning. <strong>HSTS</strong> (vynucuje HTTPS). Nepoužívat veřejné Wi-Fi pro citlivé transakce.</p>
+</div>
+</section>
+
+<!-- 02 MITMO -->
+<section class="section" id="mitmo">
+<div class="section-header"><span class="section-num">02</span><h2>Man-in-the-Mobile (MitMo)</h2></div>
+
+<div class="atk" style="border-color:rgba(244,114,182,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-7)"></div>
+  <div class="atk-h"><span class="atk-icon">📱</span><span class="atk-name" style="color:var(--accent-7)">MitMo</span><span class="atk-tag" style="background:rgba(244,114,182,.15);color:var(--accent-7)">MOBILNÍ</span></div>
+  <p>MITM varianta pro mobily. Trojan na mobilu zachytává <strong>SMS 2FA kódy</strong>. Zeus-in-the-Mobile (ZitMo) – zachytil bankovní SMS s potvrzovacím kódem a přeposlal útočníkovi.</p>
+  <p style="margin-bottom:0;font-size:13px;color:var(--accent-3)"><strong>Ochrana:</strong> Oficiální store only. Kontrolovat oprávnění (proč kalkulačka chce SMS?). <strong>Authenticator app místo SMS</strong> pro 2FA. Aktualizace OS.</p>
+</div>
+</section>
+
+<!-- 03 DOS/DDOS -->
+<section class="section" id="dos">
+<div class="section-header"><span class="section-num">03</span><h2>DoS a DDoS</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">DoS vs DDoS – klíčový rozdíl</div>
+  <table class="compare-table">
+    <tr><th></th><th>DoS</th><th>DDoS</th></tr>
+    <tr><td><strong>Zdroj</strong></td><td>1 útočník (1 IP)</td><td><strong>Botnet</strong> (tisíce/miliony IP)</td></tr>
+    <tr><td><strong>Blokování</strong></td><td>Snazší (blokuj 1 IP)</td><td><strong>Velmi těžké</strong></td></tr>
+    <tr><td><strong>Síla</strong></td><td>Omezená</td><td>Až <strong>Tbps</strong></td></tr>
+  </table>
+</div>
+
+<!-- DDoS visual -->
+<div class="ddos-vis">
+  <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px">DDoS – BOTNET ÚTOK</div>
+  <div class="ddos-bots">
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+    <div class="ddos-bot" style="background:rgba(248,113,113,.15);color:var(--accent-5)">🤖</div>
+  </div>
+  <div style="text-align:center;color:var(--accent-5);font-size:16px">↓↓↓ miliony požadavků ↓↓↓</div>
+  <div class="ddos-target" style="background:rgba(251,191,36,.12);color:var(--accent-4)">🖥️ Cílový server → PŘETÍŽENÍ → SPADNE</div>
+</div>
+
+<details><summary>Slavné DDoS útoky</summary>
+<ul>
+  <li><strong>Mirai (2016):</strong> 600K IoT botů, 1.2 Tbps → vyřadilo Twitter, Netflix, Reddit, Spotify</li>
+  <li><strong>GitHub (2018):</strong> 1.35 Tbps, Memcached amplification</li>
+  <li><strong>AWS (2020):</strong> 2.3 Tbps – rekord</li>
+  <li><strong>Estonia (2007):</strong> Cyberwar – DDoS na vládu, banky, média</li>
+</ul>
+</details>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">DoS typy + Amplification</div>
+  <p><strong>Typy:</strong> SYN Flood (TCP handshake abuse), Ping of Death, HTTP Flood, Teardrop.</p>
+  <p style="margin-bottom:0"><strong>Amplification:</strong> Útočník pošle malý požadavek (10 KB) se spoofovanou IP oběti → server odpoví 1000 KB → oběť dostane <strong>100× větší provoz</strong>. DNS/NTP/Memcached amplification.</p>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Ochrana</div>
+  <p style="margin-bottom:0"><strong>CDN</strong> (Cloudflare, Akamai). Rate limiting. <strong>Anycast network</strong>. Blackhole routing. DDoS mitigation služby (AWS Shield). Redundance + škálovatelnost.</p>
+</div>
+</section>
+
+<!-- 04 SNIFFING + PORT SCAN -->
+<section class="section" id="sniffing">
+<div class="section-header"><span class="section-num">04</span><h2>Sniffing a Port Scanning</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Sniffing (Packet Sniffing) 👃</h4>
+    <p>Zachytávání síťových paketů. NIC v „promiscuous mode" → vidí VŠE na síti. Nástroje: <strong>Wireshark, tcpdump</strong>. Zachytí: hesla (HTTP!), cookies, emaily, FTP credentials. <strong>Passive</strong> (hub) vs <strong>Active</strong> (switch + ARP spoof).<br><strong>Ochrana:</strong> šifrování (HTTPS, SSH, VPN), switch místo hub, ARP inspection, port security.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Port Scanning 🔍</h4>
+    <p>Reconnaissance – skenování otevřených portů a služeb. Nástroj: <strong>Nmap</strong>. <code style="font-size:10px">nmap -sV 192.168.1.100</code> → zjistí porty (80=Apache, 22=SSH, 3306=MySQL). Není útok sám o sobě, ale <strong>příprava</strong>.<br>Typy: TCP Connect (hlučný), <strong>SYN scan</strong> (stealth), UDP, FIN/XMAS.<br><strong>Ochrana:</strong> firewall, IDS/IPS, port knocking, disable unused services.</p>
+  </div>
+</div>
+</section>
+
+<!-- 05 SPOOFING -->
+<section class="section" id="spoofing">
+<div class="section-header"><span class="section-num">05</span><h2>Spoofing (všechny typy)</h2></div>
+
+<p><strong>Spoofing</strong> = falšování identity v síti. Útočník předstírá, že je někdo/něco jiného.</p>
+
+<div class="spoof-grid">
+  <div class="spoof-item" style="background:rgba(248,113,113,.1);color:var(--accent-5)"><span class="si-type">IP Spoofing</span><span class="si-desc">Falešná source IP. Obcházení firewallu, DDoS.</span></div>
+  <div class="spoof-item" style="background:rgba(251,146,60,.1);color:var(--accent-6)"><span class="si-type">ARP Spoofing</span><span class="si-desc">Falešné ARP → provoz přes útočníka → MITM.</span></div>
+  <div class="spoof-item" style="background:rgba(167,139,250,.1);color:var(--accent-2)"><span class="si-type">DNS Spoofing</span><span class="si-desc">Falešné DNS → phishing stránka. Cache poisoning.</span></div>
+  <div class="spoof-item" style="background:rgba(96,165,250,.1);color:var(--accent-1)"><span class="si-type">Email Spoofing</span><span class="si-desc">Falešný „From:" – SMTP neověřuje! Phishing, BEC.</span></div>
+  <div class="spoof-item" style="background:rgba(244,114,182,.1);color:var(--accent-7)"><span class="si-type">Caller ID</span><span class="si-desc">Falešné číslo volajícího. Vishing útoky.</span></div>
+  <div class="spoof-item" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="si-type">MAC Spoofing</span><span class="si-desc">Změna MAC. Obcházení MAC filtering.</span></div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Ochrana proti spoofingu</div>
+  <p style="margin-bottom:0">Packet filtering (firewall). <strong>Email auth: SPF, DKIM, DMARC.</strong> DNSSEC (digitální podpisy DNS). ARP inspection na switchích. Port security. <strong>Encryption</strong> eliminuje dopad.</p>
+</div>
+</section>
+
+<!-- 06 SEO + HIJACKER -->
+<section class="section" id="seo">
+<div class="section-header"><span class="section-num">06</span><h2>SEO Poisoning, Browser Hijacker</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">SEO Poisoning 🔍💀</h4>
+    <p>Manipulace výsledků vyhledávačů (Google) → škodlivé weby na vysokém rankingu. Keyword stuffing, link farming, cloaking. Hledáš „download adobe reader" → první výsledek = malware.<br><strong>Ochrana:</strong> Stahovat z oficiálních webů. Kontrolovat URL. Google Safe Browsing. Antivirus s web protection.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Browser Hijacker 🌐</h4>
+    <p>Modifikuje nastavení prohlížeče bez svolení. Změní homepage, vyhledávač, přidá toolbary, pop-upy. Přes bundled software nebo fake updates.<br>Známé: Conduit, Ask Toolbar, Babylon.<br><strong>Odstranění:</strong> Control Panel, reset browser, <strong>AdwCleaner</strong>.</p>
+  </div>
+</div>
+</section>
+
+<!-- 07 GRAYWARE -->
+<section class="section" id="grayware">
+<div class="section-header"><span class="section-num">07</span><h2>Grayware</h2></div>
+
+<div class="atk" style="border-color:rgba(107,114,128,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--text-muted)"></div>
+  <div class="atk-h"><span class="atk-icon">⚪</span><span class="atk-name" style="color:var(--text)">Grayware</span><span class="atk-tag" style="background:rgba(107,114,128,.15);color:var(--text-muted)">ŠEDÁ ZÓNA</span></div>
+  <p>Ani malware, ani legitimní. Nechtěný, otravný, ale ne nutně destruktivní. Adware, tracking cookies, PUP (Potentially Unwanted Programs), toolbary.</p>
+  <p style="margin-bottom:0"><strong>Problém:</strong> Zpomaluje PC, narušuje soukromí, těžko se odstraňuje. <strong>Ochrana:</strong> Pozorně číst instalaci, oficiální zdroje, AdwCleaner.</p>
+</div>
+</section>
+
+<!-- 08 ROGUE AP -->
+<section class="section" id="rogue">
+<div class="section-header"><span class="section-num">08</span><h2>Rogue AP / Evil Twin</h2></div>
+
+<p>Neautorizovaný wireless AP připojený k síti – záměrně (útočník) nebo neúmyslně (zaměstnanec).</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Evil Twin 👿📶</h4>
+    <p>Falešný AP se <strong>stejným SSID</strong> jako legitimní síť. Telefon se automaticky připojí (silnější signál). Útočník vidí veškerý provoz → MITM. Příklad: „Airport_Free_WiFi" na letišti.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Zaměstnanecký Rogue AP</h4>
+    <p>Zaměstnanec si přinese vlastní router → neúmyslná bezpečnostní díra. AP obchází firemní firewall a security.</p>
+  </div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Detekce a ochrana</div>
+  <ul>
+    <li><strong>WIDS</strong> (Wireless IDS) – detekuje neznámé AP</li>
+    <li><strong>802.1X</strong> – network access control</li>
+    <li><strong>VPN</strong> – i na rogue AP útočník nevidí šifrovaný provoz</li>
+    <li><strong>NAC</strong> – kontrola autorizace zařízení</li>
+    <li>Neautomaticky se připojovat k Wi-Fi. Ověřovat SSID u personálu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 DEFENSE -->
+<section class="section" id="defense">
+<div class="section-header"><span class="section-num">09</span><h2>Komplexní ochrana – Defense in Depth</h2></div>
+
+<p>Vícevrstvá obrana – když jedna vrstva selže, další zastaví útok.</p>
+
+<div class="def-layers">
+  <div class="def-layer" style="background:rgba(248,113,113,.12);color:var(--accent-5);width:100%">Vrstva 1: PERIMETER – Firewall, IDS/IPS</div>
+  <div class="def-layer" style="background:rgba(251,146,60,.1);color:var(--accent-6);width:88%">Vrstva 2: NETWORK – Segmentace (VLAN), VPN, NAC</div>
+  <div class="def-layer" style="background:rgba(251,191,36,.1);color:var(--accent-4);width:75%">Vrstva 3: HOST – Antivirus, HIDS, patching</div>
+  <div class="def-layer" style="background:rgba(96,165,250,.1);color:var(--accent-1);width:62%">Vrstva 4: APPLICATION – WAF, input validation</div>
+  <div class="def-layer" style="background:rgba(52,211,153,.12);color:var(--accent-3);width:48%">Vrstva 5: DATA – Encryption, zálohy</div>
+</div>
+</section>
+
+<!-- 10 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">10</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">ÚTOKY NA KOMUNIKACI</p>
+<ul>
+  <li><strong>MITM:</strong> Útočník mezi oběťmi. ARP/DNS spoofing, SSL stripping, session hijack. Ochrana: <strong>HTTPS, VPN, HSTS</strong></li>
+  <li><strong>MitMo:</strong> Mobilní MITM – zachytává SMS 2FA kódy. Ochrana: <strong>authenticator app místo SMS</strong></li>
+  <li><strong>Sniffing:</strong> Zachytávání paketů (Wireshark). Promiscuous mode. Ochrana: <strong>šifrování</strong></li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">DOSTUPNOST</p>
+<ul>
+  <li><strong>DoS:</strong> 1 zdroj → zahlcení serveru. <strong>DDoS:</strong> botnet (tisíce zdrojů) → <strong>velmi těžké blokovat</strong></li>
+  <li>Mirai (2016): 1.2 Tbps, 600K IoT botů. Amplification: 100× zesílení</li>
+  <li>Ochrana: <strong>CDN</strong> (Cloudflare), rate limiting, anycast, redundance</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">SPOOFING A PRŮZKUM</p>
+<ul>
+  <li><strong>Spoofing:</strong> IP (DDoS), ARP (MITM), DNS (phishing), Email (BEC – SMTP neověřuje!), MAC, Caller ID</li>
+  <li><strong>Port Scanning:</strong> Nmap, SYN scan (stealth). Příprava na útok, ne útok samotný</li>
+  <li>Ochrana: <strong>SPF/DKIM/DMARC</strong> (email), DNSSEC, ARP inspection, port security</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">OSTATNÍ + OBRANA</p>
+<ul>
+  <li><strong>SEO Poisoning:</strong> Falešné weby na vysokém Google rankingu. <strong>Browser Hijacker:</strong> Změní homepage/vyhledávač</li>
+  <li><strong>Grayware:</strong> Šedá zóna – otravné ale ne destruktivní (PUP, adware, toolbary)</li>
+  <li><strong>Rogue AP / Evil Twin:</strong> Falešný AP se stejným SSID → MITM. Ochrana: WIDS, 802.1X, <strong>VPN</strong></li>
+  <li><strong>Defense in Depth:</strong> 5 vrstev (Perimeter → Network → Host → Application → Data)</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

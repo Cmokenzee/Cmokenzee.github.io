@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Josef Škvorecký: Tankový prapor</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131610;
+  --bg-card:#1a1e16;
+  --bg-card-alt:#21261c;
+  --border:#2c322a;
+  --text:#a8a898;
+  --text-muted:#606858;
+  --heading:#d4d0bc;
+  --olive:#4a5a32;
+  --red:#8a2820;
+  --steel:#5a5248;
+  --paper:#a88a3a;
+  --jazz:#c4a048;
+  --iron:#3a3a38;
+  --khaki:#6a5a28;
+  --vintage:#8a7848;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Crimson Pro',serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;background-image:radial-gradient(ellipse at top,rgba(74,90,50,.05) 0%,transparent 60%),radial-gradient(ellipse at bottom,rgba(138,40,32,.04) 0%,transparent 60%);background-attachment:fixed}
+.hero{background:linear-gradient(180deg,rgba(19,22,16,.3) 0%,rgba(19,22,16,.95) 100%),linear-gradient(135deg,#1a1e14 0%,#242a1c 30%,#16180f 65%,#0e1008 100%);border-bottom:3px solid var(--olive);padding:100px 24px 80px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 80%,rgba(196,160,72,.08) 0%,transparent 50%),radial-gradient(ellipse at 20% 20%,rgba(138,40,32,.06) 0%,transparent 50%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,var(--olive) 0,var(--olive) 14px,var(--red) 14px,var(--red) 17px,var(--olive) 17px,var(--olive) 34px,transparent 34px,transparent 42px);opacity:.4}
+.hero-classified{display:inline-block;background:var(--red);color:var(--heading);padding:5px 18px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:5px;font-weight:600;text-transform:uppercase;margin-bottom:24px;transform:rotate(-1.5deg);position:relative;border:1px solid var(--red)}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--paper);margin-bottom:22px;position:relative;opacity:.9}
+.hero h1{font-family:'Oswald',sans-serif;font-size:clamp(42px,7.5vw,76px);color:var(--heading);font-weight:700;line-height:1;position:relative;letter-spacing:3px;text-transform:uppercase;text-shadow:0 2px 30px rgba(74,90,50,.2)}
+.hero h1 em{display:block;font-family:'Crimson Pro',serif;font-style:italic;font-weight:400;color:var(--vintage);font-size:.28em;letter-spacing:5px;text-transform:uppercase;margin-bottom:20px;opacity:.8}
+.hero h1 .sub-title{display:block;font-family:'Crimson Pro',serif;font-size:.32em;font-style:italic;color:var(--jazz);letter-spacing:3px;margin-top:20px;font-weight:500;text-transform:none}
+.hero .author{font-family:'Oswald',sans-serif;color:var(--vintage);margin-top:32px;font-size:20px;position:relative;letter-spacing:4px;font-weight:400;text-transform:uppercase}
+.hero .subtitle{color:var(--text-muted);margin-top:12px;font-size:13px;position:relative;font-style:italic;letter-spacing:2.5px;text-transform:uppercase}
+.hero-quote{font-family:'Crimson Pro',serif;color:var(--heading);font-size:17px;margin:40px auto 0;max-width:620px;font-style:italic;position:relative;letter-spacing:.5px;line-height:1.7;opacity:.9;padding:22px 30px;border-top:1px solid var(--jazz);border-bottom:1px solid var(--jazz)}
+.hero-quote em{display:block;font-size:.7em;color:var(--text-muted);margin-top:14px;font-style:normal;letter-spacing:2px;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-top:3px solid var(--olive);padding:30px 36px;margin-bottom:52px;position:relative}
+.toc::before{content:'VOJENSKÝ ROZKAZ č. 1';position:absolute;top:-10px;left:24px;background:var(--bg);padding:0 12px;color:var(--olive);font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:3px;font-weight:600}
+.toc::after{content:'ČSSR · 1951';position:absolute;top:-10px;right:24px;background:var(--bg);padding:0 12px;color:var(--vintage);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px}
+.toc h2{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--vintage);margin-bottom:20px;text-align:center;font-weight:500}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{counter-increment:toc;padding:5px 0;font-size:15px;break-inside:avoid}
+.toc li::before{content:'§ ' counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--olive);font-size:11px;margin-right:6px;font-weight:500;opacity:.85}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--red)}
+.section{margin-bottom:56px}
+.section-header{display:flex;align-items:baseline;gap:20px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);position:relative}
+.section-header::after{content:'';position:absolute;bottom:-2px;left:0;width:120px;height:2px;background:linear-gradient(90deg,var(--olive),var(--jazz));opacity:.7}
+.section-num{font-family:'Oswald',sans-serif;font-size:38px;color:var(--olive);font-weight:700;min-width:70px;opacity:.6;line-height:1;letter-spacing:2px}
+.section-header h2{font-family:'Oswald',sans-serif;font-size:26px;color:var(--heading);font-weight:500;letter-spacing:2px;text-transform:uppercase}
+h3{font-family:'Oswald',sans-serif;font-size:20px;font-weight:500;color:var(--heading);margin:32px 0 14px;letter-spacing:1.5px;text-transform:uppercase}
+h4{font-family:'Oswald',sans-serif;font-size:13px;font-weight:500;color:var(--heading);margin:20px 0 10px;letter-spacing:2px;text-transform:uppercase}
+p{margin-bottom:14px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:1px;padding:22px 26px;margin:18px 0;position:relative}
+.card.highlight{border-left:3px solid var(--olive);background:rgba(74,90,50,.05)}
+.card.key{border-left:3px solid var(--jazz);background:rgba(196,160,72,.05)}
+.card.warn{border-left:3px solid var(--red);background:rgba(138,40,32,.06)}
+.card.paper{border-left:3px solid var(--paper);background:rgba(168,138,58,.05)}
+.card.steel{border-left:3px solid var(--steel);background:rgba(90,82,72,.06)}
+.card.iron{border-left:3px solid var(--iron);background:rgba(58,58,56,.1)}
+.card-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;font-weight:600}
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--olive)}
+strong{color:var(--heading);font-weight:600}
+em{color:var(--jazz);font-style:italic}
+.military-divider{text-align:center;margin:52px 0;color:var(--olive);opacity:.5;font-family:'Oswald',sans-serif;font-size:16px;letter-spacing:12px}
+.military-divider::before,.military-divider::after{content:'';display:inline-block;width:90px;height:1px;background:linear-gradient(90deg,transparent,var(--olive),transparent);vertical-align:middle;margin:0 14px}
+.jazz-divider{text-align:center;margin:52px 0;color:var(--jazz);opacity:.55;font-family:'Playfair Display',serif;font-size:24px;font-style:italic;letter-spacing:10px}
+.jazz-divider::before,.jazz-divider::after{content:'';display:inline-block;width:90px;height:1px;background:linear-gradient(90deg,transparent,var(--jazz),transparent);vertical-align:middle;margin:0 14px}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:1px;padding:20px 22px;position:relative}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+.character{background:var(--bg-card);border:1px solid var(--border);border-radius:1px;padding:24px 28px;margin:18px 0;position:relative;overflow:hidden}
+.character::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--character-color,var(--olive))}
+.character::after{content:attr(data-symbol);position:absolute;top:50%;right:22px;transform:translateY(-50%);font-size:58px;opacity:.05;pointer-events:none;font-family:'Oswald',sans-serif;font-weight:700}
+.character .char-name{font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;color:var(--heading);margin-bottom:4px;letter-spacing:2px;text-transform:uppercase}
+.character .char-name em{font-family:'Crimson Pro',serif;font-size:14px;color:var(--text-muted);font-weight:400;margin-left:8px;font-style:italic;letter-spacing:0;text-transform:none}
+.character .char-role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--character-color,var(--olive));margin-bottom:14px}
+.quote-block{background:var(--bg-card-alt);border-left:3px solid var(--olive);padding:20px 28px;margin:18px 0;font-family:'Crimson Pro',serif;font-size:17px;font-style:italic;color:var(--heading);line-height:1.7;position:relative}
+.quote-block::before{content:'„';position:absolute;top:-8px;left:10px;font-size:44px;color:var(--olive);opacity:.3}
+.quote-source{display:block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--text-muted);font-style:normal;text-transform:uppercase}
+.propaganda-box{background:linear-gradient(180deg,rgba(138,40,32,.08) 0%,rgba(168,138,58,.05) 100%);border:2px solid var(--red);padding:26px 30px;margin:26px 0;position:relative;text-align:center}
+.propaganda-box::before{content:'★ POLITICKÉ ŠKOLENÍ ★';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 18px;color:var(--red);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:4px;font-weight:600;text-transform:uppercase}
+.propaganda-title{font-family:'Oswald',sans-serif;font-size:24px;color:var(--red);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.propaganda-text{font-family:'Special Elite',monospace;font-size:15px;color:var(--heading);letter-spacing:.5px;line-height:1.7}
+.propaganda-source{display:block;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;font-style:normal}
+.jazz-box{background:linear-gradient(180deg,rgba(196,160,72,.06) 0%,rgba(196,160,72,.02) 100%);border:1px solid var(--jazz);border-left:4px solid var(--jazz);padding:24px 30px;margin:24px 0;position:relative;font-family:'Playfair Display',serif;font-style:italic;color:var(--heading);font-size:16px;line-height:1.75}
+.jazz-box::before{content:'♪ JAZZ · SVOBODA ♫';position:absolute;top:-11px;left:20px;background:var(--bg);padding:0 14px;color:var(--jazz);font-family:'Playfair Display',serif;font-size:11px;letter-spacing:3px;font-weight:700;text-transform:uppercase;font-style:normal}
+.scene{background:var(--bg-card);border:1px solid var(--border);border-radius:1px;padding:26px 30px;margin:24px 0;position:relative}
+.scene::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--olive),var(--jazz),var(--olive));opacity:.5}
+.scene-label{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--olive);background:rgba(74,90,50,.08);padding:5px 12px;border-radius:1px;margin-bottom:16px;border:1px solid rgba(74,90,50,.3);font-weight:500}
+.scene-title{font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;color:var(--heading);margin-bottom:16px;letter-spacing:1.5px;text-transform:uppercase}
+.scene-text{font-family:'Crimson Pro',serif;font-size:16.5px;font-style:italic;color:var(--heading);margin:16px 0;padding:16px 22px;border-left:2px solid var(--olive);background:rgba(74,90,50,.03);line-height:1.85;white-space:pre-line}
+.scene-context{font-size:15px;color:var(--text-muted);margin-top:14px;line-height:1.7}
+.scene-context strong{color:var(--vintage)}
+.scene-meaning{font-size:14.5px;color:var(--text);margin-top:12px;padding:12px 16px;background:rgba(196,160,72,.04);border-left:2px solid var(--jazz);border-radius:0 1px 1px 0}
+.scene-meaning strong{color:var(--jazz)}
+.compare-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.compare-table th{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--olive);text-align:left;padding:12px 16px;border-bottom:2px solid var(--olive);font-weight:600}
+.compare-table td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+.tropes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:18px 0}
+.trope-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:1px;padding:18px 20px;position:relative}
+.trope-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--olive),transparent);opacity:.7}
+.trope-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--olive);margin-bottom:8px;font-weight:600}
+.trope-example{font-family:'Oswald',sans-serif;color:var(--heading);font-size:16px;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;font-weight:500}
+.trope-note{font-size:13.5px;color:var(--text-muted);line-height:1.55}
+.contrast-duel{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:28px 0;align-items:stretch}
+.contrast-side{padding:24px 26px;border:1px solid var(--border)}
+.contrast-side.army{background:rgba(74,90,50,.05);border-right:none;border-top:3px solid var(--olive)}
+.contrast-side.jazz-side{background:rgba(196,160,72,.04);border-left:none;border-top:3px solid var(--jazz)}
+.contrast-side h4{margin-top:0;margin-bottom:14px;font-size:14px}
+.contrast-side.army h4{color:var(--olive)}
+.contrast-side.jazz-side h4{color:var(--jazz);font-family:'Playfair Display',serif;font-style:italic;text-transform:none;letter-spacing:1px}
+.contrast-vs{display:flex;align-items:center;justify-content:center;padding:0;background:var(--bg);border-top:3px solid var(--border);border-bottom:1px solid var(--border);color:var(--text-muted);font-family:'Oswald',sans-serif;letter-spacing:3px;font-size:11px;text-transform:uppercase;min-width:60px}
+.contrast-side ul{margin:0;padding-left:18px}
+.contrast-side ul li{font-size:14px;margin-bottom:5px}
+.symbols-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:20px 0}
+.symbol-card{background:var(--bg-card);border:1px solid var(--border);border-top:3px solid var(--sym-color,var(--olive));padding:18px;text-align:center}
+.symbol-icon{font-size:28px;color:var(--sym-color,var(--olive));margin-bottom:8px;opacity:.75}
+.symbol-name{font-family:'Oswald',sans-serif;font-size:13px;color:var(--heading);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.symbol-meaning{font-size:12.5px;color:var(--text-muted);font-style:italic;line-height:1.5}
+.locations{background:var(--bg-card);border:1px solid var(--border);padding:22px 26px;margin:20px 0}
+.locations-title{font-family:'Oswald',sans-serif;font-size:13px;color:var(--olive);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;text-align:center;font-weight:600}
+.locations-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.location-item{padding:12px 14px;background:var(--bg-card-alt);border-left:2px solid var(--loc-color,var(--olive));border-radius:0 1px 1px 0}
+.location-name{font-family:'Oswald',sans-serif;font-size:14px;color:var(--heading);letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
+.location-note{font-size:12.5px;color:var(--text-muted);margin-top:4px;font-style:italic}
+.timeline{position:relative;margin:24px 0;padding-left:26px;border-left:2px solid var(--border)}
+.timeline-step{padding:14px 0 14px 22px;position:relative}
+.timeline-step::before{content:'';position:absolute;left:-9px;top:22px;width:14px;height:14px;border-radius:50%;border:2px solid var(--olive);background:var(--bg)}
+.timeline-step.red-step::before{border-color:var(--red);background:rgba(138,40,32,.3)}
+.timeline-step.jazz-step::before{border-color:var(--jazz);background:rgba(196,160,72,.2)}
+.timeline-step .ts-title{font-family:'Oswald',sans-serif;font-weight:500;color:var(--heading);font-size:17px;letter-spacing:1px;text-transform:uppercase}
+.timeline-step .ts-desc{color:var(--text-muted);font-size:14.5px;margin-top:4px}
+.timeline-step .ts-year{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--olive);display:inline-block;margin-right:10px;opacity:.85;font-weight:600}
+.danny-series{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:20px 0}
+.danny-card{background:var(--bg-card);border:1px solid var(--border);border-top:3px solid var(--danny-color,var(--jazz));padding:16px 18px;text-align:center}
+.danny-title{font-family:'Oswald',sans-serif;font-size:14px;color:var(--heading);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.danny-year{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--danny-color,var(--jazz));margin-bottom:8px;letter-spacing:2px}
+.danny-desc{font-size:12.5px;color:var(--text-muted);font-style:italic;line-height:1.5}
+details{margin:14px 0;background:var(--bg-card);border:1px solid var(--border);border-radius:1px;padding:4px 20px}
+details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:14px 0;font-size:16px;list-style:none;display:flex;align-items:center;gap:10px;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--olive);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .symbols-grid{grid-template-columns:repeat(2,1fr)}
+  .locations-list{grid-template-columns:1fr}
+  .contrast-duel{grid-template-columns:1fr}
+  .contrast-side.army{border-right:1px solid var(--border)}
+  .contrast-side.jazz-side{border-left:1px solid var(--border)}
+  .contrast-vs{padding:8px 0;min-width:auto}
+  .danny-series{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.propaganda-box,.jazz-box{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-classified">Tankový prapor · ČSLA</div>
+  <div class="hero-label">Maturitní rozbor · Česká exilová literatura · Satira</div>
+  <h1><em>Satirický román · 1971 · exil</em>Tankový<br>prapor<span class="sub-title">aneb Z deníku vojáka Dannyho Smiřického</span></h1>
+  <div class="author">Josef Škvorecký</div>
+  <div class="subtitle">ČSSR · 50. léta · Kasárna · Stalinismus</div>
+  <div class="hero-quote">„Soudruzi! Marxismus-leninismus učí, že tanky jsou dialektickým nástrojem třídního boje!"<em>— Poručík Růžička, politruk</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · 50. léta</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Epizody</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč · Ich-forma</a></li>
+  <li><a href="#postavy">Postavy · Kasárenská posádka</a></li>
+  <li><a href="#kontrast">Armáda vs. Jazz</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky · Škvoreckého styl</a></li>
+  <li><a href="#tropy">Tropy, figury a satira</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Tankový prapor</strong> je satirický román publikovaný v roce <strong>1971 v kanadském exilu</strong> — v Čechách až <strong>1990</strong>. Dílo má <strong>epizodickou strukturu</strong> sledující absurdní vojenský život v 50. letech. Škvorecký ho napsal v 60. letech na základě <strong>vlastní vojenské služby v tankovém praporu (1951–1953)</strong>. Kniha <strong>nemohla vyjít v Československu</strong> — příliš kritizovala komunistický režim. Po <strong>invazi Varšavské smlouvy v srpnu 1968</strong> Škvorecký emigroval do Kanady, kde knihu s manželkou <strong>Zdenou</strong> vydal ve svém nakladatelství <strong>Sixty-Eight Publishers</strong> v Torontu.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step red-step">
+    <div class="ts-title"><span class="ts-year">Nástup</span> Na vojnu</div>
+    <div class="ts-desc">Začátek vojenské služby, první absurdity</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Výcvik</span> Chaos a neschopnost</div>
+    <div class="ts-desc">Absurdní cvičení, neschopní velitelé, tanky T-34</div>
+  </div>
+  <div class="timeline-step red-step">
+    <div class="ts-title"><span class="ts-year">Školení</span> Politické školení</div>
+    <div class="ts-desc">Propagandistická ideologická cvičení, poručík Růžička</div>
+  </div>
+  <div class="timeline-step jazz-step">
+    <div class="ts-title"><span class="ts-year">Vnitřní život</span> Láska, jazz, plány</div>
+    <div class="ts-desc">Pokusy o dezerci, milostné aféry, tajné poslouchání Armstronga</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Konec</span> Návrat do civilu</div>
+    <div class="ts-desc">Dva roky pryč — ale režim zůstává</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>období základní vojenské služby — přibližně dva roky</strong> (1951–1952). Začátek 50. let, <strong>vrchol stalinismu v Československu</strong>. Doba politických procesů (<strong>proces se Slánským 1952</strong>), represí a teroru.</p>
+</div>
+</section>
+
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Absurdita totalitního systému (komunismus), vojenský život v 50. letech, satirická kritika režimu, malý člověk proti systému, dezerce, svoboda vs. nesvoboda, odpor (pasivní i aktivní), láska, přátelství, lidskost v nelidském systému.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Tanky T-34</strong> — sovětský tank, symbol systému</li>
+  <li><strong>Vojenská služba</strong> — povinná, dvouletá</li>
+  <li><strong>Danny Smiřický</strong> — alter ego autora</li>
+  <li><strong>Neschopní velitelé</strong> — Růžička, Borovička, Vokata</li>
+  <li><strong>Politické školení</strong> — marxismus-leninismus, propaganda</li>
+  <li><strong>Dezerce</strong> — plánovaná, ale nerealizovaná</li>
+  <li><strong>Láska</strong> — Lizetka, Jarunka</li>
+  <li><strong>Sabotáž, švejkování</strong> — pasivní odpor</li>
+  <li><strong>Strach, represe</strong></li>
+  <li><strong>Humor, ironie</strong></li>
+  <li><strong>50. léta</strong> — stalinismus, teror</li>
+  <li><strong>Jazz</strong> — hudba jako symbol svobody, Západu</li>
+</ul>
+</section>
+
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor · 50. léta</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Čas</h4>
+    <p><strong>Začátek 50. let 20. století (1951–1952).</strong> Vrchol stalinismu v Československu. Éra politických procesů, teroru. Základní vojenská služba (2 roky).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--olive)">
+    <h4 style="color:var(--olive)">Prostor</h4>
+    <p><strong>Vojenská posádka v Československu</strong> (pravděpodobně Mladá u Milovic). Kasárna, tankodrom, okolí posádky. Retrospektivy: Praha (Danny před vojnou).</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--olive)">
+      <div class="location-name">Kasárna</div>
+      <div class="location-note">Hlavní dějiště — uniformní, beztvaré, byrokratické</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--steel)">
+      <div class="location-name">Tankodrom</div>
+      <div class="location-note">Cvičiště — absurdní taktická cvičení</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--red)">
+      <div class="location-name">Politická klubovna</div>
+      <div class="location-note">Místo ideologických školení, Růžičkova kázání</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--khaki)">
+      <div class="location-name">Okolí posádky</div>
+      <div class="location-note">Hospody, vesnice, kde Danny potká Jarunku</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--jazz)">
+      <div class="location-name">Dannyho soukromí</div>
+      <div class="location-note">Tajné poslouchání jazzu na krátkých vlnách</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--vintage)">
+      <div class="location-name">Praha (retrospektiva)</div>
+      <div class="location-note">Dannyho civilní svět před vojnou</div>
+    </div>
+  </div>
+</div>
+
+<div class="card steel">
+  <div class="card-title" style="color:var(--steel)">Klaustrofobický mikrokosmos</div>
+  <p style="margin-bottom:0">Škvorecký záměrně <strong>zužuje prostor</strong> na vojenskou posádku — uzavřený svět, kde se odehrává drobné drama. Tanková posádka se stává <strong>mikrokosmem celé totalitní společnosti</strong>. Všechno absurdní, neschopné, ideologicky zdeformované, co najdeme v armádě, najdeme i v civilu. <strong>Armáda je jen zkoncentrovaná verze režimu.</strong></p>
+</div>
+</section>
+
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba · Epizody</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Epizodická struktura</strong> — série příběhů z vojenského života</li>
+  <li><strong>Chronologický postup</strong> — od nástupu po konec služby</li>
+  <li><strong>Retrospektivní vstupy</strong> — vzpomínky na civilní život</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--jazz)">Mozaikovitá kompozice</div>
+  <p style="margin-bottom:0">Román <strong>není striktně rozdělen na kapitoly</strong>. Epizody tvoří <strong>mozaiku vojenského života</strong> — každá má vlastní pointu, ale všechny dohromady tvoří <strong>obraz absurdního systému</strong>. Je to podobný princip jako u Haškova <em>Švejka</em>. Čtenář si může knihu otevřít kdekoli a číst — každá epizoda je samostatná satirická skica.</p>
+</div>
+
+<h3>Vnitřní struktura — oblouk praporu</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Nástup na vojnu</div>
+    <div class="ts-desc">Danny přichází do kasáren, první dojmy</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Výcvik · Absurdní</div>
+    <div class="ts-desc">T-34, neschopní velitelé, nesmyslná cvičení</div>
+  </div>
+  <div class="timeline-step red-step">
+    <div class="ts-title">3. Politická školení · Propagandistická</div>
+    <div class="ts-desc">Marxismus-leninismus, poručík Růžička</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">4. Cvičení · Chaotická</div>
+    <div class="ts-desc">„Dobývání kopce", rozkazy mění velitelé, nikdo neví, co dělat</div>
+  </div>
+  <div class="timeline-step jazz-step">
+    <div class="ts-title">5. Pokusy o dezerce / sabotáž</div>
+    <div class="ts-desc">S Dr. Danešem plánují útěk — vždy z něčeho sejde</div>
+  </div>
+  <div class="timeline-step jazz-step">
+    <div class="ts-title">6. Milostné vztahy</div>
+    <div class="ts-desc">Jarunka (vesnice), Lizetka (civilní svět)</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">7. Konflikty s veliteli</div>
+    <div class="ts-desc">Danny vs. Růžička, Borovička, Vokata</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">8. Konec služby</div>
+    <div class="ts-desc">Návrat do civilu — ale režim zůstává</div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (satiricky).</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Satirický román</h4>
+    <p>Výsměch komunistickému systému, absurdita, parodie ideologie.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--olive)">
+    <h4 style="color:var(--olive)">Vojenský román</h4>
+    <p>O životě v armádě — konkrétně v tankovém praporu 50. let.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--iron)">
+    <h4 style="color:var(--iron)">Antiutopický román</h4>
+    <p>Kritika totalitního režimu, zobrazení stalinismu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--vintage)">
+    <h4 style="color:var(--vintage)">Epizodický román</h4>
+    <p>Série příběhů — každá epizoda samostatná, ale spolu tvoří celek.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--jazz)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Satira komunistického režimu</strong></li>
+    <li>Zobrazení vojenského života 50. let</li>
+    <li><strong>Kritika totality skrze humor</strong></li>
+    <li>Epizody tvoří celek — jako Haškův <em>Švejk</em></li>
+    <li><strong>Autobiografické prvky</strong> — Škvorecký sloužil v tankovém praporu</li>
+  </ul>
+</div>
+</section>
+
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč · Ich-forma</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Typ</div>
+  <p style="margin-bottom:0"><strong>Ich-forma</strong> — Danny Smiřický vypráví vlastní zkušenost v 1. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Personální vypravěč</strong> — Danny vypráví v 1. osobě</li>
+  <li><strong>Retrospektivní vyprávění</strong> — vzpomínky s odstupem</li>
+  <li><strong>Subjektivní perspektiva</strong> — Dannyho pohled</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Danny Smiřický</strong> — alter ego Josefa Škvoreckého</li>
+    <li>Inteligentní, <strong>ironický</strong></li>
+    <li>Kritický k režimu</li>
+    <li><strong>Milovník jazzu a žen</strong></li>
+    <li>Přeživší — používá humor jako obranu</li>
+    <li>Pozorný pozorovatel <strong>absurdity</strong></li>
+    <li>Škvoreckého styl — humor, ironie, jazz-rytmus jazyka</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--jazz)">Dannyho dvojí perspektiva</div>
+  <p style="margin-bottom:0">Danny vypravěč <strong>kombinuje perspektivu mladého vojáka</strong> (zažívá absurdity poprvé, naivně, emocionálně) a <strong>perspektivu dospělého spisovatele</strong> (vzpomíná s odstupem, chápe širší kontext). To dává vyprávění <strong>intelektuální hloubku</strong> — není to jen deník mladíka, je to <strong>reflexe o povaze totality</strong>.</p>
+</div>
+</section>
+
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy · Kasárenská posádka</h2></div>
+
+<div class="character" style="--character-color:var(--jazz)" data-symbol="♪">
+  <div class="char-name">Danny Smiřický</div>
+  <div class="char-role">Hlavní postava · Kladná · Alter ego autora</div>
+  <ul style="margin:0">
+    <li>Mladý voják, <strong>inteligent</strong></li>
+    <li><strong>Alter ego Josefa Škvoreckého</strong></li>
+    <li>Milovník <strong>jazzu, literatury, žen</strong></li>
+    <li>Odpůrce režimu (vnitřně)</li>
+    <li>Používá <strong>ironii a humor</strong> jako zbraň</li>
+    <li>Přežívá absurditu armády skrze pasivní odpor</li>
+    <li>Symbol <strong>inteligence v hlouposti</strong></li>
+    <li>Objevuje se v několika Škvoreckého románech</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--red)" data-symbol="★">
+  <div class="char-name">Poručík Růžička</div>
+  <div class="char-role">Vedlejší postava · Záporná / Komická · Politruk</div>
+  <ul style="margin:0">
+    <li><strong>Politruk</strong> — politický důstojník</li>
+    <li><strong>Fanatický komunista</strong></li>
+    <li>Hloupý, <strong>dogmatický</strong></li>
+    <li>Cituje marxismus-leninismus bez porozumění</li>
+    <li>Nevědomky komický</li>
+    <li>Všechno vidí jako „třídní boj"</li>
+    <li>Symbol <strong>tuposti ideologie</strong></li>
+    <li>Archetyp fanatika — věří, protože nerozumí</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--steel)" data-symbol="M">
+  <div class="char-name">Major Borovička</div>
+  <div class="char-role">Vedlejší postava · Záporná · Velitel praporu</div>
+  <ul style="margin:0">
+    <li><strong>Velitel praporu</strong></li>
+    <li><strong>Kariérista, zbabělec</strong></li>
+    <li>Hloupý, ale <strong>lstivý</strong></li>
+    <li>Strach z nadřízených, krutý k podřízeným</li>
+    <li>Když přijde kontrola — předstírá nemoc</li>
+    <li>Symbol <strong>vojenské byrokracie</strong></li>
+    <li>Typický produkt systému — nahoru poklona, dolů pěst</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--iron)" data-symbol="V">
+  <div class="char-name">Desátník Vokata</div>
+  <div class="char-role">Vedlejší postava · Záporná / Komická · Desátník</div>
+  <ul style="margin:0">
+    <li><strong>Primitivní desátník</strong></li>
+    <li>Brutální, hloupý</li>
+    <li><strong>Šikanuje podřízené</strong></li>
+    <li>Moc bez rozumu</li>
+    <li>Symbol <strong>malého týrána</strong></li>
+    <li>Typ „nízkého kádra", jehož jedinou kvalifikací je poslušnost</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--vintage)" data-symbol="♀">
+  <div class="char-name">Jarunka</div>
+  <div class="char-role">Vedlejší postava · Kladná · Milostný vztah</div>
+  <ul style="margin:0">
+    <li>Dannyho milostný vztah</li>
+    <li><strong>Prostá dívka z vesnice</strong></li>
+    <li>Přirozená, lidská</li>
+    <li><strong>Kontrast s vojenským prostředím</strong></li>
+    <li>Symbol <strong>normálna, lidskosti</strong></li>
+    <li>Dannyho útočiště před absurditou kasáren</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--vintage)" data-symbol="L">
+  <div class="char-name">Lizetka</div>
+  <div class="char-role">Vedlejší postava · Neutrální · Civilní zájem</div>
+  <ul style="margin:0">
+    <li>Další Dannyho zájem</li>
+    <li>Představuje <strong>civilní svět</strong></li>
+    <li>Kontrast se zprasenou vojenskou realitou</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--jazz)" data-symbol="D">
+  <div class="char-name">Dr. Daneš</div>
+  <div class="char-role">Vedlejší postava · Kladná · Intelektuál</div>
+  <ul style="margin:0">
+    <li>Voják, <strong>intelektuál</strong></li>
+    <li>Dannyho přítel</li>
+    <li><strong>Spolčený v odporu</strong></li>
+    <li>Společně plánují <strong>dezerci</strong> — ale nikdy ji neuskuteční</li>
+    <li>Symbol inteligenta v armádě</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--khaki)" data-symbol="B">
+  <div class="char-name">Bamza</div>
+  <div class="char-role">Vedlejší postava · Komická · Prostý voják</div>
+  <ul style="margin:0">
+    <li><strong>Prostý voják</strong></li>
+    <li>Naivní, ale dobrák</li>
+    <li>Oběť systému</li>
+    <li>Nic nechápe, ale přežívá</li>
+    <li>Haškovská švejkovská tradice</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--khaki)" data-symbol="m">
+  <div class="char-name">Malinkatý</div>
+  <div class="char-role">Vedlejší postava · Voják</div>
+  <ul style="margin:0">
+    <li>Další voják v mozaice</li>
+    <li>Reprezentuje různé typy vojáků — mladíky z různých vrstev</li>
+    <li>Tvoří spolu s ostatními <strong>obraz celé společnosti</strong> 50. let</li>
+  </ul>
+</div>
+</section>
+
+<section class="section" id="kontrast">
+<div class="section-header"><span class="section-num">08</span><h2>Armáda vs. Jazz</h2></div>
+
+<p>Ústředním <strong>symbolickým kontrastem</strong> románu není boj Dannyho s konkrétním nepřítelem, ale <strong>napětí mezi dvěma světy</strong> — <strong>mezi armádou (systémem) a jazzem (svobodou)</strong>. Je to souboj dvou pohledů na svět, dvou estetik, dvou hodnotových systémů.</p>
+
+<div class="contrast-duel">
+  <div class="contrast-side army">
+    <h4>◆ ARMÁDA · SYSTÉM ◆</h4>
+    <ul>
+      <li>Uniforma</li>
+      <li>Disciplína (zdánlivá)</li>
+      <li>Ideologie marxismu-leninismu</li>
+      <li>Pochodová muzika</li>
+      <li>Poslušnost</li>
+      <li>Kolektivismus</li>
+      <li>Východ, SSSR</li>
+      <li>Tanky T-34</li>
+      <li>Byrokracie</li>
+    </ul>
+  </div>
+  <div class="contrast-vs">vs</div>
+  <div class="contrast-side jazz-side">
+    <h4>Jazz · Svoboda</h4>
+    <ul>
+      <li>Individualismus</li>
+      <li>Improvizace</li>
+      <li>Kultura, umění</li>
+      <li>Louis Armstrong, Duke Ellington</li>
+      <li>Svobodná volba</li>
+      <li>Osobní vkus</li>
+      <li>Západ, Amerika</li>
+      <li>Saxofony, trubky</li>
+      <li>Intelekt</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red)">Jazz jako politický akt</div>
+  <p style="margin-bottom:0"><strong>V 50. letech byl jazz v Československu oficiálně „dekadentní hudba Západu"</strong>. Kdo ho poslouchal, mohl mít problémy. Danny ho <strong>poslouchá tajně na krátkých vlnách</strong> — ladí si rozhlasové stanice, přes které proniká americká hudba. <strong>Pouhá obliba Armstronga nebo Ellingtona byla formou politického vzdoru.</strong> Jazz ve Škvoreckého díle není jen hudba — je to <strong>symbol svobody, intelektuální nezávislosti, Západu, lidskosti</strong>.</p>
+</div>
+
+<div class="jazz-box">„Večer jsem poslouchal jazz na krátkých vlnách. Armstrong, Ellington. To byla svoboda. To byl jiný svět. Ne tanky, ne marxismus. Jen hudba. Kdyby mě chytli, byl by problém."</div>
+</section>
+
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">09</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red)">Přímá řeč · Růžičkova propaganda</div>
+  <div class="quote-block" style="margin:0">„Soudruzi," řval poručík Růžička, „marxismus-leninismus učí…"<span class="quote-source">Typická fráze politického školení</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--olive)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Velitel nám vysvětloval, jak je důležité chránit lid před imperialisty.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--jazz)">Vnitřní monolog · Dannyho ironie</div>
+  <p style="font-style:italic;color:var(--heading);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Poslouchal jsem tu hloupost a přemýšlel, jak dlouho to ještě vydrží.</p>
+</div>
+
+<div class="card paper">
+  <div class="card-title" style="color:var(--paper)">Škvoreckého styl · Jazz rytmus</div>
+  <p style="margin-bottom:0"><strong>Dlouhá souvětí, asociace, improvizace</strong> — jako jazzová sólová pasáž. Škvoreckého věty často běhají dlouhými sloky, přeskakují od jednoho tématu k druhému, jako když Armstrong improvizuje na trubku.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--jazz)"><h4 style="color:var(--jazz)">Pásmo vypravěče</h4><p>Danny popisuje události — s humorem a ironií.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--vintage)"><h4 style="color:var(--vintage)">Monolog</h4><p>Dannyho úvahy — <strong>ironické, kritické</strong>.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--olive)"><h4 style="color:var(--olive)">Dialog</h4><p>Rozhovory vojáků, velitelů — autentický slang.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--red)"><h4 style="color:var(--red)">Politická školení</h4><p><strong>Parodie marxistické propagandy</strong> — prázdné fráze.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--steel)"><h4 style="color:var(--steel)">Popis</h4><p>Kasárna, tanky, cvičení — detailní, ironický.</p></div>
+</div>
+</section>
+
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">10</span><h2>Jazykové prostředky · Škvoreckého styl</h2></div>
+
+<h3>Hovorová čeština</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Autentická řeč vojáků</strong></li>
+    <li>Vulgarismy</li>
+    <li><strong>Vojenský slang</strong> — „embéčko", „lampasák", „absák"</li>
+    <li>Pražština, brněnština, slovácký přízvuk — vojáci z různých krajů</li>
+  </ul>
+</div>
+
+<h3>Ironie a satira — páteř stylu</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Vysmívání se systému</strong></li>
+    <li>Absurdní situace</li>
+    <li><strong>Kontrast slova a skutku</strong></li>
+    <li>Ironická nepřímost — zdánlivě popisuje, ve skutečnosti pohrdá</li>
+  </ul>
+</div>
+
+<h3>Škvoreckého podpisový styl — jazz v próze</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--jazz)">Jazzová věta</div>
+  <ul style="margin:0">
+    <li><strong>Dlouhá souvětí</strong> — jako jazz improvizace</li>
+    <li>Asociace, přeskakování mezi tématy</li>
+    <li>Detaily — konkrétní, smyslové</li>
+    <li>Humor</li>
+    <li><strong>Rytmus</strong> — věty pulsují jako swing</li>
+  </ul>
+</div>
+
+<h3>Politická propaganda · Parodie</h3>
+<div class="propaganda-box">
+  <div class="propaganda-title">Marxismus-leninismus učí!</div>
+  <div class="propaganda-text">„Dialektický materialismus · Třídní boj · Imperialistická hydra · Lidová demokracie · Buržoázní úchylky · Kapitalistické nebezpečí · Soudruh Stalin praví…"</div>
+  <div class="propaganda-source">Parodie ideologických klišé 50. let</div>
+</div>
+
+<h3>Anglicismy a Západ</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Jazzová terminologie</strong> — swing, blues, bebop</li>
+    <li>Jména: Louis Armstrong, Duke Ellington, Glenn Miller</li>
+    <li>Danny jako <strong>vzdělaný, znalý Západu</strong></li>
+    <li>Kontrast s marxistickou terminologií</li>
+  </ul>
+</div>
+
+<h3>Kontrast dvou jazyků</h3>
+<ul>
+  <li><strong>Oficiální jazyk</strong> (ideologie) vs. <strong>skutečnost</strong></li>
+  <li>Ideologické fráze vs. realita kasáren</li>
+  <li>Novořeč marxismu vs. autentický slang vojáků</li>
+</ul>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Hovorová čeština</strong> vytváří autenticitu</li>
+    <li><strong>Ironie</strong> odhaluje absurditu</li>
+    <li><strong>Satira</strong> kritizuje systém</li>
+    <li><strong>Škvoreckého styl</strong> je charakteristický — „jazz v literatuře"</li>
+  </ul>
+</div>
+</section>
+
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">11</span><h2>Tropy, figury a satira</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Satira (hlavní!)</div>
+    <div class="trope-example">Komunismus</div>
+    <div class="trope-note">Zesměšnění komunistického systému, armády, ideologie. Hlavní nástroj díla.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Lidová demokracie</div>
+    <div class="trope-note">Kontrast mezi ideologickými hesly a realitou. <strong>„Lidová demokratická armáda"</strong> = tyranie.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Groteska</div>
+    <div class="trope-example">Absurdita cvičení</div>
+    <div class="trope-note">Přehánění absurdity. Komické situace — školení, cvičení, „úspěšná" porážka.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Tanky T-34</div>
+    <div class="trope-note">Tanky = systém. Jazz = svoboda, Západ. Vojna = totalita v miniatuře.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Parodie</div>
+    <div class="trope-example">Politická školení</div>
+    <div class="trope-note">Napodobení politických projevů, marxistických školení. Prázdné fráze.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Absurdita</div>
+    <div class="trope-example">Vojenská logika</div>
+    <div class="trope-note">Logika armády = nelogická. Situace bez smyslu. Kafkovská atmosféra.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Kontrast</div>
+    <div class="trope-example">Inteligence vs. hloupost</div>
+    <div class="trope-note">Danny vs. velitelé. Humanita vs. systém. Jazz vs. pochodová muzika.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Švejkovství</div>
+    <div class="trope-example">Tradice Haška</div>
+    <div class="trope-note">Předstíraná hloupost, doslovné plnění rozkazů, pasivní odpor. Česká tradice.</div>
+  </div>
+</div>
+
+<h3>Klíčová symbolika díla</h3>
+<div class="symbols-grid">
+  <div class="symbol-card" style="--sym-color:var(--steel)">
+    <div class="symbol-icon">▣</div>
+    <div class="symbol-name">Tank T-34</div>
+    <div class="symbol-meaning">Systém — těžký, pomalý, destruktivní</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--jazz)">
+    <div class="symbol-icon">♪</div>
+    <div class="symbol-name">Jazz</div>
+    <div class="symbol-meaning">Svoboda, Západ, kultura</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--olive)">
+    <div class="symbol-icon">⚔</div>
+    <div class="symbol-name">Vojna</div>
+    <div class="symbol-meaning">Totalitní systém v miniaturе</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--red)">
+    <div class="symbol-icon">★</div>
+    <div class="symbol-name">Růžička</div>
+    <div class="symbol-meaning">Hloupý fanatik ideologie</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--jazz)">
+    <div class="symbol-icon">♟</div>
+    <div class="symbol-name">Danny</div>
+    <div class="symbol-meaning">Inteligence, odpor, pozorovatel</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--vintage)">
+    <div class="symbol-icon">♀</div>
+    <div class="symbol-name">Jarunka</div>
+    <div class="symbol-meaning">Lidskost, normální svět</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--paper)">
+    <div class="symbol-icon">§</div>
+    <div class="symbol-name">Rozkazy</div>
+    <div class="symbol-meaning">Byrokratická absurdita</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--iron)">
+    <div class="symbol-icon">⛓</div>
+    <div class="symbol-name">Strach</div>
+    <div class="symbol-meaning">Nástroj udržení totality</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Satira</strong> kritizuje režim. <strong>Ironie</strong> odhaluje lež. <strong>Groteska</strong> zesiluje absurditu. <strong>Švejkovství</strong> je způsob přežití. Škvorecký používá humor jako <strong>literární zbraň</strong> — nemůže režim přímo napadnout, tak ho <strong>obnaží směšný</strong>.</p>
+</div>
+</section>
+
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">12</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Josef Škvorecký (1924–2012)</div>
+  <p>Český prozaik, překladatel, literární kritik a vydavatel. Narozen <strong>27. září 1924 v Náchodě</strong>. Vystudoval <strong>anglickou filologii a filozofii na Karlově univerzitě</strong>. Za války pracoval v továrně Messerschmitt jako <strong>totálně nasazený</strong>. Po válce <strong>sloužil v tankovém praporu (1951–1953)</strong> — zkušenost, která se stala základem tohoto románu. Pracoval jako <strong>redaktor nakladatelství Odeon</strong> a časopisu <em>Světová literatura</em>. Byl <strong>vášnivým znalcem americké literatury</strong> — překládal Hemingwaye, Faulknera, Chandlera. Byl <strong>milovníkem jazzu</strong> — hrál v amatérských kapelách. Jeho debut <em>Zbabělci</em> (1958) vyvolal <strong>skandál</strong> — kniha byla ostře kritizována jako „nevhodný obraz konce války", Škvorecký přišel o zaměstnání. Po <strong>sovětské invazi v srpnu 1968</strong> emigroval s manželkou <strong>Zdenou Škvoreckou</strong> do Kanady. V <strong>Torontu</strong> založili nakladatelství <strong>Sixty-Eight Publishers (68 Publishers)</strong> — vydávalo českou zakázanou a exilovou literaturu (Kundera, Vaculík, Klíma, Havel). <strong>Učil anglickou a americkou literaturu na University of Toronto.</strong> Stal se <strong>čestným občanem Kanady</strong>. V roce <strong>1990 se vrátil do Československa</strong> — ale trvale žil v Torontu. V roce <strong>1999 získal Cenu Franze Kafky</strong>. Zemřel <strong>3. ledna 2012 v Torontu</strong> ve věku 87 let.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li>Napsáno v 60. letech, publikováno v exilu (<strong>1971</strong>)</li>
+  <li>Pokračování postav z <em>Zbabělců</em></li>
+  <li><strong>Danny Smiřický = opakující se postava</strong></li>
+  <li>Součást rozsáhlé „Dannyho série"</li>
+</ul>
+
+<h3>Danny Smiřický série — alter ego v mnoha knihách</h3>
+<div class="danny-series">
+  <div class="danny-card" style="--danny-color:var(--jazz)">
+    <div class="danny-title">Zbabělci</div>
+    <div class="danny-year">1958</div>
+    <div class="danny-desc">Konec války, jazz, Danny jako gymnazista</div>
+  </div>
+  <div class="danny-card" style="--danny-color:var(--vintage)">
+    <div class="danny-title">Lvíče</div>
+    <div class="danny-year">1969</div>
+    <div class="danny-desc">Danny v Praze, lovelaské aféry</div>
+  </div>
+  <div class="danny-card" style="--danny-color:var(--olive)">
+    <div class="danny-title">Tankový prapor</div>
+    <div class="danny-year">1971</div>
+    <div class="danny-desc">Danny v armádě — <strong>toto dílo</strong></div>
+  </div>
+  <div class="danny-card" style="--danny-color:var(--red)">
+    <div class="danny-title">Mirákl</div>
+    <div class="danny-year">1972</div>
+    <div class="danny-desc">Danny jako dospělý, 50.–60. léta</div>
+  </div>
+  <div class="danny-card" style="--danny-color:var(--steel)">
+    <div class="danny-title">Příběh inženýra lidských duší</div>
+    <div class="danny-year">1977</div>
+    <div class="danny-desc">Danny v exilu v Kanadě</div>
+  </div>
+</div>
+
+<h3>Další Škvoreckého díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Sedmiramenný svícen</strong></td><td>1964</td><td>Povídky o holocaustu</td></tr>
+  <tr><td><strong>Legenda Emöke</strong></td><td>1963</td><td>Novela o lásce a ztrátě</td></tr>
+  <tr><td><strong>Hříchy pro pátera Knoxe</strong></td><td>1973</td><td>Detektivky</td></tr>
+  <tr><td><strong>Nevěsta z Texasu</strong></td><td>1992</td><td>Historický román o Češích v USA</td></tr>
+  <tr><td><strong>Série s poručíkem Borůvkou</strong></td><td></td><td>Detektivní romány a povídky</td></tr>
+</table>
+
+<h3>Škvoreckého styl</h3>
+<ul>
+  <li><strong>Jazz</strong> — rytmus, improvizace</li>
+  <li>Ironie, humor</li>
+  <li><strong>Láska k americké kultuře</strong></li>
+  <li>Antikomunismus</li>
+  <li><strong>Dlouhá souvětí</strong></li>
+  <li>Danny jako <strong>alter ego</strong></li>
+  <li>Nostalgie, vzpomínky</li>
+</ul>
+</section>
+
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">13</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Děj:</strong> 50. léta (stalinismus)</li>
+    <li><strong>Napsáno:</strong> 60. léta</li>
+    <li><strong>Publikováno:</strong> 1971 (exil, Toronto) / <strong>1990</strong> (Čechy)</li>
+    <li>Normalizace — <strong>zakázáno 20 let</strong></li>
+    <li>Umělecký sloh: <strong>SATIRICKÁ PRÓZA / ANTIUTOPIE</strong></li>
+  </ul>
+</div>
+
+<h3>Historický kontext — 50. léta v Československu</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--red)">Vrchol stalinismu</div>
+  <ul style="margin:0">
+    <li><strong>Stalinismus</strong> v Čechách (od února 1948)</li>
+    <li><strong>Politické procesy</strong> — Slánský (1952), popravy</li>
+    <li>Represe, strach</li>
+    <li><strong>Povinná vojenská služba</strong> (2 roky)</li>
+    <li>Militarizace společnosti</li>
+    <li>Propaganda, ideologie</li>
+    <li>Uranové doly — političtí vězni</li>
+  </ul>
+</div>
+
+<h3>Česká satira — tradice</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Společné rysy</th></tr>
+  <tr><td><strong>Jaroslav Hašek</strong></td><td><em>Osudy dobrého vojáka Švejka</em></td><td><strong>Předchůdce</strong> — vojenská satira</td></tr>
+  <tr><td><strong>Karel Čapek</strong></td><td><em>Válka s mloky</em></td><td>Satira totalitarismu</td></tr>
+  <tr><td><strong>Josef Škvorecký</strong></td><td><em>Tankový prapor</em></td><td>50. léta, komunistická armáda</td></tr>
+  <tr><td><strong>Milan Kundera</strong></td><td><em>Žert</em></td><td>Stalinistická absurdita</td></tr>
+  <tr><td><strong>Bohumil Hrabal</strong></td><td><em>Ostře sledované vlaky</em></td><td>Satirické prvky, tragikomika</td></tr>
+</table>
+
+<h3>Exilová česká literatura (po 1968)</h3>
+<ul>
+  <li><strong>Milan Kundera</strong> — <em>Nesnesitelná lehkost bytí, Kniha smíchu a zapomnění</em></li>
+  <li><strong>Pavel Kohout</strong></li>
+  <li><strong>Ivan Klíma</strong></li>
+  <li><strong>Ludvík Vaculík</strong></li>
+  <li><strong>Arnošt Lustig</strong></li>
+  <li>Všichni vydáváni v <strong>Sixty-Eight Publishers</strong> Škvoreckých</li>
+</ul>
+
+<h3>Světový kontext — vojenská satira</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Rok</th></tr>
+  <tr><td><strong>Jaroslav Hašek</strong></td><td><em>Osudy dobrého vojáka Švejka</em> (1. sv. válka)</td><td>1921–1923</td></tr>
+  <tr><td><strong>Norman Mailer</strong></td><td><em>Nazí a mrtví</em> (Pacifik, 2. sv. válka)</td><td>1948</td></tr>
+  <tr><td><strong>Joseph Heller</strong></td><td><em>Hlava XXII</em> (americká vojenská satira)</td><td>1961</td></tr>
+  <tr><td><strong>Josef Škvorecký</strong></td><td><em>Tankový prapor</em> (komunistická armáda)</td><td>1971</td></tr>
+  <tr><td><strong>Kurt Vonnegut</strong></td><td><em>Jatka číslo pět</em> (2. sv. válka, groteska)</td><td>1969</td></tr>
+</table>
+
+<details>
+  <summary>Švejkování — česká tradice</summary>
+  <p><strong>Švejkování</strong> pochází od Jaroslava Haška a jeho <em>Osudů dobrého vojáka Švejka</em> (1921–1923). Znamená to <strong>předstíranou hloupost</strong>, <strong>doslovné plnění rozkazů</strong> (které tím sabotuje systém), humor a pasivní odpor. Je to <strong>česká forma přežívání v totalitním systému</strong> — hrdina není ten, kdo se postaví otevřeně (to by ho zabili), ale ten, kdo přežije tím, že vypadá jako idiot. Škvorecký přímo navazuje na Haška — Danny je Švejkovým vzdělanějším potomkem.</p>
+</details>
+
+<details>
+  <summary>Sixty-Eight Publishers — exilové nakladatelství</summary>
+  <p><strong>Sixty-Eight Publishers</strong> (68 Publishers) bylo exilové české nakladatelství založené Josefem a <strong>Zdenou Škvoreckými</strong> v <strong>Torontu v roce 1971</strong>. Název odkazoval na <strong>rok 1968</strong> — invazi, která přinesla emigrační vlnu. Nakladatelství <strong>vydalo přes 200 titulů</strong> zakázané české literatury — Kunderu, Vaculíka, Klímu, Havla, Pavla Tigrida, Pavla Kohouta. Knihy se <strong>tajně pašovaly</strong> do Československa. <strong>Sixty-Eight Publishers zachránilo českou literaturu před zapomněním.</strong> Škvoreckých zásluha o českou kulturu je nevyčíslitelná.</p>
+</details>
+</section>
+
+<div class="jazz-divider">♪ ♫ ♪</div>
+
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">14</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--olive)">
+  <span class="scene-label" style="background:rgba(74,90,50,.1);border-color:var(--olive);color:var(--olive)">★ 01 · NÁSTUP · ZAČÁTEK ABSURDITY ★</span>
+  <div class="scene-title">Nástup na vojnu</div>
+  <div class="scene-text">Nastoupil jsem do tankového praporu. Čekal jsem, že to bude těžké. Ale nečekal jsem, že to bude tak absurdní. První den jsme se učili rozeznávat tanky T-34 od T-34. Byl to stejný tank.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Dannyho nástup na vojnu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Úvodní absurdita</strong></li>
+      <li>Hned od začátku nesmysl</li>
+      <li>Satira vojenského výcviku</li>
+      <li>Předznamenání dalších absurdit</li>
+      <li>Škvoreckého humor — rozeznávat T-34 od T-34 je logicky nemožné</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red)">
+  <span class="scene-label" style="background:rgba(138,40,32,.1);border-color:var(--red);color:var(--red)">★ 02 · RŮŽIČKA · POLITRUK ★</span>
+  <div class="scene-title">Marxismus-leninismus učí</div>
+  <div class="scene-text">Poručík Růžička stál před námi a řval: „Soudruzi! Marxismus-leninismus učí, že tanky jsou dialektickým nástrojem třídního boje! Musíme chránit lid před imperialisty!"
+Nikdo nechápal, co to má společného s tankama.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Parodie ideologických školení</strong></li>
+      <li>Růžička jako <strong>symbol hloupého fanatika</strong></li>
+      <li>Marxismus aplikovaný absurdně</li>
+      <li>Satira propagandy</li>
+      <li>Komická postava, ale děsivá v tom, co reprezentuje</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Cvičení · Chaos</span>
+  <div class="scene-title">„Úspěšné" cvičení</div>
+  <div class="scene-context">Cvičení začalo. Měli jsme dobýt kopec. Ale nikdo nevěděl jak. <strong>Tanky se zasekávaly.</strong> Velitelé křičeli. Pořád se měnil rozkaz. Na konci jsme byli tam, kde jsme začali. <em>„Cvičení úspěšné!"</em> prohlásil major.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Neschopnost velitelů</strong></li>
+      <li>Chaos místo disciplíny</li>
+      <li>Ironie „úspěšného" cvičení</li>
+      <li>Satira vojenské logiky</li>
+      <li>Systém, kde porážka = vítězství (orwellovsky)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="jazz-box">„Večer jsem poslouchal jazz na krátkých vlnách. Armstrong, Ellington. To byla svoboda. To byl jiný svět. Ne tanky, ne marxismus. Jen hudba. Kdyby mě chytli, byl by problém. Jazz byl dekadentní."</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Jazz · Svoboda</span>
+  <div class="scene-title">Danny a jazz</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Jazz = <strong>symbol Západu, svobody</strong></li>
+      <li>Hudba jako <strong>útěk</strong></li>
+      <li>Režim zakazuje kulturu</li>
+      <li>Dannyho vnitřní svět</li>
+      <li>Kontrast: krásné (jazz) vs. ošklivé (vojna)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--jazz)">
+  <span class="scene-label" style="background:rgba(196,160,72,.1);border-color:var(--jazz);color:var(--jazz)">★ 05 · PLÁNY NA DEZERCI ★</span>
+  <div class="scene-title">S Dr. Danešem</div>
+  <div class="scene-context">S doktorem Danešem jsme plánovali útěk. <strong>Přes hranice. Do Německa. Do svobody.</strong> Měli jsme plán. Ale vždycky něco pokazilo. Strach. Neschopnost. Nakonec jsme to vzdali. Zůstali jsme.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Touha po svobodě</strong></li>
+      <li>Bezmoc jednotlivce</li>
+      <li>Strach, rezignace</li>
+      <li>Realita: většina zůstala</li>
+      <li><strong>Tragika pod humorem</strong> — ne každý má odvahu emigrovat</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · Borovička · Zbabělý velitel</span>
+  <div class="scene-title">Major Borovička</div>
+  <div class="scene-context">Major Borovička se <strong>třásl strachy před nadřízenými</strong>. Když přijela kontrola, předstíral nemoc. Když měl jít na frontu (cvičnou), dezertoval do kanceláře. <em>„Velitel musí velet strategicky,"</em> říkal. To znamenalo: <strong>schovávat se</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Satira velitelů</strong></li>
+      <li>Zbabělost kariéristů</li>
+      <li>Kontrast: velitel = zbabělec</li>
+      <li>Ironie</li>
+      <li>Typický produkt systému — kdo je nejvýše, je nejhorší</li>
+    </ul>
+  </div>
+</div>
+
+<div class="propaganda-box">
+  <div class="propaganda-title">Soudruh Stalin říká…</div>
+  <div class="propaganda-text">„Dialektický materialismus · třídní boj · kapitalistická hydra · imperialistické nebezpečí · buržoázní úchylky · soudruh Stalin · soudruh Stalin · soudruh Stalin…"</div>
+  <div class="propaganda-source">Dannyho pohled na politické školení</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Ideologická školení</span>
+  <div class="scene-title">Parodie propagandy</div>
+  <div class="scene-context">„Soudruh Stalin říká…" začínal každý projev. Potom následovaly fráze. Dialektický materialismus. Třídní boj. Kapitalistická hydra. <strong>Opakovali jsme to nazpaměť. Nikdo tomu nevěřil. Všichni jen přežívali.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Parodie ideologie</strong></li>
+      <li>Prázdné fráze</li>
+      <li>Všichni jen předstírají</li>
+      <li>Pokrytectví</li>
+      <li>Satira propagandy — systémově předstírané přesvědčení</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--steel)">
+  <span class="scene-label" style="background:rgba(90,82,72,.15);border-color:var(--steel);color:var(--steel)">★ 08 · TANKY · SYMBOL SYSTÉMU ★</span>
+  <div class="scene-title">T-34</div>
+  <div class="scene-text">T-34. Sovětský tank. Těžký. Pomalý. Často se porouchal. Nikdo nevěděl, jak ho opravit. Ale byla jich spousta. Síla byla v množství, ne kvalitě. Jako celý systém.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Tank = metafora systému</strong></li>
+      <li>Těžký, pomalý, nefunkční</li>
+      <li>Množství místo kvality</li>
+      <li>Symbolika</li>
+      <li>Škvorecký používá tanky jako <strong>alegorii sovětského komunismu</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Švejkování · Sabotáž</span>
+  <div class="scene-title">„Omylem" pasivní odpor</div>
+  <div class="scene-context">Dělali jsme, co jsme mohli. Pomalu. Špatně. <em>„Omylem."</em> Když jsme měli spravit tank, pokazili jsme ho víc. <em>„Omylem."</em> Když jsme měli cvičit, dělali jsme chyby. <em>„Omylem."</em> <strong>Byl to náš tichý boj.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Sabotáž jako forma odporu</strong></li>
+      <li>Švejkování (reference na Haška)</li>
+      <li>Inteligence vs. systém</li>
+      <li>Humor jako zbraň</li>
+      <li>Přežití skrze tichý odpor</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">10 · Absurdní rozkazy</span>
+  <div class="scene-title">„Natřete tanky na zeleno!"</div>
+  <div class="scene-context"><em>„Natřete tanky na zeleno!"</em> rozkázal velitel. Byly zelené. <em>„Jsou špatně zelené! Musí být sovětsky zelené!"</em> Takže jsme je natřeli znovu. Stejnou barvou. <em>„Výborně,"</em> pochválil. <em>„Teď jsou správně zelené."</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Absurdita byrokracie</strong></li>
+      <li>Rozkazy bez smyslu</li>
+      <li>Vojna jako Kafka</li>
+      <li>Groteska</li>
+      <li>Satira systému — to, co je „správně", je to, co řekne nadřízený</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--vintage)">
+  <span class="scene-label" style="background:rgba(138,120,72,.1);border-color:var(--vintage);color:var(--vintage)">★ 11 · JARUNKA · LÁSKA ★</span>
+  <div class="scene-title">Prostá dívka z vesnice</div>
+  <div class="scene-context">Jarunka byla z vesnice. Prostá dívka. <strong>Ale byla skutečná.</strong> Ne jako ta vojenská hloupost. S ní jsem mohl mluvit normálně. Zapomínat na tanky. <strong>Být člověkem.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Láska jako útěk</strong></li>
+      <li>Civilní svět vs. vojenský</li>
+      <li>Lidskost uprostřed nelidskosti</li>
+      <li>Jarunka = <strong>symbol normálna</strong></li>
+      <li>Kontrast — vesnice skutečnější než kasárna</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--iron);background:rgba(58,58,56,.1)">
+  <span class="scene-label" style="background:rgba(58,58,56,.25);border-color:var(--iron);color:var(--text-muted)">★ 12 · STRACH · REPRESE ★</span>
+  <div class="scene-title">Tichý teror 50. let</div>
+  <div class="scene-context">Všichni se báli. Strach z nadřízených. <strong>Strach ze StB.</strong> Strach z udání. Jeden špatný vtip a byl jsi v problému. Politický vězeň. <strong>Uranium. Možná smrt.</strong> Tak jsme mlčeli. A smáli se jenom pro sebe.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>50. léta = teror</strong></li>
+      <li>Strach paralyzuje</li>
+      <li>Represe — <strong>StB, uranové doly Jáchymov</strong></li>
+      <li>Lidé se bojí mluvit</li>
+      <li><strong>Pod humorem tragika</strong> — satira je odpověď, ale nebezpečná</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">13 · Konec vojny</span>
+  <div class="scene-title">Návrat do civilu — ale do totality</div>
+  <div class="scene-context">Skončil jsem. Dva roky pryč. Vrátil jsem se do civilu. <strong>Ale něco se změnilo.</strong> Viděl jsem, jak systém funguje. Jak je hloupý. Jak je zlý. <strong>Už jsem nemohl nevědět.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Zkušenost mění</strong></li>
+      <li>Poznání systému</li>
+      <li>„Svoboda" — ale pořád v totalitě</li>
+      <li>Ironie: konec vojny, ne režimu</li>
+      <li>Dannyho politizace — z mladíka se stává kritický pozorovatel</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--khaki);background:rgba(106,90,40,.05)">
+  <span class="scene-label" style="background:rgba(106,90,40,.15);border-color:var(--khaki);color:var(--khaki)">★ 14 · ŠVEJKOVÁNÍ · ČESKÁ TRADICE ★</span>
+  <div class="scene-title">Česká škola přežití</div>
+  <div class="scene-context">Dělali jsme to jako Švejk. <strong>Předstírali hloupost. Plnili rozkazy doslova (což je kazilo). Usmívali se a sabotovali.</strong> Nebyli jsme hrdinové. Jen jsme přežívali.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Reference na Haška</strong></li>
+      <li>Švejkování = česká tradice</li>
+      <li>Pasivní odpor</li>
+      <li>Přežití skrze humor</li>
+      <li><strong>Kontinuita české satiry</strong> — Hašek → Škvorecký</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="jazz-divider">♪ ♫ ♪</div>
+
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">15</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--olive)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Totalitní systém je absurdní, hloupý a destruktivní.</strong> Vojenská služba v 50. letech byla parodií na armádu — neschopní velitelé, nesmyslné rozkazy, ideologická propaganda. <strong>Lidé přežívali humorem, pasivním odporem, švejkováním.</strong> Systém se dá porazit smíchem. Svoboda je cenná — a její absence bolí.</p>
+</div>
+
+<h3>Hlavní hodnoty díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--jazz)">
+    <h4 style="color:var(--jazz)">Humor</h4>
+    <p>Smích jako odpor proti tyranii.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--olive)">
+    <h4 style="color:var(--olive)">Inteligence</h4>
+    <p>Myslet sám za sebe — navzdory propagandě.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--vintage)">
+    <h4 style="color:var(--vintage)">Lidskost</h4>
+    <p>Zachovat si ji v nelidském systému.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--red)">
+    <h4 style="color:var(--red)">Odpor</h4>
+    <p>Pasivní, ale cenný — švejkování.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--paper)">
+    <h4 style="color:var(--paper)">Paměť</h4>
+    <p>Povinnost pamatovat na hrůzy 50. let.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Svoboda</h4>
+    <p>Hodnota, kterou si uvědomíme až v jejím nedostatku.</p>
+  </div>
+</div>
+
+<h3>Škvoreckého osobní zkušenost</h3>
+<details>
+  <summary>Autobiografické dílo</summary>
+  <p>Škvorecký <strong>sloužil v tankovém praporu v letech 1951–1953</strong> — přesně v době, kdy se odehrává román. Byl <strong>tankista</strong>, zažil cvičení, politická školení, šikanu, absurditu. Dílo je <strong>silně autobiografické</strong> — Danny je přímo Škvoreckého alter ego. Postavy jsou založeny na <strong>skutečných lidech, které znal</strong>. Autentické detaily — od vojenského slangu po politická hesla — dávají knize <strong>dokumentární hodnotu</strong>. Je to svědectví o době, kterou většina Čechů zažila.</p>
+</details>
+
+<h3>Cenzura a publikace</h3>
+<details>
+  <summary>20 let v Československu zakázáno</summary>
+  <p>Škvorecký román napsal v <strong>60. letech</strong>, ale nemohl být publikován — byl příliš kritický k režimu. V roce <strong>1968 Pražské jaro</strong> přinášelo naději — možná bude vydán. Ale přišla <strong>invaze Varšavské smlouvy</strong> (21. srpna 1968) a naděje zmizely. Škvorecký <strong>emigroval do Kanady</strong>. Dílo vyšlo v roce <strong>1971 v jeho vlastním exilovém nakladatelství Sixty-Eight Publishers</strong> v Torontu. <strong>V Československu bylo zakázáno</strong> — Škvorecký patřil na seznam „nepřátel lidu". <strong>Knihy se tajně pašovaly přes hranice</strong>. Teprve <strong>po sametové revoluci 1989</strong> mohlo dílo vyjít oficiálně v Československu — <strong>1990 se stalo bestsellerem</strong>.</p>
+</details>
+
+<h3>Filmové adaptace</h3>
+<details>
+  <summary>Film Vít Olmer 1991</summary>
+  <p>Po roce 1989 byla kniha zfilmována — <strong>režie Vít Olmer, 1991</strong>. Ve filmu hrají <strong>Lukáš Vaculík</strong> (Danny), <strong>Miroslav Donutil</strong>, <strong>Miroslav Táborský</strong> a další. Film zachytil humor a atmosféru knihy, ačkoli Škvoreckého <strong>literární styl je těžko přenositelný na film</strong> — humor je v jazyce. Film byl u diváků úspěšný a pomohl popularizovat dílo v 90. letech.</p>
+</details>
+
+<h3>Škvoreckých odkaz</h3>
+<details>
+  <summary>Zásluhy o českou kulturu</summary>
+  <p>Josef a <strong>Zdena Škvorečtí</strong> v exilu <strong>zachránili českou literaturu</strong> před zapomněním. Jejich <strong>Sixty-Eight Publishers</strong> vydalo knihy Milana Kundery, Václava Havla, Ludvíka Vaculíka, Ivana Klímy a mnoha dalších. Bez jejich práce by byly tyto knihy <strong>ztraceny</strong> — nebo vydávány jen v samizdatu s minimálním dosahem. V roce <strong>1990 byli oba oceněni</strong> v Československu. Škvorecký získal <strong>Cenu Franze Kafky</strong> (1999). <strong>Zemřel 3. ledna 2012 v Torontu</strong>. Jeho dílo a jeho vydavatelská činnost jsou <strong>neocenitelnou součástí české kulturní historie</strong>.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Varování před totalitou</strong> — stále platí</li>
+    <li>Satira byrokracie</li>
+    <li><strong>Absurdita systémů</strong></li>
+    <li>Humor jako odpor</li>
+    <li>Lidskost v nelidskosti</li>
+    <li><strong>Cennost svobody</strong></li>
+    <li>Paralela s dnešní autoritářskou politikou</li>
+  </ul>
+</div>
+
+<h3>Kulturní vliv</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li>Klasika české satiry</li>
+    <li><strong>Obraz 50. let</strong></li>
+    <li>Varování před totalitou</li>
+    <li>„Tankový prapor" = <strong>metafora absurdity</strong></li>
+    <li>Švejkování jako koncept</li>
+    <li>Škvorecký = symbol exilu i odporu</li>
+    <li><strong>Povinná četba</strong> na středních školách</li>
+    <li>Danny Smiřický — ikonická postava</li>
+  </ul>
+</div>
+
+<div class="propaganda-box" style="margin-top:40px;border:2px solid var(--jazz);background:rgba(196,160,72,.04)">
+  <div class="propaganda-title" style="color:var(--jazz);font-family:'Playfair Display',serif;text-transform:none;letter-spacing:1px">Humor je poslední zbraň svobodných</div>
+  <div class="propaganda-text" style="font-family:'Crimson Pro',serif;font-style:italic;color:var(--heading)">Když nemůžeš bojovat, můžeš se smát. Totalitě smích nic neodpustí.</div>
+  <div class="propaganda-source">Duch Škvoreckého · Odkaz pro současnost</div>
+</div>
+</section>
+
+<div class="military-divider">★ ◆ ★</div>
+
+</div>
+</body>
+</html>

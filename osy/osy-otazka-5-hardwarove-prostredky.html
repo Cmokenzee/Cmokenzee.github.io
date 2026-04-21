@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 5: Hardwarové prostředky</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Interrupt flow diagram */
+.flow-diagram{display:flex;flex-direction:column;gap:4px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.flow-step{padding:12px 16px;border-radius:6px;text-align:center;font-weight:600;position:relative}
+.flow-step small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.flow-arrow{text-align:center;color:var(--text-muted);font-size:16px;line-height:1}
+.fl-hw{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.fl-cpu{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.fl-os{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.fl-done{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+/* Ring diagram */
+.ring-stack{margin:16px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ring-layer{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid rgba(0,0,0,.3)}
+.ring-layer:last-child{border-bottom:none}
+.ring-layer small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.7;margin-top:2px}
+.rl-kernel{background:rgba(248,113,113,.2);color:var(--accent-5)}
+.rl-user{background:rgba(96,165,250,.2);color:var(--accent-1)}
+.rl-hw{background:rgba(107,114,128,.2);color:var(--text-muted)}
+/* Bus grid */
+.bus-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.bus-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 5</div>
+  <h1>Hardwarové prostředky</h1>
+  <p>Přerušení • Registry • I/O • Privilegovaný režim • Systémové volání • Časovač • Sběrnice</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#komunikace">Komunikace OS s HW</a></li>
+  <li><a href="#preruseni">Přerušení – princip a obsluha</a></li>
+  <li><a href="#tabulka">Tabulka přerušení</a></li>
+  <li><a href="#typy">Typy přerušení (vnější, vnitřní, programové)</a></li>
+  <li><a href="#ovladac">Ovladač (driver)</a></li>
+  <li><a href="#registry">Registry – izolované a paměťově mapované</a></li>
+  <li><a href="#io-priklad">Komunikace s I/O zařízením – příklad HDD</a></li>
+  <li><a href="#vyuziti">Využití přerušení v praxi</a></li>
+  <li><a href="#dma">Odchylky od Von Neumanna (DMA, BusMaster, polling)</a></li>
+  <li><a href="#priv">Privilegovaný režim procesoru</a></li>
+  <li><a href="#syscall">Systémové volání</a></li>
+  <li><a href="#intel-rings">Intel a kompatibilní CPU – ringy</a></li>
+  <li><a href="#casovac">Časovač (PIT, HPET, TSC)</a></li>
+  <li><a href="#sbernice">Nízkoúrovňové sběrnice (I2C, SMBus, LPC, SPI)</a></li>
+  <li><a href="#ddc">DDC – komunikace s monitorem</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 KOMUNIKACE -->
+<section class="section" id="komunikace">
+<div class="section-header"><span class="section-num">01</span><h2>Komunikace OS s HW</h2></div>
+
+<p>Počítač potřebuje <strong>vstupy a výstupy</strong> (I/O – input/output) pro příjem dat a prezentaci výsledků. Softwarová obsluha I/O zařízení je realizována prostřednictvím <strong>ovladačů (driverů)</strong> uvnitř jádra OS.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Mechanismy komunikace se zařízením</div>
+  <ul>
+    <li><strong>Přerušení</strong> – asynchronní signalizace zařízení směrem k CPU</li>
+    <li><strong>Vstupní a výstupní řadiče</strong> – řízení toku dat</li>
+    <li><strong>Izolované registry</strong> – instrukce <code>IN</code> / <code>OUT</code></li>
+    <li><strong>Paměťově mapované registry</strong> – přístup přes běžné paměťové operace</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 PŘERUŠENÍ -->
+<section class="section" id="preruseni">
+<div class="section-header"><span class="section-num">02</span><h2>Přerušení – princip a obsluha</h2></div>
+
+<p>Přerušení je mechanismus, jak zařízení <strong>získá pozornost CPU</strong>. Hlavní výhodou je <strong>asynchronnost</strong> – zařízení může signalizovat nezávisle na právě běžícím kódu. Dnes se přerušení využívá i pro jiné účely: ladění, obsluhu chyb apod.</p>
+
+<h3>ISR – Interrupt Service Routine</h3>
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Obsluha přerušení – postup</div>
+  <p>Obsluha je identická s vyvoláním podprogramu:</p>
+  <ul>
+    <li>Přerušení činnosti běžícího programu <strong>po dokončení právě prováděné strojové instrukce</strong></li>
+    <li><strong>Uložení stavu procesoru</strong> (registry, příznaky)</li>
+    <li>Vykonání <strong>obsluhy přerušení</strong> (ISR)</li>
+    <li><strong>Obnovení stavu</strong> procesoru</li>
+    <li>Obnovení běhu přerušeného programu</li>
+  </ul>
+  <p style="margin-bottom:0"><strong>Přerušený program nic nepozná</strong> – pouze prodleva mezi dvěma strojovými instrukcemi.</p>
+</div>
+
+<h3>Průběh přerušení</h3>
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">Zařízení vyvolá přerušení<small>signál na řadič přerušení</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Řadič přerušení sdělí CPU číslo přerušení<small>po dokončení aktuální instrukce</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">CPU uloží stav, podle tabulky přerušení vyvolá ISR<small>obsluha v ovladači zařízení</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">Obnovení stavu procesoru, návrat do přerušeného programu</div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Řadič přerušení</div>
+  <ul>
+    <li>Přerušení zpracovává <strong>řadič přerušení</strong></li>
+    <li>Různá zařízení mají <strong>odlišená přerušení</strong> (čísla)</li>
+    <li>Lze implementovat <strong>priority</strong> přerušení</li>
+    <li>Řadič sdělí procesoru <strong>číslo přerušení</strong> → podle něj je vybrána příslušná ISR</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 TABULKA -->
+<section class="section" id="tabulka">
+<div class="section-header"><span class="section-num">03</span><h2>Tabulka přerušení</h2></div>
+
+<div class="card highlight">
+  <ul>
+    <li>Umístěna v paměti, <strong>v prostoru jádra OS</strong> → chráněna proti změně</li>
+    <li>Mapuje různá přerušení na příslušné <strong>ISR</strong> (obsahuje adresy)</li>
+    <li>Tabulku lze za běhu OS modifikovat – tzv. <strong>hook</strong></li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Bezpečnostní problémy</div>
+  <ul>
+    <li><strong>Rezidentní programy</strong> (DOS) – využívaly hooky v tabulce přerušení</li>
+    <li><strong>Antivirové programy</strong> (Windows) – také hookují tabulku</li>
+    <li><strong>Rootkity</strong> – přepisem tabulky přesměrovávají obsluhu přerušení a mohou se v systému skrývat</li>
+    <li>Dodatečné kontroly: <strong>SELinux</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 TYPY PŘERUŠENÍ -->
+<section class="section" id="typy">
+<div class="section-header"><span class="section-num">04</span><h2>Typy přerušení</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Vnější přerušení</h4>
+    <p>Původní typ – přichází <strong>z vnějšku procesoru</strong>. Žádost zařízení o pozornost CPU. Vyvolávání <strong>asynchronně</strong> (nezávisle na běhu kódu). Myš, klávesnice, síťová karta… Lze <strong>maskovat</strong> nebo kompletně <strong>zakázat</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Vnitřní přerušení</h4>
+    <p>Vzniká <strong>uvnitř procesoru</strong>. Signalizace chyb: výpadek stránky, porušení ochrany paměti, neplatná instrukce, dělení nulou, privilegovaná instrukce…</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Programové přerušení</h4>
+    <p>Vyvolává <strong>sám program</strong> speciální strojovou instrukcí <code>INT</code>. Typicky využíváno jako <strong>vstupní bod pro systémová volání jádra</strong>.</p>
+  </div>
+</div>
+
+<h3>Vnitřní přerušení – obsluha v jádře OS</h3>
+<div class="card purple">
+  <p>Elegantní metoda řešení problémů s instrukcí. Obsluha v jádře může:</p>
+  <ul>
+    <li><strong>Přerušit vykonávání procesu</strong> – vypíše chybové hlášení, proces je ukončen</li>
+    <li><strong>Dosadit náhradní výsledek</strong> – nebo ukončení programu</li>
+    <li>Využití při <strong>virtualizaci</strong> (simulované zařízení)</li>
+    <li><strong>Provést opravu a zopakovat instrukci</strong> – při <strong>výpadku stránky</strong> (stránka je z disku zavedena do RAM)</li>
+  </ul>
+</div>
+
+<h3>Programové přerušení – detaily</h3>
+<div class="card green">
+  <ul>
+    <li>Speciální strojová instrukce <code>INT</code> – v zásadě vykonání podprogramu (<code>CALL</code>)</li>
+    <li>Může provést doplňující akce: <strong>vstup do privilegovaného stavu</strong> a kontrolu oprávnění</li>
+    <li>Využíváno jako <strong>vstupní body pro volání jádra</strong></li>
+    <li><code>CALL</code> do prostoru jádra nelze, ale <code>INT</code> ano</li>
+    <li>Lze ochránit všechny vstupní body podle tabulky</li>
+    <li>Dnes na ně mapována i ostatní přerušení (vnější a vnitřní → vyhrazená programová)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 OVLADAČ -->
+<section class="section" id="ovladac">
+<div class="section-header"><span class="section-num">05</span><h2>Ovladač (driver)</h2></div>
+
+<div class="card highlight">
+  <ul>
+    <li>Slouží hlavně jako <strong>obsluha přerušení (ISR)</strong></li>
+    <li>Implementuje <strong>API pro jádro OS</strong> – různé funkce dle typu zařízení</li>
+    <li>Běží v <strong>režimu jádra</strong> (absolutní oprávnění)</li>
+    <li>Musí se vyrovnat s <strong>chybou externího HW zařízení</strong></li>
+    <li>Vypisování ladících informací, chyb atp.</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Detekce a inicializace</div>
+  <ul>
+    <li>Detekční a inicializační část se uplatňuje <strong>při startu systému</strong></li>
+    <li>Může být po použití <strong>odstraněna</strong> (Linuxové jádro)</li>
+    <li><strong>Hot-plug zařízení</strong> (flashky) vždy zavede ovladač znovu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 REGISTRY -->
+<section class="section" id="registry">
+<div class="section-header"><span class="section-num">06</span><h2>Registry – izolované a paměťově mapované</h2></div>
+
+<p>Registry jsou <strong>součástí řadičů pro I/O zařízení</strong> a slouží pro komunikaci CPU s I/O zařízeními. Může jich být i několik pro každé zařízení. Nemohou kolidovat – každé zařízení má svoje, rozlišené <strong>adresou (číslem)</strong>.</p>
+
+<h3>Izolované registry</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Instrukce IN a OUT</div>
+  <ul>
+    <li>Klasická komunikace s I/O zařízeními</li>
+    <li>Využívány <strong>dva režimy adresní sběrnice</strong>:
+      <ul>
+        <li><strong>Adresace místa v operační paměti</strong> (typicky RAM) – běžné čtení/zápis</li>
+        <li><strong>Adresace izolovaného registru I/O zařízení</strong> – změnu režimu signalizuje řídící sběrnice</li>
+      </ul>
+    </li>
+    <li>Data přesouvaná po <strong>datové sběrnici</strong></li>
+    <li>Z CPU do zařízení → <code>OUT</code>, ze zařízení do CPU → <code>IN</code></li>
+  </ul>
+</div>
+
+<div class="card">
+  <ul>
+    <li>Registr může být určen pro: <strong>čtení</strong>, <strong>zápis</strong> nebo <strong>čtení i zápis</strong></li>
+    <li><code>IN</code>/<code>OUT</code> má jako parametr <strong>adresu zařízení</strong></li>
+    <li>Data přesouvána do/z <strong>akumulátoru (registr A)</strong></li>
+    <li>Musí se čekat na zařízení → <strong>extrémně pomalé</strong></li>
+    <li>Sběrnice <strong>ISA</strong>: adresa volena jumpery; <strong>PCI</strong>: automaticky konfigurováno (PnP)</li>
+  </ul>
+</div>
+
+<h3>Paměťově mapované registry</h3>
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Přístup přes paměťové operace</div>
+  <ul>
+    <li>Paměť přístupná <strong>pro CPU i zařízení</strong> – typicky paměť přímo na zařízení</li>
+    <li>Síťová karta má několik kB až MB vlastní paměti</li>
+    <li>Grafická karta může mít <strong>sdílenou paměť</strong> (vyhrazena část RAM)</li>
+    <li>Zařízení zapisuje do paměti (RAM), CPU z ní může číst</li>
+    <li><strong>Běžné instrukce</strong> pro čtení/zápis do paměti</li>
+    <li>Řízení komunikace např. izolovanými registry</li>
+    <li><strong>Výhoda:</strong> rychlost; <strong>Nevýhoda:</strong> dražší</li>
+  </ul>
+</div>
+
+<h3>Srovnání</h3>
+<table class="compare-table">
+  <tr><th>Vlastnost</th><th>Izolované registry</th><th>Paměťově mapované</th></tr>
+  <tr><td><strong>Instrukce</strong></td><td><code>IN</code> / <code>OUT</code></td><td>Běžné paměťové (MOV…)</td></tr>
+  <tr><td><strong>Rychlost</strong></td><td>Pomalejší (čekání na zařízení)</td><td>Rychlejší</td></tr>
+  <tr><td><strong>Adresace</strong></td><td>Samostatný adresní prostor</td><td>Sdílí adresní prostor s RAM</td></tr>
+  <tr><td><strong>Cena</strong></td><td>Levnější</td><td>Dražší HW</td></tr>
+  <tr><td><strong>Typické použití</strong></td><td>Starší/jednoduché periferie</td><td>GPU, síťové karty</td></tr>
+</table>
+</section>
+
+<!-- 07 I/O PŘÍKLAD -->
+<section class="section" id="io-priklad">
+<div class="section-header"><span class="section-num">07</span><h2>Komunikace s I/O zařízením – příklad HDD</h2></div>
+
+<div class="card">
+  <p>Systém komunikace definuje <strong>výrobce hardware</strong>. Popis je součástí technické dokumentace (někdy není k dispozici – výrobce dodá jen ovladač, pro Linux pak nutné <strong>reverzní inženýrství</strong>).</p>
+</div>
+
+<h3>Standardní postup komunikace</h3>
+<div class="steps">
+  <div class="step"><div class="step-num" style="color:var(--accent-1)">01</div><div class="step-content"><div class="step-label">Přečteme stav zařízení (IN)</div><div class="step-desc">Počkáme, až je zařízení připraveno přijmout instrukci.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-4)">02</div><div class="step-content"><div class="step-label">Zapíšeme požadavek (OUT)</div><div class="step-desc">Odešleme příkaz nebo data.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-3)">03</div><div class="step-content"><div class="step-label">Zkontrolujeme úspěch (IN)</div><div class="step-desc">Ověříme, zda operace proběhla správně.</div></div></div>
+</div>
+
+<h3>Konkrétní příklad: zápis na pevný disk</h3>
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Kroky ovladače disku</div>
+  <p>Program chce zapsat data na disk (data jsou připravena v RAM):</p>
+  <div class="steps">
+    <div class="step"><div class="step-num" style="color:var(--accent-1)">1</div><div class="step-content"><div class="step-label">Zjistíme stav disku (IN)</div><div class="step-desc">Disk informuje, že má prázdný buffer.</div></div></div>
+    <div class="step"><div class="step-num" style="color:var(--accent-4)">2</div><div class="step-content"><div class="step-label">Zapíšeme data do bufferu na disku (OUT)</div><div class="step-desc">Ve smyčce zaplníme buffer (blok 512 bajtů). Zkontrolujeme úspěch (IN).</div></div></div>
+    <div class="step"><div class="step-num" style="color:var(--accent-3)">3</div><div class="step-content"><div class="step-label">Přikážeme disku zapsat obsah bufferu (OUT)</div><div class="step-desc">Disk začne fyzický zápis dat na plotny.</div></div></div>
+    <div class="step"><div class="step-num" style="color:var(--accent-5)">4</div><div class="step-content"><div class="step-label">Zkontrolujeme úspěch operace (IN)</div><div class="step-desc">Ověříme, zda zápis proběhl bez chyby.</div></div></div>
+  </div>
+</div>
+</section>
+
+<!-- 08 VYUŽITÍ PŘERUŠENÍ -->
+<section class="section" id="vyuziti">
+<div class="section-header"><span class="section-num">08</span><h2>Využití přerušení v praxi</h2></div>
+
+<p>Přerušení podporuje <strong>asynchronní operace</strong> – zařízení pracuje samostatně a teprve po dokončení úkolu informuje CPU.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Pevný disk</h4>
+    <p>Zápis trvá dlouho. Disku je sdělen požadavek na zápis, poté počítač vykonává další činnost. Po dokončení disk <strong>vyvolá vnější přerušení</strong>. ISR v ovladači může uložit disku další úkol.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Grafická karta</h4>
+    <p>GPU provedl požadovaný úkol (renderování) a <strong>očekává další instrukce</strong> – signalizuje přerušením.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">USB port</h4>
+    <p>Přijímající buffer v portu je <strong>plný</strong> nebo odchozí je <strong>prázdný</strong> – zařízení potřebuje pozornost CPU.</p>
+  </div>
+</div>
+</section>
+
+<!-- 09 DMA, BUSMASTER, POLLING -->
+<section class="section" id="dma">
+<div class="section-header"><span class="section-num">09</span><h2>Odchylky od Von Neumanna</h2></div>
+
+<p>Kvůli <strong>snížení režie a I/O zátěže</strong> počítače existují mechanismy obcházející standardní Von Neumannovo schéma.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">DMA</h4>
+    <p>Direct Memory Access – <strong>programovatelný řadič na základní desce</strong>. Přenáší data bez účasti CPU. Jádro OS připraví „program" a zaúkoluje řadič. Sběrnice při přenosu <strong>blokována</strong>. Dokončení signalizováno přerušením. Typické pro sběrnici <strong>ISA</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">BusMaster</h4>
+    <p>Náhrada DMA pro <strong>PCI a PCIe</strong>. PCI není závislá na CPU (oddělena „mostem"). Sběrnice typu <strong>message passing</strong>. Přenos dat řídí <strong>samo zařízení</strong>. Dnes i několik samostatných PCI sběrnic v počítači.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Polling</h4>
+    <p>Obsluha <strong>není řízena přerušením</strong>. Je-li přerušení příliš časté, počítač je přetížen. Jádro <strong>periodicky vyvolává obsluhu</strong>, ovladač zařízení periodicky „olizuje". Ovladač dle zátěže <strong>přepíná</strong> mezi přerušením a pollingem.</p>
+  </div>
+</div>
+
+<h3>Srovnání přenosových mechanismů</h3>
+<table class="compare-table">
+  <tr><th>Mechanismus</th><th>CPU zapojen?</th><th>Sběrnice</th><th>Řízení</th></tr>
+  <tr><td><strong>Klasický I/O</strong></td><td>Ano, plně</td><td>ISA/PCI</td><td>CPU (IN/OUT)</td></tr>
+  <tr><td><strong>DMA</strong></td><td>Ne (pouze nastavení)</td><td>ISA</td><td>Řadič DMA</td></tr>
+  <tr><td><strong>BusMaster</strong></td><td>Ne</td><td>PCI/PCIe</td><td>Samo zařízení</td></tr>
+</table>
+</section>
+
+<!-- 10 PRIVILEGOVANÝ REŽIM -->
+<section class="section" id="priv">
+<div class="section-header"><span class="section-num">10</span><h2>Privilegovaný režim procesoru</h2></div>
+
+<h3>Proč existuje?</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nebezpečné instrukce</div>
+  <p>Některé instrukce mohou způsobit <strong>pád či zamrznutí systému</strong>, nebo ohrozit stabilitu či bezpečnost:</p>
+  <ul>
+    <li>Přepsání úseku paměti → přestane fungovat důležitý program nebo celé jádro</li>
+    <li>Nevhodný příkaz HW → hardware přestane reagovat</li>
+    <li><strong>Nebezpečné skupiny:</strong> všechny I/O instrukce (<code>IN</code>/<code>OUT</code>), instrukce pro řízení procesoru (zákaz přerušení, ochrana paměti, mapování paměti, režim CPU…)</li>
+  </ul>
+</div>
+
+<h3>Dva stavy procesoru</h3>
+<div class="ring-stack">
+  <div class="ring-layer rl-kernel">PRIVILEGOVANÝ REŽIM (ring 0)<small>běží jádro OS – lze provést jakoukoliv strojovou instrukci</small></div>
+  <div class="ring-layer rl-user">NEPRIVILEGOVANÝ REŽIM (ring 3)<small>běží uživatelské programy – privilegovaná instrukce → vnitřní přerušení → ukončení procesu</small></div>
+  <div class="ring-layer rl-hw">HARDWARE</div>
+</div>
+
+<div class="card highlight">
+  <ul>
+    <li><strong>Privilegovaný režim:</strong> jádro OS, lze provést <strong>jakoukoliv instrukci</strong>. Při návratu do procesu je aktivován neprivilegovaný režim</li>
+    <li><strong>Neprivilegovaný režim:</strong> uživatelské programy. Použití privilegované instrukce → <strong>vnitřní přerušení</strong> → jádro ukončí proces</li>
+    <li>Privilegované operace prováděny jako <strong>služby jádra</strong> (systémové volání)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 SYSTÉMOVÉ VOLÁNÍ -->
+<section class="section" id="syscall">
+<div class="section-header"><span class="section-num">11</span><h2>Systémové volání</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Služba nabízená jádrem systému</div>
+  <ul>
+    <li>Proces <strong>nemůže provést privilegovanou operaci</strong> – CPU je v neprivilegovaném stavu</li>
+    <li>Proces musí o provedení <strong>požádat jádro</strong></li>
+    <li>Jediná možnost: instrukce <strong>programového přerušení</strong> (<code>INT</code>)</li>
+    <li>Všechna programová přerušení mají <strong>obsluhu v jádře</strong></li>
+    <li>Jádro je vykonáváno v <strong>privilegovaném stavu</strong></li>
+  </ul>
+</div>
+
+<h3>Průběh systémového volání</h3>
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">Proces chce provést privilegovanou operaci<small>např. zápis do souboru, ovládání GPU…</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Proces vykoná instrukci INT<small>přepnutí do privilegovaného režimu</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">Jádro zkontroluje oprávnění volajícího procesu<small>po schválení provede operaci</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">Návrat do procesu – CPU zpět v neprivilegovaném stavu</div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Příklady systémových volání</div>
+  <ul>
+    <li>Čtení nebo <strong>zápis do souboru</strong> na disku</li>
+    <li>Zápis na <strong>port</strong></li>
+    <li>Ovládání <strong>GPU</strong> (renderování obrazu)</li>
+    <li>Přístup k <strong>síťové kartě</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 INTEL RINGY -->
+<section class="section" id="intel-rings">
+<div class="section-header"><span class="section-num">12</span><h2>Intel a kompatibilní CPU – ringy</h2></div>
+
+<div class="card highlight">
+  <ul>
+    <li>Podpora privilegovaného režimu <strong>od i386 (1985)</strong>, tedy až v <strong>32bitovém režimu</strong></li>
+    <li>16bitový režim privilegovaný stav <strong>nepodporuje</strong></li>
+    <li><strong>DOS</strong> nemůže zajistit absolutní kontrolu nad počítačem – každý program má absolutní kontrolu</li>
+    <li>Windows 95/98 občas „zamrznou" – úloha se zacyklí, jádro nedostane CPU → bez obsluhy myši, klávesnice…</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">4 úrovně: ring 0 až ring 3</div>
+  <ul>
+    <li><strong>Linux i Windows</strong> využívají pouze <strong>dva stavy</strong> (ring 0 a ring 3)</li>
+    <li>V <strong>OS/2</strong> byly tři stavy</li>
+    <li>Při <strong>virtualizaci</strong> jsou ringy virtuální (relativní)</li>
+    <li>Další stav například pro <strong>ovladače v mikrojádře</strong> – ovladač komunikuje s HW, ale nemůže přenastavit CPU</li>
+  </ul>
+</div>
+</section>
+
+<!-- 13 ČASOVAČ -->
+<section class="section" id="casovac">
+<div class="section-header"><span class="section-num">13</span><h2>Časovač</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Princip</div>
+  <ul>
+    <li>Využíván pro <strong>odložené vykonání kódu</strong></li>
+    <li>Naprogramování času, za který vyvolá <strong>přerušení</strong></li>
+    <li>Obsluha časovače je uvnitř <strong>jádra systému</strong></li>
+    <li>Typicky jeden (nebo omezený počet), ale programů je více → vytvoříme <strong>frontu událostí</strong></li>
+    <li>Časovač nastaven na <strong>1. událost ve frontě</strong>, obsluha nejprve naprogramuje na další událost</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Využití časovače</div>
+  <ul>
+    <li><strong>Context switch</strong> – přepínání mezi procesy (OS)</li>
+    <li><strong>Timeout</strong> – obsluha sítě v programu</li>
+    <li>Bez časovače by se mobily brzy <strong>vybily</strong></li>
+  </ul>
+</div>
+
+<h3>PIT, HPET, TSC</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">PIT – Intel 8254</h4>
+    <p><strong>Tradiční časovač</strong>, nahrazován novějším HPET.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">HPET</h4>
+    <p><strong>High Precision Event Timer</strong> – spolupráce Intel + Microsoft. 64bitové číslo, frekvence alespoň <strong>10 MHz</strong>, alespoň 3 komparátory. Na deskách od 2005. Podpora: Windows XP SP3, Linux 2.6.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">TSC</h4>
+    <p><strong>Time Stamp Counter</strong> – čítač v CPU od Intel Pentium (AMD K8). Pro <strong>měření času</strong> je lepší než HPET. Různé implementace, problémy se synchronizací ve <strong>vícejádrovém CPU</strong>.</p>
+  </div>
+</div>
+</section>
+
+<!-- 14 SBĚRNICE -->
+<section class="section" id="sbernice">
+<div class="section-header"><span class="section-num">14</span><h2>Nízkoúrovňové sběrnice</h2></div>
+
+<div class="bus-grid">
+  <div class="card purple" style="margin:0">
+    <div class="card-title" style="color:var(--osy)">I2C (I-squared-C)</div>
+    <ul>
+      <li>Vyvinula firma <strong>Philips</strong></li>
+      <li>Pouze <strong>2 vodiče</strong>, až 128 zařízení</li>
+      <li>Nízkorychlostní <strong>multimaster</strong> sběrnice</li>
+      <li>Využití: grafická karta → monitor (rozlišení, DPI), teplota CPU, rychlosti ventilátorů, RTC, info o RAM</li>
+      <li>Bez poplatků, ale platí se za přidělení ID</li>
+    </ul>
+  </div>
+  <div class="card purple" style="margin:0">
+    <div class="card-title" style="color:var(--osy)">SMBus</div>
+    <ul>
+      <li><strong>Intel 1995</strong></li>
+      <li><strong>Podmnožina I2C</strong></li>
+      <li>Jednoduchá (zem + signalizační vodič)</li>
+      <li>10 až 100 kHz</li>
+      <li>Novější revize: <strong>PMBus</strong></li>
+    </ul>
+  </div>
+  <div class="card purple" style="margin:0">
+    <div class="card-title" style="color:var(--osy)">LPC (Low Pin Count)</div>
+    <ul>
+      <li><strong>Intel 1998</strong>, nástupce ISA</li>
+      <li>Šířka 4 bity, 33 MHz, max. ~10 MB/s</li>
+      <li>Do roku 2006 připojení pro <strong>BIOS</strong></li>
+      <li>Připojení <strong>diskrétních TPM</strong></li>
+    </ul>
+  </div>
+  <div class="card purple" style="margin:0">
+    <div class="card-title" style="color:var(--osy)">SPI (Serial Peripheral Interface)</div>
+    <ul>
+      <li><strong>Motorola ~1980</strong></li>
+      <li><strong>Full duplex</strong>, šířka 1 bit, 4 vodiče</li>
+      <li>Master-slave architektura</li>
+      <li>De facto standard pro <strong>embedded zařízení</strong></li>
+      <li>Vyšší propustnost než SMBus/I2C</li>
+      <li>TPM čipy, RTC, LCD, MMC/SD, EEPROM…</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- 15 DDC -->
+<section class="section" id="ddc">
+<div class="section-header"><span class="section-num">15</span><h2>DDC – komunikace s monitorem</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Display Data Channel (1994)</div>
+  <ul>
+    <li>Součást <strong>VESA standardu</strong></li>
+    <li>Monitor může sdělit důležité informace: <strong>rozlišení, barevná hloubka, DPI</strong>…</li>
+    <li>Data uložena v monitoru typicky v <strong>EEPROM paměti</strong> – blok 128 bajtů (s možností prodloužení)</li>
+    <li>Přenos pomocí sběrnice <strong>I2C</strong></li>
+    <li>Novější verze podporují až <strong>32 KiB dat</strong></li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 16 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">16</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">KOMUNIKACE OS S HW</p>
+<ul>
+  <li>Mechanismy: <strong>přerušení</strong>, <strong>izolované registry</strong> (<code>IN</code>/<code>OUT</code>), <strong>paměťově mapované registry</strong> (přes paměťové instrukce)</li>
+  <li>Komunikaci implementuje <strong>ovladač (driver)</strong> v jádře OS – běží v privilegovaném režimu</li>
+  <li>Dokumentace od výrobce; pro Linux někdy nutné <strong>reverzní inženýrství</strong></li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">PŘERUŠENÍ</p>
+<ul>
+  <li><strong>3 typy:</strong> vnější (od zařízení, asynchronní, maskovatelné), vnitřní (chyby CPU: výpadek stránky, dělení nulou…), programové (<code>INT</code>, systémová volání)</li>
+  <li><strong>Postup ISR:</strong> dokončení instrukce → uložení stavu → obsluha → obnovení stavu → návrat (program nic nepozná)</li>
+  <li><strong>Tabulka přerušení</strong> v paměti jádra OS, obsahuje adresy ISR, lze hookovat (riziko: rootkity)</li>
+  <li><strong>Příklad HDD:</strong> IN (stav) → OUT (data do bufferu) → OUT (příkaz zápis) → IN (kontrola). Přerušení umožňuje asynchronní operace</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">REGISTRY A PŘENOSY</p>
+<ul>
+  <li><strong>Izolované:</strong> <code>IN</code>/<code>OUT</code>, samostatný adresní prostor, pomalejší. ISA: jumpery, PCI: PnP</li>
+  <li><strong>Paměťově mapované:</strong> běžné paměťové instrukce, sdílí adresní prostor s RAM, rychlejší, dražší</li>
+  <li><strong>DMA:</strong> programovatelný řadič, přenos bez CPU (ISA). <strong>BusMaster:</strong> zařízení řídí přenos samo (PCI/PCIe). <strong>Polling:</strong> periodická obsluha místo přerušení (při velké zátěži)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">PRIVILEGOVANÝ REŽIM</p>
+<ul>
+  <li><strong>Privilegovaný (ring 0):</strong> jádro OS, jakákoliv instrukce. <strong>Neprivilegovaný (ring 3):</strong> uživatelské programy, pokus o priv. instrukci → vnitřní přerušení → ukončení procesu</li>
+  <li><strong>Intel:</strong> podpora od i386 (1985), 4 ringy (0–3), ale Linux i Windows používají jen 2</li>
+  <li><strong>16bit DOS:</strong> bez privilegovaného režimu → každý program má absolutní kontrolu, Win95/98 zamrzávaly</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">SYSTÉMOVÉ VOLÁNÍ A ČASOVAČ</p>
+<ul>
+  <li><strong>Systémové volání:</strong> proces vykoná <code>INT</code> → přepnutí do priv. režimu → jádro zkontroluje oprávnění → provede operaci → návrat do neprivilegovaného stavu</li>
+  <li><strong>Časovač:</strong> odložené vykonání kódu, fronta událostí. Využití: context switch, timeout. <strong>PIT</strong> (tradiční) → <strong>HPET</strong> (přesný, 64bit, 10 MHz) → <strong>TSC</strong> (čítač v CPU, pro měření času)</li>
+  <li><strong>Sběrnice:</strong> I2C (Philips, 2 vodiče, 128 zařízení), SMBus (Intel, podmnožina I2C), LPC (nástupce ISA, BIOS/TPM), SPI (Motorola, full duplex, embedded)</li>
+  <li><strong>DDC:</strong> monitor sděluje rozlišení/DPI přes I2C (VESA standard, EEPROM, 128 B)</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

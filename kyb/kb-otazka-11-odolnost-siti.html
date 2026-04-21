@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 11: Zvyšování odolnosti sítí</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#0f172e 40%,#1a0f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(96,165,250,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(167,139,250,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-1);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Evolution bar */
+.evo-bar{display:flex;gap:4px;margin:14px 0;flex-wrap:wrap}
+.evo-step{flex:1;min-width:100px;text-align:center;padding:12px 8px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.evo-step .es-gen{font-size:16px;font-weight:700;display:block}.evo-step .es-name{font-weight:600;display:block;margin-top:2px;font-size:10px}
+.evo-step .es-desc{font-size:8px;font-family:'DM Sans',sans-serif;margin-top:3px;opacity:.8}
+/* IDS vs IPS */
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;margin:16px 0;align-items:start}
+.vs-card{padding:18px;border-radius:10px;font-size:13px}
+.vs-card .vc-name{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;display:block;margin-bottom:6px}
+.vs-sep{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-muted);padding-top:30px}
+/* Detection methods */
+.det-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:14px 0}
+.det-item{padding:14px;border-radius:8px;font-size:12px}
+.det-item strong{display:block;margin-bottom:4px;font-size:13px}
+/* Behavior timeline */
+.beh-timeline{margin:14px 0}.beh-step{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(42,46,61,.4)}
+.beh-step:last-child{border-bottom:none}.beh-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;min-width:20px;padding-top:2px}
+/* NetFlow record */
+.nf-record{background:#0d0f14;border:1px solid var(--border);border-radius:8px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;margin:14px 0;color:var(--text-muted)}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.evo-bar{flex-direction:column}.vs-grid{grid-template-columns:1fr;gap:8px}.vs-sep{padding:0}.det-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 11</div>
+  <h1>Zvyšování odolnosti sítí</h1>
+  <p>Firewall • IDS / IPS • Behavior-Based Security • NetFlow • Segmentace • NAC</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#firewall">Firewall – evoluce generací</a></li>
+  <li><a href="#ngfw">Next-Generation Firewall (NGFW)</a></li>
+  <li><a href="#ids">IDS (Intrusion Detection System)</a></li>
+  <li><a href="#ips">IPS (Intrusion Prevention System)</a></li>
+  <li><a href="#detection">Detekční metody</a></li>
+  <li><a href="#behavior">Behavior-Based Security</a></li>
+  <li><a href="#netflow">NetFlow</a></li>
+  <li><a href="#other">Segmentace, NAC, Honeypot</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 FIREWALL -->
+<section class="section" id="firewall">
+<div class="section-header"><span class="section-num">01</span><h2>Firewall – evoluce generací</h2></div>
+
+<p><strong>Firewall</strong> = „brána" mezi důvěryhodnou a nedůvěryhodnou sítí. Monitoruje a kontroluje traffic na základě pravidel.</p>
+
+<div class="evo-bar">
+  <div class="evo-step" style="background:rgba(107,114,128,.1);color:var(--text-muted)"><span class="es-gen">1.</span><span class="es-name">Packet Filter</span><span class="es-desc">STATELESS. IP, porty, protokoly. Rychlý ale bez kontextu.</span></div>
+  <div class="evo-step" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="es-gen">2.</span><span class="es-name">Stateful</span><span class="es-desc">Sleduje stav spojení (state table). Return traffic auto-povoleno.</span></div>
+  <div class="evo-step" style="background:rgba(167,139,250,.08);color:var(--accent-2)"><span class="es-gen">3.</span><span class="es-name">Application Layer</span><span class="es-desc">DPI, L7 inspekce. Proxy. Vidí HTTP/FTP obsah. Pomalý.</span></div>
+  <div class="evo-step" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="es-gen">NG</span><span class="es-name">NGFW</span><span class="es-desc">Vše v jednom: Stateful + DPI + IPS + App control + SSL inspect.</span></div>
+</div>
+</section>
+
+<!-- 02 NGFW -->
+<section class="section" id="ngfw">
+<div class="section-header"><span class="section-num">02</span><h2>Next-Generation Firewall (NGFW)</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">NGFW = standard pro enterprise</div>
+  <ul>
+    <li><strong>Stateful inspection</strong> + <strong>Deep Packet Inspection (DPI)</strong></li>
+    <li><strong>Integrovaný IPS</strong></li>
+    <li><strong>Application Awareness</strong> – identifikuje apps podle behavior (ne jen portu). Skype na port 443? Detekuje!</li>
+    <li><strong>SSL/TLS Inspection</strong> – dekóduje šifrovaný traffic</li>
+    <li><strong>URL Filtering</strong> – blokuje malicious/unwanted weby</li>
+    <li><strong>Threat Intelligence</strong> – real-time updates. <strong>Sandboxing</strong> – testování suspicious files</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Vendors:</strong> Palo Alto, Cisco Firepower, Fortinet FortiGate, Check Point.</p>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">FW Best Practices</div>
+  <p style="margin-bottom:0"><strong>Default Deny</strong> (vše zakázáno). <strong>Least Privilege</strong> (jen nutný traffic). Pravidla <strong>odshora dolů</strong> (pořadí!). Quarterly audit pravidel. Dokumentace (business justification). <strong>Loguj vše</strong> (allow i deny).</p>
+</div>
+</section>
+
+<!-- 03 IDS -->
+<section class="section" id="ids">
+<div class="section-header"><span class="section-num">03</span><h2>IDS (Intrusion Detection System)</h2></div>
+
+<div class="card" style="border-left:3px solid var(--accent-4)">
+  <div class="card-title" style="color:var(--accent-4)">IDS = ALARM 🚨 (pasivní, jen detekuje a alertuje)</div>
+  <p>Připojeno na <strong>SPAN/mirror port</strong> (out-of-band). Kopie trafficu → analýza proti signatures/rules → match = <strong>ALERT</strong>. <strong>NEBLOKUJE!</strong> Zero performance impact.</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-1)">NIDS (Network-based)</h4><p>Monitoruje <strong>celou síť</strong>. Strategické body (perimeter, mezi segmenty). Příklady: <strong>Snort, Suricata, Zeek</strong>.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-2)">HIDS (Host-based)</h4><p>Běží na <strong>individuálním hostu</strong>. File integrity, system calls, logs. Příklady: <strong>OSSEC, Tripwire</strong>.</p></div>
+</div>
+</section>
+
+<!-- 04 IPS -->
+<section class="section" id="ips">
+<div class="section-header"><span class="section-num">04</span><h2>IPS (Intrusion Prevention System)</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">IPS = POLICIE 🛑 (aktivní, detekuje a BLOKUJE)</div>
+  <p>Zapojený <strong>INLINE</strong> (v cestě trafficu). Všechen traffic MUSÍ projít přes IPS. Malicious → <strong>DROP/BLOCK</strong>. Legitimate → <strong>PASS</strong>.</p>
+  <p style="margin-bottom:0;font-size:13px;color:var(--accent-5)"><strong>Riziko:</strong> SPOF (IPS spadne = síť down). False positives = blokovaný legitimní traffic. Performance impact.</p>
+</div>
+
+<h3>IDS vs IPS – klíčový rozdíl</h3>
+<div class="vs-grid">
+  <div class="vs-card" style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2)">
+    <span class="vc-name" style="color:var(--accent-4)">🚨 IDS</span>
+    <ul style="margin-bottom:0">
+      <li><strong>Out-of-band</strong> (mirror port)</li>
+      <li>PASIVNÍ – jen monitoruje</li>
+      <li>Alertuje security team</li>
+      <li>Zero performance impact</li>
+    </ul>
+  </div>
+  <div class="vs-sep">vs</div>
+  <div class="vs-card" style="background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2)">
+    <span class="vc-name" style="color:var(--accent-5)">🛑 IPS</span>
+    <ul style="margin-bottom:0">
+      <li><strong>Inline</strong> (in the path)</li>
+      <li>AKTIVNÍ – <strong>blokuje</strong></li>
+      <li>Automatická prevence</li>
+      <li>Může být SPOF</li>
+    </ul>
+  </div>
+</div>
+
+<p style="font-size:13px;color:var(--text-muted)"><strong>IPS Actions:</strong> Drop/Block packet, Reset connection (TCP RST), Block source IP, Alert + Pass (monitoring mode).</p>
+</section>
+
+<!-- 05 DETECTION -->
+<section class="section" id="detection">
+<div class="section-header"><span class="section-num">05</span><h2>Detekční metody</h2></div>
+
+<div class="det-grid">
+  <div class="det-item" style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2)">
+    <strong style="color:var(--accent-1)">Signature-Based</strong>
+    Hledá <strong>známé vzory</strong> útoků (signatures). Jako antivirus pro síť. <strong>+ Nízká false positive.</strong> <strong>− Nedetekuje zero-day!</strong>
+  </div>
+  <div class="det-item" style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2)">
+    <strong style="color:var(--accent-4)">Anomaly-Based</strong>
+    Vytvoří <strong>baseline</strong> normálu. Odchylka = anomálie = alert. <strong>+ Detekuje zero-day.</strong> <strong>− Vysoká false positive!</strong>
+  </div>
+  <div class="det-item" style="background:rgba(232,121,249,.06);border:1px solid rgba(232,121,249,.2)">
+    <strong style="color:var(--kb)">Behavior-Based</strong>
+    Analyzuje <strong>chování</strong> entit (users, devices). <strong>Machine learning</strong>. Detekuje sophisticated + insider threats.
+  </div>
+</div>
+</section>
+
+<!-- 06 BEHAVIOR -->
+<section class="section" id="behavior">
+<div class="section-header"><span class="section-num">06</span><h2>Behavior-Based Security</h2></div>
+
+<p>Analýza <strong>CHOVÁNÍ</strong> místo signatures. ML/AI identifikuje anomální chování. Detekuje zero-day, insider threats, APT.</p>
+
+<div class="card" style="border-left:3px solid var(--kb);background:rgba(232,121,249,.04)">
+  <div class="card-title" style="color:var(--kb)">Jak to funguje – 3 fáze</div>
+  <div class="beh-timeline">
+    <div class="beh-step"><span class="beh-num" style="color:var(--accent-1)">1</span><div><strong>Baseline Creation</strong> (Learning Phase) – systém pozoruje týdny/měsíce. Učí se „normální": Jan se přihlašuje 8–17 z Prahy, přistupuje k CRM, email. Web server posílá 5 GB/den.</div></div>
+    <div class="beh-step"><span class="beh-num" style="color:var(--accent-3)">2</span><div><strong>Continuous Monitoring</strong> – neustálé porovnávání s baseline.</div></div>
+    <div class="beh-step"><span class="beh-num" style="color:var(--accent-5)">3</span><div><strong>Anomaly Detection</strong> – odchylka = alert/block. Jan se přihlásil ve 3:00 z Ruska? 100 GB outbound místo 5 GB?</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">UEBA (User and Entity Behavior Analytics)</div>
+  <p>Specializovaný behavior systém. Analyzuje: login patterns, data access, lateral movement, privilege escalation. Přiřazuje <strong>risk score</strong> – čím více anomálií, tím vyšší. High score → investigation/auto-response.</p>
+  <p style="margin-bottom:0"><strong>Use cases:</strong> Insider threat, compromised accounts, APT detection, data exfiltration.</p>
+</div>
+</section>
+
+<!-- 07 NETFLOW -->
+<section class="section" id="netflow">
+<div class="section-header"><span class="section-num">07</span><h2>NetFlow</h2></div>
+
+<p><strong>NetFlow</strong> (Cisco) = sběr IP traffic statistik. KDO komunikuje s KÝM, KDY, KOLIK dat. „Call detail records" pro síť. <strong>Neexportuje payload – jen metadata!</strong></p>
+
+<div class="nf-record">
+<span style="color:var(--accent-4)">Flow Record:</span><br>
+Src IP: <span style="color:var(--accent-1)">10.0.0.5</span> → Dst IP: <span style="color:var(--accent-3)">93.184.216.34</span><br>
+Src Port: <span style="color:var(--text)">54321</span> → Dst Port: <span style="color:var(--text)">443</span> (HTTPS)<br>
+Protocol: <span style="color:var(--accent-2)">TCP</span> | Packets: 1523 | Bytes: 2,456,789 | Duration: 3600s
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-1)">Flow = 7 klíčů</div>
+  <p style="margin-bottom:0">Source IP, Destination IP, Source Port, Destination Port, L3 Protocol (TCP/UDP), Type of Service, Input Interface. Verze: v5 (legacy), <strong>v9</strong> (template), <strong>IPFIX</strong> (IETF standard). Alternativy: sFlow, jFlow.</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-5)">Security Use Cases</h4><p><strong>Anomaly:</strong> DDoS spike, data exfiltration. <strong>Malware:</strong> Botnet beaconing, port scanning, lateral movement. <strong>Forensics:</strong> Timeline, tracking, scope. <strong>Policy:</strong> Torrenty, unauthorized services.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-3)">Výhody / Nevýhody</h4><p><strong>+</strong> Lightweight, comprehensive visibility, long-term storage, metadata i u šifrovaného trafficu. <strong>−</strong> Žádný payload (nevidíš obsah), velká storage, vyžaduje analýzu. Nástroje: Cisco Stealthwatch, SolarWinds NTA, nfdump.</p></div>
+</div>
+</section>
+
+<!-- 08 OTHER -->
+<section class="section" id="other">
+<div class="section-header"><span class="section-num">08</span><h2>Segmentace, NAC, Honeypot</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Network Segmentation</h4>
+    <p><strong>VLAN:</strong> HR VLAN 10, Finance VLAN 20, Guest VLAN 30. <strong>DMZ:</strong> Izolovaný segment pro public services (Internet ← FW1 → DMZ ← FW2 → Internal). <strong>Micro-segmentation:</strong> SDN, datacenter/cloud.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">NAC (Network Access Control)</h4>
+    <p>Kontrola KDO/CO se připojí. 802.1X auth + <strong>posture check</strong> (AV aktuální? Patche? Firewall?). Compliant → full access. Non-compliant → <strong>quarantine VLAN</strong>. Use: BYOD, guests, IoT.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Honeypot 🍯</h4>
+    <p>Decoy systém = past. Vypadá jako production, ale žádný legitimní traffic → <strong>jakýkoliv traffic = útočník!</strong> Early warning, distraction, research.</p>
+  </div>
+</div>
+</section>
+
+<!-- 09 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">09</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">FIREWALL EVOLUCE</p>
+<ul>
+  <li><strong>1. gen:</strong> Packet Filter (stateless). <strong>2. gen:</strong> Stateful (state table). <strong>3. gen:</strong> Application Layer (DPI, proxy)</li>
+  <li><strong>NGFW:</strong> Stateful + DPI + IPS + App control + SSL inspect + URL filter + sandboxing. <strong>Enterprise standard!</strong></li>
+  <li><strong>Best practices:</strong> Default Deny, Least Privilege, pravidla odshora dolů, quarterly audit, loguj vše</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">IDS vs IPS</p>
+<ul>
+  <li><strong>IDS = ALARM 🚨:</strong> Out-of-band, pasivní, jen alertuje. NIDS (síť: Snort, Suricata) / HIDS (host: OSSEC)</li>
+  <li><strong>IPS = POLICIE 🛑:</strong> Inline, aktivní, <strong>blokuje</strong>. Drop/Reset/Block. Riziko: SPOF, false positives = blocked legit traffic</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--kb);margin-bottom:8px">DETEKCE</p>
+<ul>
+  <li><strong>Signature-based:</strong> Známé vzory. + Nízká false positive. − Nedetekuje zero-day</li>
+  <li><strong>Anomaly-based:</strong> Baseline → odchylka = alert. + Detekuje zero-day. − Vysoká false positive</li>
+  <li><strong>Behavior-based (UEBA):</strong> ML analýza chování. Risk scoring. Detekuje insider threats, APT, compromised accounts</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">NETFLOW + DALŠÍ</p>
+<ul>
+  <li><strong>NetFlow:</strong> Metadata trafficu (ne payload!). 7 klíčů (src/dst IP+port, protocol, ToS, interface). IPFIX = standard. Security: anomaly, malware, forensics</li>
+  <li><strong>Segmentace:</strong> VLAN, DMZ (Internet←FW→DMZ←FW→Internal), micro-segmentation</li>
+  <li><strong>NAC:</strong> 802.1X + posture check. Compliant → access. Non-compliant → quarantine VLAN</li>
+  <li><strong>Honeypot:</strong> Decoy = past. Jakýkoliv traffic = útočník. Early warning + research</li>
+  <li><strong>Defense in Depth:</strong> Firewall + IPS + Segmentation + Monitoring + Endpoint. <strong>Zero Trust:</strong> Nikdy nedůvěřuj, vždy ověřuj!</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

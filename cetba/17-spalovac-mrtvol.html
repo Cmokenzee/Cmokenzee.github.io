@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Ladislav Fuks: Spalovač mrtvol</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1013;
+  --bg-card:#15171a;
+  --bg-card-alt:#1c1e22;
+  --border:#2a2d32;
+  --text:#a8a898;
+  --text-muted:#5a5c56;
+  --heading:#d4cfc0;
+  --accent-1:#7a5a3a;     /* měděný oheň */
+  --accent-2:#c4a068;     /* tibetské zlato */
+  --accent-3:#4a4a4a;     /* ocel krematoria */
+  --accent-4:#5a1a18;     /* krvavá hnědá */
+  --accent-5:#7a7a78;     /* popel */
+  --accent-6:#3a3e44;     /* mrtvolná modř */
+  --accent-7:#1a1a1a;     /* smrt */
+  --accent-8:#a88458;     /* čistota obsese */
+  --fire:#a8583a;         /* plamen */
+  --gold:#c4a068;         /* zlato mantra */
+  --steel:#4a4a4a;        /* ocel */
+  --blood:#5a1a18;        /* krev */
+  --ash:#7a7a78;          /* popel */
+  --morgue:#3a3e44;       /* márnice */
+  --obsession:#a88458;    /* kopfrkinglova čistota */
+  --shadow:#1a1a1a;       /* stín */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(168,88,58,.04) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(58,62,68,.05) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — kreaturně chladná elegance */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(15,16,19,.3) 0%,rgba(15,16,19,.95) 100%),
+    linear-gradient(135deg,#181a1e 0%,#22201c 30%,#16181b 65%,#0c0d10 100%);
+  border-bottom:3px solid var(--steel);
+  padding:100px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 80%,rgba(168,88,58,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(90,26,24,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Ocelový pásek dole */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--steel) 20%,
+    var(--fire) 50%,
+    var(--steel) 80%,
+    transparent 100%);
+  opacity:.5;
+}
+.hero-flame{
+  display:inline-block;
+  color:var(--fire);
+  font-size:44px;
+  line-height:1;
+  margin-bottom:26px;
+  opacity:.8;
+  position:relative;
+  filter:drop-shadow(0 0 25px rgba(168,88,58,.4));
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:22px;position:relative;
+  opacity:.85;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(42px,7.5vw,76px);
+  color:var(--heading);
+  font-weight:500;
+  line-height:1;
+  position:relative;
+  letter-spacing:2px;
+  text-shadow:0 2px 30px rgba(168,88,58,.2);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--obsession);
+  font-size:.28em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:20px;
+  opacity:.8;
+}
+.hero h1 .sub-title{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.32em;
+  font-style:italic;
+  color:var(--gold);
+  letter-spacing:3px;
+  margin-top:20px;
+  font-weight:400;
+  opacity:.85;
+}
+.hero .author{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--obsession);
+  margin-top:32px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:3px;
+  font-weight:500;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--heading);
+  font-size:19px;
+  margin:40px auto 0;
+  max-width:600px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.6;
+  opacity:.9;
+  padding:22px 28px;
+  border-top:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+}
+.hero-quote em{
+  display:block;
+  font-size:.65em;
+  color:var(--text-muted);
+  margin-top:14px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — chladný klinický seznam */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--gold);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'KREMATORIUM · PROTOKOL';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--gold);
+  font-family:'Oswald',sans-serif;
+  font-size:10px;
+  letter-spacing:4px;
+  font-weight:500;
+}
+.toc::after{
+  content:'PRAHA · 1939–45';
+  position:absolute;
+  top:-10px;right:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--text-muted);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+}
+.toc h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;text-align:center;
+  font-weight:600;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,decimal-leading-zero) ' ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--fire);
+  font-size:11px;margin-right:8px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--fire)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--fire));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:42px;color:var(--gold);
+  font-weight:400;
+  font-style:italic;
+  min-width:70px;opacity:.55;
+  line-height:1;
+  letter-spacing:1px;
+}
+.section-header h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;color:var(--heading);
+  font-weight:500;
+  letter-spacing:1.5px;
+}
+
+h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:500;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;font-weight:600;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--gold);background:rgba(196,160,104,.04)}
+.card.key{border-left:3px solid var(--obsession);background:rgba(168,132,88,.04)}
+.card.warn{border-left:3px solid var(--blood);background:rgba(90,26,24,.06)}
+.card.steel{border-left:3px solid var(--steel);background:rgba(74,74,74,.05)}
+.card.fire{border-left:3px solid var(--fire);background:rgba(168,88,58,.05)}
+.card.morgue{border-left:3px solid var(--morgue);background:rgba(58,62,68,.08)}
+
+.card-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:600;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--gold)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(196,160,104,.1);
+  color:var(--gold);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--obsession);font-style:italic}
+
+/* Krematoriální dělič — plamen */
+.cremation-divider{
+  text-align:center;
+  margin:52px 0;
+  color:var(--fire);
+  opacity:.55;
+  font-size:26px;
+  line-height:1;
+  letter-spacing:20px;
+}
+.cremation-divider::before,.cremation-divider::after{
+  content:'';
+  display:inline-block;
+  width:90px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--fire),transparent);
+  vertical-align:middle;
+  margin:0 14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--gold));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:'Cormorant Garamond',serif;
+}
+.character .char-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:500;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:1.5px;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:10px;
+  font-style:italic;
+  letter-spacing:0;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--gold));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--gold);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:48px;
+  color:var(--gold);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* KREMATORIUM — speciální rámeček */
+.crematorium-box{
+  background:
+    linear-gradient(180deg,rgba(168,88,58,.03) 0%,rgba(58,62,68,.06) 100%);
+  border:2px solid var(--gold);
+  padding:28px 34px;
+  margin:28px 0;
+  position:relative;
+  text-align:center;
+}
+.crematorium-box::before{
+  content:'✦ TIBETSKÁ KNIHA MRTVÝCH ✦';
+  position:absolute;
+  top:-12px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 18px;
+  color:var(--gold);
+  font-family:'Cormorant Garamond',serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:600;
+  text-transform:uppercase;
+}
+.crematorium-mantra{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;
+  color:var(--obsession);
+  font-style:italic;
+  line-height:1.8;
+  letter-spacing:1px;
+}
+.crematorium-source{
+  display:block;
+  margin-top:16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-style:normal;
+}
+
+/* GRADACE ŠÍLENSTVÍ */
+.gradation-viz{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:4px;
+  margin:24px 0;
+  padding:14px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+}
+.grad-stage{
+  padding:14px 8px;
+  text-align:center;
+  background:var(--stage-bg,var(--bg-card-alt));
+  border-top:3px solid var(--stage-color,var(--gold));
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--stage-color,var(--gold));
+  font-weight:600;
+  position:relative;
+  min-height:80px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:4px;
+  line-height:1.3;
+}
+.grad-stage-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  color:var(--stage-color,var(--gold));
+  font-weight:500;
+  font-style:italic;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--fire),var(--gold));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  background:rgba(196,160,104,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(196,160,104,.3);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:500;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+  letter-spacing:1px;
+}
+.scene-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--gold);
+  background:rgba(196,160,104,.03);
+  line-height:1.8;
+  white-space:pre-line;
+  letter-spacing:.5px;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--obsession)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(90,26,24,.05);
+  border-left:2px solid var(--blood);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--blood)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--gold);
+  font-weight:600;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:17px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* SYMBOLY — grid */
+.symbols-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;margin:20px 0;
+}
+.symbol-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--sym-color,var(--gold));
+  padding:20px 18px;
+  text-align:center;
+}
+.symbol-icon{
+  font-size:30px;
+  color:var(--sym-color,var(--gold));
+  margin-bottom:10px;
+  opacity:.75;
+  font-family:'Cormorant Garamond',serif;
+}
+.symbol-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:600;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+.symbol-meaning{
+  font-family:'Crimson Pro',serif;
+  font-size:13px;
+  color:var(--text-muted);
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;
+  color:var(--gold);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:600;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--gold));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:600;
+  letter-spacing:1px;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  background:var(--bg);
+}
+.timeline-step.dark::before{
+  border-color:var(--blood);
+  background:rgba(90,26,24,.4);
+}
+.timeline-step.fire::before{
+  border-color:var(--fire);
+  background:rgba(168,88,58,.3);
+}
+.timeline-step .ts-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;color:var(--heading);
+  font-size:17px;font-style:italic;
+  letter-spacing:.5px;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-phase{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--gold);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* FUKSOVSKÉ OPAKOVÁNÍ — speciální blok */
+.fuks-repetition{
+  background:var(--bg-card-alt);
+  border:1px dashed var(--obsession);
+  padding:22px 28px;
+  margin:24px 0;
+  position:relative;
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  text-align:center;
+  letter-spacing:.5px;
+}
+.fuks-repetition::before{
+  content:'OPAKOVÁNÍ · OBSESE · ŠÍLENSTVÍ';
+  position:absolute;
+  top:-10px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 14px;
+  color:var(--obsession);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:600;
+  text-transform:uppercase;
+  font-style:normal;
+}
+.fuks-repetition em{
+  color:var(--gold);
+  font-style:italic;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:500;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--gold);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .symbols-grid{grid-template-columns:repeat(2,1fr)}
+  .locations-list{grid-template-columns:1fr}
+  .gradation-viz{grid-template-columns:repeat(3,1fr)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.crematorium-box{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-flame">❦</div>
+  <div class="hero-label">Maturitní rozbor · Česká psychologická próza · Horor</div>
+  <h1><em>Psychologický horor · 1967</em>Spalovač<br>mrtvol<span class="sub-title">aneb Anatomie zla v obyčejném člověku</span></h1>
+  <div class="author">Ladislav Fuks</div>
+  <div class="subtitle">Praha · Protektorát · Krematorium · 1939–1945</div>
+  <div class="hero-quote">Smrt je očista. Spálením osvobodíme duši. Je to milost.<em>— Karel Kopfrkingl · Mantra šílenství</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Protektorát</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Gradace</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy · Rodina Kopfrkinglových</a></li>
+  <li><a href="#banalita">Banalita zla</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky · Fuksovský styl</a></li>
+  <li><a href="#tropy">Tropy, figury a symbolika</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Spalovač mrtvol</strong> je <strong>psychologický horor</strong> publikovaný v roce <strong>1967</strong>. Dílo má chronologickou výstavbu sledující <strong>postupnou proměnu hlavního hrdiny</strong> z dobrého člověka v masového vraha. Fuks ho napsal v období <strong>uvolňování před Pražským jarem</strong>, kdy bylo možno reflektovat holocaust bez propagandistických přímočarostí. Dílo je <strong>analýzou toho, jak obyčejný člověk může zkolaborovat</strong> s nelidskou ideologií.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-phase">Fáze I</span> Normálnost</div>
+    <div class="ts-desc">Kopfrkingl jako milující otec, zdvořilý spalovač, „dobrý" člověk</div>
+  </div>
+  <div class="timeline-step fire">
+    <div class="ts-title"><span class="ts-phase">Fáze II</span> Manipulace</div>
+    <div class="ts-desc">Vliv Reinkeho, nacistická propaganda, postupná indoktrinace</div>
+  </div>
+  <div class="timeline-step fire">
+    <div class="ts-title"><span class="ts-phase">Fáze III</span> Transformace</div>
+    <div class="ts-desc">Postupná změna myšlení, fanatismus, zdánlivá filozofie</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title"><span class="ts-phase">Fáze IV</span> Vraždy</div>
+    <div class="ts-desc">Vraždy vlastní rodiny — manželky Lakmé a syna Miliho</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title"><span class="ts-phase">Fáze V</span> Šílenství</div>
+    <div class="ts-desc">Halucinace o spasení, vize tibetského boha, úplná ztráta reality</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>konec 30. let a období Protektorátu Čechy a Morava (1939–1945)</strong>. Proměna Kopfrkingla je <strong>pozvolná, ale neúprosná</strong> — z laskavého otce v masového vraha během několika let.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Zlo v obyčejném člověku, vzestup fašismu, manipulace s masami, šílenství a jeho gradace, dobro zvrácené ve zlo, holocaust, kolaborace, sebeklam, religiózní fanatismus, lidská zkaženost.</strong></p>
+</div>
+
+<h3>Motivy díla</h3>
+<ul>
+  <li><strong>Krematorium</strong> — hlavní dějiště, symbol</li>
+  <li><strong>Spálení</strong> — „očista" podle Kopfrkingla</li>
+  <li><strong>Tibetská kniha mrtvých</strong> — zvrácená filozofie</li>
+  <li><strong>Buddhismus, reinkarnace</strong> — zneužitá spiritualita</li>
+  <li><strong>Kopfrkingl</strong> — obyčejný spalovač, postupně monstrum</li>
+  <li><strong>Rodina</strong> — manželka Lakmé, děti Zina a Mili</li>
+  <li><strong>Reinke</strong> — nacistický manipulátor, ďábelská postava</li>
+  <li><strong>Židé, perzekuce, holocaust</strong></li>
+  <li><strong>Plyn, šílenství, halucinace</strong></li>
+  <li><strong>Lída</strong> — árijská milenka</li>
+  <li><strong>„Milost smrti"</strong> — Kopfrkinglova racionalizace</li>
+  <li><strong>Chameleón</strong> — symbol proměny, přizpůsobení</li>
+  <li><strong>Obsese čistotou</strong> — patologie</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor · Protektorát</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Čas</h4>
+    <p><strong>Konec 30. let až 1945.</strong> Protektorát Čechy a Morava. Postupná proměna během několika let. Gradace během války.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Prostor</h4>
+    <p><strong>Praha</strong> — konkrétně pražské krematorium. Kopfrkinglov byt, ulice Prahy, ZOO (rodinné návštěvy), a především <strong>vnitřní prostor Kopfrkinglova šílenství</strong>.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--fire)">
+      <div class="location-name">Krematorium</div>
+      <div class="location-note">Hlavní dějiště, chrám smrti, Kopfrkinglovo království</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--obsession)">
+      <div class="location-name">Kopfrkinglov byt</div>
+      <div class="location-note">Čistota, pořádek, rodina, obrazy</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--ash)">
+      <div class="location-name">Ulice Prahy</div>
+      <div class="location-note">Vycházky rodiny, postupná proměna</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--morgue)">
+      <div class="location-name">ZOO</div>
+      <div class="location-note">Rodinné návštěvy — děsivá normalita</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--blood)">
+      <div class="location-name">Krvavý dům</div>
+      <div class="location-note">Nevěstinec, kam Kopfrkingl dá dceru Zinu</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--gold)">
+      <div class="location-name">Vnitřní svět Kopfrkingla</div>
+      <div class="location-note">Halucinace, tibetské vize, „spasitel"</div>
+    </div>
+  </div>
+</div>
+
+<div class="card morgue">
+  <div class="card-title" style="color:var(--morgue)">Claustrofobický prostor</div>
+  <p style="margin-bottom:0">Fuks záměrně <strong>zužuje prostor</strong> na několik míst — krematorium, byt, ulice. Svět je <strong>klaustrofobický</strong> jako Kopfrkinglův mozek. Nikde není úniku. A nejhlavnějším „místem" románu je <strong>Kopfrkinglova psychika</strong> — pole, kde se odehrává skutečná transformace.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba · Gradace</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — gradace od normálnosti k šílenství</li>
+  <li><strong>Postupná transformace</strong> — pozvolná změna protagonisty</li>
+  <li><strong>Psychologická gradace</strong> — stoupající intenzita šílenství</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--obsession)">Bez formálních kapitol</div>
+  <p style="margin-bottom:0">Román <strong>není formálně rozdělen na kapitoly</strong>. Plynulé vyprávění, postupné prohlubování šílenství. Čtenář nemá kde si oddechnout — <strong>gradace je neúprosná</strong>, jako když se Kopfrkingl sám nemůže zastavit.</p>
+</div>
+
+<h3>Gradace šílenství — 6 fází</h3>
+<div class="gradation-viz">
+  <div class="grad-stage" style="--stage-color:var(--obsession);--stage-bg:rgba(168,132,88,.05)">
+    <div class="grad-stage-num">I</div>
+    Normálnost
+  </div>
+  <div class="grad-stage" style="--stage-color:var(--gold);--stage-bg:rgba(196,160,104,.05)">
+    <div class="grad-stage-num">II</div>
+    Manipulace
+  </div>
+  <div class="grad-stage" style="--stage-color:var(--fire);--stage-bg:rgba(168,88,58,.05)">
+    <div class="grad-stage-num">III</div>
+    Transformace
+  </div>
+  <div class="grad-stage" style="--stage-color:var(--fire);--stage-bg:rgba(168,88,58,.08)">
+    <div class="grad-stage-num">IV</div>
+    Krize
+  </div>
+  <div class="grad-stage" style="--stage-color:var(--blood);--stage-bg:rgba(90,26,24,.08)">
+    <div class="grad-stage-num">V</div>
+    Vraždy
+  </div>
+  <div class="grad-stage" style="--stage-color:var(--shadow);--stage-bg:rgba(26,26,26,.5)">
+    <div class="grad-stage-num">VI</div>
+    Šílenství
+  </div>
+</div>
+<p style="text-align:center;font-size:12px;color:var(--text-muted);font-style:italic;margin-top:8px">Každá fáze přidává hrůzu. Čtenář sleduje, jak se laskavý otec mění v monstrum — pozvolna, nenápadně, přesvědčivě.</p>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Expozice · Normálnost</div>
+    <div class="ts-desc">Kopfrkingl jako „dobrý" člověk, otec, manžel, spalovač</div>
+  </div>
+  <div class="timeline-step fire">
+    <div class="ts-title">2. Manipulace · Reinke</div>
+    <div class="ts-desc">Vliv Reinkeho, nacistická propaganda, postupná indoktrinace</div>
+  </div>
+  <div class="timeline-step fire">
+    <div class="ts-title">3. Transformace · Ideologie</div>
+    <div class="ts-desc">Postupná změna myšlení, fanatismus</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">4. Krize · Rodina Židovkou</div>
+    <div class="ts-desc">Přijetí nacistické ideologie plně — i když je rodina „problém"</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">5. Katastrofa · Vraždy</div>
+    <div class="ts-desc">Vraždy Lakmé a Miliho, obětování Ziny, halucinace o spasení</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">6. Šílenství · Ztráta reality</div>
+    <div class="ts-desc">Úplná ztráta reality, vize tibetského spasitele</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje (vnitřní) skutečnost.</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Psychologický horor</h4>
+    <p><strong>Hrůza z lidské psychiky</strong>, ne z vnějších monster.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--morgue)">
+    <h4 style="color:var(--morgue)">Psychologický román</h4>
+    <p>Analýza šíleného mysli, gradace psychózy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Dystopický román</h4>
+    <p>Zobrazení totalitního zla v individuálním osudu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Filozofický román</h4>
+    <p>Otázky dobra a zla, banality zla.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--obsession)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Psychologická hloubka</strong> — analýza šílenství</li>
+    <li>Hororové prvky — gradace hrůzy</li>
+    <li>Kritika nacismu a totality</li>
+    <li>Filozofické otázky: <em>Je zlo vrozené? Lze dobro zvrátit?</em></li>
+    <li>Dystopické zobrazení protektorátu z pohledu pachatele</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě. Ale <strong>velmi blízko Kopfrkinglovi</strong> — téměř jeho pohledem.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Personální vypravěč</strong> — sleduje Kopfrkinglův pohled</li>
+  <li><strong>Vševědoucí vypravěč</strong> — vidí do Kopfrkingla</li>
+  <li><strong>Subjektivní perspektiva</strong> — často z pohledu šílence</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Nestranný pozorovatel</strong> (zdánlivě)</li>
+    <li>Sleduje Kopfrkingla zblízka</li>
+    <li>Ukazuje jeho myšlenky</li>
+    <li>Gradace hrůzy</li>
+    <li><strong>Ironický odstup</strong></li>
+    <li>Nechává čtenáře vidět šílenství, ale <strong>nehodnotí</strong></li>
+    <li>Fuksovský styl — opakování, obsese</li>
+  </ul>
+</div>
+
+<div class="card steel">
+  <div class="card-title" style="color:var(--steel)">Úzkost z nedefinovaného</div>
+  <p style="margin-bottom:0">Vypravěč <strong>nikdy nesoudí Kopfrkingla otevřeně</strong>. To je Fuksovo mistrovství — <strong>nechává čtenáře, aby hrůzu pochopil sám</strong>. Klidný, až chirurgický tón zesiluje hrůzu. Jsme svědky vraždy rodiny a vypravěč mlčí. To mlčení je děsivější než jakékoli odsouzení.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy · Rodina Kopfrkinglových</h2></div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="✝">
+  <div class="char-name">Karel Kopfrkingl <em>(Roman)</em></div>
+  <div class="char-role">Hlavní postava · Tragická / Záporná · Spalovač</div>
+  <ul style="margin:0">
+    <li><strong>Spalovač mrtvol</strong> v pražském krematoriu</li>
+    <li><strong>Na začátku:</strong> milující otec, pečující manžel, zdvořilý člověk</li>
+    <li>Posedlý <strong>čistotou, řádem, smrtí</strong></li>
+    <li>Fascinován <strong>tibetskou knihou mrtvých</strong></li>
+    <li>Věří v <strong>reinkarnaci</strong></li>
+    <li>Pod vlivem Reinkeho přijímá <strong>nacismus</strong></li>
+    <li>Postupně šílí</li>
+    <li><strong>Zabije manželku a syna</strong> („milosrdná smrt")</li>
+    <li>Dceru dá do nacistického nevěstince</li>
+    <li>Halucinace — vidí se jako <strong>tibetský spasitel</strong></li>
+    <li>Symbol: <strong>obyčejný člověk, který se stane monstrem</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="♀">
+  <div class="char-name">Lakmé <em>(manželka)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Oběť</div>
+  <ul style="margin:0">
+    <li>Kopfrkinglova manželka</li>
+    <li><strong>Napůl Židovka</strong> — matka Židovka, proto děti jsou „problém"</li>
+    <li>Milující, starostlivá</li>
+    <li><strong>Nevědomá manželova šílenství</strong></li>
+    <li>Zavražděna Kopfrkinglem jako „spasení"</li>
+    <li>Symbol <strong>nevinné oběti</strong></li>
+    <li>Jméno Lakmé — po exotické opeře Léo Delibesa, zvyšuje atmosféru nereálnosti</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--obsession)" data-symbol="☿">
+  <div class="char-name">Zina <em>(dcera)</em></div>
+  <div class="char-role">Vedlejší · Tragická · Oběť</div>
+  <ul style="margin:0">
+    <li>Kopfrkinglova dcera</li>
+    <li>Krásná, mladá</li>
+    <li><strong>Otec ji dá do nacistického nevěstince</strong> „pro důstojníky"</li>
+    <li>Krásná „árijská" dívka — zneužita</li>
+    <li>Symbol <strong>zneužití nevinnosti</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="☗">
+  <div class="char-name">Mili <em>(syn)</em></div>
+  <div class="char-role">Vedlejší · Tragická · Oběť</div>
+  <ul style="margin:0">
+    <li>Kopfrkinglův syn</li>
+    <li>Malý chlapec, důvěřivý</li>
+    <li><strong>Zavražděn vlastním otcem</strong></li>
+    <li>Nejhrůznější vražda v románu</li>
+    <li>Symbol <strong>obětovaného dítěte</strong> — paralela s holocaustem</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--shadow)" data-symbol="✕">
+  <div class="char-name">Pan doktor Reinke</div>
+  <div class="char-role">Hlavní postava · Záporná · Manipulátor</div>
+  <ul style="margin:0">
+    <li><strong>Nacista, manipulátor</strong></li>
+    <li>„Přítel" Kopfrkinglův</li>
+    <li>Vštěpuje mu <strong>nacistickou ideologii</strong></li>
+    <li>Rafinovaný, nebezpečný, nenápadný</li>
+    <li>Mluví o „nové době", „rasové čistotě"</li>
+    <li>Symbol <strong>zla, které manipuluje</strong></li>
+    <li><strong>Ďábel / svůdce</strong> — archetyp pokušitele</li>
+    <li>Není sám vrah — jen připravuje vraha</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--steel)" data-symbol="♁">
+  <div class="char-name">Lída</div>
+  <div class="char-role">Vedlejší · Neutrální · Milenka</div>
+  <ul style="margin:0">
+    <li>Kopfrkinglova milenka (později)</li>
+    <li><strong>„Árijka"</strong></li>
+    <li>Náhrada za Lakmé</li>
+    <li>Symbol <strong>nového řádu</strong> — Kopfrkingl si našel „správnou" ženu</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--morgue)" data-symbol="✡">
+  <div class="char-name">Strauss</div>
+  <div class="char-role">Vedlejší · Tragická · Žid</div>
+  <ul style="margin:0">
+    <li><strong>Židovský kolega</strong></li>
+    <li>Kopfrkinglův přítel ze začátku</li>
+    <li>Kopfrkingl mu zdvořile tyká: <em>„Milý pane Strauss…"</em></li>
+    <li><strong>Zavražděn nacisty</strong></li>
+    <li>Symbol holocaustu, nevinné oběti</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 BANALITA -->
+<section class="section" id="banalita">
+<div class="section-header"><span class="section-num">VIII</span><h2>Banalita zla</h2></div>
+
+<p>Fuksovo dílo je literárním ztělesněním konceptu <strong>„banality zla"</strong>, který formulovala filozofka <strong>Hannah Arendtová</strong> v knize <em>Eichmann v Jeruzalémě</em> (1963) — pár let před Spalovačem.</p>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Banalita zla — Hannah Arendtová</div>
+  <p style="margin-bottom:0"><strong>Zlo nemusí být démonické.</strong> Může být obyčejné, zdvořilé, úřednické. Eichmann nebyl šílený sadista — byl to <strong>průměrný byrokrat</strong>, který „jen plnil rozkazy". A právě to je <strong>nejděsivější</strong>: zlo, které nosí tvář obyčejnosti. <strong>Kopfrkingl je přesně takový — slušný, čistotný, vzdělaný vrah.</strong></p>
+</div>
+
+<h3>Rysy banality zla u Kopfrkingla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--obsession)">
+    <h4 style="color:var(--obsession)">Zdvořilost</h4>
+    <p><em>„Milý pane Strauss…"</em> — mluví zdvořile s budoucími obětmi.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Racionalizace</h4>
+    <p>Vraždy jsou pro něj „milost", „osvobození", „spasení".</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--fire)">
+    <h4 style="color:var(--fire)">Víra</h4>
+    <p>Tibetská kniha mrtvých ospravedlňuje vraždy jako duchovní čin.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--steel)">
+    <h4 style="color:var(--steel)">Pořádek</h4>
+    <p>Vraždy jsou organizované, čisté, úřednické.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Láska</h4>
+    <p>Zabíjí své blízké „z lásky" — protože je chce „osvobodit".</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--morgue)">
+    <h4 style="color:var(--morgue)">Hrdost</h4>
+    <p>Je hrdý na své „služby" říši — slouží vyššímu řádu.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--obsession)">Chameleón — symbol proměny</div>
+  <p style="margin-bottom:0">V kredenci má Kopfrkingl <strong>chameleóna</strong>, kterého sleduje. <strong>Chameleón mění barvy — přizpůsobuje se okolí.</strong> Stejně jako Kopfrkingl. Jednou byl dobrý otec, teď je fanatik. <strong>Symbol kolaborace</strong> — není to aktivní volba, je to adaptace. A to je děsivé: <strong>většina kolaborantů se sama takhle „přizpůsobila"</strong>, aniž by to vědomě chtěli.</p>
+</div>
+</section>
+
+<!-- 09 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">IX</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--obsession)">Přímá řeč · Kopfrkinglova mantra</div>
+  <div class="quote-block" style="margin:0">„Smrt je očista," říkal Kopfrkingl. „Spálením osvobodíme duši."<span class="quote-source">Centrální mantra šílenství</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--gold)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Kopfrkingl si myslel, že dělá dobro, když je zabíjí.</p>
+</div>
+
+<div class="card morgue">
+  <div class="card-title" style="color:var(--morgue)">Vnitřní monolog · Halucinace</div>
+  <p style="font-style:italic;color:var(--heading);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Musím je osvobodit. Spálením. Reinkarnace. Budou šťastní.</p>
+</div>
+
+<div class="card fire">
+  <div class="card-title" style="color:var(--fire)">Proud vědomí</div>
+  <p style="margin-bottom:0"><strong>Chaotické myšlenky šílence</strong> — Kopfrkinglův vnitřní svět je stále více fragmentovaný. Opakované fráze, mantry, vize.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Pásmo vypravěče</h4><p>Popis Kopfrkingla, krematorií, událostí — klidný, klinický.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--fire)"><h4 style="color:var(--fire)">Monolog</h4><p>Kopfrkinglovy úvahy — <strong>často zkreslené</strong>.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--steel)"><h4 style="color:var(--steel)">Dialog</h4><p>Rozhovory s rodinou, Reinkem.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--shadow)"><h4 style="color:var(--shadow)">Halucinace</h4><p>Kopfrkinglovy vize — tibetská kniha mrtvých, spasitelství.</p></div>
+</div>
+</section>
+
+<!-- 10 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">X</span><h2>Jazykové prostředky · Fuksovský styl</h2></div>
+
+<h3>Opakování — Fuksův podpisový prvek</h3>
+<div class="fuks-repetition">Milý pane Strauss · <em>tibetská kniha mrtvých</em> · milý pane Strauss · <em>očista</em> · milý pane Strauss · <em>reinkarnace</em> · <em>milost</em> · <em>tibetská kniha mrtvých</em> · milý pane Strauss…</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--obsession)">Proč Fuks opakuje</div>
+  <ul style="margin:0">
+    <li><strong>Obsesivní opakování</strong> slov, frází</li>
+    <li>Vytváří pocit <strong>šílenství, hypnózy</strong></li>
+    <li>Jazyk se stává <strong>mantrou</strong></li>
+    <li>Čtenář cítí <strong>tíhu myšlenkového stereotypu</strong></li>
+    <li><strong>Fuksův podpisový styl</strong> — nikdo ho nepsal tak jako on</li>
+  </ul>
+</div>
+
+<h3>Eufemismy — zvrácený jazyk</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><em>„Očista"</em> = smrt</li>
+    <li><em>„Osvobození duše"</em> = vražda</li>
+    <li><em>„Milost"</em> = zabití</li>
+    <li><em>„Přerodění"</em> = upálení</li>
+    <li>Jazyk <strong>nacistické propagandy</strong> — „konečné řešení", „přesídlení"</li>
+  </ul>
+</div>
+
+<h3>Zdánlivě klidný tón</h3>
+<div class="card steel">
+  <ul style="margin:0">
+    <li><strong>Hrůzy popisovány běžným, zdvořilým jazykem</strong></li>
+    <li>Kontrast <strong>obsah vs. forma</strong></li>
+    <li>Strašidelně normální</li>
+    <li>Kopfrkingl mluví o vraždách jako o rybích obědech</li>
+    <li>Tento kontrast je zdroj <strong>největší hrůzy románu</strong></li>
+  </ul>
+</div>
+
+<h3>Náboženská terminologie</h3>
+<div class="card fire">
+  <ul style="margin:0">
+    <li><strong>Buddhismus, reinkarnace</strong></li>
+    <li>Tibetská kniha mrtvých</li>
+    <li><strong>Zvrácená religiozita</strong></li>
+    <li><em>„Spasení"</em> skrze smrt</li>
+    <li>Vraždy jako <strong>rituál</strong></li>
+  </ul>
+</div>
+
+<h3>Deformace jazyka</h3>
+<div class="card morgue">
+  <div class="card-title" style="color:var(--morgue)">Orwellovský newspeak po Fuksovsku</div>
+  <ul style="margin:0">
+    <li>Kopfrkingl postupně <strong>mění významy slov</strong></li>
+    <li>Dobro = zlo, láska = vražda</li>
+    <li><strong>Orwellovský newspeak</strong> (1984 — 1949, také Fuks znal)</li>
+    <li>Deformace jazyka = deformace myšlení</li>
+    <li>Když změním slova, mohu změnit i realitu</li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Opakování</strong> vytváří neurčitost, šílenství</li>
+    <li><strong>Eufemismy</strong> ukazují sebeklam</li>
+    <li><strong>Klidný tón</strong> zesiluje hrůzu</li>
+    <li><strong>Deformace jazyka</strong> = deformace myšlení</li>
+    <li><strong>Religiózní terminologie</strong> ukazuje zneužití víry</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">XI</span><h2>Tropy, figury a symbolika</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Krematorium</div>
+    <div class="trope-note">Krematorium = peklo, holocaust. Oheň = zvrácená očista. Chameleón = přizpůsobení se zlu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">„Milující otec" = vrah</div>
+    <div class="trope-note">Kopfrkingl si myslí, že koná dobro, když zabíjí. <strong>„Očista"</strong> = holocaust.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Paradox</div>
+    <div class="trope-example">Láska → vražda</div>
+    <div class="trope-note">Láska vede k vraždě. Dobro se mění ve zlo. Spasení = smrt.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Groteska</div>
+    <div class="trope-example">„Slušný" vrah</div>
+    <div class="trope-note">Kopfrkinglova zdvořilost uprostřed hrůz. „Milý pane Strauss" — a pak ho pošle do plynu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Kontrast</div>
+    <div class="trope-example">Normalita vs. šílenství</div>
+    <div class="trope-note">Zdánlivá normalita vs. šílenství. Laskavost vs. krutost. Fyzická čistota vs. morální špína.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Spálení = holocaust</div>
+    <div class="trope-note">Spálení = holocaust. Krematorium = vyhlazovací tábory. Kopfrkingl = kolaborant.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Alegorie</div>
+    <div class="trope-example">Vzestup fašismu</div>
+    <div class="trope-note">Celý příběh = jak vzniká zlo. Kopfrkinglova proměna = vzestup fašismu v jedné duši.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Smrt jako dobrodinec</div>
+    <div class="trope-note">Smrt se v Kopfrkinglově pojetí stává „dobrodincem", „přítelem", „milostí".</div>
+  </div>
+</div>
+
+<h3>Klíčová symbolika díla</h3>
+<div class="symbols-grid">
+  <div class="symbol-card" style="--sym-color:var(--fire)">
+    <div class="symbol-icon">❦</div>
+    <div class="symbol-name">Krematorium</div>
+    <div class="symbol-meaning">Holocaust, peklo, Kopfrkinglovo království smrti</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--fire)">
+    <div class="symbol-icon">✦</div>
+    <div class="symbol-name">Oheň</div>
+    <div class="symbol-meaning">Zvrácená očista, destrukce</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--gold)">
+    <div class="symbol-icon">☸</div>
+    <div class="symbol-name">Tibetská kniha</div>
+    <div class="symbol-meaning">Zvrácená spiritualita, racionalizace vraždění</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--obsession)">
+    <div class="symbol-icon">✧</div>
+    <div class="symbol-name">Chameleón</div>
+    <div class="symbol-meaning">Změna, přizpůsobení se zlu, kolaborace</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--blood)">
+    <div class="symbol-icon">☗</div>
+    <div class="symbol-name">Kopfrkingl</div>
+    <div class="symbol-meaning">Obyčejný člověk, který se stane monstrem</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--morgue)">
+    <div class="symbol-icon">✕</div>
+    <div class="symbol-name">Reinke</div>
+    <div class="symbol-meaning">Manipulátor, svůdce, ďábel v civilu</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--obsession)">
+    <div class="symbol-icon">◊</div>
+    <div class="symbol-name">Čistota</div>
+    <div class="symbol-meaning">Fyzická obsese → rasová čistota</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--ash)">
+    <div class="symbol-icon">♫</div>
+    <div class="symbol-name">Opera Lakmé</div>
+    <div class="symbol-meaning">Exotika, iluze, manželka pojmenovaná po opeře</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Symboly</strong> nesou hlubší významy — krematorium není jen dějiště, je <strong>metaforou holocaustu</strong>. <strong>Ironie</strong> odhaluje absurditu Kopfrkinglova sebeklamu. <strong>Paradoxy</strong> ukazují zkřivenost myšlení. <strong>Groteska</strong> je nejsilnější zbraň — slušný vrah je děsivější než monstrum.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Ladislav Fuks (1923–1994)</div>
+  <p>Český prozaik a esejista. Narozen v <strong>Praze 1923</strong>. Pocházel z policejní rodiny — jeho otec byl policejní důstojník. Studoval <strong>filozofii, psychologii a dějiny umění na Karlově univerzitě</strong>. <strong>Židovského původu</strong> nebyl, ale za války zažil <strong>pronásledování Židů zblízka</strong> — mnoho jeho přátel a spolužáků bylo deportováno. Tato zkušenost ho poznamenala na celý život. Byl <strong>homosexuál</strong> — v komunistickém Československu to bylo <strong>společensky problematické</strong>, neexistovaly právní postihy, ale sociální tlak byl silný. Fuks byl proto <strong>izolovaný, uzavřený, neurotický</strong>. Měl obsesi smrtí, hrobkami, rakvemi — sbíral fotografie hřbitovů. Žil skromně, téměř asketicky. Po mnoho let pracoval v muzeu. Jeho literatura je prosycena úzkostí, strachem, tematikou holocaustu a šílenství. <strong>Spáchal sebevraždu 19. srpna 1994</strong> ve věku 71 let — zanechal mnoho rozepsaných rukopisů.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Fuksovo vrcholné dílo</strong> (1967)</li>
+  <li>Druhý román po úspěšném <em>Panu Theodoru Mundstockovi</em></li>
+  <li>Návrat k tématu holocaustu, ale z nového úhlu — <strong>z pohledu pachatele</strong></li>
+  <li><strong>Psychologický horor</strong></li>
+</ul>
+
+<h3>Další Fuksova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Pan Theodor Mundstock</strong></td><td>1963</td><td>Debut — Žid očekávající transport, šílenství, psychologická studie</td></tr>
+  <tr><td><strong>Mí černovlasí bratři</strong></td><td>1964</td><td>Autobiografické vzpomínky na židovské spolužáky</td></tr>
+  <tr><td><strong>Variace pro temnou strunu</strong></td><td>1966</td><td>Psychologický román</td></tr>
+  <tr><td><strong>Spalovač mrtvol</strong></td><td>1967</td><td><strong>Vrcholné dílo</strong></td></tr>
+  <tr><td><strong>Myši Natálie Mooshabrové</strong></td><td>1970</td><td>Alegorická dystopie — stará žena, společenská kritika</td></tr>
+  <tr><td><strong>Pasáček z doliny</strong></td><td>1977</td><td>Lyrická novela</td></tr>
+  <tr><td><strong>Vévodkyně a kuchařka</strong></td><td>1983</td><td>Historický román, Vídeň</td></tr>
+  <tr><td colspan="3">A další psychologická próza — celkem přes 15 knih</td></tr>
+</table>
+
+<h3>Fuksův styl</h3>
+<ul>
+  <li><strong>Psychologická hloubka</strong></li>
+  <li><strong>Analýza zla</strong></li>
+  <li><strong>Opakování, obsese</strong> — podpisový prvek</li>
+  <li>Gradace hrůzy</li>
+  <li><strong>Neurčitost, úzkost</strong></li>
+  <li>Horor z lidské psychiky</li>
+  <li>Hypnotický jazyk</li>
+  <li>Minimální děj, maximální psychologie</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>1967</strong></li>
+    <li><strong>Pražské jaro se blíží</strong> (1968)</li>
+    <li>Uvolnění, <strong>reflexe minulosti</strong></li>
+    <li>Holocaust stále čerstvý — 20 let od konce války</li>
+    <li>Umělecký sloh: <strong>PSYCHOLOGICKÝ REALISMUS / HOROR</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy psychologického realismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Analýza psychiky</h4><p>Hluboká studie vnitřního světa postavy.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--morgue)"><h4 style="color:var(--morgue)">Realističnost</h4><p>Přesné psychologické motivace.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Hororové prvky</h4><p>Úzkost, hrůza, gradace.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--fire)"><h4 style="color:var(--fire)">Existenciální otázky</h4><p>Zlo, svoboda, odpovědnost.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--steel)"><h4 style="color:var(--steel)">Gradace napětí</h4><p>Pomalá, ale neúprosná.</p></div>
+</div>
+
+<h3>Česká próza 60. let — zlatá éra</h3>
+<div class="card key">
+  <p style="margin-bottom:0"><strong>60. léta</strong> v Československu byla <strong>zlatou érou literatury i filmu</strong>. Uvolnění cenzury, politické tání, generace, která chtěla zpracovat zkušenost války, totality, stalinismu. Vznikla <strong>česká nová vlna</strong> (film), <strong>generace šedesátých let</strong> (literatura).</p>
+</div>
+
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Rok</th></tr>
+  <tr><td><strong>Milan Kundera</strong></td><td><em>Žert</em></td><td>1967</td></tr>
+  <tr><td><strong>Bohumil Hrabal</strong></td><td><em>Ostře sledované vlaky</em></td><td>1965</td></tr>
+  <tr><td><strong>Josef Škvorecký</strong></td><td><em>Zbabělci</em></td><td>1958 (znovu 1964)</td></tr>
+  <tr><td><strong>Arnošt Lustig</strong></td><td><em>Modlitba pro Kateřinu Horovitzovou</em></td><td>1964</td></tr>
+  <tr><td><strong>Ladislav Fuks</strong></td><td><em>Spalovač mrtvol</em></td><td>1967</td></tr>
+  <tr><td><strong>Vladimír Páral</strong></td><td><em>Soukromá vichřice</em></td><td>1966</td></tr>
+</table>
+
+<h3>Téma holocaustu v literatuře</h3>
+
+<h4>Světová</h4>
+<ul>
+  <li><strong>Primo Levi</strong> — <em>Je-li toto člověk</em></li>
+  <li><strong>Elie Wiesel</strong> — <em>Noc</em></li>
+  <li><strong>Anne Frank</strong> — <em>Deník</em></li>
+  <li><strong>Hannah Arendtová</strong> — <em>Eichmann v Jeruzalémě</em> (1963) — filozofický rámec</li>
+</ul>
+
+<h4>Česká</h4>
+<ul>
+  <li><strong>Arnošt Lustig</strong> — <em>Modlitba pro Kateřinu Horovitzovou, Démanty noci</em></li>
+  <li><strong>Jiří Weil</strong> — <em>Život s hvězdou</em></li>
+  <li><strong>Josef Bor</strong> — <em>Terezínské rekviem</em></li>
+  <li><strong>Ladislav Grosman</strong> — <em>Obchod na korze</em></li>
+</ul>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--blood)">Fuksovo specifikum</div>
+  <p style="margin-bottom:0">Většina české literatury o holocaustu píše <strong>z pohledu oběti</strong>. Fuks je <strong>jeden z prvních, kdo píše z pohledu pachatele</strong> — a to činí dílo tak neobyčejné. Nemůžeme se s Kopfrkinglem ztotožnit, ale sledujeme, jak se z obyčejného člověka stává vrah. <strong>Analytický, chirurgický, nelítostný.</strong></p>
+</div>
+
+<h3>Psychologický horor</h3>
+<div class="card fire">
+  <ul style="margin:0">
+    <li><strong>Analýza zla v člověku</strong></li>
+    <li>Ne vnější monstra, ale vnitřní</li>
+    <li>Realističnost děsivější než fantasy</li>
+    <li>Tradice — Edgar Allan Poe, Dostojevskij, Kafka</li>
+    <li>Fuks navazuje na evropskou tradici psychologického hororu</li>
+  </ul>
+</div>
+</section>
+
+<div class="cremation-divider">✦ ❦ ✦</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--obsession)">
+  <span class="scene-label" style="background:rgba(168,132,88,.1);border-color:var(--obsession);color:var(--obsession)">★ 01 · ÚVOD · „DOBRÝ" KOPFRKINGL ★</span>
+  <div class="scene-title">Úvodní charakteristika</div>
+  <div class="scene-text">Pan Kopfrkingl byl zdvořilý člověk. Miloval svou rodinu. Staral se o manželku Lakmé, děti Zinu a Miliho. Pracoval v krematoriu. Byl to čistotný, pořádný muž. Všichni ho měli rádi.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Představení Kopfrkingla na začátku románu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Zdánlivá normalita</strong></li>
+      <li>„Dobrý" člověk</li>
+      <li>Předznamenání — obsese čistotou</li>
+      <li>Ironie — stane se vrahem</li>
+      <li>Fuksovská ambivalence — každý slušný člověk je potenciálně Kopfrkingl</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Patologie</span>
+  <div class="scene-title">Obsese čistotou</div>
+  <div class="scene-text">Kopfrkingl miloval čistotu. Myl si ruce neustále. Krematorium muselo být čisté. Vše muselo být v pořádku. Špína byla nepřípustná. Těla musela být čistě spálena. Očištěna ohněm.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Neurotická čistota</li>
+      <li><strong>Předzvěst rasové „čistoty"</strong> (nacismus)</li>
+      <li>Oheň jako očista (zvrácené)</li>
+      <li>Patologický rys, který se stane ideologií</li>
+    </ul>
+  </div>
+</div>
+
+<div class="crematorium-box">
+  <div class="crematorium-mantra">„Smrt není konec, je to osvobození.<br>Spálením těla osvobodíme duši.<br>Pomáháme mrtvým.<br>Je to milost."<span class="crematorium-source">Kopfrkinglova filozofie — Tibetská kniha mrtvých</span></div>
+</div>
+
+<div class="scene" style="border:2px solid var(--shadow)">
+  <span class="scene-label" style="background:rgba(26,26,26,.5);border-color:var(--shadow);color:var(--ash)">★ 03 · MANIPULÁTOR · REINKE ★</span>
+  <div class="scene-title">Reinkeho propaganda</div>
+  <div class="scene-text">Pan doktor Reinke byl přítel. Mluvil o nové době. O čistotě rasy. O nutnosti odstranit nečisté. Židé jsou problém. Němci přinesou řád. Kopfrkingl poslouchal. A pomalu začal souhlasit.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Nacistická propaganda</strong> v nejplížnější podobě</li>
+      <li>Postupná indoktrinace</li>
+      <li>Reinke = <strong>ďábel, svůdce</strong></li>
+      <li>Gradace zla</li>
+      <li>Manipulace dobrého člověka — nejděsivější scéna</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(196,160,104,.08);border-color:var(--gold);color:var(--gold)">★ 04 · KONFLIKT · LAKMÉ JE ŽIDOVKA ★</span>
+  <div class="scene-title">Lakmé je „problém"</div>
+  <div class="scene-context"><em>„Tvá manželka má židovskou matku,"</em> řekl Reinke. <em>„To je problém. Děti jsou tedy taky…"</em> Kopfrkingl se zamyslel. Miloval Lakmé. Ale… možná by bylo lepší… pro ni… osvobození…</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Konflikt láska vs. ideologie</strong></li>
+      <li>Ideologie vítězí</li>
+      <li>Racionalizace vraždy</li>
+      <li><em>„Pro její dobro"</em> — zvrácená logika</li>
+      <li>Láska se mění ve vražedný úmysl</li>
+    </ul>
+  </div>
+</div>
+
+<div class="fuks-repetition">„Očista · reinkarnace · milost · tibetská kniha mrtvých · očista · reinkarnace · milost · tibetská kniha mrtvých · očista…"</div>
+
+<div class="scene" style="border:2px solid var(--fire)">
+  <span class="scene-label" style="background:rgba(168,88,58,.08);border-color:var(--fire);color:var(--fire)">★ 05 · GRADACE ŠÍLENSTVÍ ★</span>
+  <div class="scene-title">Šílenství jako opakování</div>
+  <div class="scene-context">Kopfrkingl už nemluvil normálně. Opakoval stále dokola: <em>„Očista, reinkarnace, milost, tibetská kniha mrtvých, očista, reinkarnace…"</em> Jeho oči byly prázdné. Usmíval se, ale to nebyl lidský úsměv.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Opakování = šílenství</strong> (Fuksovský styl)</li>
+      <li>Ztráta humanity</li>
+      <li>Bezduché oči, „ne-lidský" úsměv</li>
+      <li>Hororový prvek</li>
+      <li>Gradace před vraždami</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(90,26,24,.1);border-color:var(--blood);color:var(--blood)">★ 06 · VRAŽDA LAKMÉ ★</span>
+  <div class="scene-title">„Miláčku, musím tě osvobodit"</div>
+  <div class="scene-text">„Miláčku," řekl jemně. „Musím tě osvobodit. Je to milost. Tvá duše se přerodí. Budeš šťastnější."
+Lakmé ho nechápala. Měla strach.
+A pak… ticho.
+Spálil ji.
+S láskou.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Vražda jako „láska"</strong></li>
+      <li>Zvrácená logika vrcholí</li>
+      <li><em>„Milost"</em> = smrt</li>
+      <li>Hrůza zdvořilosti</li>
+      <li>Jemnost tónu zesiluje hrůzu</li>
+      <li><strong>Paralela s holocaustem</strong> — slušní muži s dobrými úmysly</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(90,26,24,.1);border-color:var(--blood);color:var(--blood)">★ 07 · VRAŽDA MILIHO ★</span>
+  <div class="scene-title">Vražda vlastního syna</div>
+  <div class="scene-text">Chlapec ho miloval. Důvěřoval otci. „Tati?" řekl.
+A pak už nic.
+Kopfrkingl ho osvobodil.
+Spálil.
+„Teď jsi čistý, synu. Přerodíš se."</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Zrada důvěry</strong></li>
+      <li>Nejhrůznější čin — vražda vlastního dítěte</li>
+      <li><em>„Tati?"</em> — chlapec nechápe</li>
+      <li><em>„Spasení"</em> = smrt</li>
+      <li><strong>Absolutní šílenství</strong></li>
+      <li>Hranice lidskosti překonána</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Obětování Ziny</span>
+  <div class="scene-title">Zina v nevěstinci</div>
+  <div class="scene-context">Zinu dal do nacistického nevěstince. <em>„Pro důstojníky,"</em> řekl hrdě. <em>„Slouží říši. Je to čest."</em> Dcera? Ne, nástroj. Krásná árijská dívka.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Zneužití dítěte</strong></li>
+      <li>Kolaborace</li>
+      <li>Ztráta otcovství</li>
+      <li>Dcera = <strong>objekt, ne člověk</strong></li>
+      <li>Morální zkáza dovršena</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold);background:linear-gradient(180deg,rgba(196,160,104,.03),transparent)">
+  <span class="scene-label" style="background:rgba(196,160,104,.1);border-color:var(--gold);color:var(--gold)">★ 09 · ZÁVĚR · HALUCINACE ★</span>
+  <div class="scene-title">„Jsem spasitel"</div>
+  <div class="scene-text">Kopfrkingl viděl vize.
+Byl spasitel. Tibetský bůh.
+Pomáhal duším. Spaloval nečisté.
+Očišťoval svět.
+Byl hrdina.
+Byl světlo ve tmě.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Úplná ztráta reality</strong></li>
+      <li>Megalomanie</li>
+      <li>Sebeklam</li>
+      <li><strong>Tragická ironie</strong> — vrah jako spasitel</li>
+      <li>Vrchol šílenství</li>
+      <li>Závěrečný obraz — monstrum, které si myslí, že je svatý</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--steel);background:rgba(74,74,74,.05)">
+  <span class="scene-label" style="background:rgba(74,74,74,.15);border-color:var(--steel);color:var(--ash)">★ 10 · GROTESKA · BANALITA ZLA ★</span>
+  <div class="scene-title">„Milý pane Strauss…"</div>
+  <div class="scene-context">Kopfrkingl zůstal zdvořilý. <em>„Milý pane Strauss,"</em> říkal kolegovi před deportací. <em>„Prosím, po tobě,"</em> držel dveře. A pak poslal rodinu do plynu. S úsměvem.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Groteska</strong></li>
+      <li><strong>Banalita zla</strong> (Hannah Arendtová)</li>
+      <li>Slušný vrah</li>
+      <li>Hrůza normálnosti</li>
+      <li>Fuksovský horor v nejčistší podobě</li>
+      <li>Zdvořilost jako maska nelidskosti</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="cremation-divider">✦ ❦ ✦</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Zlo není vždy zřejmé.</strong> Může se skrývat za zdvořilostí, za dobrotou, za vírou. <strong>Obyčejný člověk může být manipulován k nejhorším zločinům.</strong> Propaganda a fanatismus mění lidi v monstra. <strong>Holocaust nebyl dílo monster, ale obyčejných lidí.</strong> A proto se může opakovat — pokud nebudeme pozorní.</p>
+</div>
+
+<h3>Filozofické otázky románu</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>Je zlo <strong>vrozené nebo naučené</strong>?</li>
+    <li>Může se dobrý člověk stát vrahem?</li>
+    <li>Jak působí <strong>propaganda</strong>?</li>
+    <li>Kde je hranice mezi soucitem a vraždou?</li>
+    <li>Lze dobré úmysly zvrátit ve zlo?</li>
+    <li>Jsme všichni potenciální Kopfrkinglové?</li>
+  </ul>
+</div>
+
+<h3>Banalita zla — dědictví Hannah Arendtové</h3>
+<details>
+  <summary>Koncept Hannah Arendtové a Fuks</summary>
+  <p>Německo-americká filozofka <strong>Hannah Arendtová</strong> v knize <em>Eichmann v Jeruzalémě</em> (1963) po procesu s nacistickým zločincem Adolfem Eichmannem formulovala koncept <strong>„banality zla"</strong>. Eichmann nebyl démonický sadista — byl to <strong>průměrný byrokrat</strong>, který „jen plnil rozkazy". <strong>Zlo může být všední.</strong> Kopfrkingl je literárním ztělesněním tohoto konceptu: slušný, zdvořilý, vzdělaný vrah. <strong>Ne démon, ale úředník smrti.</strong> Realistické, tedy děsivější.</p>
+</details>
+
+<h3>Kopfrkingl jako kolaborant</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li>Reprezentuje <strong>české kolaboranty</strong></li>
+    <li>Češi, kteří spolupracovali s nacisty</li>
+    <li><strong>Aktivní, ne pasivní zlo</strong></li>
+    <li>Racionalizace zločinů</li>
+    <li>Hrdost na spolupráci</li>
+    <li>Téma v české literatuře stále tabuizované — <strong>Fuks se neobává mluvit</strong></li>
+  </ul>
+</div>
+
+<h3>Filmová adaptace 1969 — Juraj Herz</h3>
+<details>
+  <summary>Kultovní film české nové vlny</summary>
+  <p><strong>Režie Juraj Herz, 1969.</strong> Film patří k nejlepším adaptacím české literatury vůbec. <strong>Rudolf Hrušínský v hlavní roli Kopfrkingla</strong> podal <strong>legendární výkon</strong> — jedna z nejlepších rolí československého filmu. <strong>Expresionistický styl</strong>, černobílá kamera, úzkostná atmosféra. <strong>Kultovní film.</strong> Byl oceněn na festivalu hororu v <strong>Avoriazu</strong> (hlavní cena). Byl <strong>zakázán po nástupu normalizace</strong> a znovu uveden až po roce 1989. Dnes patří k <strong>deseti nejlepším českým filmům vůbec</strong>.</p>
+</details>
+
+<h3>Psychologie Kopfrkingla</h3>
+<details>
+  <summary>Anatomie šílenství</summary>
+  <p>Fuks zachycuje několik psychologických jevů: <strong>narcismus</strong> (Kopfrkingl se cítí být vyvolený), <strong>megalomanie</strong> (vidí sebe jako spasitele), <strong>obsesivně-kompulzivní rysy</strong> (čistota, opakování), <strong>fanatismus</strong>, <strong>psychóza</strong> (halucinace). Ale Kopfrkingl je <strong>věrohodný</strong> — není karikaturou. Každý může být Kopfrkingl, pokud narazí na Reinkeho a nechá se manipulovat.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li>Varování před <strong>manipulací</strong></li>
+    <li>Propaganda dnes — <strong>fake news, sociální sítě</strong></li>
+    <li>Extremismus</li>
+    <li>Sebeklam</li>
+    <li>Každý může být Kopfrkingl</li>
+    <li>Holocaust nesmíme zapomenout</li>
+    <li>Zlo má mnoho tváří — často zdvořilou</li>
+  </ul>
+</div>
+
+<h3>Fuksův osud</h3>
+<details>
+  <summary>Izolace, úzkost, sebevražda</summary>
+  <p>Fuks byl <strong>homosexuál</strong> — za komunistického režimu nebyla homosexualita kriminalizována, ale byla silně tabuizována a stigmatizována. Fuks proto <strong>celý život žil v izolaci</strong>, v konstantní úzkosti z odhalení. Jeho romány jsou plné postav, které <strong>nepatří do společnosti</strong> — outsideři, pronásledovaní, šílenci. Paralela s jeho vlastním osudem je zjevná. <strong>19. srpna 1994</strong> Fuks <strong>spáchal sebevraždu</strong> v 71 letech. Zanechal rukopisy, které dodnes vycházejí. Jeho dílo je <strong>jedním z nejosobitějších v české literatuře 20. století</strong>.</p>
+</details>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Normalizační zákaz</summary>
+  <p>Po <strong>sovětské invazi 1968</strong> a nástupu normalizace byl Herzův film zakázán. Kniha byla méně kontroverzní, ale téma holocaustu komunisté nepodporovali (narušoval sovětské mytologie). Fuks <strong>mohl dál publikovat</strong>, ale jeho pozice byla nejistá. <strong>Nikdy nevstoupil do KSČ</strong>, zůstal bez kariérního postupu.</p>
+</details>
+
+<details>
+  <summary>Rudolf Hrušínský — legendární role</summary>
+  <p><strong>Rudolf Hrušínský</strong> ve filmové verzi vytvořil legendární portrét Kopfrkingla. Jeho tichá, zdvořilá, ale zároveň znepokojující přítomnost definovala pojetí postavy na celé generace. Hrušínský sám řekl, že role Kopfrkingla byla <strong>nejtěžší a nejdůležitější v jeho kariéře</strong>. Nikdy nepoužíval přehrávání — hrůza byla v jemnosti.</p>
+</details>
+
+<details>
+  <summary>Kulturní dědictví</summary>
+  <p>„Spalovač mrtvol" se stal v české kultuře <strong>synonymem kolaboranta</strong>. <strong>Kopfrkingl</strong> je <strong>archetypem</strong> — slušný úředník, který páchá zlo. Dílo je <strong>povinnou četbou</strong> na středních školách. Film je pravidelně vysílán v české televizi. <strong>Stále aktuální.</strong></p>
+</details>
+
+<div class="crematorium-box" style="margin-top:40px;border:2px solid var(--blood);background:rgba(90,26,24,.03)">
+  <div class="crematorium-mantra" style="color:var(--blood)">„Holocaust nebyl dílo monster.<br>Byl to dílo obyčejných lidí.<br>Proto se může opakovat."<span class="crematorium-source">Duch Fuksova díla · Varování pro současnost</span></div>
+</div>
+</section>
+
+<div class="cremation-divider" style="margin-top:52px">✦ ❦ ✦</div>
+
+</div>
+</body>
+</html>

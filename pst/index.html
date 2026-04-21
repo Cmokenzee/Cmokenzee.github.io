@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PST · Maturitní otázky z počítačových sítí</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117;--bg-card:#181b24;--bg-card-hover:#1e2230;--border:#2a2e3d;
+  --text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;
+  --accent:#60a5fa;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;min-height:100vh;display:flex;flex-direction:column}
+
+.nav{position:sticky;top:0;z-index:100;background:rgba(15,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:12px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.nav a{color:var(--text);text-decoration:none;transition:color .2s}
+.nav a:hover{color:var(--accent)}
+
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1d2e 50%,#1e1528 100%);border-bottom:1px solid var(--border);padding:70px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(96,165,250,.12) 0%,transparent 50%),radial-gradient(ellipse at 70% 50%,rgba(251,146,60,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,5.5vw,44px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:14px;font-size:15px;position:relative;max-width:620px;margin-left:auto;margin-right:auto}
+
+main{flex:1;max-width:860px;width:100%;margin:0 auto;padding:50px 24px 40px}
+
+.q-list{display:flex;flex-direction:column;gap:2px}
+.q-item{display:flex;align-items:center;gap:18px;padding:18px 22px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:background .2s,border-color .2s,transform .15s}
+.q-item:hover{background:var(--bg-card-hover);border-color:var(--accent);transform:translateX(4px)}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:600;min-width:32px;letter-spacing:1px}
+.q-title{flex:1;font-family:'Fraunces',serif;font-size:17px;color:var(--heading);font-weight:600;line-height:1.3}
+.q-arrow{color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:16px;transition:transform .2s,color .2s}
+.q-item:hover .q-arrow{color:var(--accent);transform:translateX(4px)}
+
+footer{padding:32px 24px 48px;text-align:center;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:auto}
+footer a{color:var(--accent);text-decoration:none}
+
+@media(max-width:640px){main{padding:36px 16px 30px}.q-item{padding:14px 16px;gap:14px}.q-title{font-size:15px}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><a href="../index.html">← Maturita</a></nav>
+
+<section class="hero">
+  <div class="hero-label">PST · Počítačové sítě (PSI)</div>
+  <h1>Maturitní otázky PST</h1>
+  <p>13 otázek o počítačových sítích — OSI/TCP-IP model, Ethernet, VLAN, směrování, TCP/UDP, IPv4 i IPv6, Wi-Fi a zabezpečení WLAN.</p>
+</section>
+
+<main>
+  <div class="q-list">
+    <a class="q-item" href="psi-otazka-1-ethernet.html"><span class="q-num">01</span><span class="q-title">Vrstva síťového přístupu, Ethernet</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-2-aplikacni-vrstva.html"><span class="q-num">02</span><span class="q-title">Aplikační vrstva TCP/IP</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-3-nat-dhcp-dns.html"><span class="q-num">03</span><span class="q-title">NAT, DHCP a DNS</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-4-osi-model-studijni-material.html"><span class="q-num">04</span><span class="q-title">Referenční model OSI/ISO</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-5-vlan-navrh-site.html"><span class="q-num">05</span><span class="q-title">VLAN a návrh podnikové sítě</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-6-inter-vlan-routing.html"><span class="q-num">06</span><span class="q-title">Inter-VLAN Routing</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-7-stp-etherchannel-fhrp.html"><span class="q-num">07</span><span class="q-title">Spolehlivá síť — STP, EtherChannel, FHRP</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-8-wifi-80211.html"><span class="q-num">08</span><span class="q-title">IEEE 802.11 — Wi-Fi</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-9-tcp-udp.html"><span class="q-num">09</span><span class="q-title">Protokoly TCP a UDP</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-10-ipv4-acl.html"><span class="q-num">10</span><span class="q-title">Adresace IPv4, cesta datagramu, ACL</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-11-ipv6.html"><span class="q-num">11</span><span class="q-title">Protokol IPv6</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-12-smerovani.html"><span class="q-num">12</span><span class="q-title">Směrování, směrovací tabulky a protokoly</span><span class="q-arrow">→</span></a>
+    <a class="q-item" href="psi-otazka-13-zabezpeceni-wlan.html"><span class="q-num">13</span><span class="q-title">Zabezpečení WLAN</span><span class="q-arrow">→</span></a>
+  </div>
+</main>
+
+<footer>PST · 13 otázek · <a href="../index.html">← zpět na rozcestník</a></footer>
+
+</body>
+</html>

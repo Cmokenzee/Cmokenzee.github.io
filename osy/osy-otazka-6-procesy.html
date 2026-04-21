@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 6: Procesy</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Lifecycle diagram */
+.lifecycle{margin:20px 0;padding:20px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.lc-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.lc-state{padding:10px 18px;border-radius:8px;font-weight:600;text-align:center;min-width:110px}
+.lc-state small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.lc-arrow{color:var(--text-muted);font-size:14px;min-width:20px;text-align:center}
+.lc-created{background:rgba(107,114,128,.2);color:var(--text-muted);border:1px solid rgba(107,114,128,.4)}
+.lc-ready{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.lc-running{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+.lc-blocked{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.lc-terminated{background:rgba(248,113,113,.15);color:var(--accent-5);border:1px solid rgba(248,113,113,.3)}
+.lc-label{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text-muted);text-align:center;margin-top:2px}
+/* Memory layout stack */
+.mem-stack{margin:16px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.mem-layer{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid rgba(0,0,0,.3)}
+.mem-layer:last-child{border-bottom:none}
+.mem-layer small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.7;margin-top:2px}
+.ml-kernel{background:rgba(248,113,113,.2);color:var(--accent-5)}
+.ml-stack{background:rgba(167,139,250,.2);color:var(--osy)}
+.ml-mmap{background:rgba(96,165,250,.2);color:var(--accent-1)}
+.ml-heap{background:rgba(52,211,153,.2);color:var(--accent-3)}
+.ml-text{background:rgba(251,191,36,.2);color:var(--accent-4)}
+.ml-reserved{background:rgba(107,114,128,.3);color:var(--text-muted)}
+/* Context switch flow */
+.flow-diagram{display:flex;flex-direction:column;gap:4px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.flow-step{padding:12px 16px;border-radius:6px;text-align:center;font-weight:600;position:relative}
+.flow-step small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.flow-arrow{text-align:center;color:var(--text-muted);font-size:16px;line-height:1}
+.fl-hw{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.fl-cpu{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.fl-os{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.fl-done{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.lc-row{flex-direction:column}.lc-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 6</div>
+  <h1>Procesy</h1>
+  <p>Algoritmus • Program • Proces • Thread • Multitasking • PCB • Změna kontextu • Plánování</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#algoritmus">Algoritmus</a></li>
+  <li><a href="#program">Program</a></li>
+  <li><a href="#proces">Proces</a></li>
+  <li><a href="#thread">Thread (vlákno)</a></li>
+  <li><a href="#pamet">Obsazení paměti a adresní prostor</a></li>
+  <li><a href="#multitasking">Multitasking</a></li>
+  <li><a href="#pcb">PCB – Process Control Block</a></li>
+  <li><a href="#kontext">Změna kontextu (context switch)</a></li>
+  <li><a href="#vyvolani">Vyvolání změny kontextu</a></li>
+  <li><a href="#dynamicky">Dynamický scheduling</a></li>
+  <li><a href="#nepreempt">Nepreemptivní multitasking</a></li>
+  <li><a href="#preempt">Preemptivní multitasking</a></li>
+  <li><a href="#zivotni">Životní cyklus procesu</a></li>
+  <li><a href="#kratkodobe">Krátkodobé plánování (CPU scheduling)</a></li>
+  <li><a href="#strategie">Strategie plánování</a></li>
+  <li><a href="#stredne">Střednědobé a dlouhodobé plánování</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 ALGORITMUS -->
+<section class="section" id="algoritmus">
+<div class="section-header"><span class="section-num">01</span><h2>Algoritmus</h2></div>
+
+<p>Pojem pochází od perského matematika <strong>Al-Chorezmího</strong> – algebra, algoritmy výpočtů. V roce 1145 přeloženo do latiny (<em>Algorithmi…</em>). Algoritmus je <strong>zápis postupu pro vyřešení úlohy</strong>.</p>
+
+<h3>Možnosti zápisu algoritmu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Slovně</h4>
+    <p>Například recepty v kuchařkách.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Vývojový diagram</h4>
+    <p>Grafická reprezentace toku programu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Struktogram</h4>
+    <p>Strukturovaná grafická notace.</p>
+  </div>
+</div>
+
+<h3>Vlastnosti algoritmů</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">4 základní vlastnosti</div>
+  <ul>
+    <li><strong>Konečnost</strong> – skončí po konečném počtu kroků</li>
+    <li><strong>Obecnost (hromadnost)</strong> – neřeší konkrétní výpočet, ale obecný problém (ne součet 1+3, ale obecně sčítání)</li>
+    <li><strong>Determinovanost</strong> – stejné vstupy produkují stejné výsledky, každý výpočet lze 100% zreprodukovat</li>
+    <li><strong>Výstup (resultativnost)</strong> – algoritmus musí produkovat nějaký výstup</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 PROGRAM -->
+<section class="section" id="program">
+<div class="section-header"><span class="section-num">02</span><h2>Program</h2></div>
+
+<p><strong>Realizace algoritmu v programovacím jazyce.</strong> Procesoru (CPU) však programovací jazyk nerozumí – je nutný převod do strojových instrukcí.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Překladač (kompilátor)</h4>
+    <p>Kód vytvořen <strong>předem</strong> – výsledkem je spustitelný soubor (<code>.EXE</code>).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Interpret</h4>
+    <p>Kód je prováděn <strong>za běhu programu</strong> – řádek po řádku.</p>
+  </div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Kategorie softwaru</div>
+  <ul>
+    <li><strong>Systémový software</strong> – zajišťuje chod počítače (režie chodu)</li>
+    <li><strong>Aplikační software</strong> – konkrétní užitečná činnost (vlastní práce uživatele)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 PROCES -->
+<section class="section" id="proces">
+<div class="section-header"><span class="section-num">03</span><h2>Proces</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p><strong>Proces = spuštěný program</strong> (se svými daty v paměti). Jeden program lze spustit vícekrát s různými daty.</p>
+  <ul>
+    <li>Umístěn v <strong>operační paměti</strong> počítače</li>
+    <li>Je prováděn <strong>procesorem</strong>, spravován <strong>jádrem OS</strong></li>
+    <li>Skládá se z: <strong>vlastního kódu programu</strong> + <strong>proměnlivých dat</strong></li>
+    <li>Typicky v OS prováděno <strong>více procesů zároveň</strong> (multitasking)</li>
+    <li>Procesy jsou v systému navzájem <strong>odděleny</strong></li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Vlastnosti procesu</div>
+  <ul>
+    <li>Procesy spravuje <strong>jádro systému</strong></li>
+    <li>Jádro registruje popis každého procesu v <strong>PCB</strong> (Process Control Block)</li>
+    <li>Proces používá <strong>knihovny</strong> – knihovna je v paměti součástí procesu</li>
+    <li>O použití knihoven rozhoduje <strong>programátor</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 THREAD -->
+<section class="section" id="thread">
+<div class="section-header"><span class="section-num">04</span><h2>Thread (vlákno)</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Odlehčený proces</div>
+  <ul>
+    <li><strong>Nižší režie</strong> při změně kontextu (střídání na CPU)</li>
+    <li>Sdílí <strong>společný paměťový prostor</strong> – stejná oprávnění, otevřené soubory, proměnné prostředí…</li>
+    <li><strong>Rychlé</strong> vytváření a rušení vlákna</li>
+    <li>Efektivnější sdílení dat a synchronizace</li>
+    <li>Za cenu komplikací → nutné řešit <strong>riziko souběhu</strong></li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nevýhody a rizika</div>
+  <ul>
+    <li><strong>Chyba jednoho threadu</strong> způsobí ukončení <strong>všech</strong> (sdílí paměťový prostor)</li>
+    <li>Problém <strong>bezpečnosti</strong> – např. webový prohlížeč s taby, Flash</li>
+    <li>Oblíbené ve <strong>Windows</strong> – klasické procesy tam mají větší režii</li>
+  </ul>
+</div>
+
+<h3>Proces vs. thread – srovnání</h3>
+<table class="compare-table">
+  <tr><th>Vlastnost</th><th>Proces</th><th>Thread (vlákno)</th></tr>
+  <tr><td><strong>Paměťový prostor</strong></td><td>Vlastní, oddělený</td><td>Sdílený s ostatními thready</td></tr>
+  <tr><td><strong>Režie při přepínání</strong></td><td>Vyšší</td><td>Nižší</td></tr>
+  <tr><td><strong>Vytváření/rušení</strong></td><td>Pomalejší</td><td>Rychlejší</td></tr>
+  <tr><td><strong>Izolace</strong></td><td>Silná (chyba neovlivní jiné)</td><td>Slabá (pád jednoho → pád všech)</td></tr>
+  <tr><td><strong>Sdílení dat</strong></td><td>Přes IPC mechanismy</td><td>Přímý přístup ke sdílené paměti</td></tr>
+  <tr><td><strong>Souběh</strong></td><td>Méně problematický</td><td>Nutná synchronizace</td></tr>
+</table>
+</section>
+
+<!-- 05 PAMĚŤ -->
+<section class="section" id="pamet">
+<div class="section-header"><span class="section-num">05</span><h2>Obsazení paměti a adresní prostor</h2></div>
+
+<h3>Obsazení operační paměti RAM</h3>
+<div class="card highlight">
+  <ul>
+    <li><strong>Jádro</strong> – obvykle je v paměti celé a neustále</li>
+    <li><strong>Procesy</strong> – kód programu (jen právě používané části), data (statická, dynamická; nepoužívaná lze odložit na disk – stránkování), zásobník (návratové adresy, lokální proměnné)</li>
+    <li><strong>Buffery, cache</strong> → co nejvíce (kvůli výkonu), ale ne příliš (na úkor procesů)</li>
+    <li><strong>Neobsazená paměť</strong> → co nejméně (stačí cca 1 %) – pro řešení nárazových požadavků</li>
+  </ul>
+</div>
+
+<h3>Adresní prostor procesu (Linux 32bit, model 3+1 GB)</h3>
+<div class="mem-stack">
+  <div class="mem-layer ml-kernel">KERNEL (jádro systému) – 1 GB<small>syscall nevyžaduje remapování</small></div>
+  <div class="mem-layer ml-stack">STACK (zásobník)<small>návratové adresy, lokální proměnné – roste dolů</small></div>
+  <div class="mem-layer ml-mmap">MMAP<small>knihovny, mapované soubory</small></div>
+  <div class="mem-layer ml-heap">HEAP (halda)<small>dynamicky alokovaná paměť – roste nahoru</small></div>
+  <div class="mem-layer ml-text">TEXT (jen pro čtení)<small>program, konstanty</small></div>
+  <div class="mem-layer ml-reserved">REZERVOVANÁ OBLAST<small>nepřístupná (ochrana proti NULL pointeru)</small></div>
+</div>
+
+<h3>Volná paměť a cache</h3>
+<div class="card purple">
+  <ul>
+    <li>Veškerá nepotřebná paměť by měla být využita jako <strong>cache</strong> – volné co nejméně!</li>
+    <li><strong>Cache pro disk:</strong> vše přečtené z disku ponecháno v RAM (spekulace na opětovné použití), zápis nejdřív do cache, na disk později</li>
+    <li><strong>Cache pro síťové služby</strong></li>
+    <li><strong>Cache pro grafickou kartu</strong> – fonty, skrytá okna (dnes VideoRAM víceméně oddělená)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 MULTITASKING -->
+<section class="section" id="multitasking">
+<div class="section-header"><span class="section-num">06</span><h2>Multitasking</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p>V počítači <strong>více spuštěných procesů zároveň</strong> – pohodlí uživatele, paralelní zpracování. DOS neuměl multitasking → jednodušší jádro OS.</p>
+  <ul>
+    <li>Více běžících procesů než CPU → <strong>pseudoparalelismus</strong></li>
+    <li>Procesy se o čas procesoru rozdělí + <strong>režie</strong></li>
+    <li>Střídání procesů na CPU → <strong>změna kontextu</strong> (zajišťuje jádro OS)</li>
+  </ul>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Dobrovolné střídání</h4>
+    <p><strong>Nepreemptivní multitasking</strong> – proces sám předá řízení.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Vynucené střídání</h4>
+    <p><strong>Preemptivní multitasking</strong> – jádro může proces kdykoliv přerušit.</p>
+  </div>
+</div>
+
+<h3>Využití multitaskingu</h3>
+<div class="card">
+  <ul>
+    <li><strong>Zdánlivý běh</strong> více procesů zároveň</li>
+    <li><strong>Multiprogramování</strong> – programátor předpokládá současný běh procesů (paralelní výpočty, komunikace, síťové servery)</li>
+    <li>Problémy: <strong>souběh</strong> při současném zápisu do společných dat, <strong>synchronizace</strong> procesů</li>
+  </ul>
+</div>
+
+<details><summary>Omezení multitaskingu na mobilech</summary>
+<div class="card">
+  <ul>
+    <li><strong>iOS, Windows Phone</strong> – různá omezení pro běh na pozadí (šetří baterii)</li>
+    <li><strong>BlackBerry</strong> – osm běžících aplikací na pozadí, uživatel volí</li>
+    <li><strong>Android</strong> – aplikace po odsunutí pozastaveny, triggery (odemknutí, Internet), thready na pozadí (sbírání informací → monetizace)</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 07 PCB -->
+<section class="section" id="pcb">
+<div class="section-header"><span class="section-num">07</span><h2>PCB – Process Control Block</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Datová struktura popisující proces</div>
+  <ul>
+    <li>Využívá se pro <strong>změnu kontextu</strong> i pro <strong>evidenci procesů</strong> v jádře</li>
+    <li>Uložena v <strong>RAM</strong> (v prostoru jádra OS)</li>
+    <li>Dříve pole (tabulka), dnes <strong>dynamický seznam</strong></li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Obsah PCB</div>
+  <ul>
+    <li><strong>PID</strong> – číslo procesu</li>
+    <li><strong>Vlastník procesu</strong> a oprávnění</li>
+    <li><strong>Priorita</strong></li>
+    <li><strong>Spotřebovaný čas</strong> procesoru</li>
+    <li><strong>Otevřené soubory</strong></li>
+    <li><strong>Proměnné prostředí</strong></li>
+    <li><strong>Popis adresního prostoru</strong> procesu (mapa paměti)</li>
+    <li>Přidělená paměť</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 ZMĚNA KONTEXTU -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">08</span><h2>Změna kontextu (context switch)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Co je „kontext"?</div>
+  <ul>
+    <li><strong>Veškeré běhové informace</strong> o procesu – PCB + stav procesoru</li>
+    <li>S kontextem manipuluje <strong>jádro OS (scheduler)</strong></li>
+    <li>Při střídání procesů na CPU: <strong>stovky až tisíce změn za sekundu</strong> → režie OS</li>
+  </ul>
+</div>
+
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">Časovač vyvolá přerušení<small>proces běžel příliš dlouho</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">Obsluha přerušení v jádře OS<small>aktivace plánovače procesů (scheduler)</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Uložení stavu přerušeného procesu do RAM<small>registry, příznaky, programový čítač…</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">Výběr dalšího procesu z fronty<small>scheduler rozhodne, kdo získá CPU</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-done">Obnovení kontextu vybraného procesu<small>načtení stavu z RAM → proces pokračuje</small></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Typické hodnoty</div>
+  <ul>
+    <li>Dnes <strong>1000 Hz</strong> (u CPU s &lt; 1 GHz jen 100 Hz)</li>
+    <li>Běžně <strong>100 až 1000</strong> změn za sekundu, nad 5000 extrém</li>
+    <li>Díky <strong>dynamickému schedulingu</strong> je to dnes méně</li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 VYVOLÁNÍ -->
+<section class="section" id="vyvolani">
+<div class="section-header"><span class="section-num">09</span><h2>Vyvolání změny kontextu</h2></div>
+
+<div class="card highlight">
+  <p>Ke změně kontextu dochází ve třech hlavních situacích:</p>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Plánování procesů</h4>
+    <p>Zajištění <strong>multitaskingu</strong> – říká se tomu <strong>process scheduling</strong>. Časovač periodicky přeruší běžící proces.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Obsluha přerušení</h4>
+    <p>Přerušení zpracování aktuálně běžícího procesu a provedení ISR. Při <strong>interrupt storm</strong> → režie prakticky zastaví počítač.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Volání služby OS</h4>
+    <p>Unixové: <strong>systémové volání jádra</strong> (syscall). U mikrojader: několik změn kontextu (servery).</p>
+  </div>
+</div>
+</section>
+
+<!-- 10 DYNAMICKÝ SCHEDULING -->
+<section class="section" id="dynamicky">
+<div class="section-header"><span class="section-num">10</span><h2>Dynamický scheduling</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Úspora energie</div>
+  <ul>
+    <li>Když není co na práci, <strong>procesor spí</strong> – nebudíme ho, tik časovače vynecháme</li>
+    <li>Problém s <strong>měřením času</strong> – jádro si interně samo eviduje plynutí, vynechané tiky přičte k čítači</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Vícejádrové systémy</div>
+  <ul>
+    <li>Přerušení budí „některý" procesor</li>
+    <li>Oba procesory se budí <strong>nepravidelně</strong></li>
+    <li>Problém s měřením času a plynulostí dějů</li>
+    <li>Problém: v celém jádru se s tím <strong>původně nepočítalo</strong></li>
+  </ul>
+</div>
+
+<details><summary>Užitečné příkazy v Linuxu</summary>
+<div class="card">
+  <ul>
+    <li><code>grep ctxt /proc/&lt;PID&gt;/status</code> – počet dobrovolných/nedobrovolných přepnutí kontextu</li>
+    <li><code>vmstat 1</code> – systémové statistiky (sloupce <strong>in</strong> = přerušení, <strong>cs</strong> = context switch)</li>
+    <li><code>cat /proc/self/maps</code> – mapa adresního prostoru procesu</li>
+    <li><code>powertop</code>, <code>pidstat -w</code>, <code>mpstat 1</code>, <code>taskset</code></li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 11 NEPREEMPTIVNÍ -->
+<section class="section" id="nepreempt">
+<div class="section-header"><span class="section-num">11</span><h2>Nepreemptivní multitasking</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Kooperativní multitasking</div>
+  <ul>
+    <li><strong>Zodpovědnost na procesech</strong> – kód přidává kompilátor automaticky</li>
+    <li>Proces periodicky volá <strong>speciální službu jádra</strong> OS – jádro má možnost změnit kontext (ale nemusí)</li>
+    <li>Když proces nechce, <strong>nemusí službu volat</strong></li>
+    <li>Může zakázat přerušení (časově kritické operace)</li>
+    <li>Systém <strong>přestane reagovat</strong> (není obsluha myši, jiné aplikace nepřekreslují GUI…)</li>
+    <li>Chyba v procesu způsobí <strong>„zamrznutí" OS</strong></li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Může být i výhodné</div>
+  <ul>
+    <li>Proces může využít <strong>100 % procesoru</strong></li>
+    <li>Proces může přímo <strong>obsluhovat hardware</strong> (jednodušší než psaní ovladače)</li>
+    <li><strong>16bitové OS pro x86</strong> – CPU víc neumožní (nemá privilegovaný režim)</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Nepreemptivní systémy</div>
+  <ul>
+    <li><strong>Windows 3.x, '95, '98, ME</strong> – tzv. kooperativní multitasking</li>
+    <li>Proces v popředí dostane více CPU → systém se zdá výkonnější</li>
+    <li>Sice Win32s, ale v jádře nevyužito (<strong>OS/2 plně využilo</strong>)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 PREEMPTIVNÍ -->
+<section class="section" id="preempt">
+<div class="section-header"><span class="section-num">12</span><h2>Preemptivní multitasking</h2></div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Všechny moderní OS</div>
+  <ul>
+    <li>Intel až od <strong>i386</strong> (32bitový režim)</li>
+    <li>Jádro OS <strong>neztrácí kontrolu</strong> nad počítačem – využívá privilegovaný režim</li>
+    <li>Proces <strong>nemůže oslabit pozici jádra</strong> OS</li>
+    <li>Proces může být <strong>kdykoliv přerušen</strong></li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nevýhody a omezení</div>
+  <ul>
+    <li>Způsobuje potíže → řeší <strong>OS reálného času (RTOS)</strong></li>
+    <li>Nelze psát časově kritické úseky kódu (v uživatelském prostoru)</li>
+    <li>Ovladače jen uvnitř jádra nebo za jeho specifické pomoci</li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Příklady preemptivních OS</div>
+  <p style="margin-bottom:0"><strong>Windows NT</strong>, <strong>Linux</strong>, <strong>iOS</strong>, <strong>BSD systémy</strong>, …</p>
+</div>
+
+<h3>Srovnání</h3>
+<table class="compare-table">
+  <tr><th>Vlastnost</th><th>Nepreemptivní</th><th>Preemptivní</th></tr>
+  <tr><td><strong>Střídání procesů</strong></td><td>Dobrovolné (kooperativní)</td><td>Vynucené jádrem</td></tr>
+  <tr><td><strong>Kontrola jádra</strong></td><td>Může ztratit kontrolu</td><td>Nikdy neztrácí kontrolu</td></tr>
+  <tr><td><strong>Zamrznutí OS</strong></td><td>Ano (chyba v procesu)</td><td>Ne (jádro přeruší proces)</td></tr>
+  <tr><td><strong>Privilegovaný režim</strong></td><td>Nevyžaduje (16bit)</td><td>Vyžaduje (32bit+)</td></tr>
+  <tr><td><strong>Příklady</strong></td><td>Win 3.x, 95, 98, ME</td><td>Win NT, Linux, iOS, BSD</td></tr>
+  <tr><td><strong>Složitost jádra</strong></td><td>Jednodušší</td><td>Složitější</td></tr>
+</table>
+</section>
+
+<!-- 13 ŽIVOTNÍ CYKLUS -->
+<section class="section" id="zivotni">
+<div class="section-header"><span class="section-num">13</span><h2>Životní cyklus procesu</h2></div>
+
+<div class="lifecycle">
+  <div class="lc-row">
+    <div class="lc-state lc-created">Vytvořený<small>proces založen</small></div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-state lc-ready">Připravený<small>čeká ve frontě</small></div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-state lc-running">Běžící<small>provádí se na CPU</small></div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-state lc-terminated">Ukončený<small>dokončen</small></div>
+  </div>
+  <div style="height:8px"></div>
+  <div class="lc-row">
+    <div class="lc-state lc-blocked">Blokovaný<small>čeká na I/O, signál…</small></div>
+  </div>
+  <div style="margin-top:10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8">
+    <strong style="color:var(--accent-3)">①</strong> Připravený → Běžící (přidělen CPU)<br>
+    <strong style="color:var(--accent-4)">②</strong> Běžící → Blokovaný (čekání na I/O, událost)<br>
+    <strong style="color:var(--accent-1)">③</strong> Blokovaný → Připravený (I/O dokončeno)<br>
+    <strong style="color:var(--accent-5)">④</strong> Běžící → Připravený (preempce – časové kvantum vypršelo)
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Přechody a plánování</div>
+  <ul>
+    <li><strong>Přesun 1–2:</strong> nepreemptivní plánování (pouze při blokování a ukončení)</li>
+    <li><strong>Přesun 1–3:</strong> preemptivní plánování (i běžící → připravený)</li>
+    <li><strong>Přesun 1–4:</strong> RTOS (i blokovaný → připravený může vynutit přeplánování)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 14 KRÁTKODOBÉ PLÁNOVÁNÍ -->
+<section class="section" id="kratkodobe">
+<div class="section-header"><span class="section-num">14</span><h2>Krátkodobé plánování (CPU scheduling)</h2></div>
+
+<div class="card highlight">
+  <p><strong>Kterému z připravených procesů bude přidělen procesor?</strong> Vybíráme z připravených procesů ve frontě. Plánovač (<strong>scheduler</strong>) řídí životní cyklus procesu.</p>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Otázka spravedlnosti</div>
+  <ul>
+    <li><strong>Běžné OS</strong> → interaktivita, výkon</li>
+    <li><strong>RTOS</strong> → determinismus, záruky (na běh, latenci)</li>
+  </ul>
+</div>
+
+<h3>Typy plánování</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Krátkodobé (short-term)</h4>
+    <p>Též <strong>„plánování procesoru"</strong>. Nejčastější – rozhoduje, kdo právě dostane CPU.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Střednědobé (mid-term)</h4>
+    <p>Virtuální paměť – odsunutí neaktivních procesů na disk.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Dlouhodobé (long-term)</h4>
+    <p>Výběr, která úloha bude vůbec spuštěna (dávkové zpracování, RTOS).</p>
+  </div>
+</div>
+
+<h3>Kdy nastává krátkodobé plánování?</h3>
+<div class="card">
+  <ul>
+    <li><strong>Běžící → Blokovaný</strong> (čeká na I/O)</li>
+    <li><strong>Běžící → Ukončený</strong></li>
+    <li><strong>Běžící → Připravený</strong> (preempce – vypršelo kvantum)</li>
+    <li><strong>Blokovaný → Připravený</strong> (I/O dokončeno – u RTOS může vynutit přeplánování)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 15 STRATEGIE -->
+<section class="section" id="strategie">
+<div class="section-header"><span class="section-num">15</span><h2>Strategie plánování</h2></div>
+
+<h3>Kritéria zohledňovaná při plánování</h3>
+<div class="card key">
+  <ul>
+    <li><strong>Spravedlnost</strong> → každý proces stejný čas CPU</li>
+    <li><strong>Efektivita</strong> → maximalizace využití počítače (CPU, disk…)</li>
+    <li><strong>Čas odezvy</strong> → minimalizace latence (doba reakce)</li>
+    <li><strong>Doba obrátky</strong> → zkrácení doby zpracování úlohy</li>
+    <li><strong>Průchodnost</strong> → maximalizace množství úloh za čas</li>
+  </ul>
+</div>
+
+<h3>Konkrétní strategie</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">FCFS – First Come, First Served</h4>
+    <p>Fronta <strong>FIFO</strong> – „kdo dřív přijde, ten dřív mele". Nelze zajistit předbíhání – důležité procesy <strong>nemohou získat CPU přednostně</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">SJF – Shortest Job First</h4>
+    <p>Upřednostnění <strong>krátkodobě běžících</strong> úloh. Když brzy skončí, není nutné je zdržovat. Upřednostňuje i úlohy, které méně zatěžují CPU (čekání na vstup uživatele).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Prioritní strategie</h4>
+    <p>Přednost procesy s <strong>vyšší prioritou</strong>. Způsobuje <strong>stárnutí procesů</strong> (starvation). Řešení: <strong>aging</strong> – zvýšení priority déle připravených procesů.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Proměnná délka kvanta</h4>
+    <p>Přidělení CPU na <strong>nestejně dlouhou dobu</strong>. Menší priorita → kratší úsek (a naopak). <strong>Snižuje počet</strong> změn kontextu → nižší režie.</p>
+  </div>
+</div>
+</section>
+
+<!-- 16 STŘEDNĚDOBÉ A DLOUHODOBÉ -->
+<section class="section" id="stredne">
+<div class="section-header"><span class="section-num">16</span><h2>Střednědobé a dlouhodobé plánování</h2></div>
+
+<h3>Střednědobé plánování</h3>
+<div class="card">
+  <ul>
+    <li>Využívají ho systémy s <strong>virtuální pamětí</strong> (RAM rozšířena o pevný disk)</li>
+    <li>Výběr z blokovaných nebo připravených procesů – vybraný je <strong>kompletně odsunut na disk</strong></li>
+    <li>Důvodem: neaktivita, nízká priorita, časté výpadky stránek</li>
+    <li>Současné systémy ho <strong>prakticky nevyužívají</strong> – na disk se odkládají <strong>jednotlivé stránky</strong> (stránkování)</li>
+  </ul>
+</div>
+
+<h3>Dlouhodobé plánování (job scheduling)</h3>
+<div class="card purple">
+  <ul>
+    <li>Výběr, <strong>která úloha bude spuštěna</strong></li>
+    <li>Význam u <strong>dávkového zpracování</strong> – snaha o maximalizaci využití počítače</li>
+    <li>Dnes nahrazeno spuštěním v předem daný čas: <code>cron</code>, <code>at</code> (Unix); <strong>Plánovač úloh</strong> (Windows)</li>
+    <li>U <strong>RTOS</strong> kvůli splnění záruk – rozeberou-li si procesory záruky na celý čas, nelze spustit další úlohu</li>
+    <li>Typické u <strong>mobilních telefonů</strong> (Symbian, Windows CE) nebo při řízení výrobních procesů</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 17 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">17</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">ALGORITMUS → PROGRAM → PROCES → THREAD</p>
+<ul>
+  <li><strong>Algoritmus:</strong> zápis postupu řešení úlohy. Vlastnosti: konečnost, obecnost, determinovanost, výstup</li>
+  <li><strong>Program:</strong> realizace algoritmu v programovacím jazyce. Převod: překladač (předem) × interpret (za běhu)</li>
+  <li><strong>Proces:</strong> spuštěný program se svými daty v paměti. Spravuje ho jádro, popsán v PCB. Procesy jsou navzájem odděleny</li>
+  <li><strong>Thread:</strong> odlehčený proces, sdílí paměťový prostor, nižší režie, ale chyba jednoho → pád všech. Nutná synchronizace (souběh)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">MULTITASKING A ZMĚNA KONTEXTU</p>
+<ul>
+  <li><strong>Multitasking:</strong> více procesů „zároveň" (pseudoparalelismus). Střídání na CPU = změna kontextu</li>
+  <li><strong>Kontext:</strong> PCB + stav procesoru. Uložení do RAM → obnovení z RAM. Stovky–tisíce za sekundu</li>
+  <li><strong>Vyvolání:</strong> plánování procesů (časovač), obsluha přerušení (ISR), systémové volání (syscall)</li>
+  <li><strong>Dynamický scheduling:</strong> vynechání tiků časovače když CPU spí → úspora energie, ale problémy s měřením času</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">NEPREEMPTIVNÍ × PREEMPTIVNÍ</p>
+<ul>
+  <li><strong>Nepreemptivní (kooperativní):</strong> proces dobrovolně předá řízení. Chyba → zamrznutí OS. Win 3.x/95/98/ME. 16bit CPU bez privilegovaného režimu</li>
+  <li><strong>Preemptivní:</strong> jádro může kdykoliv přerušit proces (od i386). Jádro neztrácí kontrolu. Win NT, Linux, iOS, BSD</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ŽIVOTNÍ CYKLUS A PLÁNOVÁNÍ</p>
+<ul>
+  <li><strong>Stavy:</strong> Vytvořený → Připravený → Běžící → Ukončený. Odbočka: Běžící → Blokovaný → Připravený</li>
+  <li><strong>Plánování:</strong> krátkodobé (CPU scheduling), střednědobé (virtuální paměť, dnes nepoužívané), dlouhodobé (job scheduling – dávky, RTOS, cron)</li>
+  <li><strong>Strategie:</strong> FCFS (FIFO, spravedlivé ale bez priorit), SJF (krátké úlohy přednostně), Prioritní (starvation → aging), Proměnné kvantum (nižší priorita = kratší čas)</li>
+  <li><strong>Kritéria:</strong> spravedlnost, efektivita, čas odezvy (latence), doba obrátky, průchodnost</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">PCB A PAMĚŤ</p>
+<ul>
+  <li><strong>PCB:</strong> PID, vlastník, priorita, spotřebovaný čas, otevřené soubory, proměnné prostředí, popis adresního prostoru</li>
+  <li><strong>Adresní prostor (Linux 32bit 3+1):</strong> kernel (1 GB) | stack (zásobník) | mmap (knihovny) | heap (dynamická alokace) | text (kód, konstanty) | rezervovaná oblast</li>
+  <li><strong>RAM:</strong> jádro + procesy + cache (co nejvíce!) + volná paměť (co nejméně, ~1 %)</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

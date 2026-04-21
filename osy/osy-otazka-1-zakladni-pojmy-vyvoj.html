@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 1: Základní pojmy a vývoj OS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Schéma počítače – ASCII-like diagram */
+.arch-diagram{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
+.arch-box{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:14px 10px;text-align:center;color:var(--heading);font-weight:600}
+.arch-box.cpu{border-color:var(--accent-1);color:var(--accent-1)}
+.arch-box.mem{border-color:var(--accent-4);color:var(--accent-4)}
+.arch-box.io{border-color:var(--accent-3);color:var(--accent-3)}
+.arch-box small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text-muted);font-size:11px;margin-top:4px}
+.arch-caption{text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic}
+/* Timeline (vývoj) */
+.timeline{position:relative;margin:20px 0;padding-left:20px;border-left:3px solid var(--border)}
+.tl-step{padding:10px 0 10px 16px;position:relative}
+.tl-step::before{content:'';position:absolute;left:-11px;top:14px;width:10px;height:10px;border-radius:50%;border:2px solid var(--border);background:var(--bg)}
+.tl-step.g0::before{border-color:var(--accent-6);background:rgba(251,146,60,.3)}
+.tl-step.g1::before{border-color:var(--accent-5);background:rgba(248,113,113,.3)}
+.tl-step.g2::before{border-color:var(--accent-4);background:rgba(251,191,36,.3)}
+.tl-step.g3::before{border-color:var(--accent-3);background:rgba(52,211,153,.3)}
+.tl-step.g4::before{border-color:var(--osy);background:rgba(167,139,250,.3)}
+.tl-step .tls-year{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px}
+.tl-step .tls-title{font-weight:600;color:var(--heading);font-size:14px}
+.tl-step .tls-desc{color:var(--text-muted);font-size:13px;margin-top:2px}
+/* Komponenty visual */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:14px 0}
+.comp-card{text-align:center;padding:14px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.comp-card .cc-icon{font-size:24px;display:block;margin-bottom:6px}
+.comp-card .cc-name{font-weight:700;font-size:12px;display:block}
+.comp-card .cc-desc{font-size:10px;font-family:'DM Sans',sans-serif;margin-top:4px;opacity:.8;line-height:1.5}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.arch-diagram{grid-template-columns:1fr}.comp-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 1</div>
+  <h1>Základní pojmy<br>a vývoj operačních systémů</h1>
+  <p>Hardware • Software • Firmware • Schéma počítače • Kompatibilita • Generace • Moorův zákon</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#pojmy">Počítač – základní pojmy</a></li>
+  <li><a href="#hw">Hardware</a></li>
+  <li><a href="#sw">Software</a></li>
+  <li><a href="#firmware">Firmware</a></li>
+  <li><a href="#os">Operační systém a jeho součásti</a></li>
+  <li><a href="#schema">Schéma počítače</a></li>
+  <li><a href="#kompatibilita">Zpětná a dopředná kompatibilita</a></li>
+  <li><a href="#vyvoj">Vývoj počítačů (generace)</a></li>
+  <li><a href="#vyvoj-os">Vývoj operačních systémů</a></li>
+  <li><a href="#moore">Moorův zákon</a></li>
+  <li><a href="#budoucnost">Budoucnost OS</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 POJMY -->
+<section class="section" id="pojmy">
+<div class="section-header"><span class="section-num">01</span><h2>Počítač – základní pojmy</h2></div>
+
+<p>Počítač je <strong>stroj na zpracování informací</strong>. Podle způsobu zpracování dat rozlišujeme tři historické typy.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Analogový</h4>
+    <p>Výpočty pomocí <strong>fyzikálních jevů</strong> (el. proud, výchylka ručičky). Zapojení se přizpůsobuje konkrétnímu výpočtu. Dnes se nepoužívá – diskutuje se návrat kvůli AI.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Číslicový</h4>
+    <p><strong>Aritmetické a logické operace</strong> nad diskrétními hodnotami. Omezená přesnost, ale lze ji zpřesnit delším výpočtem. Dnešní standard.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Hybridní</h4>
+    <p>Analogový počítač <strong>řízený číslicovým</strong>. Dnes se už nepoužívá.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Počítač = HW + SW</div>
+  <p style="margin-bottom:0">Každý dnešní počítač se skládá z <strong>hardware</strong> (co si lze sáhnout), <strong>software</strong> (programy a data) a <strong>firmware</strong> (programy „uvnitř" hardware).</p>
+</div>
+</section>
+
+<!-- 02 HARDWARE -->
+<section class="section" id="hw">
+<div class="section-header"><span class="section-num">02</span><h2>Hardware</h2></div>
+
+<p><strong>Technické vybavení počítače</strong> – fyzické komponenty, „všechno, na co si lze sáhnout".</p>
+
+<div class="comp-grid">
+  <div class="comp-card" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);color:var(--accent-1)">
+    <span class="cc-icon">🧠</span><span class="cc-name">CPU</span>
+    <span class="cc-desc">Procesor – „mozek" počítače</span>
+  </div>
+  <div class="comp-card" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:var(--accent-4)">
+    <span class="cc-icon">💾</span><span class="cc-name">RAM</span>
+    <span class="cc-desc">Operační paměť</span>
+  </div>
+  <div class="comp-card" style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:var(--accent-3)">
+    <span class="cc-icon">💿</span><span class="cc-name">HDD / SSD</span>
+    <span class="cc-desc">Trvalé úložiště</span>
+  </div>
+  <div class="comp-card" style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--osy)">
+    <span class="cc-icon">🔌</span><span class="cc-name">Základní deska</span>
+    <span class="cc-desc">Propojuje komponenty, chipset</span>
+  </div>
+  <div class="comp-card" style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);color:var(--accent-6)">
+    <span class="cc-icon">⚡</span><span class="cc-name">Zdroj</span>
+    <span class="cc-desc">Napájení komponent</span>
+  </div>
+  <div class="comp-card" style="background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);color:var(--accent-7)">
+    <span class="cc-icon">🖥️</span><span class="cc-name">I/O</span>
+    <span class="cc-desc">Monitor, klávesnice, myš, tiskárna</span>
+  </div>
+</div>
+
+<p style="font-size:13px;color:var(--text-muted)">Dále: skříň, optická mechanika, tablet (kresba tužkou), scanner, čtečka čárových kódů, kabeláž, zařízení počítačové sítě.</p>
+</section>
+
+<!-- 03 SOFTWARE -->
+<section class="section" id="sw">
+<div class="section-header"><span class="section-num">03</span><h2>Software</h2></div>
+
+<p>Programy obsažené v počítači. <strong>Do software se zahrnují i data</strong> – data mohou být i programem a naopak.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Systematické rozdělení</div>
+  <ul>
+    <li><strong>Systémový software</strong> – operační systém (jádro + utility + démoni) a firmware</li>
+    <li><strong>Aplikační software</strong> – vše, s čím pracuje uživatel (textový editor, prohlížeč, hra…)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 FIRMWARE -->
+<section class="section" id="firmware">
+<div class="section-header"><span class="section-num">04</span><h2>Firmware</h2></div>
+
+<p><strong>Základní programové vybavení obsažené přímo v hardware.</strong> Bez něj by HW „neuměl" ani základní operace.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">BIOS / UEFI</h4>
+    <p>Základní deska. Malá flash paměť, umožní zavést OS z disku.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Optická mechanika</h4>
+    <p>Vypalování je řízeno malým vestavěným počítačem.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Wi-Fi čip</h4>
+    <p>Řídící program nahrán po resetu ovladačem (čip má jen RAM kvůli ceně).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">HDD / SSD</h4>
+    <p>Samoopravné kódy, přemapování vadných sektorů, SMART, korekce podle teploty.</p>
+  </div>
+</div>
+</section>
+
+<!-- 05 OS -->
+<section class="section" id="os">
+<div class="section-header"><span class="section-num">05</span><h2>Operační systém a jeho součásti</h2></div>
+
+<p><strong>Základní (softwarová) výbava počítače.</strong> Bez OS nelze počítač snadno používat. Různé OS mají různé zaměření.</p>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Zaměření operačních systémů</div>
+  <ul>
+    <li><strong>Jednoduchý systém:</strong> starší mobily „bez systému" (jen Java aplikace)</li>
+    <li><strong>Klasický desktop:</strong> Microsoft Windows, Ubuntu Linux, macOS</li>
+    <li><strong>Dotykové ovládání:</strong> iOS, Android (dříve i Windows Phone)</li>
+    <li><strong>Bezpečný systém:</strong> různé stupně utajení – armáda, vesmírný průmysl</li>
+    <li><strong>Nepřetržitý provoz:</strong> není dovolen výpadek (reboot) – bankovnictví, kritická infrastruktura</li>
+  </ul>
+</div>
+
+<h3>Součásti operačního systému</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-1)">1</div>
+    <div class="step-content">
+      <div class="step-label">Jádro (kernel)</div>
+      <div class="step-desc">Zavádí se do paměti při startu počítače a zůstává v činnosti po celou dobu provozu. Má plnou kontrolu nad HW.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-3)">2</div>
+    <div class="step-content">
+      <div class="step-label">Utility (pomocné nástroje)</div>
+      <div class="step-desc">Např. nástroje na přidělování práv, formátování disku, správu uživatelů.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-4)">3</div>
+    <div class="step-content">
+      <div class="step-label">Démoni (ve Windows „služby")</div>
+      <div class="step-desc">Trvale běžící programy na pozadí bez kontaktu s uživatelem – webový server, DHCP klient, wpa_supplicant, emailový server…</div>
+    </div>
+  </div>
+</div>
+
+<details><summary>Modely prodeje OS</summary>
+<table class="compare-table">
+  <tr><th>Systém</th><th>Model</th></tr>
+  <tr><td><strong>Windows</strong></td><td>Licence (omezení přenositelnosti). Krabicové verze se už neprodávají → předplatné, OEM</td></tr>
+  <tr><td><strong>Red Hat Enterprise Linux</strong></td><td>Klony (AlmaLinux, Rocky) zdarma. Platí se za služby – aktualizace, tech. podpora, SLA</td></tr>
+  <tr><td><strong>Android, iOS</strong></td><td>„Zdarma" – trvalá součást hardware, uživatel systém typicky nemění</td></tr>
+</table>
+</details>
+</section>
+
+<!-- 06 SCHÉMA -->
+<section class="section" id="schema">
+<div class="section-header"><span class="section-num">06</span><h2>Schéma počítače</h2></div>
+
+<p>Po 2. světové válce vznikly <strong>dva teoretické návrhy</strong> stavby počítače. Dnes není vyhraněné a obě myšlenky se kombinují.</p>
+
+<h3>Von Neumannovo schéma</h3>
+<p>Společná paměť pro <strong>program i data</strong>. V zásadě IBM PC.</p>
+<div class="arch-diagram">
+  <div class="arch-box cpu">CPU<small>procesor</small></div>
+  <div class="arch-box mem">PAMĚŤ<small>data + program</small></div>
+  <div class="arch-box io">I/O<small>vstup + výstup</small></div>
+</div>
+<p class="arch-caption">Všechna komunikace přes společnou paměť.</p>
+
+<h3>Harvardské schéma</h3>
+<p><strong>Oddělená paměť</strong> pro program a pro data. Typicky jednočipy (mobilní telefony, Wi-Fi routery).</p>
+<div class="arch-diagram" style="grid-template-columns:1fr 1fr 1fr 1fr">
+  <div class="arch-box cpu">CPU</div>
+  <div class="arch-box mem">PAMĚŤ<small>program</small></div>
+  <div class="arch-box mem" style="border-color:var(--accent-7);color:var(--accent-7)">PAMĚŤ<small>data</small></div>
+  <div class="arch-box io">I/O</div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Dnešní realita – kombinace obou</div>
+  <ul>
+    <li><strong>Ochrana paměti</strong> – čtení, zápis, spuštění (NX bit – paměť jen pro neměnný program)</li>
+    <li><strong>Logické členění adresního prostoru:</strong> kód s konstantami, proměnné, halda, zásobník, knihovny, jádro</li>
+    <li><strong>DMA / Bus Master:</strong> přenosy mezi pamětí a I/O bez účasti CPU (mezi úložištěm, pamětí, grafikou, sítí)</li>
+    <li>Nelze říci, že by některé ze schémat převládalo</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 KOMPATIBILITA -->
+<section class="section" id="kompatibilita">
+<div class="section-header"><span class="section-num">07</span><h2>Zpětná a dopředná kompatibilita</h2></div>
+
+<p>Počítačová platforma definuje, na čem který produkt „poběží" – <strong>hardwarová</strong> (CPU, stavba počítače, I/O, sběrnice) a <strong>softwarová</strong> (OS, knihovny, běhové prostředí – Win32 × Linux, C# × Java).</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Zpětná kompatibilita</h4>
+    <p><strong>Nové zařízení zvládne starší okolí.</strong> USB 3.0 obslouží USB 1.1 a 2.0. V nových Windows běží starší software. Na 64bitovém CPU lze spustit 32bitové aplikace. Do EISA sběrnice lze vložit ISA karty.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Dopředná kompatibilita</h4>
+    <p><strong>Starší produkt pracuje s novějším okolím.</strong> Prohlížeč zobrazí stránku v nové HTML normě (ignoruje neznámé značky). Starší Word konvertuje dokument z nové verze. Adobe Reader oznámí, že PDF je z novější verze – nové funkce nebudou, ale základ ano.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Pamatovací pomůcka</div>
+  <p style="margin-bottom:0"><strong>Zpětná</strong> = „dívám se zpět" → <strong>nový</strong> podporuje <strong>starý</strong>. &nbsp;&nbsp; <strong>Dopředná</strong> = „dívám se dopředu" → <strong>starý</strong> si umí poradit s <strong>novým</strong>.</p>
+</div>
+</section>
+
+<!-- 08 VÝVOJ -->
+<section class="section" id="vyvoj">
+<div class="section-header"><span class="section-num">08</span><h2>Vývoj počítačů (generace)</h2></div>
+
+<h3>Předchůdci počítačů</h3>
+<div class="card">
+  <ul>
+    <li><strong>Abakus</strong> (před 5000 lety) – počítadlo, řecky kamínek = „kalkuli" → kalkulačka</li>
+    <li><strong>Antikythera</strong> (150 př. n. l.) – mechanický astronomický „počítač" s nelineárními převody</li>
+    <li><strong>Schickard</strong> (1623), <strong>Pascaline</strong> (1642), <strong>Leibniz</strong> (1671) – mechanické kalkulátory</li>
+    <li><strong>John Napier</strong> (1614) – logaritmy → logaritmické pravítko (používalo se i pro program Apollo)</li>
+    <li><strong>Jacquard</strong> (1801) – děrné štítky pro tkalcovský stav (tkaní, žakár)</li>
+    <li><strong>Herman Hollerith</strong> (1890) – děrné štítky pro sčítání lidu v USA → vznik <strong>IBM</strong></li>
+    <li><strong>Charles Babbage</strong> (1833) – Analytický stroj: první <strong>Turing-kompletní</strong> návrh (sklad = paměť, mlýnice = procesor). Nedokončen</li>
+    <li><strong>Ada Lovelace</strong> (1815–1852) – <strong>první programátor na světě</strong>, teoretický základ programování. Podle ní pojmenován jazyk Ada</li>
+  </ul>
+</div>
+
+<h3>Generace elektronických počítačů</h3>
+<div class="timeline">
+  <div class="tl-step g0">
+    <div class="tls-year">1930 – 1945</div>
+    <div class="tls-title">0. generace – elektromechanické (relé)</div>
+    <div class="tls-desc"><strong>Z1, Z3</strong> (Konrád Zuse, 1934/1941) – děrná páska z kinofilmu. <strong>Colossus</strong> (1943) – lámání Enigmy. <strong>ABC</strong> (1944) – lineární rovnice. <strong>Mark I</strong> (1944) – 765 tisíc elektromechanických prvků. V ČR <strong>SAPO</strong> (1957) – shořel 1960.</div>
+  </div>
+  <div class="tl-step g1">
+    <div class="tls-year">1945 – 1951</div>
+    <div class="tls-title">1. generace – elektronkové</div>
+    <div class="tls-desc">Programy přímo ve strojovém kódu, propojovací desky a děrné štítky. <strong>ENIAC</strong> (1944) – 5000 součtů/s, energeticky náročný a poruchový. <strong>MANIAC</strong> (1945) – J. von Neumann, Los Alamos, vývoj jaderné pumy.</div>
+  </div>
+  <div class="tl-step g2">
+    <div class="tls-year">1951 – 1965</div>
+    <div class="tls-title">2. generace – tranzistorové</div>
+    <div class="tls-desc">Obchod s počítači → <strong>vznik dávkových systémů</strong> (počátek OS). Jazyky JSA, Fortran, Cobol, Algol. <strong>UNIVAC</strong> (1951) – pátý kus předpověděl výsledek voleb. V ČR <strong>EPOS</strong> (1960) – 30 000 op./s.</div>
+  </div>
+  <div class="tl-step g3">
+    <div class="tls-year">1965 – 1980</div>
+    <div class="tls-title">3. generace – integrované obvody</div>
+    <div class="tls-desc">Střediskové (sálové) počítače, mini- a mikropočítače. <strong>Multiprogramování</strong> → <strong>multitasking</strong> → <strong>první skutečné OS</strong>. <strong>IBM System/360</strong> (1965) – různě výkonné modely se stejným instrukčním souborem. <strong>Cray</strong> (1967) – superpočítač. V ČR EC (JSEP) – 400 kusů kopií IBM.</div>
+  </div>
+  <div class="tl-step g4">
+    <div class="tls-year">1980 – současnost</div>
+    <div class="tls-title">4. generace – mikroprocesory</div>
+    <div class="tls-desc">Pokles výrobní ceny, <strong>fenomén osobních počítačů</strong>. IBM PC → DOS, Windows. Pracovní stanice → Unix. Apple → Mac OS. Počítačové sítě → Internet, <strong>clustery z průměrných počítačů</strong> nahradily superpočítače. Multiprocesorové OS.</div>
+  </div>
+</div>
+</section>
+
+<!-- 09 VÝVOJ OS -->
+<section class="section" id="vyvoj-os">
+<div class="section-header"><span class="section-num">09</span><h2>Vývoj operačních systémů</h2></div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num" style="color:var(--text-muted)">①</div>
+    <div class="step-content">
+      <div class="step-label">Počítače bez operačního systému</div>
+      <div class="step-desc">První málo výkonné počítače. Programy se zadávaly přímo, každý program si řídil HW sám.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-4)">②</div>
+    <div class="step-content">
+      <div class="step-label">Dávkové systémy (1955, 2. generace)</div>
+      <div class="step-desc">Snaha o efektivní využití počítače. Dávka = připravené úlohy včetně vstupních dat, výsledky se ukládají na pásku.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-3)">③</div>
+    <div class="step-content">
+      <div class="step-label">Skutečné OS (1966, 3. generace)</div>
+      <div class="step-desc">Víceúlohové a víceuživatelské. OS neztrácí kontrolu. Přidělování prostředků, správa paměti, oddělení procesů a uživatelů, ovladače, API.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 10 MOORŮV ZÁKON -->
+<section class="section" id="moore">
+<div class="section-header"><span class="section-num">10</span><h2>Moorův zákon</h2></div>
+
+<p><strong>Gordon Moore</strong> (1965), chemik a spoluzakladatel firmy Intel. Empirické pozorování o exponenciálním růstu technologie.</p>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Původní znění</div>
+  <p style="margin-bottom:0">„Počet tranzistorů, které mohou být umístěny na integrovaný obvod, se při zachování stejné ceny zhruba každých <strong>18 měsíců zdvojnásobí</strong>."</p>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Dnešní stav</div>
+  <ul>
+    <li>U počtu tranzistorů došlo ke <strong>zpomalení růstu na ~24 měsíců</strong></li>
+    <li>Když sledujeme <strong>výkon</strong> nebo <strong>energetickou efektivitu</strong>, zákon stále platí s tempem zdvojnásobení každých 18 měsíců</li>
+    <li>Růst omezen <strong>fyzikou</strong> (velikost tranzistoru se blíží atomárním rozměrům) a <strong>penězi</strong> (cena sériové výroby)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 BUDOUCNOST -->
+<section class="section" id="budoucnost">
+<div class="section-header"><span class="section-num">11</span><h2>Budoucnost operačních systémů</h2></div>
+
+<p>Budoucnost je <strong>nejistá</strong>. Zatím zůstávají komerčně zajímavé (Windows), ale existují různé scénáře.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Hlavní budou aplikace?</h4>
+    <p>Aplikace pro mobilní telefony jsou zdarma. Fungují <strong>in-app platby</strong> (mikroplatby). Android a iOS jsou „zdarma".</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Přesun do cloudu</h4>
+    <p>Webové aplikace – <strong>Google Apps, Microsoft 365</strong>, webmaily. OS přestává být důležitý – stačí prohlížeč.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Předplatné</h4>
+    <p>Dnes zpoplatněné speciální aplikace a služby. Např. „rodinné předplatné" pro Microsoft 365.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 12 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">12</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">HW – SW – FIRMWARE</p>
+<ul>
+  <li><strong>Hardware:</strong> fyzické komponenty (CPU, RAM, disk, zákl. deska, zdroj, I/O)</li>
+  <li><strong>Software:</strong> systémový (OS + firmware) + aplikační (vše, s čím pracuje uživatel)</li>
+  <li><strong>Firmware:</strong> základní programové vybavení uvnitř HW (BIOS/UEFI, řídící program Wi-Fi čipu, SSD)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">SOUČÁSTI OS</p>
+<ul>
+  <li><strong>Jádro (kernel)</strong> – při startu se zavede do paměti, běží celou dobu</li>
+  <li><strong>Utility</strong> – pomocné nástroje (formátování, správa práv)</li>
+  <li><strong>Démoni / služby</strong> – trvale běžící programy na pozadí (webserver, DHCP klient)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">SCHÉMA POČÍTAČE</p>
+<ul>
+  <li><strong>Von Neumann:</strong> společná paměť pro program i data (IBM PC)</li>
+  <li><strong>Harvard:</strong> oddělená paměť pro program a data (jednočipy, routery)</li>
+  <li><strong>Dnes:</strong> kombinace + ochrana paměti (NX bit) + DMA + logické členění adres. prostoru</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">KOMPATIBILITA</p>
+<ul>
+  <li><strong>Zpětná:</strong> nový produkt zvládne staré okolí (USB 3.0 ↔ USB 2.0, 64bit CPU ↔ 32bit apl.)</li>
+  <li><strong>Dopředná:</strong> starý produkt pracuje s novým okolím (starší Word otevře novější dokument)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">GENERACE + MOORE</p>
+<ul>
+  <li><strong>0.</strong> relé (Z3, Mark I) → <strong>1.</strong> elektronky (ENIAC) → <strong>2.</strong> tranzistory (UNIVAC, dávkové OS) → <strong>3.</strong> integr. obvody (IBM 360, skutečné OS) → <strong>4.</strong> mikroprocesory (PC, sítě)</li>
+  <li><strong>Moorův zákon:</strong> počet tranzistorů se zdvojnásobí ~každých 18 měs. (dnes 24 měs.); výkon/efektivita stále ~18 měs.</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

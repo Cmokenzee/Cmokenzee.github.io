@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 2: Stavba OS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Kernel comparison visual */
+.kernel-viz{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:18px 0}
+.kernel-box{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden}
+.kernel-box .kb-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.kernel-layer{padding:8px 10px;margin:3px 0;border-radius:4px;font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center}
+.kl-user{background:rgba(107,114,128,.15);color:var(--text-muted);border:1px dashed var(--border)}
+.kl-kernel{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.kl-core{background:rgba(96,165,250,.2);color:var(--accent-1);border:1px solid rgba(96,165,250,.4);font-weight:700}
+/* Capability grid */
+.cap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:16px 0}
+.cap-cell{padding:12px;border:1px solid var(--border);border-radius:8px;text-align:center;font-size:12px;background:var(--bg-card-alt)}
+.cap-cell .cc-h{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:6px}
+.cap-cell .cc-v{color:var(--heading);font-weight:600;font-size:13px}
+/* Cluster topology */
+.topo{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;margin:16px 0;padding:16px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px}
+.topo-node{padding:10px 14px;border:1px solid var(--osy);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--osy);background:rgba(167,139,250,.08)}
+.topo-arrow{color:var(--text-muted);font-size:18px}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.cap-grid{grid-template-columns:1fr}.kernel-viz{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 2</div>
+  <h1>Stavba operačního systému</h1>
+  <p>Typy jader • RTOS • Víceúlohovost • Víceuživatelskost • Multiprocesory • Clustery</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#funkce">Funkce OS</a></li>
+  <li><a href="#soucasti">Součásti OS</a></li>
+  <li><a href="#typy-jader">Přehled typů jader</a></li>
+  <li><a href="#monolit">Monolitické jádro</a></li>
+  <li><a href="#modular">Modulární jádro</a></li>
+  <li><a href="#mikro">Mikrojádro</a></li>
+  <li><a href="#hybrid">Hybridní jádro</a></li>
+  <li><a href="#rtos">RTOS – systém reálného času</a></li>
+  <li><a href="#ulohy">Jednoúlohové × víceúlohové</a></li>
+  <li><a href="#uzivatele">Jednouživ. × víceuživ.</a></li>
+  <li><a href="#mp">Multiprocesory (SMP, ASMP, NUMA)</a></li>
+  <li><a href="#cluster">Multipočítače (clustery)</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 FUNKCE -->
+<section class="section" id="funkce">
+<div class="section-header"><span class="section-num">01</span><h2>Funkce operačního systému</h2></div>
+
+<p>OS plní tři základní funkce – <strong>ovládá počítač</strong>, <strong>abstrahuje hardware</strong> a <strong>spravuje prostředky</strong>.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Ovládání počítače</h4>
+    <p>Umožňuje uživateli spouštět a ukončovat programy, zajišťuje předání vstupů a získání výstupů programu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Abstrakce hardware</h4>
+    <p>Programátor používá <strong>API</strong> (volání funkcí čti, zapiš…). Nestará se o detaily ovládání HW – to řeší <strong>ovladače</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Správa prostředků</h4>
+    <p>Přiděluje a odebírá procesům systémové prostředky. Je <strong>nejvyšším arbitrem</strong> – neztrácí kontrolu nad počítačem. Spravuje grafickou kartu, USB, paměť, procesor.</p>
+  </div>
+</div>
+</section>
+
+<!-- 02 SOUČÁSTI -->
+<section class="section" id="soucasti">
+<div class="section-header"><span class="section-num">02</span><h2>Součásti operačního systému</h2></div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-1)">1</div>
+    <div class="step-content">
+      <div class="step-label">Jádro (kernel)</div>
+      <div class="step-desc">Zavádí se do paměti při startu počítače, zůstává v činnosti po celou dobu provozu. Obstarává všechny hlavní činnosti OS. Existují <strong>3 typy jader</strong> + specifický případ RTOS.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-3)">2</div>
+    <div class="step-content">
+      <div class="step-label">Utility (pomocné nástroje)</div>
+      <div class="step-desc">Nástroje na přidělování práv, formátování disku, správu uživatelů apod.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-4)">3</div>
+    <div class="step-content">
+      <div class="step-label">Démoni (ve Windows „služby")</div>
+      <div class="step-desc">Trvale běžící programy na pozadí bez kontaktu s uživatelem – webserver, DHCP klient, poštovní server.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 03 TYPY JADER -->
+<section class="section" id="typy-jader">
+<div class="section-header"><span class="section-num">03</span><h2>Přehled typů jader</h2></div>
+
+<div class="kernel-viz">
+  <div class="kernel-box">
+    <div class="kb-title" style="color:var(--accent-5)">Monolitické</div>
+    <div class="kernel-layer kl-user">uživatel. procesy</div>
+    <div class="kernel-layer kl-core">VELKÉ JÁDRO<br>(ovladače, FS, síť, MM)</div>
+  </div>
+  <div class="kernel-box">
+    <div class="kb-title" style="color:var(--accent-4)">Modulární</div>
+    <div class="kernel-layer kl-user">uživatel. procesy</div>
+    <div class="kernel-layer kl-core">jádro</div>
+    <div class="kernel-layer kl-kernel">moduly (ovladače)</div>
+  </div>
+  <div class="kernel-box">
+    <div class="kb-title" style="color:var(--accent-3)">Mikrojádro</div>
+    <div class="kernel-layer kl-user">uživatel. procesy</div>
+    <div class="kernel-layer kl-kernel">servery (FS, síť, ovladače)</div>
+    <div class="kernel-layer kl-core">MIKROJÁDRO<br>(IPC, MM, scheduler)</div>
+  </div>
+  <div class="kernel-box">
+    <div class="kb-title" style="color:var(--accent-1)">Hybridní</div>
+    <div class="kernel-layer kl-user">uživatel. procesy</div>
+    <div class="kernel-layer kl-kernel">některé servery</div>
+    <div class="kernel-layer kl-core">JÁDRO<br>(+ grafika, cache)</div>
+  </div>
+</div>
+
+<p style="font-size:13px;color:var(--text-muted);margin-top:-4px;text-align:center">Od „všechno uvnitř" (monolit) k „jen to nejnutnější uvnitř" (mikrojádro). Hybridní a modulární jsou kompromisy.</p>
+</section>
+
+<!-- 04 MONOLIT -->
+<section class="section" id="monolit">
+<div class="section-header"><span class="section-num">04</span><h2>Monolitické jádro</h2></div>
+
+<p>Jádro je <strong>jeden celek</strong> v souvislém úseku paměti (kernel-space). Vše běží na stejné (absolutní) úrovni oprávnění. Původní model do konce 80. let (např. Unix).</p>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Výhody</div>
+  <ul>
+    <li>Do stejné paměti zasahují různé subsystémy → <strong>efektivní programátorské triky</strong></li>
+    <li>Pozitivní vliv na výkon (<strong>nízká režie jádra</strong>)</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nevýhody</div>
+  <ul>
+    <li>Chyba (např. v ovladači) <strong>ohrožuje celé jádro</strong></li>
+    <li>Vývoj náročný – je nutná znalost funkce celého jádra</li>
+  </ul>
+</div>
+
+<p><strong>Dnes:</strong> Linux, FreeBSD a další.</p>
+
+<h3>Modulární jádro (varianta monolitu)</h3>
+<div class="card purple">
+  <ul>
+    <li>Základ je monolit, <strong>ovladače jsou v modulech</strong> (síťová karta, grafika, síťový subsystém)</li>
+    <li>Modul je součástí jádra → <strong>absolutní oprávnění</strong></li>
+    <li>Moduly lze <strong>zavádět i odstraňovat za běhu</strong> (např. Linux)</li>
+    <li>Není nutné při změně HW vytvářet nové jádro → využívají distribuce Linuxu</li>
+    <li>Automatické zavedení při připojení USB flash apod.</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 MODULAR – již v monolitu -->
+
+<!-- 06 MIKRO -->
+<section class="section" id="mikro">
+<div class="section-header"><span class="section-num">06</span><h2>Mikrojádro</h2></div>
+
+<p>Jádro <strong>minimalizováno</strong> – jen nejnutnější části. Důsledek strukturovaného programování. Činnost jádra rozdělena do logických celků.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Co zůstává v jádře</div>
+  <ul>
+    <li><strong>Přepínání kontextu</strong> (viz víceúlohový systém)</li>
+    <li><strong>Správa paměti</strong></li>
+  </ul>
+  <p style="margin:10px 0 0">Co nejvíce částí je vyvedeno mimo jádro → do běžných procesů (tzv. <strong>„servery"</strong>). Jádro se pak snáze programuje.</p>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Výhody</div>
+  <ul>
+    <li>Přehledný kód – <strong>„vlastní píseček"</strong> každé komponenty (FS subsystém, síťový subsystém…)</li>
+    <li>Vzájemná komunikace přes API (zasílání zpráv)</li>
+    <li>Proces (server) lze po pádu <strong>restartovat</strong> – chyba v serveru neohrožuje stabilitu</li>
+    <li>Minimálně se ztratí jen stav (např. vytvořená síťová spojení)</li>
+    <li>Jen mikrojádra mohou být <strong>super-bezpečná, RTOS</strong> – lze provést audit kódu a dát záruky</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Nevýhody</div>
+  <ul>
+    <li><strong>Výkonnostní problémy</strong> – vyvolání služby jádra může znamenat řetězové přepínání kontextu</li>
+    <li>Řeší se pečlivým návrhem a minimalizací kopírování dat</li>
+    <li>Samostatné procesy nemohou manipulovat se společnými daty (např. cache)</li>
+  </ul>
+</div>
+
+<details><summary>Zástupci mikrojádra</summary>
+<ul>
+  <li><strong>GNU Hurd</strong> + mikrojádro GNU Mach – stále není finální</li>
+  <li><strong>Symbian</strong> – funkční, navíc RTOS</li>
+  <li><strong>Minix</strong> (Andrew Tanenbaum)</li>
+</ul>
+<p style="font-size:13px;color:var(--text-muted)">Ještě menší varianty: <strong>exokernel, nanokernel, picokernel</strong>.</p>
+</details>
+</section>
+
+<!-- 07 HYBRID -->
+<section class="section" id="hybrid">
+<div class="section-header"><span class="section-num">07</span><h2>Hybridní jádro</h2></div>
+
+<p>Kombinuje výhody monolitu a mikrojádra. <strong>Základní jádro je větší</strong> – obsahuje i části citlivé na výkonnost (grafický subsystém, správa cache). Kompromis mezi monolitem a mikrojádrem – blíží se z druhé strany modulárnímu monolitu.</p>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Zástupci</div>
+  <ul>
+    <li><strong>Microsoft Windows NT</strong> – NT 3.1, 3.5, 3.51, 2000, XP, 2003, Vista, 2008, 7, …</li>
+    <li><strong>Microsoft Windows CE</strong> – Windows Mobile, Pocket PC, Windows Phone, …</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 RTOS -->
+<section class="section" id="rtos">
+<div class="section-header"><span class="section-num">08</span><h2>RTOS – systém reálného času</h2></div>
+
+<p><strong>Real Time Operating System</strong> – operační systém reálného času. Jsou definována <strong>časová ultimáta</strong> – úloha má garantovaný běh v jednotce času.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Co RTOS garantuje</div>
+  <ul>
+    <li>Programátor ví, že za daný čas <strong>dostane alespoň garantovaný strojový čas procesoru</strong></li>
+    <li>Může si rozmyslet, co je nezbytně nutné spočítat a co může počkat</li>
+    <li>RTOS <strong>nedovolí spustit další proces</strong>, nemůže-li ultimáta splnit</li>
+    <li><strong>Krátká doba reakce</strong> na událost (latence – od vzniku události po obsloužení)</li>
+    <li>Garance max. doby pro <strong>programy i ovladače</strong>, rychlé přepínání úloh</li>
+  </ul>
+</div>
+
+<h3>Typy RTOS</h3>
+<table class="compare-table">
+  <tr><th>Typ</th><th>Ultimáta</th><th>Implementace</th></tr>
+  <tr><td><strong>Hard RTOS</strong></td><td>Nutné splnit <strong>vždy</strong></td><td>Systém musí být od začátku navržen jako RTOS – v podstatě možné jen pro mikrojádra</td></tr>
+  <tr><td><strong>Soft RTOS</strong></td><td>Plněna <strong>přibližně</strong></td><td>Doplňky pro jádro Windows NT, RTLinux, RT záplaty v klasickém jádře Linuxu</td></tr>
+</table>
+
+<h3>Využití</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Průmysl</h4>
+    <p>Řízení výrobních procesů, motorů, zpracování dat z čidel, <strong>databáze na burze</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Mobilní telefony</h4>
+    <p>Nepřipraví-li data, nastává <strong>výpadek přenosu</strong> nebo snížení kvality hlasu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">RT / RT-like</h4>
+    <p>Symbian, Windows CE, RTLinux, doplňky pro Windows NT.</p>
+  </div>
+</div>
+</section>
+
+<!-- 09 ÚLOHY -->
+<section class="section" id="ulohy">
+<div class="section-header"><span class="section-num">09</span><h2>Jednoúlohové × víceúlohové</h2></div>
+
+<h3>Matice schopností</h3>
+<table class="compare-table">
+  <tr><th></th><th>Jednouživatelský</th><th>Víceuživatelský</th></tr>
+  <tr><td><strong>Jednoúlohový</strong></td><td>CP/M, DOS</td><td>—</td></tr>
+  <tr><td><strong>Víceúlohový</strong></td><td>Mac OS 9, Windows NT (desktop)</td><td>Windows NT (Terminal Services), Unix/Linux, Mac OS X</td></tr>
+</table>
+
+<h3>Jednoúlohový systém</h3>
+<div class="card warn">
+  <ul>
+    <li>V paměti je <strong>jen jádro OS a jedna běžící úloha</strong></li>
+    <li>Starší počítače – pomalé CPU, jednoduchý OS</li>
+    <li>V PC byl CPU <strong>bez podpory ochrany paměti</strong> (i8086) → úloha může ohrozit OS (reboot)</li>
+    <li><strong>CP/M</strong> (Gary Kildall, 1973) – 8bitový, procesory 8080/Z80 (Commodore 128…), přímý předchůdce DOSu</li>
+    <li><strong>DOS</strong> (Tim Patterson, 1980, původně QDOS) – 16bitový, procesory 8086/8088 (IBM PC). Žádný OS se nejmenoval DOS – je to celá rodina. Jádro nebylo reentrantní → max. 1 program</li>
+  </ul>
+</div>
+
+<h3>Víceúlohový systém</h3>
+<div class="card green">
+  <ul>
+    <li><strong>Původní motivace:</strong> lepší využití počítače – když procesor čeká na dokončení I/O, může vykonávat jinou úlohu</li>
+    <li>Úlohu by šlo „odložit" na disk/pásku, ale je to pomalé → střídající se úlohy musí být v <strong>RAM</strong></li>
+    <li>Je potřeba od sebe oddělit jádro i všechny úlohy → <strong>ochrana paměti</strong> (vyžaduje HW podporu v CPU)</li>
+    <li>CPU musí umět <strong>privilegovaný režim</strong></li>
+    <li>Zavádí se <strong>multitasking</strong></li>
+  </ul>
+</div>
+
+<h3>Vývoj víceúlohových systémů</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-6)">1966</div>
+    <div class="step-content">
+      <div class="step-label">IBM OS/360 + MFT</div>
+      <div class="step-desc">Multitasking With Fixed Number of Tasks – ještě jen konfigurace kontrolního programu.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-4)">1967</div>
+    <div class="step-content">
+      <div class="step-label">IBM OS/360 + MVT</div>
+      <div class="step-desc">Multitasking With Variable Number of Tasks – subsystémy: správa a ochrana paměti, scheduler.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-5)">60. léta</div>
+    <div class="step-content">
+      <div class="step-label">Multics (AT&T)</div>
+      <div class="step-desc">Neúspěšný projekt – měl umět „všechno" (až futuristicky).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num" style="color:var(--accent-3)">1969</div>
+    <div class="step-content">
+      <div class="step-label">Unix (Ken Thompson)</div>
+      <div class="step-desc">Jednoduchý – „programátoři sobě", něco z Multicsu.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 10 UŽIVATELÉ -->
+<section class="section" id="uzivatele">
+<div class="section-header"><span class="section-num">10</span><h2>Jednouživatelský × víceuživatelský</h2></div>
+
+<p>Víceuživatelské systémy podporují <strong>více uživatelů zároveň</strong>. Můžeme je označit za skutečné operační systémy.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Nutné vybavení</div>
+  <ul>
+    <li>Zavedení <strong>oprávnění</strong> a role <strong>správce (administrátor)</strong></li>
+    <li><strong>Vícenásobné uživatelské rozhraní</strong></li>
+  </ul>
+</div>
+
+<h3>Textové rozhraní</h3>
+<div class="card green">
+  <ul>
+    <li>V Unixu zajišťuje tzv. <strong>shell</strong></li>
+    <li>Terminály sériovým kabelem nebo počítačovou sítí (<strong>PuTTY</strong>)</li>
+  </ul>
+</div>
+
+<h3>Grafické rozhraní – problém</h3>
+<div class="card warn">
+  <ul>
+    <li>Jedna grafická karta → jak obsloužit více klávesnic a monitorů?</li>
+    <li>Původní návrh HW a SW s tím obvykle <strong>nepočítá</strong></li>
+    <li><strong>Řešení:</strong> obraz jen v paměti + síťový přístup</li>
+    <li><strong>MS Windows:</strong> vzdálená plocha (vyžaduje Terminal Services)</li>
+    <li><strong>Unix:</strong> modulární X Window systém (již od počátku)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 MULTIPROCESORY -->
+<section class="section" id="mp">
+<div class="section-header"><span class="section-num">11</span><h2>Multiprocesory (SMP, ASMP, NUMA)</h2></div>
+
+<h3>Způsoby zvýšení výkonu počítače</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Zrychlení hodin CPU</h4>
+    <p>Zaostávání pomalejších částí – řeší <strong>cache</strong>. Fyzikální limity (rychlost světla vs. velikost čipu).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Širší sběrnice, větší registry</h4>
+    <p>Více dat zpracovaných najednou, zvýšení průchodnosti systému.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Paralelizace úloh</h4>
+    <p>Pro specifické úlohy, jiný styl programování → <strong>multiprocesory a multipočítače</strong>.</p>
+  </div>
+</div>
+
+<h3>Multiprocesory vs. multipočítače</h3>
+<table class="compare-table">
+  <tr><th></th><th>Multiprocesor</th><th>Multipočítač (cluster)</th></tr>
+  <tr><td><strong>Procesory</strong></td><td>Více CPU na jedné základní desce (dnes jádra)</td><td>Více samostatných počítačů</td></tr>
+  <tr><td><strong>Paměť</strong></td><td>Jedna <strong>společná</strong> RAM</td><td><strong>NEsdílejí</strong> operační paměť</td></tr>
+  <tr><td><strong>Výjimka</strong></td><td>NUMA (AMD) – každý CPU „vlastní" paměť, půjčování</td><td>—</td></tr>
+</table>
+
+<h3>Problém souběhu a škálování</h3>
+<div class="card warn">
+  <ul>
+    <li>Více procesorů sdílí jednu paměť – <strong>současný přístup</strong> ke stejnému místu = souběh</li>
+    <li>Řízení konfliktního přístupu je limitující → systém <strong>nelze škálovat lineárně</strong></li>
+    <li>Přidání dalšího procesoru zvýší celkový výkon jen o část</li>
+    <li>Problémy se škálováním má i software</li>
+  </ul>
+</div>
+
+<h3>NUMA (AMD)</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>Každý CPU má „svoji" paměť</strong></li>
+    <li>Procesory <strong>vyjednávají</strong> mezi sebou jen při přístupu k cizí paměti</li>
+    <li>Současné klasické systémy s NUMA <strong>moc nepočítají</strong> – tabulka procesů, otevřených souborů apod. je na jednom místě</li>
+    <li>Procesy musí zůstávat na stejném jádru (<strong>„pinning"</strong>)</li>
+    <li>Otázka: co se stane, když je vyvolána služba jádra?</li>
+  </ul>
+</div>
+
+<h3>ASMP vs. SMP – přístup k paralelizaci jádra</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">ASMP – asymetrické</h4>
+    <p>Kód jádra se provádí <strong>jen na CPU#0</strong>. Snadné přizpůsobení UP jádra pro SMP prostředí. Úloha z jiného CPU volající jádro musí <strong>čekat</strong> na uvolnění #0. <strong>Novell NetWare 4</strong> (1993).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">SMP – symetrické</h4>
+    <p>Vyžaduje <strong>zamykání datových struktur</strong> jádra. <strong>Linux, Windows NT</strong> a další.</p>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problém se zámky</div>
+  <ul>
+    <li>Čekání na uvolnění zámku – zámky řeší problém souběhu (vysvětlení později)</li>
+    <li>Často jeden <strong>BKL (Big Kernel Lock)</strong> blokuje celé jádro</li>
+    <li>Speciální architektury pro <strong>masivní MP</strong> → každý CPU komunikuje s každým → <strong>exponenciální složitost</strong></li>
+    <li>Nutno programovat specifické aplikace – dnes se aplikace převádějí z jednovláknových</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 CLUSTERY -->
+<section class="section" id="cluster">
+<div class="section-header"><span class="section-num">12</span><h2>Multipočítače (clustery)</h2></div>
+
+<p>Snaha o zvýšení výkonu pomocí více počítačů. Poznají se podle toho, že <strong>nemají společnou paměť</strong>. Obvykle z „laciných" PC → levný superpočítač (Google). Propojení pomocí <strong>rychlé LAN</strong> (uzly).</p>
+
+<div class="topo">
+  <div class="topo-node">UZEL 1</div>
+  <div class="topo-arrow">↔</div>
+  <div class="topo-node">UZEL 2</div>
+  <div class="topo-arrow">↔</div>
+  <div class="topo-node">UZEL 3</div>
+  <div class="topo-arrow">↔</div>
+  <div class="topo-node">UZEL N</div>
+</div>
+
+<h3>Zaměření clusterů (typicky kombinace)</h3>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Výpočetní cluster (HPC)</div>
+  <ul>
+    <li>Znásobení výpočetní síly – výpočet se rozdělí mezi více počítačů</li>
+    <li>Síť slouží ke <strong>komunikaci a předávání dat</strong></li>
+    <li><strong>Paralelní systémy:</strong> více spuštěných programů, každý počítač má vlastní program</li>
+    <li><strong>Distribuované výpočty:</strong> upravený program umí rozdělit data – stejný výpočet nad různými daty na různých uzlech</li>
+  </ul>
+  <p style="margin-top:10px"><strong>Úrovně distribuce:</strong></p>
+  <ul>
+    <li>Na úrovni <strong>jádra OS</strong> – z vnějšku vypadá jako multiprocesor, úlohy migrují mezi uzly</li>
+    <li>Na úrovni <strong>aplikace</strong> – programátor píše program distribuovaně, každý uzel počítá jinou část (knihovny typu <strong>MPI</strong>)</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Load-balancing cluster</div>
+  <ul>
+    <li>Rozložení zátěže mezi více uzlů</li>
+    <li>V clusteru více počítačů se <strong>stejným obsahem</strong> – je jedno, který vyřídí požadavek</li>
+    <li>Mohou mít společnou databázi nebo diskový prostor</li>
+    <li>Např. zatížené WWW servery</li>
+    <li>O rozložení rozhoduje <strong>arbitr</strong> (předřazený počítač) – softwarově obdoba reverzní proxy cache (nginx, např. www.seznam.cz)</li>
+    <li>Arbitr je <strong>single point of failure</strong></li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Failover cluster</div>
+  <ul>
+    <li>Zajištění <strong>odolnosti vůči výpadku</strong> – v případě výpadku převezme úlohu záložní</li>
+    <li>Typicky předřazen <strong>arbitr</strong> směřující dotazy, sleduje čas odezvy</li>
+    <li>Při selhání směřuje dotazy na záložní server, může <strong>nevyřízený dotaz zopakovat</strong></li>
+    <li>Arbitr je single point of failure – řeší se dvěma arbitry s různými IP adresami (v DNS pro jedno jméno dvě IP)</li>
+    <li>Otázka: použije klient (prohlížeč) druhou IP?</li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Úložný (storage) cluster</div>
+  <ul>
+    <li>Pro ukládání dat – datová propustnost jednoho počítače je omezená</li>
+    <li>Data se ukládají <strong>paralelně</strong> → zvýšení propustnosti i kapacity</li>
+    <li>Tok dat se rozdělí do jednotlivých uzlů</li>
+    <li>Používá se pro <strong>hromadný sběr dat</strong> (např. video z mnoha kamer)</li>
+    <li>Zvyšuje se pravděpodobnost výpadku uzlu → nutný <strong>failover</strong></li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Gridový cluster</div>
+  <ul>
+    <li>Počítače v clusteru <strong>nejsou vyhrazené</strong> – snaha o využití běžných počítačů</li>
+    <li>Desktopový počítač často nedělá nic – speciální aplikace nabídne přes síť jeho výkon</li>
+    <li>Není-li PC používán, začne počítat (např. <strong>SETI@Home</strong> jako šetřič obrazovky)</li>
+    <li>Využití i <strong>idle time CPU</strong> – typicky snížením priority procesu</li>
+    <li><strong>Problém bezpečnosti (BOINC):</strong> počítáme opravdu to, co je deklarováno? Na svém PC spouštíme cizí kód – cesta pro trojské koně</li>
+  </ul>
+</div>
+
+<h3>Single point of failure</h3>
+<div class="card warn">
+  <ul>
+    <li>Místo, které při selhání <strong>vyřadí celý systém</strong> – data nemohou jít jinou cestou</li>
+    <li><strong>Řadič pro diskové pole RAID</strong> – používá se <strong>multipath</strong> (alespoň dva řadiče + kabely). Jeden není aktivní a přebírá komunikaci po výpadku, nebo se používají oba. Vyžaduje speciální ovladače v jádře OS i HW</li>
+    <li><strong>Switch</strong> v počítačové síti – lze snadno vyměnit kus za kus</li>
+    <li><strong>Napájecí zdroj</strong> – dva zdroje + logika pro přepínání</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">13</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">FUNKCE + SOUČÁSTI OS</p>
+<ul>
+  <li><strong>3 funkce:</strong> ovládání počítače + abstrakce HW (API, ovladače) + správa prostředků (nejvyšší arbitr)</li>
+  <li><strong>3 součásti:</strong> jádro (kernel) + utility + démoni (ve Windows „služby")</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">TYPY JADER</p>
+<ul>
+  <li><strong>Monolitické:</strong> jeden celek, vše se stejným oprávněním – výkon ↑, stabilita ↓ (Linux, FreeBSD)</li>
+  <li><strong>Modulární:</strong> monolit + zaveditelné moduly (ovladače) – distribuce Linuxu</li>
+  <li><strong>Mikrojádro:</strong> v jádře jen přepínání kontextu a správa paměti, zbytek jsou „servery" – stabilita ↑, výkon ↓ (GNU Hurd, Minix, Symbian)</li>
+  <li><strong>Hybridní:</strong> kompromis – větší jádro + výkonnostně citlivé části (Windows NT, CE)</li>
+  <li><strong>RTOS:</strong> hard (vždy splní ultimáta – jen mikrojádra) / soft (přibližně – RTLinux, doplňky NT)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ÚLOHOVOST A UŽIVATELÉ</p>
+<ul>
+  <li><strong>Jednoúlohový:</strong> v paměti jen jádro + 1 úloha (CP/M, DOS) – bez ochrany paměti</li>
+  <li><strong>Víceúlohový:</strong> RAM + ochrana paměti + privilegovaný režim CPU → multitasking (1966 OS/360 MFT, 1967 MVT, 1969 Unix)</li>
+  <li><strong>Víceuživatelský:</strong> oprávnění + admin + vícenásobné UI (shell + X Window / Terminal Services)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">MULTIPROCESORY</p>
+<ul>
+  <li><strong>SMP</strong> (symetrické): zamykání struktur jádra – Linux, Windows NT</li>
+  <li><strong>ASMP</strong> (asymetrické): jádro jen na CPU#0 – Novell NetWare 4</li>
+  <li><strong>NUMA</strong>: každý CPU vlastní paměť, vyjednávání o cizí – AMD (pinning procesů)</li>
+  <li>Problém: souběh, BKL, nelineární škálování</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">CLUSTERY (bez sdílené paměti)</p>
+<ul>
+  <li><strong>Výpočetní (HPC):</strong> paralelní / distribuované výpočty (MPI)</li>
+  <li><strong>Load-balancing:</strong> arbitr rozděluje zátěž (nginx, seznam.cz)</li>
+  <li><strong>Failover:</strong> záložní uzel převezme úlohu při výpadku</li>
+  <li><strong>Storage:</strong> paralelní ukládání, vyžaduje failover</li>
+  <li><strong>Gridové:</strong> nededikované počítače (SETI@Home, BOINC) – pozor na bezpečnost</li>
+  <li><strong>SPOF:</strong> RAID řadič (→ multipath), switch, zdroj (→ dva + logika)</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

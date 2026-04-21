@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Ladislav Mňačko: Smrt si říká Engelchen</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#13110e;
+  --bg-card:#1a1814;
+  --bg-card-alt:#211e18;
+  --border:#332e26;
+  --text:#b8ae98;
+  --text-muted:#6a6150;
+  --heading:#d8cdb2;
+  --accent-1:#7a2a24;     /* sušená krev */
+  --accent-2:#4a5a3a;     /* slovenské hory */
+  --accent-3:#a88a58;     /* sépie / stará fotografie */
+  --accent-4:#5a4a38;     /* spálené dřevo */
+  --accent-5:#3a4a5a;     /* noční modř */
+  --accent-6:#6a3a28;     /* rez krve */
+  --accent-7:#2a2420;     /* uhel */
+  --accent-8:#7a6a48;     /* pergamen */
+  --blood:#7a2a24;        /* krev */
+  --mountain:#4a5a3a;     /* hory */
+  --sepia:#a88a58;        /* sépie */
+  --burnt:#5a4a38;        /* spálené */
+  --night:#3a4a5a;        /* noc */
+  --ash:#3a342a;          /* popel */
+  --candle:#c49a4a;       /* svíčka/vzpomínka */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(122,42,36,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(74,90,58,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — dokumentární svědectví */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(19,17,14,.3) 0%,rgba(19,17,14,.92) 100%),
+    linear-gradient(135deg,#1a1612 0%,#251a16 30%,#15120e 65%,#0e0a08 100%);
+  border-bottom:3px solid var(--blood);
+  padding:100px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(122,42,36,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(74,90,58,.07) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Dekorativní pásek jako vzpomínka / rám staré fotografie */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--sepia) 20%,
+    var(--blood) 50%,
+    var(--sepia) 80%,
+    transparent 100%);
+  opacity:.5;
+}
+.hero-cross{
+  display:inline-block;
+  color:var(--blood);
+  font-size:42px;
+  line-height:1;
+  margin-bottom:24px;
+  opacity:.7;
+  position:relative;
+  filter:drop-shadow(0 0 15px rgba(122,42,36,.3));
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--sepia);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Old Standard TT',serif;
+  font-size:clamp(38px,6.5vw,62px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1.1;
+  position:relative;
+  letter-spacing:1px;
+  text-shadow:0 2px 30px rgba(122,42,36,.2);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--sepia);
+  font-size:.32em;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.75;
+}
+.hero h1 .sk-title{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.42em;
+  font-style:italic;
+  color:var(--sepia);
+  letter-spacing:2px;
+  margin-top:14px;
+  font-weight:500;
+  opacity:.85;
+}
+.hero .author{
+  font-family:'Old Standard TT',serif;
+  color:var(--sepia);
+  margin-top:30px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:2px;
+  font-weight:700;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Special Elite',monospace;
+  color:var(--text);
+  font-size:14.5px;
+  margin:38px auto 0;
+  max-width:580px;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.8;
+  opacity:.85;
+  padding:22px 28px;
+  border:1px solid var(--border);
+  background:rgba(19,17,14,.4);
+}
+.hero-quote em{
+  display:block;
+  font-size:.75em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — jako stránka z archivního spisu */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--blood);
+  border-bottom:3px solid var(--blood);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'SPIS';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--blood);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:4px;
+  font-weight:500;
+}
+.toc::after{
+  content:'1944';
+  position:absolute;
+  top:-10px;right:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--sepia);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+}
+.toc h2{
+  font-family:'Old Standard TT',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--sepia);
+  margin-bottom:20px;text-align:center;
+  font-weight:700;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,decimal-leading-zero) ' · ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--blood);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--blood)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--blood),var(--sepia));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Old Standard TT',serif;
+  font-size:36px;color:var(--blood);
+  font-weight:700;
+  min-width:70px;opacity:.6;
+  line-height:1;
+  letter-spacing:1px;
+}
+.section-header h2{
+  font-family:'Old Standard TT',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+h3{
+  font-family:'Old Standard TT',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Old Standard TT',serif;
+  font-size:14px;font-weight:700;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--blood);background:rgba(122,42,36,.04)}
+.card.key{border-left:3px solid var(--sepia);background:rgba(168,138,88,.04)}
+.card.warn{border-left:3px solid var(--accent-6);background:rgba(106,58,40,.05)}
+.card.mountain{border-left:3px solid var(--mountain);background:rgba(74,90,58,.05)}
+.card.night{border-left:3px solid var(--night);background:rgba(58,74,90,.05)}
+.card.memory{border-left:3px solid var(--candle);background:rgba(196,154,74,.04)}
+
+.card-title{
+  font-family:'Old Standard TT',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--blood)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(122,42,36,.1);
+  color:var(--blood);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--sepia);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+/* Památeční dělič - jako kříž a datum */
+.memorial-divider{
+  text-align:center;
+  margin:48px 0;
+  color:var(--blood);
+  position:relative;
+  opacity:.6;
+}
+.memorial-divider::before,.memorial-divider::after{
+  content:'';
+  display:inline-block;
+  width:80px;height:1px;
+  background:var(--blood);
+  vertical-align:middle;
+  margin:0 14px;
+  opacity:.5;
+}
+.memorial-divider-cross{
+  font-family:'Old Standard TT',serif;
+  font-size:16px;
+  letter-spacing:20px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--blood));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.05;
+  pointer-events:none;
+  font-family:'Old Standard TT',serif;
+}
+.character .char-name{
+  font-family:'Old Standard TT',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:.5px;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--blood));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--blood);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Crimson Pro',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--blood);
+  opacity:.35;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* DOKUMENT — svědectví */
+.document{
+  background:var(--bg-card-alt);
+  border:1px solid var(--sepia);
+  padding:26px 32px;
+  margin:24px 0;
+  position:relative;
+  font-family:'Special Elite',monospace;
+  color:var(--heading);
+  font-size:15px;
+  line-height:1.7;
+  letter-spacing:.3px;
+  white-space:pre-line;
+}
+.document::before{
+  content:'SVĚDECTVÍ';
+  position:absolute;
+  top:-10px;left:24px;
+  background:var(--bg);
+  padding:0 12px;
+  color:var(--sepia);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:600;
+}
+.document-source{
+  display:block;
+  margin-top:16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--blood),var(--sepia),var(--blood));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--blood);
+  background:rgba(122,42,36,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(122,42,36,.25);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Old Standard TT',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--blood);
+  background:rgba(122,42,36,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--sepia)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(106,58,40,.05);
+  border-left:2px solid var(--accent-6);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--accent-6)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Old Standard TT',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--blood);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--blood);
+  font-weight:700;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--blood),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--blood);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* ENGELCHEN — speciální rámeček ironie */
+.engelchen-box{
+  background:
+    linear-gradient(135deg,rgba(168,138,88,.04) 0%,rgba(122,42,36,.06) 100%);
+  border:2px solid var(--blood);
+  padding:28px 34px;
+  margin:28px 0;
+  position:relative;
+  text-align:center;
+}
+.engelchen-box::before{
+  content:'☩';
+  display:block;
+  font-size:32px;
+  color:var(--sepia);
+  margin-bottom:14px;
+  opacity:.5;
+  filter:drop-shadow(0 0 10px rgba(122,42,36,.3));
+}
+.engelchen-title{
+  font-family:'Old Standard TT',serif;
+  font-size:12px;
+  color:var(--sepia);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+.engelchen-name{
+  font-family:'Old Standard TT',serif;
+  font-size:32px;
+  color:var(--heading);
+  font-weight:700;
+  letter-spacing:3px;
+  line-height:1.2;
+}
+.engelchen-name em{
+  display:block;
+  font-size:.4em;
+  color:var(--sepia);
+  font-style:italic;
+  margin-top:6px;
+  letter-spacing:2px;
+  font-weight:400;
+}
+.engelchen-meaning{
+  margin-top:16px;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  color:var(--blood);
+  font-size:16px;
+  line-height:1.6;
+}
+
+/* MOZAIKA kompozice */
+.mosaic{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin:20px 0;
+}
+.mosaic-tile{
+  background:var(--tile-color,var(--bg-card-alt));
+  border:1px solid var(--border);
+  padding:14px 12px;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--text-muted);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  position:relative;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1.4;
+}
+.mosaic-tile.blood{--tile-color:rgba(122,42,36,.08);color:var(--blood);border-color:var(--blood)}
+.mosaic-tile.mountain{--tile-color:rgba(74,90,58,.08);color:var(--mountain);border-color:var(--mountain)}
+.mosaic-tile.sepia{--tile-color:rgba(168,138,88,.08);color:var(--sepia);border-color:var(--sepia)}
+.mosaic-tile.ash{--tile-color:rgba(58,52,42,.3);color:var(--text-muted);border-color:var(--ash)}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Old Standard TT',serif;
+  font-size:13px;
+  color:var(--blood);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:700;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--blood));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Old Standard TT',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--blood);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--accent-6);
+  background:rgba(106,58,40,.4);
+}
+.timeline-step .ts-title{
+  font-family:'Old Standard TT',serif;
+  font-weight:700;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-date{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--blood);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.8;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Old Standard TT',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--blood);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .locations-list{grid-template-columns:1fr}
+  .mosaic{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:60px 20px 50px}
+  .hero h1{font-size:38px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.engelchen-box{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-cross">☩</div>
+  <div class="hero-label">Maturitní rozbor · Slovenská literatura · Protiválečný román</div>
+  <h1><em>Smrť sa volá Engelchen · 1959</em>Smrt si říká<br>Engelchen<span class="sk-title">aneb Anděl, který byl smrtí</span></h1>
+  <div class="author">Ladislav Mňačko</div>
+  <div class="subtitle">Slovensko · Slovenské národní povstání 1944</div>
+  <div class="hero-quote">Musíme pamatovat. Ne pro pomstu, ale proto, aby se to neopakovalo. Mrtví nemluví, ale my, kdo jsme přežili, máme povinnost svědčit.<em>— Duch díla</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Slovensko 1944</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba · Mozaika</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#engelchen">Ústřední motiv · Engelchen</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a ironie</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Klíčová témata a pasáže</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Smrt si říká Engelchen</strong> (slovensky <em>Smrť sa volá Engelchen</em>) je protiválečný román publikovaný v roce <strong>1959</strong>. Dílo má složitou, <strong>mozaikovou kompozici</strong> střídající několik časových rovin a perspektiv. Mňačko ho napsal na základě <strong>svých vlastních zkušeností</strong> ze <strong>Slovenského národního povstání</strong>, kterého se aktivně účastnil jako partizán. Dílo je tedy <strong>částečně autobiografické</strong>.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-date">Před 1939</span> Předválečný život</div>
+    <div class="ts-desc">Retrospektivní pasáže o mírovém životě postav</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-date">1939–1944</span> Okupace a fašismus</div>
+    <div class="ts-desc">Slovenský fašistický stát, vypjaté první roky, holocaust</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title"><span class="ts-date">Srpen–říjen 1944</span> Slovenské národní povstání</div>
+    <div class="ts-desc">Hlavní dějová linie — partizánský odpor, Engelchenovy zločiny</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-date">Po 1945</span> Hledání spravedlnosti</div>
+    <div class="ts-desc">Hledání viníků po válce, otázky viny, paměti, odpuštění</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>období od předválečných let po Slovenské národní povstání</strong> a poválečné hledání viníků. <strong>Různé časové roviny se prolínají</strong> v mozaice — to je Mňačkův literární postup.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Hrůza 2. světové války, fašismus a jeho lidské důsledky, odpovědnost za válečné zločiny, ztráta lidskosti, msta versus odpuštění, kolektivní vina, trauma z války, smrt nevinných.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Slovenské národní povstání</strong> (1944) — hrdinství i tragédie</li>
+  <li><strong>Koncentrační tábory</strong> — holocaust na Slovensku</li>
+  <li><strong>Popravy civilistů, vypálené vesnice</strong></li>
+  <li><strong>Partizáni</strong> — odpor</li>
+  <li><strong>Kolaboranti</strong> — Hlinkova garda, zrada vlastního národa</li>
+  <li><strong>Německá okupace</strong></li>
+  <li><strong>Pomsta vs. odpuštění</strong></li>
+  <li><strong>Lidskost versus bestialita</strong></li>
+  <li><strong>Engelchen</strong> — ironický „anděl" smrti</li>
+  <li><strong>Smrt dětí</strong> — symbol destrukce nevinnosti</li>
+  <li><strong>Vina, svědomí, paměť</strong></li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor · Slovensko 1944</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Čas</h4>
+    <p><strong>Hlavní děj:</strong> Slovenské národní povstání (srpen–říjen 1944). <strong>Retrospektivy:</strong> předválečné období, okupace (1939–1944). Několik časových rovin střídajících se v mozaice.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mountain)">
+    <h4 style="color:var(--mountain)">Prostor</h4>
+    <p><strong>Slovensko</strong> — vesnice, hory, lesy. Konkrétní slovenské lokality, koncentrační tábory, frontové linie, místa poprav a masakrů.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--mountain)">
+      <div class="location-name">Slovenské hory</div>
+      <div class="location-note">Partizánský úkryt, srdce odporu</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--burnt)">
+      <div class="location-name">Vesnice</div>
+      <div class="location-note">Vypálené Engelchenem a SS</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-7)">
+      <div class="location-name">Koncentrační tábory</div>
+      <div class="location-note">Sereď, Osvětim — cesta slovenských Židů</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--blood)">
+      <div class="location-name">Frontové linie</div>
+      <div class="location-note">SNP — nejtěžší boje</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-6)">
+      <div class="location-name">Místa masakrů</div>
+      <div class="location-note">Tokajík, Kľak, Ostrý Grúň a další</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--sepia)">
+      <div class="location-name">Banská Bystrica</div>
+      <div class="location-note">Centrum povstání</div>
+    </div>
+  </div>
+</div>
+
+<div class="card mountain">
+  <div class="card-title" style="color:var(--mountain)">Slovenská krajina jako kontrast</div>
+  <p style="margin-bottom:0">Mňačko záměrně kontrastuje <strong>krásu slovenské přírody</strong> (hory, lesy, čistý vzduch) s <strong>hrůzou války</strong>. Tento kontrast zesiluje absurditu a tragédii — v tak krásné krajině se dějí tak strašné věci.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba · Mozaika</h2></div>
+
+<h3>Způsob řazení — mozaiková kompozice</h3>
+<ul>
+  <li><strong>Mozaiková kompozice</strong> — střídání různých časových rovin a perspektiv</li>
+  <li><strong>Retrospektivní pasáže</strong> — vzpomínky postav na minulost</li>
+  <li><strong>Paralelní příběhy</strong> — různé osudy prolínající se</li>
+  <li><strong>Nelineární vyprávění</strong> — děj není chronologický</li>
+</ul>
+
+<div class="mosaic">
+  <div class="mosaic-tile mountain">Předválečný<br>život</div>
+  <div class="mosaic-tile blood">Masakr<br>civilistů</div>
+  <div class="mosaic-tile sepia">Vzpomínka<br>na dětství</div>
+  <div class="mosaic-tile blood">Engelchen<br>vraždí</div>
+  <div class="mosaic-tile mountain">Partizáni<br>v lese</div>
+  <div class="mosaic-tile ash">Koncentrační<br>tábor</div>
+  <div class="mosaic-tile sepia">Svědectví<br>přeživšího</div>
+  <div class="mosaic-tile ash">Popravy</div>
+  <div class="mosaic-tile blood">Boj o SNP</div>
+</div>
+<p style="text-align:center;font-size:12px;color:var(--text-muted);font-style:italic;margin-top:8px">Každá kapitola může být jinou „dlaždicí" — jiným časem, jinou perspektivou. Čtenář si sám skládá celkový obraz.</p>
+
+<h3>Části díla</h3>
+<div class="card farm" style="border-left:3px solid var(--burnt);background:rgba(90,74,56,.05)">
+  <ul style="margin:0">
+    <li>Rozděleno na <strong>kapitoly s různými perspektivami</strong></li>
+    <li>Každá kapitola může mít <strong>jiného vypravěče</strong></li>
+    <li>Střídání časových rovin</li>
+    <li><strong>Mozaika postupně vytváří celkový obraz</strong></li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Předválečný život</div>
+    <div class="ts-desc">Příběhy jednotlivých postav před válkou — idyla, která se zničí</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">2. Okupace a její důsledky</div>
+    <div class="ts-desc">Příchod nacismu na Slovensko, Hlinkova garda, první represe</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">3. Slovenské národní povstání</div>
+    <div class="ts-desc">Partizánský boj, hrdinství, potlačení povstání</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">4. Válečné zločiny</div>
+    <div class="ts-desc">Masakry civilistů, popravy, vypálené vesnice</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">5. Hledání viníků a spravedlnosti</div>
+    <div class="ts-desc">Poválečné období, otázky viny, pomsty a odpuštění</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (historické události).</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Válečný román</h4>
+    <p>Zobrazení 2. světové války na Slovensku — zejména SNP a holocaustu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Dokumentární próza</h4>
+    <p>Založeno na skutečných událostech — autorovy zkušenosti z SNP, svědectví.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--night)">
+    <h4 style="color:var(--night)">Psychologický román</h4>
+    <p>Analýza lidské psychiky ve válce — vina, strach, trauma.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mountain)">
+    <h4 style="color:var(--mountain)">Společenský román</h4>
+    <p>Kritika společnosti, fenomén kolaborace, kolektivní vina.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sepia)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Rozsáhlé epické dílo</li>
+    <li>Založeno na <strong>historických faktech</strong> (SNP, holocaust)</li>
+    <li>Psychologická hloubka — motivace, vina, trauma</li>
+    <li>Dokumentární prvky — svědectví, fakta</li>
+    <li><strong>Společenská kritika</strong> — kolaborace, fašismus</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Typ — Střídání perspektiv</h2>
+  <p style="margin-bottom:0"><strong>Střídání více vypravěčů a perspektiv</strong> — charakteristický rys mozaikové kompozice.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Er-forma</strong> — základní vyprávění ve 3. osobě</li>
+  <li><strong>Ich-forma</strong> — některé kapitoly v 1. osobě</li>
+  <li><strong>Střídání perspektiv</strong> — různé postavy vypravují své příběhy</li>
+  <li><strong>Vševědoucí vypravěč</strong> — někdy vševědoucí, někdy omezený</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Autorský vypravěč — angažovaný</strong></li>
+    <li>Morálně hodnotící</li>
+    <li>Empatický k obětem</li>
+    <li>Kritický k pachatelům</li>
+    <li><strong>Dokumentární přístup</strong> — fakta a svědectví</li>
+    <li>Emocionálně zapojen</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-6)">Proč mozaika?</div>
+  <p style="margin-bottom:0">Mňačko využívá <strong>střídání perspektiv</strong> záměrně. <strong>Žádný jeden hlas nemůže uchopit celou hrůzu války</strong> — proto se skládá z fragmentů: oběť, pachatel, partizán, civilista, přeživší. Čtenář vidí válku z mnoha stran a pochopí, že <strong>neexistuje jedna pravda o válce</strong>.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy</h2></div>
+
+<p>Postavy v románu <strong>reprezentují různé postoje k válce</strong> — od odpůrců přes oběti po pachatele. Mňačko je záměrně volí jako <strong>typy, které ztělesňují větší skupiny</strong>.</p>
+
+<div class="character" style="--character-color:var(--mountain)" data-symbol="★">
+  <div class="char-name">Pavel</div>
+  <div class="char-role">Hlavní postava · Kladná · Slovenský partizán</div>
+  <ul style="margin:0">
+    <li><strong>Slovenský partizán</strong></li>
+    <li>Bojuje proti nacistům</li>
+    <li><strong>Hledá viníky po válce</strong></li>
+    <li>Vnitřní konflikt — <strong>pomsta vs. spravedlnost</strong></li>
+    <li>Ztratil v válce blízké</li>
+    <li>Reprezentuje slovenský odpor</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="✕">
+  <div class="char-name">Engelchen</div>
+  <div class="char-role">Hlavní postava · Záporná · Válečný zločinec</div>
+  <ul style="margin:0">
+    <li><strong>Německý voják, válečný zločinec</strong></li>
+    <li><em>„Engelchen"</em> = „andílek" — ironická přezdívka pro vraha</li>
+    <li><strong>Účastnil se masakrů civilistů</strong></li>
+    <li>Zabíjel <strong>i děti</strong></li>
+    <li>Symbol <strong>banality zla</strong> (termín Hannah Arendtové)</li>
+    <li>Obyčejný člověk, který se stal bestií</li>
+    <li>Ústřední postava díla — celý název je o něm</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--sepia)" data-symbol="♀">
+  <div class="char-name">Růžena</div>
+  <div class="char-role">Hlavní postava · Tragická · Přeživší</div>
+  <ul style="margin:0">
+    <li><strong>Slovenská žena</strong></li>
+    <li><strong>Přežila koncentrační tábor</strong></li>
+    <li>Ztratila rodinu</li>
+    <li>Symbol <strong>oběti holocaustu</strong></li>
+    <li>Nese trauma celý život</li>
+    <li>Hlas těch, kteří přežili, ale jsou zničeni</li>
+  </ul>
+</div>
+
+<h3>Skupiny postav</h3>
+
+<div class="character" style="--character-color:var(--mountain)" data-symbol="☆">
+  <div class="char-name">Slovenští partizáni</div>
+  <div class="char-role">Vedlejší · Kladné · Bojovníci za svobodu</div>
+  <ul style="margin:0">
+    <li><strong>Bojují za svobodu</strong></li>
+    <li>Různé charaktery — <strong>hrdinové i pochybující</strong></li>
+    <li>Reprezentují odpor</li>
+    <li>Mnoho z nich zahyne</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="↯">
+  <div class="char-name">Kolaboranti</div>
+  <div class="char-role">Vedlejší · Záporné · Zrádci národa</div>
+  <ul style="margin:0">
+    <li>Slováci spolupracující s nacisty</li>
+    <li><strong>Hlinkova garda</strong> — fašistická domobrana</li>
+    <li>Zrazují vlastní národ</li>
+    <li>Symbol <strong>zbabělosti a zrady</strong></li>
+    <li>Často horší než sami Němci</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--ash)" data-symbol="卐">
+  <div class="char-name">Němečtí vojáci</div>
+  <div class="char-role">Vedlejší · Převážně záporné · Okupanti</div>
+  <ul style="margin:0">
+    <li>Různé typy — <strong>od fanatických nacistů po nucené vojáky</strong></li>
+    <li>Ukazují <strong>různé tváře fašismu</strong></li>
+    <li>Ne všichni jsou stejní — Mňačko se vyhýbá zjednodušení</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--sepia)" data-symbol="†">
+  <div class="char-name">Civilisté</div>
+  <div class="char-role">Vedlejší · Oběti · Trpící</div>
+  <ul style="margin:0">
+    <li><strong>Oběti války</strong></li>
+    <li>Trpící nevinní</li>
+    <li>Ženy, děti, starci</li>
+    <li>Jsou zabíjeni při masakrech — Tokajík, Kľak, Ostrý Grúň</li>
+    <li>Ti, za které se bojuje</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 ENGELCHEN -->
+<section class="section" id="engelchen">
+<div class="section-header"><span class="section-num">VIII</span><h2>Ústřední motiv · Engelchen</h2></div>
+
+<div class="engelchen-box">
+  <div class="engelchen-title">Ústřední ironie díla</div>
+  <div class="engelchen-name">ENGEL<wbr>CHEN<em>Andílek · Anděl · Anděl smrti</em></div>
+  <div class="engelchen-meaning">
+    Zdrobnělina německého slova <em>Engel</em> (anděl).<br>
+    Ale je to vrah dětí. Anděl = bestialita.
+  </div>
+</div>
+
+<h3>Význam ironie</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-6)">Symbol „banality zla"</div>
+  <p style="margin-bottom:0">Engelchen reprezentuje to, co filozofka <strong>Hannah Arendtová</strong> nazvala <em>„banalitou zla"</em> (1963, po procesu s Eichmannem). <strong>Obyčejní, nijak monstrózní lidé</strong> se mohou stát masovými vrahy. Engelchen není démon s rohy — je to člověk, který by za jiných okolností mohl být sousedem nebo učitelem. To je <strong>nejděsivější poselství díla</strong>: zlo není vždy zjevné. Má často tvář obyčejnosti.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sepia)">Kontrast v jednom jménu</div>
+  <ul style="margin:0">
+    <li><strong>„Anděl"</strong> — symbol nevinnosti a čistoty</li>
+    <li><strong>„Smrt si říká Engelchen"</strong> — smrt má nevinnou tvář</li>
+    <li>Zdrobnělá forma <em>„Engelchen"</em> je až něžná — to zvyšuje hrůzu</li>
+    <li>Titul románu je <strong>mrazivá metafora celého fašismu</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">IX</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-6)">Přímá řeč · Konfrontace</div>
+  <div class="quote-block" style="margin:0">„Zabili jste moje děti," řekla žena tiše. „Proč?"<span class="quote-source">Konfrontace oběti a pachatele</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--sepia)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Pavel si vzpomněl na den, kdy vesnice vyhořela a všichni v ní zemřeli.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--night)">Polopřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Díval se na Engelchena. Tento muž zabil stovky. Vypadal jako obyčejný člověk. Jak je to možné?</p>
+</div>
+
+<div class="card mountain">
+  <div class="card-title" style="color:var(--mountain)">Vnitřní monolog</div>
+  <p style="margin-bottom:0">Úvahy postav o <strong>vině, odpovědnosti, pomstě</strong>. Klíčový prostředek pro psychologickou hloubku díla.</p>
+</div>
+
+<div class="card memory">
+  <div class="card-title" style="color:var(--candle)">Dokumentární pasáže</div>
+  <p style="margin-bottom:0"><strong>Fakta, data, svědectví</strong>. Mňačko jako bývalý novinář používá novinářské techniky — výpovědi, citace, přesné údaje.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Pásmo vypravěče</h4><p>Popis událostí, bitev, masakrů.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--night)"><h4 style="color:var(--night)">Monolog</h4><p>Vnitřní úvahy postav o válce, vině, pomstě.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--mountain)"><h4 style="color:var(--mountain)">Dialog</h4><p>Rozhovory — mezi partizány, mezi vrahy a oběťmi.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)"><h4 style="color:var(--sepia)">Dokumentární svědectví</h4><p>Výpovědi přeživších — specialita Mňačkova stylu.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--candle)"><h4 style="color:var(--candle)">Reflexe</h4><p>Hodnocení války, fašismu, lidskosti.</p></div>
+</div>
+</section>
+
+<!-- 10 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">X</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>válka, smrt, strach, vesnice</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>hrůza, bestialita, zločin</em></td></tr>
+</table>
+
+<h3>Expresivní výrazy</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>Brutální popisy vražd</strong></li>
+    <li>Emocionálně nabité pasáže o smrti dětí</li>
+    <li>Styl odpovídá dokumentárnímu charakteru — pravdu bez ozdob</li>
+  </ul>
+</div>
+
+<h3>Dokumentární styl</h3>
+<div class="card memory">
+  <div class="card-title" style="color:var(--candle)">Novinářská přesnost</div>
+  <ul style="margin:0">
+    <li><strong>Fakta, data, čísla</strong></li>
+    <li>Jména míst, data událostí</li>
+    <li>Přesné popisy</li>
+    <li>Mňačko byl novinář — přístup je dokumentárně-reportážní</li>
+  </ul>
+</div>
+
+<h3>Slovenské výrazy</h3>
+<ul>
+  <li>Názvy míst (Banská Bystrica, Nízké Tatry)</li>
+  <li>Slovenské reálie</li>
+  <li>Autentičnost prostředí</li>
+  <li>Původní slovenský název: <em>Smrť sa volá Engelchen</em></li>
+</ul>
+
+<h3>Kontrast</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>„Engelchen"</strong> (anděl) = vrah</li>
+    <li><strong>Krásná příroda Slovenska</strong> = hrůzy války</li>
+    <li>Lidskost vs. bestialita</li>
+    <li>Mír vs. peklo</li>
+  </ul>
+</div>
+
+<h3>Ironie</h3>
+<div class="card warn">
+  <ul style="margin:0">
+    <li><strong>„Anděl"</strong> pro vraha</li>
+    <li><strong>„Pořádek"</strong> nacistů = chaos a smrt</li>
+    <li>„Konečné řešení" = genocida</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sepia)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Dokumentární styl</strong> vytváří autenticitu</li>
+    <li><strong>Expresivní jazyk</strong> šokuje a působí</li>
+    <li><strong>Kontrast</strong> zdůrazňuje absurditu války</li>
+    <li><strong>Ironie</strong> odhaluje perverzitu fašismu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">XI</span><h2>Tropy, figury a ironie</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Ironie (hlavní!)</div>
+    <div class="trope-example">Engelchen = anděl</div>
+    <div class="trope-note"><strong>Ústřední ironie díla</strong> — „anděl" je vrah dětí. Celý název je hořkou metaforou fašismu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Děti = nevinnost</div>
+    <div class="trope-note">Engelchen = banálnost zla. Děti = nevinnost zničená válkou. SNP = boj za svobodu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Smrt si říká…</div>
+    <div class="trope-note">„Smrt si říká Engelchen" = smrt má nevinnou tvář. Válka jako bestie požírající lidi.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Kontrast</div>
+    <div class="trope-example">Hory vs. krev</div>
+    <div class="trope-note">Krása Slovenska vs. hrůza války. Lidskost vs. zvířeckost. Mír vs. peklo.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">„Smrt si říká…"</div>
+    <div class="trope-note">Smrt jako bytost s jménem — to jí dává téměř lidskou, identifikovatelnou tvář.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Rozsah hrůz</div>
+    <div class="trope-note">Přehánění hrůz — ale <strong>není to nadsázka, je to pravda</strong>. Realita byla horší než fikce.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Dobro vs. zlo</div>
+    <div class="trope-note">Oběti vs. vrazi. Odpor vs. kolaborace. Pomsta vs. odpuštění.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Naturalistický detail</div>
+    <div class="trope-example">Brutální popisy</div>
+    <div class="trope-note">Brutální popisy poprav, vražd — nutí čtenáře konfrontovat pravdu.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-6)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Ironie názvu</strong> zdůrazňuje absurditu. <strong>Symboly</strong> nesou hlubší významy. <strong>Kontrasty</strong> ukazují destrukci války. <strong>Naturalistický detail</strong> nutí čtenáře neuhnout před pravdou. Mňačko jako <strong>bývalý účastník</strong> píše z pozice, která si nedovolí lhát.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Ladislav Mňačko (1919–1994)</div>
+  <p>Český a slovenský spisovatel, novinář, dramatik. <strong>Narozen 1919 ve Valašských Kloboukách</strong> (Morava) — ale celý život je spojen se Slovenskem. Během druhé světové války byl <strong>aktivním účastníkem Slovenského národního povstání</strong> jako partizán — osobně zažil boje, masakry civilistů i potlačení povstání. Po válce se stal <strong>významným slovenským novinářem</strong> (deník Pravda). Zpočátku byl <strong>přesvědčeným komunistou</strong>, ale postupně začal režim kritizovat. V roce <strong>1967 vyšla jeho kniha <em>Jak chutná moc</em></strong> — ostrá kritika stalinismu a komunistických funkcionářů. Po <strong>sovětské invazi v srpnu 1968</strong> emigroval — nejprve do Izraele, pak do Rakouska. Byl <strong>zbaven československého občanství</strong>, jeho knihy zakázány. Po roce 1989 se vrátil, knihy byly rehabilitovány. <strong>Zemřel v roce 1994</strong>.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Mňačkovo nejslavnější dílo</strong> (1959)</li>
+  <li>Založeno na <strong>autorových válečných zkušenostech</strong></li>
+  <li>Mňačko byl <strong>účastníkem SNP</strong> — dílo je částečně autobiografické</li>
+</ul>
+
+<h3>Další Mňačkova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Smrt si říká Engelchen</strong></td><td>1959</td><td>Válečná próza o SNP — nejslavnější dílo</td></tr>
+  <tr><td><strong>Sedmá noc</strong></td><td>1960</td><td>Válečná próza o holocaustu</td></tr>
+  <tr><td><strong>Opožděné reportáže</strong></td><td>1963</td><td>Reportážní próza o 50. letech — kritika stalinismu</td></tr>
+  <tr><td><strong>Jak chutná moc</strong></td><td>1967</td><td>Kritika komunistického funkcionářství — zakázáno</td></tr>
+  <tr><td><strong>Noční rozhovor</strong></td><td>1966</td><td>Novela</td></tr>
+  <tr><td colspan="3">Dále rozsáhlá <strong>novinářská tvorba</strong>, eseje, publicistika</td></tr>
+</table>
+
+<h3>Mňačkův styl</h3>
+<ul>
+  <li><strong>Dokumentární přístup</strong> (jako novinář)</li>
+  <li><strong>Angažovanost</strong></li>
+  <li><strong>Protiválečné zaměření</strong></li>
+  <li>Kritika totalitarismu (fašistického i komunistického)</li>
+  <li><strong>Reportážní prvky</strong></li>
+  <li>Psychologická hloubka</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>1959</strong> — 14 let po válce</li>
+    <li>Období <strong>politického tání</strong> (po Stalinově smrti 1953)</li>
+    <li><strong>Vzpomínky na válku stále čerstvé</strong></li>
+    <li>Začátek uvolňování cenzury v ČSSR</li>
+    <li>Umělecký sloh: <strong>REALISMUS / DOKUMENTÁRNÍ PRÓZA</strong></li>
+  </ul>
+</div>
+
+<h3>Historický kontext · Slovenské národní povstání</h3>
+<details>
+  <summary>Slovenské národní povstání (SNP) — 29. srpna 1944</summary>
+  <p><strong>Slovenské národní povstání (29. srpna – 27. října 1944)</strong> — ozbrojené povstání proti <strong>slovenskému fašistickému státu</strong> a jeho nacistickým spojencům. Vypuklo <strong>29. srpna 1944</strong> v Banské Bystrici. Zúčastnilo se ho asi <strong>60 000 vojáků</strong> slovenské armády, <strong>18 000 partizánů</strong> a tisíce civilistů. <strong>Brutálně potlačeno</strong> německou armádou za 2 měsíce. Následovaly <strong>masakry civilistů</strong> — vypálené vesnice (Ostrý Grúň, Kľak, Tokajík, Kalištia a další), popravy, deportace do koncentračních táborů. Přesto SNP zůstává <strong>symbolem slovenského odporu proti fašismu</strong> — 29. srpen je slovenským státním svátkem.</p>
+</details>
+<details>
+  <summary>Slovenský fašistický stát (1939–1945)</summary>
+  <p><strong>Slovenský štát</strong> vznikl 14. března 1939 — loutkový stát nacistického Německa v čele s knězem <strong>Jozefem Tisem</strong>. Byl to <strong>jediný katolický fašistický stát v Evropě</strong>. Zavedl <strong>Židovský kodex</strong> (1941) — antisemitské zákony. Deportoval <strong>přes 70 000 slovenských Židů do koncentračních táborů</strong> (z nich většina byla zavražděna). <strong>Platil Němcům za odvoz každého Žida.</strong> Po válce byl Tiso popraven (1947) jako válečný zločinec.</p>
+</details>
+
+<h3>Další válečná literatura — srovnání</h3>
+
+<h4>Světová</h4>
+<table class="compare-table">
+  <tr><th>Země</th><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>Itálie</strong></td><td>Primo Levi</td><td><em>Je-li toto člověk</em> (Osvětim)</td></tr>
+  <tr><td><strong>USA</strong></td><td>Elie Wiesel</td><td><em>Noc</em></td></tr>
+  <tr><td><strong>USA</strong></td><td>Kurt Vonnegut</td><td><em>Jatka číslo pět</em> (Drážďany)</td></tr>
+  <tr><td><strong>Německo</strong></td><td>Günter Grass</td><td><em>Plechový bubínek</em></td></tr>
+</table>
+
+<h4>Česká a slovenská</h4>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>Arnošt Lustig</strong></td><td><em>Modlitba pro Kateřinu Horovitzovou</em>, <em>Démanty noci</em></td></tr>
+  <tr><td><strong>Josef Škvorecký</strong></td><td><em>Zbabělci</em></td></tr>
+  <tr><td><strong>Jiří Weil</strong></td><td><em>Život s hvězdou</em></td></tr>
+  <tr><td><strong>Jan Otčenášek</strong></td><td><em>Romeo, Julie a tma</em></td></tr>
+  <tr><td><strong>Ladislav Fuks</strong></td><td><em>Pan Theodor Mundstock</em>, <em>Spalovač mrtvol</em></td></tr>
+  <tr><td><strong>Dominik Tatarka</strong></td><td><em>Farská republika</em> (slovensky)</td></tr>
+</table>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Specifikum díla</div>
+  <p style="margin-bottom:0"><em>Smrt si říká Engelchen</em> je ve slovenské literatuře <strong>první velké dílo o SNP</strong>, které se dívá <strong>i na slovenské kolaboranty</strong>, ne jen na německé vrahy. Mňačko nebojí vypovědět o vlastní vině — o kolaboraci, zradě, Hlinkově gardě.</p>
+</div>
+</section>
+
+<div class="memorial-divider">
+  <span class="memorial-divider-cross">☩ ☩ ☩</span>
+</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Klíčová témata a pasáže</h2></div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(122,42,36,.1);border-color:var(--blood);color:var(--blood)">★ 01 · ÚSTŘEDNÍ MOTIV · IRONIE ★</span>
+  <div class="scene-title">„Anděl smrti" — Engelchen</div>
+  <div class="scene-context"><strong>Kontext:</strong> <em>Engelchen</em> — zdrobnělina německého slova „Engel" (anděl). Tento ironický název pro válečného zločince je <strong>ústředním motivem díla</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Symbol banality zla</strong> — obyčejný člověk se stává vrahem</li>
+      <li>Zlo nosí tvář andělského mládí</li>
+      <li>Ironická distance — jméno odporuje činům</li>
+      <li>Celý román je o pokusu tomuto paradoxu porozumět</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--mountain)">
+  <span class="scene-label" style="background:rgba(74,90,58,.1);border-color:var(--mountain);color:var(--mountain)">★ 02 · HISTORICKÝ KONTEXT · SNP ★</span>
+  <div class="scene-title">Slovenské národní povstání</div>
+  <div class="scene-context"><strong>Kontext:</strong> SNP jako historický kontext — povstání proti nacistům a slovenskému fašistickému režimu v roce 1944, jeho hrdinství i tragédie.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Důležitá část <strong>slovenské národní identity a paměti</strong></li>
+      <li>Odpor proti vlastnímu fašistickému režimu</li>
+      <li>Brutální potlačení a následné masakry</li>
+      <li>Hrdinství obyčejných lidí</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Hlavní témata díla</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-6)">Válečné zločiny</div>
+  <p style="margin-bottom:0"><strong>Brutální realita poprav civilistů</strong>. Vypálené vesnice, masové hroby, oběšení ve stromech. Mňačko nezakrývá hrůzu — zaznamenává ji jako dokument.</p>
+</div>
+
+<div class="card night">
+  <div class="card-title" style="color:var(--night)">Kolektivní vina</div>
+  <p style="margin-bottom:0"><strong>Jsou všichni Němci vinní?</strong> Otázka, kterou si Mňačko klade skrze různé postavy. Odpověď není jednoduchá — existují fanatici, nuceně narukovaní, svědkové. <strong>Mňačko odmítá zjednodušení</strong> — ale zároveň zdůrazňuje, že pasivita je také vina.</p>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Pomsta vs. spravedlnost</div>
+  <p style="margin-bottom:0"><strong>Morální dilema</strong>. Pavel, hlavní postava, hledá viníky po válce. Má právo na pomstu? Nebo jen na spravedlivý proces? <strong>Pomsta by ho udělala stejným jako vrazi.</strong> To je Mňačkův klíčový morální uzel.</p>
+</div>
+
+<div class="card memory">
+  <div class="card-title" style="color:var(--candle)">Banalita zla</div>
+  <p style="margin-bottom:0"><strong>Jak se lidé stávají vrahy?</strong> Engelchen není narozený zločinec. Je to obyčejný člověk, kterému systém dovolil nebo přikázal vraždit. Mňačko ukazuje, že <strong>fašismus nedělá vrahy z příšer, ale z obyčejných lidí</strong> — a to je nejděsivější.</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sepia)">Paměť</div>
+  <p style="margin-bottom:0"><strong>Povinnost nezapomenout.</strong> Mrtví nemohou mluvit — ti, kteří přežili, mají povinnost svědčit. Mňačko sám jako účastník SNP cítil tuto povinnost. Dílo je formou kolektivní vzpomínky.</p>
+</div>
+
+<h3>Poselství díla</h3>
+
+<div class="document">NIKDY NEZAPOMENOUT.
+
+Varování před fašismem.
+Zachování paměti obětí.
+Odpovědnost svědčit o hrůzách.
+
+Aby se to neopakovalo.
+<span class="document-source">Duch díla · Mňačkova výzva</span></div>
+</section>
+
+<div class="memorial-divider">
+  <span class="memorial-divider-cross">☩ ☩ ☩</span>
+</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--blood)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Válka mění lidi v bestie.</strong> Musíme pamatovat hrůzy, aby se neopakovaly. <strong>Fašismus ničí lidskost.</strong> Odpor proti zlu je morální povinností. Zlo má často tvář obyčejného člověka — a to je nejděsivější. Pomsta nás udělá stejnými jako naši nepřátelé — jen spravedlnost a paměť jsou správnou odpovědí.</p>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Varování před extremismem</strong> — stále aktuální</li>
+    <li>Důležitost <strong>historické paměti</strong></li>
+    <li>Téma <strong>kolektivní viny a odpovědnosti</strong></li>
+    <li>Jak se obyčejní lidé stávají pachateli</li>
+    <li>Nedůvěra k propagandě a ideologii</li>
+    <li>Nebezpečí, když „pořádek" znamená genocidu</li>
+  </ul>
+</div>
+
+<h3>Literární hodnoty díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Nejdůležitější slovenská válečná próza</h4>
+    <p>Vrchol slovenské poválečné literatury o SNP.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Svědectví</h4>
+    <p>O SNP a holocaustu na Slovensku.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--night)">
+    <h4 style="color:var(--night)">Psychologická analýza</h4>
+    <p>Zla — jak se rodí, jak funguje, jak se trestá.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mountain)">
+    <h4 style="color:var(--mountain)">Otázka kolektivní viny</h4>
+    <p>Jedna z prvních českosl. próz, která si ji klade bez zjednodušení.</p>
+  </div>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Mňačko jako účastník SNP</summary>
+  <p>Mňačko byl <strong>skutečný účastník SNP</strong> — bojoval jako partizán v horách. Měl osobní zkušenost s bojem, masakry, utrpením civilistů. Proto je dílo tak <strong>autentické</strong> — autor zná to, o čem píše. Některé postavy a události jsou přímo z jeho života.</p>
+</details>
+<details>
+  <summary>Filmová adaptace 1963</summary>
+  <p><strong>Slovenský film z roku 1963</strong> natočili režiséři <strong>Ján Kadár a Elmar Klos</strong> — stejná dvojice, která později získala <strong>Oscara za film Obchod na korze</strong> (1965). Film <em>Smrt si říká Engelchen</em> byl oceněn na festivalu v Moskvě. Výrazný, působivý, černobílý film — klasika československé nové vlny.</p>
+</details>
+<details>
+  <summary>Zákaz po roce 1968</summary>
+  <p>Po <strong>sovětské invazi v roce 1968</strong> Mňačko emigroval do Rakouska a Izraele. Byl <strong>zbaven občanství</strong> a jeho knihy byly v normalizačním Československu <strong>zakázány</strong>. Kniha <em>Smrt si říká Engelchen</em> byla oficiálně nedostupná, ačkoli tematicky nebyla politicky problematická — politický problém byl autor. <strong>Rehabilitována až po roce 1989</strong>.</p>
+</details>
+<details>
+  <summary>Povinná četba</summary>
+  <p>Dílo je dnes <strong>povinnou četbou na slovenských středních školách</strong> jako klíčové dílo slovenské poválečné literatury a jako memoriál obětem nacismu a SNP.</p>
+</details>
+<details>
+  <summary>Slovenské vesnice masakrů</summary>
+  <p><strong>Ostrý Grúň (21. 1. 1945)</strong> — 62 obětí, vypálená vesnice. <strong>Kľak</strong> — 84 obětí. <strong>Kalište</strong> — 64 obětí, vypálená. <strong>Tokajík</strong> — 32 obětí. Tyto masakry spáchaly jednotky <strong>SS Edelweiss</strong> a slovenské protipartyzánské jednotky. Všechny jsou dnes památníky. Mňačko je zná — píše o nich.</p>
+</details>
+
+<div class="document" style="margin-top:40px">„Musíme pamatovat. Ne pro pomstu, ale proto, aby se to neopakovalo."
+<span class="document-source">Ladislav Mňačko · Poselství díla</span></div>
+</section>
+
+<div class="memorial-divider" style="margin-top:50px">
+  <span class="memorial-divider-cross">☩ ☩ ☩</span>
+</div>
+
+</div>
+</body>
+</html>

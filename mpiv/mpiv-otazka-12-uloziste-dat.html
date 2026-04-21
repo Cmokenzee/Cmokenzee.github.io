@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 12: Zařízení pro ukládání dat</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8}
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+  .hero{background:linear-gradient(135deg,#0f1117 0%,#2e1a2e 40%,#0f2e1a 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(244,114,182,.07) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(52,211,153,.06) 0%,transparent 50%);pointer-events:none}
+  .hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-7);margin-bottom:16px;position:relative}
+  .hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+  .hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+  .container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+  .toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px}
+  .toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+  .toc li::before{content:counter(toc,decimal-leading-zero)' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+  .toc a{color:var(--text);text-decoration:none;transition:color .2s}.toc a:hover{color:var(--accent-8)}
+  .section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+  .section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+  h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+  .card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+  .card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+  .card.purple{border-left:3px solid var(--accent-2);background:rgba(167,139,250,.04)}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+  ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(96,165,250,.1);color:var(--accent-1);padding:2px 6px;border-radius:4px}
+  strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+  .compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+  .compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+  .device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
+  .device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+  .device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+  .steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}.step:last-child{border-bottom:none}
+  .step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--accent-3);min-width:24px;padding-top:2px}
+  .step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+  details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+  details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-8);transition:transform .2s}
+  details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+  .cli{background:#0d0f14;border:1px solid var(--border);border-radius:8px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;margin:14px 0;overflow-x:auto;color:var(--text-muted)}
+  .cli .comment{color:#4b5563}.cli .kw{color:var(--accent-4)}.cli .val{color:var(--accent-6)}.cli .reg{color:var(--accent-1)}.cli .cmd{color:var(--accent-3)}
+  .formula{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:14px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;color:var(--accent-1);font-weight:600}
+  .formula .f-small{font-size:11px;color:var(--text-muted);font-weight:400;margin-top:6px}
+  /* NAND cell bars */
+  .nand-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+  .nand-card{border-radius:8px;padding:14px 10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .nand-card .nc-bits{font-size:22px;font-weight:700;display:block;margin-bottom:2px}
+  .nand-card .nc-pe{font-size:9px;opacity:.7;margin-top:4px}
+  /* Speed bars */
+  .speed-bars{margin:16px 0}.speed-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .sb-label{min-width:110px;color:var(--text-muted);font-size:11px}
+  .sb-fill{height:22px;border-radius:4px;display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:600}
+  .sb-value{min-width:90px;text-align:right;font-size:11px}
+  /* HDD structure visual */
+  .hdd-visual{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:11px;overflow-x:auto}
+  .hdd-label{font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:12px;text-align:center}
+  @media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.nand-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 12</div>
+  <h1>Zařízení pro ukládání dat</h1>
+  <p>HDD • SSD • NVMe • Flash NAND • SD karty • Wear Leveling • 3D NAND</p>
+</div>
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2><ol>
+  <li><a href="#hdd">HDD – magnetické disky</a></li>
+  <li><a href="#hdd-vykon">HDD – výkon a typy</a></li>
+  <li><a href="#ssd">SSD – Flash NAND typy</a></li>
+  <li><a href="#ssd-form">SSD – form factors a NVMe</a></li>
+  <li><a href="#wear">Wear Leveling a Garbage Collection</a></li>
+  <li><a href="#sd">SD karty – formáty a kapacity</a></li>
+  <li><a href="#sd-speed">SD karty – rychlosti a rozhraní</a></li>
+  <li><a href="#flash-nand">Flash paměti – NOR vs NAND</a></li>
+  <li><a href="#flash-ops">Flash – operace a struktura</a></li>
+  <li><a href="#flash-rel">Flash – ECC, retention, 3D NAND</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol></nav>
+
+<!-- 01 -->
+<section class="section" id="hdd">
+  <div class="section-header"><span class="section-num">01</span><h2>HDD – magnetické disky</h2></div>
+  <p>HDD ukládá data <strong>magneticky</strong> na rotující plotny (platters). Čtecí/zápisová hlava levituje nad povrchem (~3 nm!) a mění magnetickou orientaci.</p>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-6)">Fyzická struktura HDD</div>
+    <ul>
+      <li><strong>Platters</strong> (plotny) – hliníkové/skleněné disky s magnetickým povrchem</li>
+      <li><strong>Spindle</strong> – vřeteno otáčející platters (5400–15000 RPM)</li>
+      <li><strong>Read/Write heads</strong> – elektromagnety na actuator arm</li>
+      <li><strong>Actuator</strong> – pohybuje hlavami radiálně</li>
+      <li><strong>Controller</strong> – PCB s firmware, DRAM buffer cache</li>
+    </ul>
+  </div>
+
+  <div class="hdd-visual">
+    <div class="hdd-label">ORGANIZACE DAT NA HDD</div>
+    <div style="text-align:center;font-size:12px;line-height:2">
+      <span style="color:var(--accent-1)">Track</span><span style="color:var(--text-muted)"> = koncentrický kruh na platter (tisíce per platter)</span><br>
+      <span style="color:var(--accent-3)">Sector</span><span style="color:var(--text-muted)"> = nejmenší jednotka: tradičně 512 B, moderní </span><span style="color:var(--accent-3)">4096 B</span><span style="color:var(--text-muted)"> (4K native)</span><br>
+      <span style="color:var(--accent-4)">Cylinder</span><span style="color:var(--text-muted)"> = všechny tracks na STEJNÉM poloměru (bez pohybu hlavy → rychlé)</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="section" id="hdd-vykon">
+  <div class="section-header"><span class="section-num">02</span><h2>HDD – výkon a typy</h2></div>
+
+  <table class="compare-table">
+    <tr><th>RPM</th><th>Použití</th><th>Poznámka</th></tr>
+    <tr><td>5400</td><td>Laptop, NAS</td><td>Nízká spotřeba, tichý, pomalý</td></tr>
+    <tr><td><strong>7200</strong></td><td>Desktop standard</td><td>Dobrý kompromis</td></tr>
+    <tr><td>10000</td><td>High-performance</td><td>WD VelociRaptor (vzácné)</td></tr>
+    <tr><td>15000</td><td>Enterprise servery</td><td>Dnes nahrazeny SSD</td></tr>
+  </table>
+
+  <h3>Latence komponenty</h3>
+  <div class="card"><div class="card-title" style="color:var(--accent-5)">Total Access Time (7200 RPM)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num" style="color:var(--accent-5)">1</div><div class="step-content"><div class="step-label">Seek Time – pohyb hlavy na track</div><div class="step-desc">Typicky ~8–9 ms (average seek)</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-5)">2</div><div class="step-content"><div class="step-label">Rotational Latency – čekání na sektor</div><div class="step-desc">7200 RPM: 60/7200 = 8.33 ms per otáčka → průměr = ~4.17 ms</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-5)">3</div><div class="step-content"><div class="step-label">Transfer Time – přenos dat</div><div class="step-desc">Závisí na data rate (100–200 MB/s)</div></div></div>
+    </div>
+    <p style="margin-bottom:0;margin-top:12px"><strong>Total: ~12–15 ms</strong> pro náhodný přístup!</p>
+  </div>
+
+  <div class="formula">
+    Sequential: 100–200 MB/s &nbsp;│&nbsp; Random: 0.5–2 MB/s (VELMI POMALÉ!)
+  </div>
+
+  <h3>Typy HDD</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Desktop (3.5")</h4>
+      <p>1–20 TB, 7200 RPM, SATA III. Seagate BarraCuda, WD Blue.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">NAS / Enterprise</h4>
+      <p>24/7 provoz, vyšší MTBF, vibration tolerance. WD Red (NAS), Seagate IronWolf.</p>
+    </div>
+  </div>
+
+  <div class="card purple"><div class="card-title" style="color:var(--accent-2)">CMR vs SMR</div>
+    <ul>
+      <li><strong>CMR</strong> (Conventional) – tracks vedle sebe, rychlejší zápis</li>
+      <li><strong>SMR</strong> (Shingled) – tracks překrývají, vyšší density, ale <strong>zápis POMALÝ</strong> (přepisuje sousední). Vhodné pro archiv, NE pro NAS/databáze!</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="section" id="ssd">
+  <div class="section-header"><span class="section-num">03</span><h2>SSD – Flash NAND typy</h2></div>
+  <p><strong>SSD</strong> ukládá data v Flash NAND paměti – elektronicky, <strong>ŽÁDNÉ pohyblivé části</strong>. Data v floating-gate tranzistorech pomocí elektrického náboje.</p>
+
+  <h3>Typy NAND podle bitů per cell</h3>
+  <div class="nand-grid">
+    <div class="nand-card" style="background:rgba(52,211,153,.12);color:var(--accent-3)">
+      <span class="nc-bits">SLC</span>1 bit / cell<span class="nc-pe">~100 000 P/E</span>
+      <div style="font-size:9px;margin-top:4px;opacity:.6">Enterprise, cache</div>
+    </div>
+    <div class="nand-card" style="background:rgba(96,165,250,.12);color:var(--accent-1)">
+      <span class="nc-bits">MLC</span>2 bity / cell<span class="nc-pe">~10 000 P/E</span>
+      <div style="font-size:9px;margin-top:4px;opacity:.6">Střední tier</div>
+    </div>
+    <div class="nand-card" style="background:rgba(251,191,36,.12);color:var(--accent-4)">
+      <span class="nc-bits">TLC</span>3 bity / cell<span class="nc-pe">~3 000 P/E</span>
+      <div style="font-size:9px;margin-top:4px;opacity:.6">MAINSTREAM ✓</div>
+    </div>
+    <div class="nand-card" style="background:rgba(248,113,113,.12);color:var(--accent-5)">
+      <span class="nc-bits">QLC</span>4 bity / cell<span class="nc-pe">~1 000 P/E</span>
+      <div style="font-size:9px;margin-top:4px;opacity:.6">Budget, read-heavy</div>
+    </div>
+  </div>
+
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">P/E Cycles (Program/Erase)</div>
+    <p style="margin-bottom:0">Počet zápisů/vymazání které cell vydrží. NAND se <strong>opotřebovává!</strong> Více bitů per cell = více stavů = citlivější = méně P/E cycles. Proto SLC nejodolnější a QLC nejméně.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="section" id="ssd-form">
+  <div class="section-header"><span class="section-num">04</span><h2>SSD – form factors a NVMe</h2></div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">2.5" SATA SSD</h4>
+      <p>Jako 2.5" HDD. SATA III = <strong>~550 MB/s</strong> max. Nejlevnější SSD. Samsung 870 EVO, Crucial MX500.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">M.2 NVMe SSD</h4>
+      <p>Malá karta (22×80 mm) + NVMe přes PCIe. <strong>Nejrychlejší!</strong> Samsung 980 Pro, Crucial T700.</p>
+    </div>
+  </div>
+
+  <h3>NVMe rychlosti</h3>
+  <div class="speed-bars">
+    <div class="speed-bar"><span class="sb-label">SATA III</span><div class="sb-fill" style="width:5%;background:rgba(107,114,128,.3);color:var(--text-muted)"></div><span class="sb-value" style="color:var(--text-muted)">~550 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">NVMe PCIe 3.0</span><div class="sb-fill" style="width:25%;background:rgba(96,165,250,.3);color:var(--accent-1)">3.0</div><span class="sb-value" style="color:var(--accent-1)">~3 500 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">NVMe PCIe 4.0</span><div class="sb-fill" style="width:50%;background:rgba(52,211,153,.3);color:var(--accent-3)">PCIe 4.0</div><span class="sb-value" style="color:var(--accent-3)">~7 000 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">NVMe PCIe 5.0</span><div class="sb-fill" style="width:100%;background:rgba(251,191,36,.3);color:var(--accent-4)">PCIe 5.0</div><span class="sb-value" style="color:var(--accent-4)">~14 000 MB/s</span></div>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Co je NVMe?</div>
+    <p>Moderní protokol navržený <strong>SPECIFICKY pro SSD</strong> (ne legacy SATA z HDD éry). Přes PCIe bus → nízká latence (~10–20 μs vs ~100 μs SATA), až <strong>64 000 command queues!</strong></p>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-2)">SSD Controller a DRAM cache</div>
+    <ul>
+      <li><strong>Controller</strong> = „mozek" SSD. Řídí wear leveling, GC, ECC, encryption (Samsung Elpis, Phison E18)</li>
+      <li><strong>DRAM cache</strong> = buffer pro mapping table (FTL). Zrychluje random I/O</li>
+      <li><strong>DRAM-less SSD</strong> = levnější, ale pomalejší random performance</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="section" id="wear">
+  <div class="section-header"><span class="section-num">05</span><h2>Wear Leveling a Garbage Collection</h2></div>
+
+  <h3>Wear Leveling</h3>
+  <p><strong>Problém:</strong> Flash má omezené P/E cycles. Kdyby OS psal stále na stejné bloky → předčasné selhání.</p>
+  <p><strong>Řešení:</strong> SSD kontrolér <strong>rovnoměrně distribuuje</strong> zápisy napříč všemi bloky.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Dynamic Wear Leveling</h4>
+      <p>Nová data píše do bloků s <strong>nejnižším</strong> počtem P/E cycles.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Static Wear Leveling</h4>
+      <p>Periodicky <strong>přesouvá statická data</strong> (málokdy měněná) z mladých bloků do starých → uvolní mladé pro nová data.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <h3>Garbage Collection</h3>
+
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Problém: NAND nemůže přepsat in-place!</div>
+    <p style="margin-bottom:0">Flash musí <strong>VYMAZAT celý BLOK</strong> (128–256 KB) před zápisem. OS chce přepsat 4 KB → SSD čte celý blok, změní 4 KB, vymaže, zapíše zpět. <strong>Write amplification!</strong></p>
+  </div>
+
+  <div class="card"><div class="card-title" style="color:var(--accent-1)">Garbage Collection proces</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">SSD označí staré stránky jako INVALID</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Blok obsahuje mix platných + invalidních stránek</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">GC: přesun platných stránek do jiného bloku</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Vymazání celého bloku (nyní prázdný)</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Blok připraven pro nová data</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">TRIM command</div>
+    <p style="margin-bottom:0">OS říká SSD které bloky jsou smazané (soubor deleted) → SSD může okamžitě označit jako invalid. Windows/Linux/macOS podporují TRIM. <strong>Udržuje výkon SSD dlouhodobě!</strong></p>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="section" id="sd">
+  <div class="section-header"><span class="section-num">06</span><h2>SD karty – formáty a kapacity</h2></div>
+  <p><strong>SD</strong> (Secure Digital) = Flash paměťové karty pro portable zařízení. Standardizováno SD Association.</p>
+
+  <h3>Form Factors</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">SD (Standard)</h4>
+      <p>32 × 24 × 2.1 mm. Kamery, audio rekordéry.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">microSD</h4>
+      <p>15 × 11 × 1.0 mm. <strong>Nejběžnější.</strong> Smartphones, drones, Raspberry Pi, dashcams.</p>
+    </div>
+  </div>
+
+  <h3>Kapacitní standardy</h3>
+  <table class="compare-table">
+    <tr><th>Standard</th><th>Kapacita</th><th>Filesystem</th><th>Stav</th></tr>
+    <tr><td style="color:var(--text-muted)">SDSC</td><td>Až 2 GB</td><td>FAT16</td><td>Zastaralé</td></tr>
+    <tr><td><strong>SDHC</strong></td><td>4–32 GB</td><td>FAT32</td><td>Běžné</td></tr>
+    <tr><td><strong style="color:var(--accent-3)">SDXC</strong></td><td>64 GB – 2 TB</td><td>exFAT</td><td><strong>Současný standard</strong></td></tr>
+    <tr><td>SDUC</td><td>2–128 TB</td><td>exFAT</td><td>Nové (2018), vzácné</td></tr>
+  </table>
+</section>
+
+<!-- 07 -->
+<section class="section" id="sd-speed">
+  <div class="section-header"><span class="section-num">07</span><h2>SD karty – rychlosti a rozhraní</h2></div>
+
+  <h3>Speed Class Ratings</h3>
+  <table class="compare-table">
+    <tr><th>Class</th><th>Min. rychlost</th><th>Použití</th></tr>
+    <tr><td><strong>C10</strong></td><td>10 MB/s</td><td>HD video</td></tr>
+    <tr><td><strong>U1</strong> (UHS)</td><td>10 MB/s</td><td>Full HD video</td></tr>
+    <tr><td><strong>U3</strong> (UHS)</td><td>30 MB/s</td><td>4K video</td></tr>
+    <tr><td><strong>V30</strong></td><td>30 MB/s</td><td>4K video</td></tr>
+    <tr><td><strong>V60</strong></td><td>60 MB/s</td><td>8K video</td></tr>
+    <tr><td><strong>V90</strong></td><td>90 MB/s</td><td>8K high bitrate</td></tr>
+    <tr><td><strong>A1</strong></td><td>1500 IOPS read</td><td>Aplikace na mobilu</td></tr>
+    <tr><td><strong>A2</strong></td><td>4000 IOPS read</td><td>Aplikace na mobilu (lepší)</td></tr>
+  </table>
+
+  <h3>Komunikační rozhraní</h3>
+  <div class="speed-bars">
+    <div class="speed-bar"><span class="sb-label">SD High Speed</span><div class="sb-fill" style="width:3%;background:rgba(107,114,128,.3);color:var(--text-muted)"></div><span class="sb-value" style="color:var(--text-muted)">25 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">UHS-I</span><div class="sb-fill" style="width:10%;background:rgba(96,165,250,.3);color:var(--accent-1)">UHS-I</div><span class="sb-value" style="color:var(--accent-1)">104 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">UHS-II</span><div class="sb-fill" style="width:30%;background:rgba(52,211,153,.3);color:var(--accent-3)">UHS-II</div><span class="sb-value" style="color:var(--accent-3)">312 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">UHS-III</span><div class="sb-fill" style="width:60%;background:rgba(251,191,36,.3);color:var(--accent-4)">UHS-III</div><span class="sb-value" style="color:var(--accent-4)">624 MB/s</span></div>
+    <div class="speed-bar"><span class="sb-label">SD Express</span><div class="sb-fill" style="width:100%;background:rgba(167,139,250,.3);color:var(--accent-2)">SD Express (PCIe + NVMe!)</div><span class="sb-value" style="color:var(--accent-2)">~2 000 MB/s</span></div>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">SPI Mode pro embedded</div>
+    <p>SD karty podporují <strong>SPI protokol</strong> – pomalejší (~2–25 MB/s), ale jednodušší. Jen 4 vodiče (MOSI, MISO, SCK, CS). Používá se v <strong>Arduino, ESP32</strong> – žádný speciální SD kontrolér potřebný.</p>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="section" id="flash-nand">
+  <div class="section-header"><span class="section-num">08</span><h2>Flash paměti – NOR vs NAND</h2></div>
+  <p><strong>Flash</strong> = non-volatilní paměť založená na floating-gate tranzistorech. Elektricky programovatelná a mazatelná. Mazání po <strong>BLOCÍCH</strong> (ne bytech) → rychlejší, vyšší density než EEPROM.</p>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th style="color:var(--accent-6)">NOR Flash</th><th style="color:var(--accent-1)">NAND Flash</th></tr>
+    <tr><td>Přístup</td><td><strong>Random</strong> (byte-level čtení)</td><td>Block/page (sekvenční)</td></tr>
+    <tr><td>Čtení</td><td style="color:var(--accent-3)">Rychlé</td><td>Rychlé</td></tr>
+    <tr><td>Zápis</td><td style="color:var(--accent-5)">Pomalý</td><td style="color:var(--accent-3)"><strong>Rychlejší</strong></td></tr>
+    <tr><td>XIP</td><td style="color:var(--accent-3)"><strong>ANO</strong> (Execute-in-Place)</td><td style="color:var(--accent-5)">NE (kopie do RAM)</td></tr>
+    <tr><td>Density</td><td>Nižší</td><td style="color:var(--accent-3)"><strong>Vyšší</strong></td></tr>
+    <tr><td>Cena</td><td style="color:var(--accent-5)">Dražší</td><td style="color:var(--accent-3)"><strong>Levnější</strong></td></tr>
+    <tr><td>Použití</td><td>BIOS/UEFI, bootloaders</td><td><strong>SSD, SD, USB disky</strong></td></tr>
+  </table>
+
+  <div class="card highlight"><div class="card-title" style="color:var(--accent-8)">XIP (Execute-in-Place)</div>
+    <p style="margin-bottom:0">NOR Flash umožňuje CPU spouštět kód <strong>přímo z paměti</strong> bez kopírování do RAM. Proto se používá pro BIOS/firmware. NAND toto neumí.</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="section" id="flash-ops">
+  <div class="section-header"><span class="section-num">09</span><h2>Flash – operace a struktura</h2></div>
+
+  <h3>NAND Flash hierarchie</h3>
+  <div class="formula">
+    Cell → Page → Block → Plane → Die → Package
+    <div class="f-small">Page (4–16 KB) = READ/WRITE jednotka │ Block (128–256 KB) = ERASE jednotka</div>
+  </div>
+
+  <h3>Flash operace</h3>
+  <table class="compare-table">
+    <tr><th>Operace</th><th>Rychlost</th><th>Granularita</th><th>Poznámka</th></tr>
+    <tr><td><strong>READ</strong></td><td style="color:var(--accent-3)">~25–100 μs</td><td>Page</td><td>Rychlé</td></tr>
+    <tr><td><strong>PROGRAM</strong> (Write)</td><td style="color:var(--accent-4)">~200–1000 μs</td><td>Page</td><td>Jen 1→0 (ne opačně!)</td></tr>
+    <tr><td><strong>ERASE</strong></td><td style="color:var(--accent-5)"><strong>~1–5 ms</strong></td><td>Block</td><td>POMALÉ! Nastaví vše na 1</td></tr>
+  </table>
+
+  <div class="card warn"><div class="card-title" style="color:var(--accent-5)">Proč nelze přepsat in-place</div>
+    <p>Flash může měnit jen <strong>1→0</strong> (program). Pro <strong>0→1</strong> nutný ERASE celého bloku!</p>
+    <p style="margin-bottom:0">→ Proto je nutný <strong>wear leveling</strong>, <strong>garbage collection</strong> a <strong>TRIM</strong>.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="section" id="flash-rel">
+  <div class="section-header"><span class="section-num">10</span><h2>Flash – ECC, retention, 3D NAND</h2></div>
+
+  <h3>Error Correction (ECC)</h3>
+  <p>Flash NAND má <strong>error rate</strong> – bit flips, read disturb, retention loss. Zejména u TLC/QLC (více stavů = citlivější).</p>
+  <table class="compare-table">
+    <tr><th>Algoritmus</th><th>Síla</th><th>Použití</th></tr>
+    <tr><td>Hamming Code</td><td>Opraví 1-bit error</td><td>Starší SSD</td></tr>
+    <tr><td><strong>BCH</strong></td><td>Multi-bit korekce</td><td>Běžné v SSD</td></tr>
+    <tr><td><strong>LDPC</strong></td><td>Silnější, moderní</td><td>TLC/QLC SSD</td></tr>
+  </table>
+  <p>ECC overhead: <strong>7–15% kapacity</strong>. SSD firmware transparentně opravuje chyby.</p>
+
+  <div class="divider"></div>
+  <h3>Data Retention</h3>
+  <p>Elektrony v floating-gate <strong>postupně unikají</strong> (tunelování). Data zmizí po letech bez napájení.</p>
+  <table class="compare-table">
+    <tr><th>Typ NAND</th><th>Retention</th></tr>
+    <tr><td>SLC</td><td style="color:var(--accent-3)">10+ let</td></tr>
+    <tr><td>MLC</td><td>5–10 let</td></tr>
+    <tr><td>TLC</td><td style="color:var(--accent-4)">3–5 let</td></tr>
+    <tr><td>QLC</td><td style="color:var(--accent-5)"><strong>1–3 roky</strong></td></tr>
+  </table>
+  <p>Pro dlouhodobý archiv (&gt;10 let) → lepší HDD nebo pásky!</p>
+
+  <div class="divider"></div>
+  <h3>3D NAND (V-NAND)</h3>
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Vertikální stacking</div>
+    <p><strong>Problém 2D NAND:</strong> density limit – cells interferují, reliability klesá.</p>
+    <p><strong>Řešení:</strong> NAND cells stackovány <strong>VERTIKÁLNĚ – až 200+ vrstev!</strong></p>
+    <ul>
+      <li>Vyšší density bez zmenšování cell size</li>
+      <li>Lepší reliability, nižší interference</li>
+      <li>Samsung V-NAND, Micron 3D NAND</li>
+    </ul>
+    <p style="margin-bottom:0"><strong>Současný standard</strong> – všechny moderní SSD používají 3D NAND.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="section" id="summary">
+  <div class="section-header"><span class="section-num">11</span><h2>Shrnutí klíčových bodů</h2></div>
+
+  <div class="card key"><div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">HDD (MAGNETICKÉ)</p>
+    <ul>
+      <li>Rotující platters, čtecí hlavy. Organizace: <strong>track → sector (4K) → cylinder</strong></li>
+      <li>RPM: 5400 (laptop), <strong>7200 (desktop)</strong>, 15000 (enterprise)</li>
+      <li>Latence: seek ~8 ms + rotational ~4 ms = <strong>~12–15 ms</strong> total</li>
+      <li>Sequential: 100–200 MB/s, <strong>Random: 0.5–2 MB/s</strong> (velmi pomalé!)</li>
+      <li>Kapacita: až 20 TB, levné (<strong>$0.015/GB</strong>). CMR (rychlé) vs SMR (pomalý zápis)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">SSD (FLASH NAND)</p>
+    <ul>
+      <li>NAND typy: <strong>SLC</strong> (100k P/E), MLC (10k), <strong>TLC</strong> (3k, mainstream), QLC (1k, budget)</li>
+      <li>Form: 2.5" SATA (~550 MB/s), <strong>M.2 NVMe PCIe 4.0 (~7 GB/s!)</strong>, PCIe 5.0 (~14 GB/s)</li>
+      <li>Latence: <strong>10–100 μs</strong> (100× rychlejší než HDD)</li>
+      <li><strong>Wear leveling:</strong> dynamic (nejmladší blok) + static (přesun starých dat)</li>
+      <li><strong>Garbage collection:</strong> přesun valid stránek, erase bloků. <strong>TRIM</strong> = OS info o deleted</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">SD KARTY</p>
+    <ul>
+      <li>Formáty: SD (32×24mm), <strong>microSD</strong> (15×11mm, nejběžnější)</li>
+      <li>Kapacita: SDHC (4–32 GB), <strong>SDXC</strong> (64 GB–2 TB), SDUC (2–128 TB)</li>
+      <li>Speed: C10 (10 MB/s), U3/V30 (30 MB/s), V90 (90 MB/s), A2 (4000 IOPS)</li>
+      <li>Rozhraní: UHS-I (104 MB/s), UHS-II (312 MB/s), <strong>SD Express PCIe (~2 GB/s!)</strong></li>
+      <li><strong>SPI mode</strong> pro embedded (Arduino, ESP32) – 4 vodiče, jednoduchý</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">FLASH PAMĚTI</p>
+    <ul>
+      <li><strong>NOR:</strong> random access, XIP (execute-in-place), BIOS/firmware</li>
+      <li><strong>NAND:</strong> block access, vysoká density, SSD/SD/USB</li>
+      <li>Struktura: <strong>Page</strong> (4–16 KB, read/write) → <strong>Block</strong> (128–256 KB, erase)</li>
+      <li>Nelze přepsat in-place: 1→0 OK, 0→1 = <strong>ERASE celého bloku!</strong></li>
+      <li>ECC: BCH/LDPC, 7–15% overhead. Retention: SLC 10+ let, QLC 1–3 roky</li>
+      <li><strong>3D NAND:</strong> vertikální stacking 200+ vrstev = standard moderních SSD</li>
+    </ul>
+  </div>
+
+  <div class="card green"><div class="card-title" style="color:var(--accent-3)">Zlatá pravidla</div>
+    <ul>
+      <li><strong>HDD</strong> = velká kapacita, levné, ale pomalé (12–15 ms). Pro archiv a bulk storage</li>
+      <li><strong>SSD NVMe PCIe 4.0</strong> = 7 GB/s! Pro OS, gaming, profesionální práci</li>
+      <li><strong>Flash NAND</strong> erase po blocích (ne in-place!) → wear leveling + GC nutné</li>
+      <li><strong>TLC</strong> = mainstream (3k P/E), QLC = budget (1k P/E). 3D NAND = standard</li>
+      <li><strong>SD Express</strong> PCIe = budoucnost karet (~2 GB/s). SPI mode pro embedded</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

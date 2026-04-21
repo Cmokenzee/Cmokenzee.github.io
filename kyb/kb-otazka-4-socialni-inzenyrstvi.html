@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 4: Techniky sociálního inženýrství</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#2e1f0f 40%,#2e0f28 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(251,146,60,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(232,121,249,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-6);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--kb);background:rgba(232,121,249,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* SE technique card */
+.se-card{position:relative;overflow:hidden;border-radius:10px;padding:18px 22px;margin:12px 0;background:var(--bg-card);border:1px solid var(--border)}
+.se-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.se-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.se-icon{font-size:20px}.se-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+.se-tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;margin-left:auto}
+.se-example{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);border-radius:6px;padding:10px 14px;margin:8px 0;font-size:13px;font-style:italic;color:var(--accent-4)}
+.se-example::before{content:'💬 ';font-style:normal}
+/* Phishing pyramid */
+.phish-pyramid{display:flex;flex-direction:column;align-items:center;gap:6px;margin:16px 0}
+.phish-level{text-align:center;padding:12px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+/* Stop Think Verify */
+.stv{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap;justify-content:center}
+.stv-step{text-align:center;padding:20px 16px;border-radius:10px;min-width:120px;flex:1;max-width:200px}
+.stv-step .stv-icon{font-size:28px;display:block;margin-bottom:8px}
+.stv-step .stv-name{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:block}
+.stv-step .stv-desc{font-size:11px;margin-top:4px;opacity:.8}
+/* Emotions grid */
+.emo-grid{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;justify-content:center}
+.emo-item{padding:10px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-align:center;min-width:90px}
+.emo-item .ei-icon{font-size:20px;display:block;margin-bottom:4px}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.stv{flex-direction:column;align-items:center}.phish-pyramid{align-items:stretch}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 4</div>
+  <h1>Techniky sociálního inženýrství</h1>
+  <p>Pretexting • Phishing • Vishing • Tailgating • Pharming • Shoulder Surfing • Prevence</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#intro">Co je sociální inženýrství</a></li>
+  <li><a href="#pretexting">Pretexting, Quid pro Quo</a></li>
+  <li><a href="#physical">Piggybacking, Tailgating, Shoulder Surfing</a></li>
+  <li><a href="#phishing">Phishing</a></li>
+  <li><a href="#spear">Spear Phishing a Whaling</a></li>
+  <li><a href="#vishing">Vishing, Smishing, Pharming</a></li>
+  <li><a href="#other">Dumpster Diving, Impersonation, Hoaxes</a></li>
+  <li><a href="#prevention">Prevence</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+<div class="section-header"><span class="section-num">01</span><h2>Co je sociální inženýrství</h2></div>
+
+<p><strong>Sociální inženýrství</strong> = manipulace s lidmi za účelem získání důvěrných informací nebo přístupu. Místo útoku na technologii útočník útočí na <strong>ČLOVĚKA – nejslabší článek</strong>.</p>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Proč je to tak efektivní?</div>
+  <p style="margin-bottom:0">Lidé jsou důvěřiví a chtějí pomoci. Bojí se autority. Jednají pod tlakem času. <strong>Technické řešení nepomůže proti manipulaci.</strong></p>
+</div>
+
+<h3>Emoce které útočníci zneužívají</h3>
+<div class="emo-grid">
+  <div class="emo-item" style="background:rgba(248,113,113,.1);color:var(--accent-5)"><span class="ei-icon">😨</span>Strach</div>
+  <div class="emo-item" style="background:rgba(251,146,60,.1);color:var(--accent-6)"><span class="ei-icon">⏰</span>Naléhavost</div>
+  <div class="emo-item" style="background:rgba(167,139,250,.1);color:var(--accent-2)"><span class="ei-icon">👔</span>Autorita</div>
+  <div class="emo-item" style="background:rgba(96,165,250,.1);color:var(--accent-1)"><span class="ei-icon">🤝</span>Důvěra</div>
+  <div class="emo-item" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="ei-icon">🎁</span>Chamtivost</div>
+  <div class="emo-item" style="background:rgba(244,114,182,.1);color:var(--accent-7)"><span class="ei-icon">❤️</span>Ochota pomoci</div>
+</div>
+</section>
+
+<!-- 02 PRETEXTING -->
+<section class="section" id="pretexting">
+<div class="section-header"><span class="section-num">02</span><h2>Pretexting, Quid pro Quo</h2></div>
+
+<div class="se-card" style="border-color:rgba(167,139,250,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-2)"></div>
+  <div class="se-header"><span class="se-icon">🎭</span><span class="se-name" style="color:var(--accent-2)">Pretexting</span><span class="se-tag" style="background:rgba(167,139,250,.15);color:var(--accent-2)">MANIPULACE</span></div>
+  <p>Vytvoření vymyšleného scénáře (pretext = záminka) pro získání důvěry. Útočník se <strong>vydává za někoho jiného</strong>.</p>
+  <div class="se-example">"Dobrý den, tady IT podpora. Provádíme údržbu systému, potřebuji vaše heslo k ověření účtu."</div>
+  <div class="se-example">"Jsme z HR oddělení, aktualizujeme databázi. Můžete potvrdit své rodné číslo?"</div>
+</div>
+
+<div class="se-card" style="border-color:rgba(251,191,36,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-4)"></div>
+  <div class="se-header"><span class="se-icon">🔄</span><span class="se-name" style="color:var(--accent-4)">Quid pro Quo</span><span class="se-tag" style="background:rgba(251,191,36,.15);color:var(--accent-4)">VÝMĚNA</span></div>
+  <p>Útočník nabídne službu <strong>výměnou za informace</strong>. „Pomůžu ti, ty mi dáš…"</p>
+  <div class="se-example">"IT support. Nainstaluju vám nový rychlejší software, jen potřebuji vaše přihlašovací údaje."</div>
+</div>
+</section>
+
+<!-- 03 PHYSICAL -->
+<section class="section" id="physical">
+<div class="section-header"><span class="section-num">03</span><h2>Piggybacking, Tailgating, Shoulder Surfing</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Piggybacking 🚶‍♂️🚶</h4>
+    <p>Vstup do zabezpečeného prostoru <strong>S VĚDOMÍM</strong> oprávněné osoby. „Zapomněl jsem kartu, můžeš mě vpustit?" „Mám plné ruce balíků, podrž dveře."</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Tailgating 🚶‍♂️💨</h4>
+    <p>Vstup <strong>BEZ VĚDOMÍ</strong> oprávněné osoby – prošmykne se za ní dveřmi. Obrana: turniket, mantrap, rozhlédnutí se.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Shoulder Surfing 👀</h4>
+    <p>Pozorování <strong>přes rameno</strong>. Bankomat (PIN), kavárna (notebook), kancelář (open space). Obrana: <strong>privacy screen</strong>, zakrytí klávesnice.</p>
+  </div>
+</div>
+</section>
+
+<!-- 04 PHISHING -->
+<section class="section" id="phishing">
+<div class="section-header"><span class="section-num">04</span><h2>Phishing</h2></div>
+
+<div class="se-card" style="border-color:rgba(248,113,113,.4)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-5)"></div>
+  <div class="se-header"><span class="se-icon">🎣</span><span class="se-name" style="color:var(--accent-5)">Phishing</span><span class="se-tag" style="background:rgba(248,113,113,.2);color:var(--accent-5)">NEJČASTĚJŠÍ</span></div>
+  <p><strong>Falešné emaily</strong> maskované jako legitimní komunikace za účelem krádeže údajů. Masový, obecný → posláno tisícům lidí.</p>
+  <div class="se-example">"Váš účet v České spořitelně byl ZABLOKOVÁN! Ověřte se kliknutím ZDE do 24 hodin!"</div>
+  <div class="se-example">"Balíček čeká na vyzvednutí. Sledujte zásilku: bit.ly/xyz123"</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Jak rozpoznat phishing</div>
+  <ul>
+    <li><strong>Špatná gramatika</strong> a překlepy</li>
+    <li><strong>Obecné oslovení</strong> („Vážený zákazníku" místo jména)</li>
+    <li><strong>Podezřelý odesílatel</strong> (banka-info@gmail.com místo @csob.cz)</li>
+    <li><strong>Naléhavost a strach</strong> („OKAMŽITĚ!", „Zablokováno!")</li>
+    <li><strong>Podezřelé URL</strong> – najeď myší na link → kontroluj kam vede</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 SPEAR + WHALING -->
+<section class="section" id="spear">
+<div class="section-header"><span class="section-num">05</span><h2>Spear Phishing a Whaling</h2></div>
+
+<!-- Phishing pyramid -->
+<div class="phish-pyramid">
+  <div class="phish-level" style="background:rgba(248,113,113,.15);color:var(--accent-5);width:100%">🎣 <strong>Phishing</strong> – masový, obecný email, tisíce obětí</div>
+  <div class="phish-level" style="background:rgba(251,146,60,.15);color:var(--accent-6);width:80%">🎯 <strong>Spear Phishing</strong> – cílený na konkrétní osobu, personalizovaný</div>
+  <div class="phish-level" style="background:rgba(251,191,36,.15);color:var(--accent-4);width:55%">🐋 <strong>Whaling</strong> – cílený na top management (CEO, CFO)</div>
+</div>
+
+<div class="se-card" style="border-color:rgba(251,146,60,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-6)"></div>
+  <div class="se-header"><span class="se-icon">🎯</span><span class="se-name" style="color:var(--accent-6)">Spear Phishing</span></div>
+  <p><strong>Cílený phishing</strong> na konkrétní osobu. Vysoce personalizovaný – útočník ví tvoje jméno, pozici, projekty (z LinkedIn, webu).</p>
+  <div class="se-example">"Ahoj Jano, tady Martin z projektového týmu. Podívej se na aktualizovaný rozpočet v příloze."</div>
+</div>
+
+<div class="se-card" style="border-color:rgba(251,191,36,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-4)"></div>
+  <div class="se-header"><span class="se-icon">🐋</span><span class="se-name" style="color:var(--accent-4)">Whaling (CEO Fraud)</span></div>
+  <p>Spear phishing na <strong>„velké ryby"</strong> – CEO, CFO. Také Business Email Compromise (BEC).</p>
+  <div class="se-example">"Od: CEO. Ahoj Petro (CFO), potřebuji OKAMŽITĚ převést €500 000 na tento účet. Je to důvěrné, nikomu neříkej."</div>
+  <p style="margin-bottom:0;font-size:13px;color:var(--accent-5)"><strong>FACC (2016):</strong> Rakouská aerospace firma, CEO fraud → ztráta <strong>€50 milionů</strong>.</p>
+</div>
+</section>
+
+<!-- 06 VISHING -->
+<section class="section" id="vishing">
+<div class="section-header"><span class="section-num">06</span><h2>Vishing, Smishing, Pharming</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Vishing 📞 (Voice Phishing)</h4>
+    <p>Phishing přes <strong>telefonní hovor</strong>. Útočník se vydává za banku, tech support, policii. „Volám z banky, máte podezřelou transakci."</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Smishing 📱 (SMS Phishing)</h4>
+    <p>Phishing přes <strong>SMS</strong>. „Váš balíček čeká: sledujte bit.ly/abc123." Obrana: banka NIKDY nežádá PIN přes SMS!</p>
+  </div>
+</div>
+
+<div class="se-card" style="border-color:rgba(232,121,249,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--kb)"></div>
+  <div class="se-header"><span class="se-icon">🌐</span><span class="se-name" style="color:var(--kb)">Pharming</span><span class="se-tag" style="background:rgba(232,121,249,.15);color:var(--kb)">DNS MANIPULACE</span></div>
+  <p>Přesměrování z legitimní stránky na falešnou manipulací <strong>DNS</strong>. Zadáš správnou URL, ale skončíš na fake stránce.</p>
+  <div class="card highlight" style="margin-top:10px">
+    <p style="margin-bottom:0"><strong>Phishing</strong> = musíš kliknout na podvodný link. <strong>Pharming</strong> = nemusíš kliknout! DNS tě přesměruje automaticky.</p>
+  </div>
+</div>
+</section>
+
+<!-- 07 OTHER -->
+<section class="section" id="other">
+<div class="section-header"><span class="section-num">07</span><h2>Dumpster Diving, Impersonation, Hoaxes</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Dumpster Diving 🗑️</h4>
+    <p>Hledání citlivých informací <strong>v odpadcích</strong>. Vyřazené hard disky (data nesmazaná!), vytištěné dokumenty, post-it notes s hesly. Obrana: <strong>skartování</strong>, secure deletion.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Impersonation 🎭</h4>
+    <p>Vydávání se za <strong>někoho jiného</strong> pro fyzický přístup. Běžné role: technik, IT support, kurýr, úklidová služba, inspekce. Obrana: ověření identity, badge systém.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--text-muted)">
+    <h4 style="color:var(--text-muted)">Hoaxes (Podvrhy) ⚠️</h4>
+    <p>Falešné zprávy šířené emailem. „URGENTNÍ! Nový supervirus!", „Facebook bude placený!" Cíl: panika nebo zmatek. Obrana: ověřovat zdroje.</p>
+  </div>
+</div>
+</section>
+
+<!-- 08 PREVENTION -->
+<section class="section" id="prevention">
+<div class="section-header"><span class="section-num">08</span><h2>Prevence</h2></div>
+
+<h3>STOP – THINK – VERIFY</h3>
+<div class="stv">
+  <div class="stv-step" style="background:rgba(248,113,113,.12);color:var(--accent-5)">
+    <span class="stv-icon">🛑</span>
+    <span class="stv-name">STOP</span>
+    <span class="stv-desc">Zastav se. Nereaguj impulzivně.</span>
+  </div>
+  <div class="stv-step" style="background:rgba(251,191,36,.12);color:var(--accent-4)">
+    <span class="stv-icon">🤔</span>
+    <span class="stv-name">THINK</span>
+    <span class="stv-desc">Přemýšlej. Je to podezřelé?</span>
+  </div>
+  <div class="stv-step" style="background:rgba(52,211,153,.12);color:var(--accent-3)">
+    <span class="stv-icon">✅</span>
+    <span class="stv-name">VERIFY</span>
+    <span class="stv-desc">Ověř jiným kanálem.</span>
+  </div>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-2)">
+    <h4 style="color:var(--accent-2)">Technická opatření</h4>
+    <p>Email security (spam filtry, anti-phishing). <strong>MFA</strong> (multi-factor auth). Web filtering (blokování phishing sites). Physical security (badge, mantraps).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Organizační opatření</h4>
+    <p>Security policies (jasná pravidla). <strong>Dual authorization</strong> (velké transakce = 2 osoby). Verification procedures. Clean desk policy.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Školení</h4>
+    <p>Pravidelné Security Awareness Training. <strong>Phishing simulace</strong> (bez trestu!). Onboarding training pro nové zaměstnance.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Bezpečnostní kultura</h4>
+    <p>„See something, say something." Hlášení je ceněno (ne trestáno). Zpochybnění je OK – i když to říká ředitel. Management jde příkladem.</p>
+  </div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Praktické tipy</div>
+  <ul>
+    <li><strong>Najeď myší</strong> na link – kontroluj URL</li>
+    <li><strong>Nikdy</strong> neposílej hesla emailem</li>
+    <li><strong>Ověřuj žádosti</strong> jiným kanálem (zavolej na oficiální číslo)</li>
+    <li><strong>Win+L</strong> když odcházíš od PC</li>
+    <li><strong>Zapni MFA</strong> všude kde můžeš</li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">09</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">TECHNIKY</p>
+<ul>
+  <li><strong>Pretexting:</strong> vymyšlený scénář (fake IT support). <strong>Quid pro Quo:</strong> služba výměnou za info</li>
+  <li><strong>Piggybacking:</strong> vstup S vědomím (podrž dveře). <strong>Tailgating:</strong> vstup BEZ vědomí (prošmyknutí)</li>
+  <li><strong>Phishing 🎣:</strong> masový falešný email. <strong>Spear Phishing 🎯:</strong> cílený na osobu. <strong>Whaling 🐋:</strong> na CEO/CFO (BEC)</li>
+  <li><strong>Vishing:</strong> přes telefon. <strong>Smishing:</strong> přes SMS. <strong>Pharming:</strong> DNS manipulace (bez kliknutí!)</li>
+  <li><strong>Shoulder Surfing:</strong> přes rameno (PIN, heslo). <strong>Dumpster Diving:</strong> v odpadcích (dokumenty, disky)</li>
+  <li><strong>Impersonation:</strong> vydávání se za technika/kurýra. <strong>Hoaxes:</strong> falešné zprávy (panika)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PREVENCE</p>
+<ul>
+  <li><strong>STOP – THINK – VERIFY</strong> (zastav se, přemýšlej, ověř jiným kanálem)</li>
+  <li>Útočníci zneužívají: <strong>autoritu, naléhavost, strach, důvěru, chamtivost</strong></li>
+  <li><strong>MFA</strong> všude. Phishing simulace. Dual authorization pro velké transakce</li>
+  <li>Nikdy neposílej hesla emailem. Win+L při odchodu. Privacy screen</li>
+  <li><strong>95 % incidentů = lidský faktor.</strong> Školení je kritické!</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--kb);margin-bottom:8px">ZLATÉ PRAVIDLO</p>
+<ul>
+  <li>Pokud to vypadá podezřele nebo vytváří urgenci → <strong>STOP. Ověř jiným kanálem.</strong></li>
+  <li>Tvoje největší obrana je <strong>ZPOMALIT a OVĚŘIT</strong></li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

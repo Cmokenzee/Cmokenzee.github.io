@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Molière: Lakomec</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0a08;
+  --bg-card:#1a120e;
+  --bg-card-alt:#221812;
+  --border:#3a2a20;
+  --text:#d9c9b0;
+  --text-muted:#8a7560;
+  --heading:#f4e8d0;
+  --accent-1:#d4af37;     /* zlato */
+  --accent-2:#8b1e2d;     /* bordó */
+  --accent-3:#6b8e5a;     /* divadelní zeleň */
+  --accent-4:#c9a961;     /* starožitné zlato */
+  --accent-5:#a8324a;     /* rudá opona */
+  --accent-6:#b8762f;     /* skořicová */
+  --accent-7:#5e4a7a;     /* královská fialová */
+  --accent-8:#3d5a6b;     /* tlumená modř */
+  --gold:#d4af37;
+  --wine:#8b1e2d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(139,30,45,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(212,175,55,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — jako divadelní opona */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(15,10,8,0) 0%,rgba(15,10,8,.6) 100%),
+    linear-gradient(135deg,#1a0a0a 0%,#4a1520 45%,#2a1410 100%);
+  border-bottom:3px double var(--gold);
+  padding:80px 24px 70px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0,transparent 60px,
+      rgba(139,30,45,.08) 60px,rgba(139,30,45,.08) 62px),
+    radial-gradient(ellipse at 50% 100%,rgba(212,175,55,.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'⚜';
+  position:absolute;
+  font-size:200px;
+  color:rgba(212,175,55,.04);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;position:relative;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,6vw,56px);
+  color:var(--heading);
+  font-weight:900;line-height:1.1;
+  position:relative;
+  letter-spacing:1px;
+}
+.hero h1 em{
+  font-style:italic;
+  font-weight:400;
+  color:var(--gold);
+  display:block;
+  font-size:.5em;
+  letter-spacing:8px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.hero .author{
+  font-family:'Playfair Display',serif;
+  color:var(--accent-4);
+  margin-top:18px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:2px;
+  font-style:italic;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:14px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:1px;
+}
+.hero .ornament-top{
+  color:var(--gold);
+  font-size:24px;
+  margin-bottom:20px;
+  opacity:.6;
+  letter-spacing:12px;
+  position:relative;
+}
+
+.container{max-width:880px;margin:0 auto;padding:40px 22px 80px}
+
+/* OBSAH */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:2px solid var(--gold);
+  border-bottom:2px solid var(--gold);
+  padding:32px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before,.toc::after{
+  content:'❦';
+  position:absolute;
+  color:var(--gold);
+  font-size:18px;
+  top:-12px;
+  background:var(--bg);
+  padding:0 10px;
+}
+.toc::before{left:30px}
+.toc::after{right:30px}
+.toc h2{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;text-align:center;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,upper-roman) '. ';
+  font-family:'Playfair Display',serif;
+  color:var(--gold);
+  font-size:13px;
+  margin-right:6px;
+  font-style:italic;
+  font-weight:600;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--gold)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-1px;left:0;
+  width:80px;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.section-num{
+  font-family:'Playfair Display',serif;
+  font-size:32px;color:var(--gold);
+  font-style:italic;font-weight:400;
+  min-width:40px;opacity:.7;
+}
+.section-header h2{
+  font-family:'Playfair Display',serif;
+  font-size:28px;color:var(--heading);
+  font-weight:700;
+}
+
+h3{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:600;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:600;
+  color:var(--heading);margin:20px 0 10px;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--gold);background:rgba(212,175,55,.04)}
+.card.key{border-left:3px solid var(--accent-4);background:rgba(201,169,97,.05)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(168,50,74,.05)}
+.card.green{border-left:3px solid var(--accent-3);background:rgba(107,142,90,.05)}
+.card.purple{border-left:3px solid var(--accent-7);background:rgba(94,74,122,.05)}
+.card.wine{border-left:3px solid var(--wine);background:rgba(139,30,45,.06)}
+
+.card-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+
+ul{padding-left:24px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--gold)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(212,175,55,.1);
+  color:var(--gold);
+  padding:2px 7px;border-radius:3px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-4);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+.ornament{
+  text-align:center;
+  color:var(--gold);
+  font-size:20px;
+  margin:40px 0;
+  opacity:.5;
+  letter-spacing:24px;
+}
+.ornament.fleur::before{content:'⚜  ❦  ⚜'}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:16px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY — divadelní "plakát" */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--gold));
+}
+.character::after{
+  content:attr(data-mask);
+  position:absolute;
+  top:50%;right:20px;
+  transform:translateY(-50%);
+  font-size:70px;
+  opacity:.06;
+  pointer-events:none;
+}
+.character .char-name{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;
+}
+.character .char-name em{
+  font-size:16px;
+  color:var(--text-muted);
+  font-weight:400;
+  font-style:italic;
+  margin-left:8px;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--gold));
+  margin-bottom:14px;
+}
+
+/* CITACE — divadelní replika */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--gold);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Playfair Display',serif;
+  font-size:19px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.6;
+  position:relative;
+}
+.quote-block::before{
+  content:'«';
+  position:absolute;
+  top:-4px;left:10px;
+  font-size:40px;
+  color:var(--gold);
+  opacity:.4;
+}
+.quote-block::after{
+  content:'»';
+  position:absolute;
+  bottom:-20px;right:14px;
+  font-size:40px;
+  color:var(--gold);
+  opacity:.4;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* REPLIKA — charakter vs text */
+.replica{
+  margin:14px 0;
+  padding:14px 18px;
+  background:var(--bg-card-alt);
+  border-radius:4px;
+  border-left:2px solid var(--border);
+}
+.replica .speaker{
+  font-family:'Playfair Display',serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+.replica .line{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:15.5px;
+  line-height:1.7;
+}
+.replica .stage{
+  font-size:13px;
+  color:var(--text-muted);
+  font-style:italic;
+  margin-left:4px;
+}
+
+/* SCÉNA — pasáže z díla */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';position:absolute;
+  top:12px;right:12px;bottom:12px;left:12px;
+  border:1px solid rgba(212,175,55,.08);
+  pointer-events:none;
+  border-radius:2px;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  background:rgba(212,175,55,.08);
+  padding:5px 12px;border-radius:3px;
+  margin-bottom:16px;
+  border:1px solid rgba(212,175,55,.15);
+}
+.scene-title{
+  font-family:'Playfair Display',serif;
+  font-size:23px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Crimson Pro',serif;
+  font-size:15.5px;
+  font-style:italic;
+  color:var(--text);
+  margin:16px 0;
+  padding:14px 20px;
+  border-left:2px solid var(--gold);
+  background:rgba(212,175,55,.03);
+  line-height:1.75;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--accent-4)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(139,30,45,.05);
+  border-left:2px solid var(--wine);
+  border-radius:0 4px 4px 0;
+}
+.scene-meaning strong{color:var(--accent-5)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--gold);
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:4px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.trope-example{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:4px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--gold);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+/* KOMPOZIČNÍ PYRAMIDA — 5 jednání */
+.acts{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;margin:24px 0;
+}
+.act-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-top:3px solid var(--act-color,var(--gold));
+  border-radius:4px;
+  padding:16px 12px;
+  text-align:center;
+  position:relative;
+}
+.act-num{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-style:italic;
+  color:var(--act-color,var(--gold));
+  font-weight:700;
+  display:block;margin-bottom:4px;
+}
+.act-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:8px;
+}
+.act-title{
+  font-family:'Playfair Display',serif;
+  font-size:14px;
+  color:var(--heading);
+  font-style:italic;
+  line-height:1.3;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-10px;top:20px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  background:var(--bg);
+}
+.timeline-step .ts-title{
+  font-family:'Playfair Display',serif;
+  font-weight:600;color:var(--heading);
+  font-size:18px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .acts{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="ornament-top">⚜ ❦ ⚜</div>
+  <div class="hero-label">Maturitní rozbor · Světová literatura</div>
+  <h1><em>Komedie o pěti jednáních</em>Lakomec</h1>
+  <div class="author">Molière</div>
+  <div class="subtitle">L'Avare · 1668 · Paříž · Klasicismus</div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč a promluvy</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby a typy promluv</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p>Dílo je <strong>pětaktová komedie v próze</strong> z roku 1668. Molière ji napsal v období své umělecké zralosti a zároveň největších osobních problémů – byl zadlužený, nemocný a pronásledovaný za <em>Tartuffa</em>. Premiéra se konala 9. září 1668 v pařížském divadle Palais-Royal a zpočátku neměla velký úspěch právě proto, že byla psána v próze – publikum tehdy očekávalo veršovanou komedii.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">Úvod</div>
+    <div class="ts-desc">Představení Harpagona a jeho lakoty, milostné vztahy mladých, Valerova maska sluhy</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Střed</div>
+    <div class="ts-desc">Různé intriky kolem peněz a svateb, lichva vlastnímu synovi, ztráta truhličky</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Závěr</div>
+    <div class="ts-desc">Odhalení pravých totožností, šťastné zakončení, Harpagon zůstává sám se svou kasičkou</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Klasická výstavba dramatu</div>
+  <p style="margin-bottom:0">Dílo má pyramidální strukturu: <strong>expozice – kolize – krize – peripetie – katastrofa (rozuzlení)</strong>.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Hlavní téma</div>
+  <p style="margin-bottom:0"><strong>Kritika lakoty a chamtivosti</strong>, moc peněz nad člověkem, generační konflikt, láska versus peníze, satirické zobrazení měšťanské společnosti.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Zlatá truhlička (kasička)</strong> – centrální symbol Harpagonovy posedlosti</li>
+  <li><strong>Svatba</strong> – nástroj generačního konfliktu i rozuzlení</li>
+  <li><strong>Milostný trojúhelník</strong> – otec a syn milují tutéž ženu</li>
+  <li><strong>Lež a intriky</strong> – Valer pod falešnou identitou, Frosinino pochlebování</li>
+  <li><strong>Služebnictvo</strong> – komický protiklad k pánovi, nositelé zdravého rozumu</li>
+  <li><strong>Lichva, podvod, lakomství</strong> – Harpagon půjčuje peníze na 25 % úrok</li>
+  <li><strong>Rodinné vztahy, generační střet</strong> – tyranský otec vs. toužící děti</li>
+  <li><strong>Peníze</strong> – ústřední hybatel všech vztahů i děje</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--gold)">
+    <h4 style="color:var(--gold)">Čas</h4>
+    <p><strong>17. století</strong> – doba Ludvíka XIV., absolutismus. Děj se odehrává <strong>během jednoho dne</strong> (dodržení aristotelské jednoty času).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--wine)">
+    <h4 style="color:var(--accent-5)">Prostor</h4>
+    <p><strong>Paříž</strong> – Harpagonův dům a přilehlá zahrada (dodržení aristotelské jednoty místa). Žádná scéna se neodehrává jinde.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Aristotelské jednoty</div>
+  <ul style="margin:0">
+    <li><strong>Jednota času</strong> – vše se odehrává během jednoho dne</li>
+    <li><strong>Jednota místa</strong> – vše v Harpagonově domě a zahradě</li>
+    <li><strong>Jednota děje</strong> – jeden hlavní příběh (Harpagonova lakota)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Klasická pyramidální struktura</h3>
+<div class="acts">
+  <div class="act-card" style="--act-color:var(--accent-3)">
+    <span class="act-num">I.</span>
+    <div class="act-label">Expozice</div>
+    <div class="act-title">Představení postav a situace</div>
+  </div>
+  <div class="act-card" style="--act-color:var(--accent-6)">
+    <span class="act-num">II.</span>
+    <div class="act-label">Kolize</div>
+    <div class="act-title">Střet zájmů – půjčka, svatba</div>
+  </div>
+  <div class="act-card" style="--act-color:var(--gold)">
+    <span class="act-num">III.</span>
+    <div class="act-label">Krize</div>
+    <div class="act-title">Vyhrocení konfliktu</div>
+  </div>
+  <div class="act-card" style="--act-color:var(--accent-5)">
+    <span class="act-num">IV.</span>
+    <div class="act-label">Peripetie</div>
+    <div class="act-title">Zvrat — ztráta truhličky</div>
+  </div>
+  <div class="act-card" style="--act-color:var(--accent-7)">
+    <span class="act-num">V.</span>
+    <div class="act-label">Katastrofa</div>
+    <div class="act-title">Rozuzlení a šťastný konec</div>
+  </div>
+</div>
+
+<h3>Způsob řazení a části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Chronologický postup</strong> – děj plyne lineárně během jednoho dne</li>
+    <li>Rozděleno na <strong>5 jednání (aktů)</strong></li>
+    <li>Každé jednání obsahuje několik <strong>výstupů (scén)</strong></li>
+    <li>Výstupy se mění podle <strong>příchodu a odchodu postav</strong> – tradiční francouzská konvence</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--wine)">
+    <h4 style="color:var(--accent-5)">Literární druh</h4>
+    <p><strong>Drama</strong> – má děj, předvádí skutečnost, je určeno pro divadelní provedení.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--gold)">
+    <h4 style="color:var(--gold)">Literární žánr</h4>
+    <p><strong>Komedie</strong> – satirická komedie mravů, charakterová komedie, společenská komedie.</p>
+  </div>
+</div>
+
+<h3>Typy komedie v Lakomci</h3>
+<ul>
+  <li><strong>Satirická komedie mravů</strong> – kritika lidských neřestí (lakota, pokrytectví)</li>
+  <li><strong>Charakterová komedie</strong> – zaměřena na charaktery postav (Harpagon je typ lakomce)</li>
+  <li><strong>Společenská komedie</strong> – kritika měšťanské společnosti, jejího materialismu</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Dílo je psáno <strong>pro divadelní provedení</strong></li>
+    <li>Má <strong>komické prvky</strong>, vtipné dialogy, humorné situace</li>
+    <li>Kritizuje společnost a lidské chyby (lakotu)</li>
+    <li>Končí <strong>šťastně</strong> – svatbami a odhalením totožností</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč</h2></div>
+
+<div class="card wine">
+  <div class="card-title" style="color:var(--accent-5)">V dramatu není vypravěč!</div>
+  <p style="margin-bottom:0">Na rozdíl od prózy není v dramatu žádná vypravěčská rovina. Příběh je prezentován <strong>přímo skrze jednání a mluvu postav</strong>.</p>
+</div>
+
+<h3>Prostředky prezentace děje</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--gold)"><h4 style="color:var(--gold)">Repliky</h4><p>Přímé promluvy postav – základ dramatického textu.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)"><h4 style="color:var(--accent-7)">Monology</h4><p>Samostatné úvahy postavy (např. Harpagonův o ztrátě kasičky).</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Dialogy</h4><p>Rozhovory mezi postavami – nositel konfliktu.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Didaskálie</h4><p>Scénické poznámky – instrukce pro herce a režiséra.</p></div>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy</h2></div>
+
+<div class="character" style="--character-color:var(--wine)" data-mask="⚜">
+  <div class="char-name">Harpagon</div>
+  <div class="char-role">Hlavní postava · Záporná · Lakomec</div>
+  <ul style="margin:0">
+    <li>Bohatý <strong>lakomec a lichvář</strong></li>
+    <li>Otec Kleanta a Elišky, vdovec</li>
+    <li>Zamilovaný do mladé <strong>Mariany</strong></li>
+    <li>Posedlý penězi, <strong>nedůvěřivý, paranoidní</strong></li>
+    <li>Tyran vůči dětem i služebnictvu</li>
+    <li>Jeho lakota je <strong>přehnaná do absurdních rozměrů</strong> (groteska)</li>
+    <li>Miluje svou truhličku (kasičku) více než vlastní děti</li>
+    <li>Jméno <em>Harpagon</em> pochází z řeckého <em>harpagē</em> = chamtivec, lupič</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-mask="♥">
+  <div class="char-name">Kleantes <em>(Cléante)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Milovník</div>
+  <ul style="margin:0">
+    <li>Harpagonův syn</li>
+    <li>Zamilovaný do <strong>Mariany</strong> – stejně jako jeho otec!</li>
+    <li>Velkorysý, šlechetný mladý muž</li>
+    <li>V otevřeném <strong>konfliktu s otcem</strong> kvůli penězům a lásce</li>
+    <li>Potřebuje půjčku – netuší, že mu lichvářsky půjčuje vlastní otec</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-mask="♀">
+  <div class="char-name">Eliška <em>(Élise)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Dcera</div>
+  <ul style="margin:0">
+    <li>Harpagonova dcera</li>
+    <li>Zamilovaná do <strong>Valera</strong></li>
+    <li>Submisivní, ale touží po <strong>svobodné volbě partnera</strong></li>
+    <li>Bojí se otcova hněvu, přesto se mu v lásce postaví</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-mask="✦">
+  <div class="char-name">Valer <em>(Valère)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Šlechtic v přestrojení</div>
+  <ul style="margin:0">
+    <li>Slouží v Harpagonově domě pod <strong>falešnou identitou</strong></li>
+    <li>Ve skutečnosti <strong>šlechtic z Neapole</strong>, ztracený syn Anselma</li>
+    <li>Zamilovaný do Elišky</li>
+    <li>Lstivý, přizpůsobivý, <strong>lichotí Harpagonovi</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-7)" data-mask="❀">
+  <div class="char-name">Mariana <em>(Mariane)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Dáma srdce</div>
+  <ul style="margin:0">
+    <li>Chudá dívka, kterou miluje Kleantes</li>
+    <li>Harpagon ji chce za ženu</li>
+    <li>Ve skutečnosti <strong>ztracená dcera Anselma</strong></li>
+    <li>Ušlechtilá, skromná, pečující o nemocnou matku</li>
+  </ul>
+</div>
+
+<h3>Vedlejší postavy</h3>
+
+<div class="character" style="--character-color:var(--accent-4)" data-mask="⚖">
+  <div class="char-name">Anselm <em>(Anselme)</em></div>
+  <div class="char-role">Vedlejší · Kladná · Deus ex machina</div>
+  <ul style="margin:0">
+    <li>Bohatý šlechtic</li>
+    <li>Hledá své ztracené děti (<strong>Valera a Marianu</strong>)</li>
+    <li><em>Deus ex machina</em> – jeho příchod vyřeší všechny problémy</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-8)" data-mask="☤">
+  <div class="char-name">Frosina <em>(Frosine)</em></div>
+  <div class="char-role">Vedlejší · Ambivalentní · Dohazovačka</div>
+  <ul style="margin:0">
+    <li>Dohazovačka – <strong>chytrá, výřečná, manipulativní</strong></li>
+    <li>Pomáhá Harpagonovi získat Marianu</li>
+    <li>Když od něj nedostane zaplaceno, nakonec pomůže mladým</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-mask="⚔">
+  <div class="char-name">Štika <em>(La Flèche)</em></div>
+  <div class="char-role">Vedlejší · Kladná · Lstivý sluha</div>
+  <ul style="margin:0">
+    <li>Kleantův sloužící</li>
+    <li>Chytrý, vtipný, lstivý</li>
+    <li><strong>Ukradne Harpagonovi truhličku</strong> – rozhodující čin děje</li>
+    <li>Reprezentuje zdravý selský rozum</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-mask="♨">
+  <div class="char-name">Mistr Jakub <em>(Maître Jacques)</em></div>
+  <div class="char-role">Vedlejší · Komická · Kuchař a kočí</div>
+  <ul style="margin:0">
+    <li>Harpagonův <strong>kuchař a kočí</strong> – dvě funkce v jedné osobě (úspora!)</li>
+    <li>Komická postava, často mlácená</li>
+    <li><strong>Mluví pravdu, ale je za to bit</strong></li>
+    <li>Symbol lidové moudrosti, kterou pán nechce slyšet</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">VIII</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<p>V dramatu se nepoužívají klasické vyprávěcí způsoby známé z prózy – nenajdeme tu er-formu či ich-formu. Vše je v <strong>přímé řeči</strong> postav.</p>
+
+<h3>Typy promluv v dramatu</h3>
+
+<div class="replica">
+  <div class="speaker">Replika</div>
+  <p style="color:var(--text-muted);font-size:14px;margin:4px 0">Základní jednotka dramatického textu — promluva jedné postavy.</p>
+  <div class="line"><strong style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Vypadni, zloději! Vrahu! Vrahoune! Chyťte ho, chyťte ho!</div>
+</div>
+
+<div class="replica">
+  <div class="speaker">Monolog</div>
+  <p style="color:var(--text-muted);font-size:14px;margin:4px 0">Delší samostatná promluva jedné postavy – klíčový je Harpagonův monolog o kasičce.</p>
+  <div class="line"><strong style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON <span class="stage">(sám)</span>:</strong> Má kasička! Má ubohá kasička! Už ji nikdy neuvidím!</div>
+</div>
+
+<div class="replica">
+  <div class="speaker">Dialog</div>
+  <p style="color:var(--text-muted);font-size:14px;margin:4px 0">Rozhovor dvou postav – například komické výměny mezi Harpagonem a dětmi.</p>
+</div>
+
+<div class="replica">
+  <div class="speaker">Polylog</div>
+  <p style="color:var(--text-muted);font-size:14px;margin:4px 0">Rozhovor více postav současně – například ve scéně odhalení ve V. jednání.</p>
+</div>
+
+<div class="replica">
+  <div class="speaker">Aparté (stranou)</div>
+  <p style="color:var(--text-muted);font-size:14px;margin:4px 0">Postava mluví tak, že ji slyší <strong>publikum</strong>, ale ostatní postavy na jevišti ne. Klasický divadelní prostředek komiky.</p>
+  <div class="line"><strong style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">VALER <span class="stage">(stranou)</span>:</strong> Teď mu musím namluvit med.</div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">IX</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>dům, peníze, otec</td></tr>
+  <tr><td><strong>Knižní</strong></td><td>stvůra, pochlebník, marnotratník</td></tr>
+  <tr><td><strong>Archaismy</strong></td><td><em>lichva, věno, ženich</em> – navozují dobovou atmosféru</td></tr>
+</table>
+
+<h3>Termíny</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--gold)">
+    <h4 style="color:var(--gold)">Finanční</h4>
+    <p><em>úrok, dluh, zástava, lichva</em> – centrum Harpagonova světa.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Dramatické</h4>
+    <p><em>jednání, výstup, monolog</em> – terminologie divadelní formy.</p>
+  </div>
+</div>
+
+<h3>Expresivní výrazy a citově zabarvená slova</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Harpagon – expresivní nadávky</div>
+  <p>„Zloději! Vrahu! Ničemo!"</p>
+  <p style="margin-bottom:0">Hyperboly: „Deset tisíc ďáblů!"</p>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Harpagon – o kasičce</div>
+  <p style="margin-bottom:0">„Má ubohá kasička! Moje drahé zlato!" – <strong>erotizace vztahu k penězům</strong>, kasička jako milenka.</p>
+</div>
+
+<div class="card wine">
+  <div class="card-title" style="color:var(--accent-5)">Děti – o otci</div>
+  <p style="margin-bottom:0">„Tyranu! Peníze jsou mu milejší než děti!"</p>
+</div>
+
+<h3>Opakování</h3>
+<p>Harpagon opakuje slova pro zvýraznění své posedlosti: <em>„Kasička, kasička, kasička!"</em> – opakování jako rétorický prostředek i symptom obsese.</p>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Expresivní jazyk</strong> vytváří komický efekt</li>
+    <li><strong>Kontrast</strong> mezi Harpagonovým lakomým jazykem a velkorysou řečí mladých</li>
+    <li><strong>Opakování</strong> zdůrazňuje obsesi</li>
+    <li><strong>Archaismy</strong> navozují dobovou atmosféru</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">X</span><h2>Tropy a figury</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Absurdní lakota</div>
+    <div class="trope-note">Harpagon přehání ve všem – chce svítit jedním svícnem, obviňuje sám sebe z krádeže. Extrém je komický.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Valerovo lichocení</div>
+    <div class="trope-note">Valer chválí Harpagona, ale myslí to opačně. Publikum rozumí, Harpagon ne.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Kasička = milenka</div>
+    <div class="trope-note">Kasička je Harpagonova láska, jeho život, jeho vše – nahrazuje mu lidské vztahy.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Anafora</div>
+    <div class="trope-example">„Chyťte ho, chyťte ho!"</div>
+    <div class="trope-note">Opakování na začátku vět – zdůrazňuje paniku a hysterii.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">„Má ubohá kasička!"</div>
+    <div class="trope-note">Harpagon hovoří o kasičce jako o živé bytosti – oslovuje ji, lituje ji.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Gradace</div>
+    <div class="trope-example">„Zloději! Vrahu! Vrahoune!"</div>
+    <div class="trope-note">Stupňování nadávek – od krádeže k vraždě, absurdní eskalace.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Lakota vs. velkorysost</div>
+    <div class="trope-note">Protiklad mezi Harpagonem a jeho dětmi. Láska vs. peníze.</div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy a figury <strong>zesilují komický efekt</strong>, zdůrazňují <strong>absurditu Harpagonova chování</strong> a vytváří ostrý <strong>kontrast mezi postavami</strong>. Díky tomu není Lakomec jen veselohra – je to psychologická studie posedlosti.</p>
+</div>
+</section>
+
+<!-- 11 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XI</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Molière (Jean-Baptiste Poquelin, 1622–1673)</div>
+  <p>Syn královského čalouníka, studoval práva, ale zvolil si divadlo – pod pseudonymem <em>Molière</em> založil kočovnou divadelní společnost. 13 let hrál po francouzském venkově, než ho Ludvík XIV. povolal k dvoru. Byl hercem, režisérem i dramatikem v jedné osobě. <strong>Zemřel přímo na jevišti</strong> při čtvrtém představení <em>Zdravého nemocného</em> – ironicky hrál právě hypochondra.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Zralé období</strong> Molièrovy tvorby</li>
+  <li>Napsáno a poprvé uvedeno v roce <strong>1668</strong></li>
+  <li>Jedno z <strong>nejslavnějších Molièrových děl</strong></li>
+  <li>Inspirováno antickou komedií Plautovou <em>Aulularia</em> (Komedie o hrnci)</li>
+</ul>
+
+<h3>Další Molièrova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Téma</th></tr>
+  <tr><td><strong>Tartuffe</strong></td><td>1664</td><td>Náboženské pokrytectví</td></tr>
+  <tr><td><strong>Don Juan</strong></td><td>1665</td><td>Světák a svůdce</td></tr>
+  <tr><td><strong>Misantrop</strong></td><td>1666</td><td>Člověk nenávidící lidskou společnost</td></tr>
+  <tr><td><strong>Lakomec</strong></td><td>1668</td><td>Lakota a chamtivost</td></tr>
+  <tr><td><strong>Měšťák šlechticem</strong></td><td>1670</td><td>Sociální ambice, snobismus</td></tr>
+  <tr><td><strong>Zdravý nemocný</strong></td><td>1673</td><td>Hypochondrie, falešní lékaři</td></tr>
+</table>
+
+<h3>Molièrův styl</h3>
+<ul>
+  <li><strong>Satirické komedie</strong> kritizující lidské neřesti</li>
+  <li>Živé dialogy, vtipné situace</li>
+  <li><strong>Typizované postavy</strong> představující lidské chyby</li>
+  <li>Společenská kritika skrze humor – <em>castigat ridendo mores</em> („smíchem napravuje mravy")</li>
+</ul>
+</section>
+
+<!-- 12 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>17. století</strong> (1622–1673 Molièrův život)</li>
+    <li>Francie za vlády <strong>Ludvíka XIV.</strong> (Král Slunce, <em>Roi Soleil</em>)</li>
+    <li><strong>Absolutismus</strong>, dvorská kultura, Versailles</li>
+    <li>Umělecký sloh: <strong>KLASICISMUS</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy klasicismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--gold)"><h4 style="color:var(--gold)">Rozum a řád</h4><p>Rozum nad emocemi, harmonie, rovnováha, symetrie.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Aristotelské jednoty</h4><p>Jednota času, místa, děje – vzor antického dramatu.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)"><h4 style="color:var(--accent-7)">Jasná kompozice</h4><p>Pětaktová struktura, pyramidální výstavba.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Typizované postavy</h4><p>Charaktery reprezentující ctnosti a neřesti.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--wine)"><h4 style="color:var(--accent-5)">Didaktický účel</h4><p>Poučení skrze zábavu – <em>prodesse et delectare</em>.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Antické vzory</h4><p>Inspirace Řeky (Aristoteles) a Římany (Plautus, Terentius).</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-8)"><h4 style="color:var(--accent-8)">Ušlechtilý jazyk</h4><p>Vybroušený styl, čistá forma.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Oddělení žánrů</h4><p>Komedie = nízké, tragédie = vznešené.</p></div>
+</div>
+
+<h3>Další zástupci klasicismu</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Země</th><th>Dílo a charakteristika</th></tr>
+  <tr><td><strong>Pierre Corneille</strong></td><td>Francie</td><td><em>Cid</em> – tragédie cti a lásky</td></tr>
+  <tr><td><strong>Jean Racine</strong></td><td>Francie</td><td><em>Andromacha, Faidra</em> – psychologická tragédie</td></tr>
+  <tr><td><strong>Jean de La Fontaine</strong></td><td>Francie</td><td><em>Bajky</em> – alegorická poezie</td></tr>
+  <tr><td><strong>Nicolas Boileau</strong></td><td>Francie</td><td><em>Poetika</em> – teoretik klasicismu</td></tr>
+  <tr><td><strong>John Milton</strong></td><td>Anglie</td><td><em>Ztracený ráj</em> – náboženský epos</td></tr>
+  <tr><td><strong>Bohuslav Balbín</strong></td><td>Česko</td><td>Historik (baroko s klasicistními prvky)</td></tr>
+  <tr><td><strong>Bedřich Bridel</strong></td><td>Česko</td><td>Barokní básník</td></tr>
+</table>
+</section>
+
+<div class="ornament fleur"></div>
+
+<!-- 13 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIII</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene">
+  <span class="scene-label">01 · Jednání I., výstup 3</span>
+  <div class="scene-title">Harpagonův monolog o šetření</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Musíme šetřit! Vy, služebnictvo, jste všichni zloději! Okrádáte mě! Plýtváte svíčkami, když je plný měsíc!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon vyčítá služebnictvu plýtvání, ačkoli je sám neuvěřitelně bohatý. Ukazuje <strong>absurditu jeho lakoty</strong>.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Charakterizace hlavní postavy – lakota přehnaná do grotesky.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Jednání I., výstup 3</span>
+  <div class="scene-title">Harpagon a svícen</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Jeden svícen stačí! Když přijdou hosté, řekni, že ti kradou.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon chce, aby při večeři svítil jen jeden svícen, ačkoli pořádá hostinu.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Komická scéna ukazující, jak lakota zaslepuje každý rozum – raději obviní služebnictvo z krádeže svíček, než by jich koupil víc.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Jednání I., výstup 4–5</span>
+  <div class="scene-title">Lichotění Valera</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">VALER:</strong> Vy jste vzorem moudrosti, pane! Vaše šetření je obdivuhodné!<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Ano, ano, máte pravdu, mladý muži!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Valer, ačkoli je zamilován do Elišky, pochlebuje Harpagonovi, aby získal jeho přízeň. Harpagon na lichotky slyší.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Ukázka Valerovy lsti a Harpagonovy ješitnosti. Ironie – publikum ví, že to Valer nemyslí vážně.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Jednání I., výstup 4</span>
+  <div class="scene-title">Konflikt otce a syna o Marianu</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">KLEANTES:</strong> Otče, vy se chcete ženit? Ve vašem věku?<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> A co je na tom špatného? Jsem ještě pořád mladý muž!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon oznámí, že se chce oženit s Marianou – tou samou dívkou, kterou miluje jeho syn Kleantes. <strong>Ani jeden netuší, že mají soupeře v tom druhém.</strong></div>
+  <div class="scene-meaning"><strong>Význam:</strong> Generační konflikt, absurdita situace – otec soupeří se synem o mladou ženu. Komický vrchol.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Jednání II., výstup 1</span>
+  <div class="scene-title">Harpagon jako lichvář</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Půjčuji peníze jen za 25 procent úroku! A chci zástavy!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon sám, nepoznán, jedná <strong>s vlastním synem Kleantem</strong>, který potřebuje půjčku. Požaduje lichvářské úroky – v 17. století byla lichva nezákonná a hříšná.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Vrchol lakoty – nepoznává vlastního syna a ještě z něj chce vydřít peníze. Otec a syn jako věřitel a dlužník.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · Jednání III., výstup 1</span>
+  <div class="scene-title">Svatební smlouva bez věna</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Mariana si mě vezme bez věna! To je ta pravá žena!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon se chce oženit s chudou Marianou právě proto, že nepožaduje věno – ušetří peníze.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Láska je pro Harpagona jen <strong>finanční kalkulace</strong>. Peníze jsou důležitější než city.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Jednání III., výstup 1</span>
+  <div class="scene-title">Mistr Jakub mluví pravdu</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">MISTR JAKUB:</strong> Pane, říká se o vás, že jste lakomec!<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Co? Kdo to říká? Vymlať ho! <span style="color:var(--text-muted);font-size:13px">(mlátí Jakuba)</span></div>
+  <div class="scene-context"><strong>Kontext:</strong> Mistr Jakub se odvážil říct Harpagonovi pravdu o jeho pověsti. Je za to okamžitě potrestán.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Harpagon <strong>neuznává svou chybu, trestá toho, kdo mluví pravdu</strong>. Komická scéna fyzického násilí s hořkou pointou.</div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(212,175,55,.15);border-color:var(--gold)">★ 08 · Jednání IV., výstup 7 · NEJSLAVNĚJŠÍ MONOLOG ★</span>
+  <div class="scene-title">Slavný monolog o ztracené kasičce</div>
+  <div class="scene-text">Zloději! Vrahu! Vrahoune! Jsem ztracen! Jsem zavražděn! Podřízli mi krk! Ukradli mi peníze! Kdo to mohl být? Kam utekl? Kde se skrývá? Co mám dělat, abych ho našel? Běžet? Neběžet? Není tady? Není támhle? Kdo je to? Stůj! <span style="color:var(--text-muted);font-style:normal;font-size:13px">(Chytá sám sebe za ruku)</span> Vydej mi peníze, darebáku! — Ach, to jsem já! Rozum mi vypověděl službu a nevím, kde jsem, kdo jsem a co dělám. Má ubohá kasička! Má drahá kasička! Má zlatá truhlička! Už tě nikdy neuvidím! S tebou jsem ztratil svou útěchu, svou radost, svůj život!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Nejvěhlasnější scéna hry. Štika <em>(La Flèche)</em> ukradl Harpagonovi jeho milovanou kasičku se zlatem, kterou měl zakopanou v zahradě. Harpagon je v hysterii.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Vrchol komična – Harpagon <strong>chytá sám sebe</strong> a obviňuje z krádeže</li>
+      <li><strong>Přerušení čtvrté stěny</strong> – Harpagon obviňuje i diváky v hledišti</li>
+      <li>Odhalení pravé povahy – kasička je mu důležitější než děti, než život</li>
+      <li>Absurdní zveličení emocí – reaguje, jako by mu podřízli krk</li>
+      <li><strong>Psychologický portrét lakoty</strong> jako duševní nemoci</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Jednání V., výstup 1–2</span>
+  <div class="scene-title">Harpagon vyšetřuje krádež</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON</strong> <span style="color:var(--text-muted);font-size:13px">(k soudnímu komisaři)</span><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">:</strong> Vezměte všechny do vězení! Celou Paříž! A taky mě, kdyby bylo třeba!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon chce, aby komisař uvěznil úplně všechny, včetně jeho samého, jen aby našel kasičku.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Absurdní přehánění, Harpagon je schopen obětovat cokoli, jen aby získal zpět své peníze.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">10 · Jednání V., výstup 6 · FINÁLE</span>
+  <div class="scene-title">Konečné rozuzlení a Harpagonova volba</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">ANSELM:</strong> Harpagone, můžeš si vybrat – buď souhlasíš se svatbou svých dětí, nebo ti nevrátím kasičku.<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Moje kasička! Kde je? Vraťte mi ji!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Anselm (otec Mariany a Valera) nabídne Harpagonovi řešení – všichni budou šťastní, jen když Harpagon svolí ke svatbám. Harpagon souhlasí, ale <strong>jen proto, aby dostal zpět kasičku</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Šťastný konec pro všechny <strong>kromě Harpagona</strong></li>
+      <li>Harpagon se nemění – stále miluje jen peníze</li>
+      <li><strong>Satirická pointa</strong> – lakota se nedá vyléčit</li>
+      <li>Mladí budou šťastní, Harpagon zůstává se svou kasičkou</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">11 · Jednání I., výstup 5</span>
+  <div class="scene-title">Harpagon o věnu</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON:</strong> Sňatek bez věna je dar z nebe!</div>
+  <div class="scene-context"><strong>Kontext:</strong> Harpagon vysvětluje, proč si chce vzít chudou Marianu. V 17. století bylo věno nevěsty standardní součástí svatební dohody.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Ironické – pro Harpagona je nejlepší nevěsta ta, která nic nestojí. Láska je účetní položka.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">12 · Jednání II., výstup 5</span>
+  <div class="scene-title">Frosina a její úlisnost</div>
+  <div class="scene-text"><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">FROSINA:</strong> Mariana o vás mluví bez přestání! Když vás vidí z okna, oči jí svítí!<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON</strong> <span style="color:var(--text-muted);font-size:13px">(mile)</span><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">:</strong> Opravdu? To mě těší!<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">FROSINA:</strong> Mimochodem, pane Harpagone, mohl byste mi půjčit malý obnos?<br><br><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">HARPAGON</strong> <span style="color:var(--text-muted);font-size:13px">(okamžitě chladně)</span><strong style="font-style:normal;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">:</strong> Musím jít, mám práci.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Dohazovačka Frosina lichotí Harpagonovi, aby ho přesvědčila k svatbě s Marianou. Když ale požádá o peníze, Harpagon okamžitě uteče.</div>
+  <div class="scene-meaning"><strong>Význam:</strong> Harpagon je vůči penězům <strong>absolutně necitlivý</strong>, i vůči těm, kdo mu slouží. Lichocení funguje, prosba o peníze okamžitě zastaví konverzaci.</div>
+</div>
+</section>
+
+<div class="ornament fleur"></div>
+
+<!-- 14 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XIV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0">Kritika lakoty a chamtivosti, která ničí mezilidské vztahy a deformuje člověka. <strong>Peníze nesmí být smyslem života.</strong> Harpagon je varováním – lakota činí člověka směšným, osamělým a nešťastným.</p>
+</div>
+
+<h3>Kompozice díla — shrnutí</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">I. jednání — Expozice</div>
+    <div class="ts-desc">Seznámení s postavami a konfliktem</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">II. jednání — Rozvíjení</div>
+    <div class="ts-desc">Půjčka, svatební plány, lichva synovi</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">III. jednání — Vrchol</div>
+    <div class="ts-desc">Svatební smlouva, pravda o lakomství</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">IV. jednání — Zvrat</div>
+    <div class="ts-desc">Ztráta kasičky, Harpagonova hysterie</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">V. jednání — Rozuzlení</div>
+    <div class="ts-desc">Odhalení totožností, svatby, Harpagon dostane kasičku zpět</div>
+  </div>
+</div>
+
+<h3>Symbol díla</h3>
+<div class="card wine">
+  <div class="card-title" style="color:var(--accent-5)">Zlatá truhlička (kasička)</div>
+  <p style="margin-bottom:0">Symbol <strong>Harpagonovy posedlosti</strong>, nahrazuje lidské vztahy, lásku, rodinu. Je to jeho jediná pravá láska. Pohřbená v zahradě jako poklad, ukradená, nalezená – centrum celé zápletky.</p>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Proč hrát Lakomce dnes?</div>
+  <p style="margin-bottom:0">Dílo je <strong>nadčasové</strong> – kritika konzumní společnosti, materialismu, moci peněz nad člověkem. Harpagon je archetypem chamtivce, kterého najdeme v každé době. Téma <strong>generačního konfliktu, rodičovské tyranie a svobodné volby partnera</strong> je stále aktuální. V éře půjček, lichvy a finančních bublin působí Harpagon až znepokojivě současně.</p>
+</div>
+
+<h3>Dramaturgické poznámky</h3>
+<ul>
+  <li>Dodržuje <strong>aristotelské jednoty</strong></li>
+  <li>Psáno v <strong>próze</strong> – ne ve verších jako většina klasicistických her</li>
+  <li>Bohaté využití komických prvků: záměny, nedorozumění, fyzický humor</li>
+  <li>Inspirováno antikou – Plautus: <em>Aulularia</em> (Komedie o hrnci)</li>
+  <li>Slouží jako <strong>morální ponaučení i zábava</strong> (<em>prodesse et delectare</em>)</li>
+</ul>
+
+<div class="quote-block" style="margin-top:36px">
+  Má ubohá kasička! Má drahá kasička! Má zlatá truhlička! Už tě nikdy neuvidím!
+  <span class="quote-source">Harpagon · Jednání IV., výstup 7</span>
+</div>
+</section>
+
+<div class="ornament fleur" style="margin-top:50px"></div>
+
+</div>
+</body>
+</html>

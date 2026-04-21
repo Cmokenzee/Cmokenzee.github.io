@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 8: Souběh a uváznutí</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Flow diagrams */
+.flow-diagram{display:flex;flex-direction:column;gap:4px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.flow-step{padding:12px 16px;border-radius:6px;text-align:center;font-weight:600;position:relative}
+.flow-step small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.flow-arrow{text-align:center;color:var(--text-muted);font-size:16px;line-height:1}
+.fl-hw{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.fl-cpu{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.fl-os{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3)}
+.fl-done{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3)}
+.fl-err{background:rgba(248,113,113,.15);color:var(--accent-5);border:1px solid rgba(248,113,113,.3)}
+/* Deadlock diagram */
+.deadlock-vis{margin:18px 0;padding:24px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.dl-row{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
+.dl-box{padding:12px 20px;border-radius:8px;font-weight:600;text-align:center;min-width:130px}
+.dl-box small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.dl-arrow{font-size:20px;min-width:30px;text-align:center}
+.dl-proc{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3)}
+.dl-res{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3)}
+.dl-wait{color:var(--accent-5);font-family:'DM Sans',sans-serif;font-size:11px}
+/* Code block */
+.code-block{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:14px 0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:var(--osy);overflow-x:auto}
+.code-block .comment{color:var(--text-muted)}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.dl-row{flex-direction:column}.dl-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 8</div>
+  <h1>Souběh a uváznutí</h1>
+  <p>Race condition • Kritická sekce • Atomická operace • TSL • Semafory • Deadlock • Bankéřův algoritmus</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#soubeh">Co je souběh (race condition)</a></li>
+  <li><a href="#priklad-zivot">Příklad souběhu ze života</a></li>
+  <li><a href="#priklad-prog">Souběh v programování</a></li>
+  <li><a href="#pojmy">Kritická oblast a kritická sekce</a></li>
+  <li><a href="#kriticka-reseni">Požadavky na kritickou sekci</a></li>
+  <li><a href="#atomicka">Atomická operace</a></li>
+  <li><a href="#zakaz">Zákaz přerušení</a></li>
+  <li><a href="#tsl">Instrukce TSL (Test and Set Lock)</a></li>
+  <li><a href="#semafory">Semafory</a></li>
+  <li><a href="#cekani">Aktivní vs. pasivní čekání</a></li>
+  <li><a href="#zamky-soubory">Zamykání souborů</a></li>
+  <li><a href="#bkl">Big Kernel Lock (BKL)</a></li>
+  <li><a href="#uvaznuty">Uváznutí (deadlock)</a></li>
+  <li><a href="#uvaznuty-priklady">Příklady uváznutí</a></li>
+  <li><a href="#reseni-uvaznuty">Řešení uváznutí – přehled</a></li>
+  <li><a href="#predchazeni">Předcházení uváznutí (4 podmínky)</a></li>
+  <li><a href="#vyhybani">Vyhýbání se uváznutí – Bankéřův algoritmus</a></li>
+  <li><a href="#detekce">Detekce a zotavení</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 SOUBĚH -->
+<section class="section" id="soubeh">
+<div class="section-header"><span class="section-num">01</span><h2>Co je souběh (race condition)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p>Souběh vzniká, když <strong>dva nebo více procesů modifikuje stejná data</strong>. Pokud by procesy byly spuštěny samostatně, k problému by nedošlo → vznikají <strong>mysteriózní chyby</strong>, které se těžko reprodukují.</p>
+</div>
+
+<h3>Kde může k souběhu dojít</h3>
+<div class="card">
+  <ul>
+    <li><strong>Datové struktury jádra</strong> – práce s daty OS uloženými v RAM</li>
+    <li><strong>Práce se soubory</strong> – dva procesy zapisují do stejného souboru</li>
+    <li><strong>Přístup přes síť</strong> – ke společným datům přes počítačovou síť</li>
+    <li><strong>Sdílená paměť</strong> – více procesů sdílí paměťový segment</li>
+    <li><strong>Multitasking, thready</strong> – thready sdílí paměť záměrně</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 PŘÍKLAD ZE ŽIVOTA -->
+<section class="section" id="priklad-zivot">
+<div class="section-header"><span class="section-num">02</span><h2>Příklad souběhu ze života</h2></div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Sekretářka a šéf – ztráta 500 Kč</div>
+  <p>Sekretářka přidává všem zaměstnancům 100 Kč, šéf přiděluje prémii 500 Kč.</p>
+</div>
+
+<div class="flow-diagram">
+  <div class="flow-step fl-hw">Sekretářka načte sdílená data (plat = 1000 Kč)<small>chce přičíst 100 Kč</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-cpu">Sekretářka odejde na kafe (přerušení!)<small>data zatím neuložena</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-os">Šéf načte STEJNÁ data (plat = 1000 Kč)<small>přičte 500 Kč → uloží 1500 Kč</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-err">Sekretářka přijde, přičte 100 k PŮVODNÍ hodnotě<small>uloží 1100 Kč → přepíše šéfovu prémii!</small></div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-step fl-err">Výsledek: 1100 Kč místo správných 1600 Kč<small>500 Kč se ztratilo! (race condition)</small></div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Proč se to děje</div>
+  <p>Tato situace nastává při manipulaci s daty v RAM pomocí procesoru. U <strong>SQL serveru</strong> můžeme dát pokyn ke zvýšení položky přímo (<code>UPDATE ... SET plat = plat + 100</code>), ale u přímé práce s RAM to nejde – musíme načíst, změnit a uložit (3 kroky = neatomická operace).</p>
+</div>
+</section>
+
+<!-- 03 SOUBĚH V PROGRAMOVÁNÍ -->
+<section class="section" id="priklad-prog">
+<div class="section-header"><span class="section-num">03</span><h2>Souběh v programování</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Vytváření souborů</h4>
+    <p>Soubor musí mít v adresáři <strong>unikátní jméno</strong>. Nejprve testujeme, pak teprve vytváříme – mezi testem a vytvořením může dojít k <strong>přerušení</strong> (jiný proces vytvoří stejný soubor).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Přístup do SQL databáze</h4>
+    <p>Aktualizace <strong>několika položek</strong> → nekonzistence dat. Ne vše lze vyřešit jako jedinou SQL instrukci.</p>
+  </div>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Dvě cesty řešení</div>
+  <ul>
+    <li><strong>Atomické operace</strong> – k vykonání musí stačit jedna strojová instrukce (použitelné jen výjimečně)</li>
+    <li><strong>Zajištění výhradního přístupu</strong> – tzv. zamykání (různé prostředky: TSL, semafory…)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 POJMY -->
+<section class="section" id="pojmy">
+<div class="section-header"><span class="section-num">04</span><h2>Kritická oblast a kritická sekce</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Kritická oblast</h4>
+    <p><strong>Data</strong> sdílená několika procesy (thready). Jsou to ta data, u kterých hrozí souběh.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Kritická sekce</h4>
+    <p><strong>Nejmenší část programu</strong> (kódu) pracující s kritickou oblastí. Může do ní vstoupit <strong>maximálně jeden proces</strong>. Musí být provedena jako jeden celek.</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Vztah mezi pojmy</div>
+  <p><strong>Kritická oblast</strong> = sdílená <em>data</em>. <strong>Kritická sekce</strong> = část <em>kódu</em>, která s těmi daty pracuje. Cílem je zajistit, aby v kritické sekci byl vždy nejvýše jeden proces.</p>
+</div>
+</section>
+
+<!-- 05 POŽADAVKY NA KRITICKOU SEKCI -->
+<section class="section" id="kriticka-reseni">
+<div class="section-header"><span class="section-num">05</span><h2>Požadavky na kritickou sekci</h2></div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Tři problémy, které musí kritická sekce řešit</div>
+  <ul>
+    <li><strong>Zajištění výhradního přístupu (mutual exclusion)</strong> – v kritické sekci vždy nejvýše jeden proces</li>
+    <li><strong>Vývoj (progress)</strong> – rozhodování o vstupu nelze odkládat do nekonečna. Např. striktní alternace (dva procesy se pravidelně střídají)</li>
+    <li><strong>Omezené čekání (bounded waiting)</strong> – střídání dvou procesů nemůže vyřadit třetí proces → dovolíme maximálně jeden vstup za „obrátku"</li>
+  </ul>
+</div>
+
+<h3>Prostředky pro zajištění výhradního přístupu</h3>
+<table class="compare-table">
+  <tr><th>Prostředek</th><th>Princip</th><th>Omezení</th></tr>
+  <tr><td><strong>Atomická operace</strong></td><td>Jedna strojová instrukce</td><td>Jen výjimečně použitelná</td></tr>
+  <tr><td><strong>Zákaz přerušení</strong></td><td>Znemožní přepnutí kontextu</td><td>Jen v jádře OS, ne na SMP</td></tr>
+  <tr><td><strong>Instrukce TSL</strong></td><td>Zamkni + vrať předchozí stav</td><td>Aktivní čekání</td></tr>
+  <tr><td><strong>Semafory</strong></td><td>Čítač + operace P/V</td><td>Složitější implementace</td></tr>
+  <tr><td><strong>RCU</strong></td><td>Read-Copy-Update</td><td>Pokročilá technika (jádro Linuxu)</td></tr>
+</table>
+</section>
+
+<!-- 06 ATOMICKÁ OPERACE -->
+<section class="section" id="atomicka">
+<div class="section-header"><span class="section-num">06</span><h2>Atomická operace</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Definice</div>
+  <p>Operace, která proběhne <strong>jako jeden celek</strong> – nelze ji přerušit. Výsledek (všechny výsledky) se projeví najednou. Typicky <strong>jedna strojová instrukce</strong>.</p>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Problémy</div>
+  <ul>
+    <li><strong>Více strojových instrukcí</strong> → možnost vnějšího přerušení → zdánlivou atomicitu je nutné zajistit jinak</li>
+    <li><strong>Víceprocesorový systém</strong> → zdánlivá ani skutečná atomicita problém neřeší (druhý CPU může přistupovat k datům současně)</li>
+    <li>Řešení: je nutné zaměřit se na <strong>ochranu dat</strong> (zamykání)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 ZÁKAZ PŘERUŠENÍ -->
+<section class="section" id="zakaz">
+<div class="section-header"><span class="section-num">07</span><h2>Zákaz přerušení</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Princip</div>
+  <ul>
+    <li>Z více strojových instrukcí vytvoříme jednu „atomickou" – <strong>zakážeme přerušení</strong> před kritickou sekcí, povolíme za ní</li>
+    <li>Zákaz přerušení <strong>znemožní přepnutí kontextu</strong> (žádný jiný proces nemůže převzít CPU)</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Vážná omezení</div>
+  <ul>
+    <li><strong>NEŘEŠÍ</strong> problém na víceprocesorových strojích (SMP) – druhý CPU běží dál!</li>
+    <li>Zákaz přerušení je <strong>privilegovaná instrukce</strong> → její použití může zablokovat počítač</li>
+    <li>V procesu <strong>nelze použít</strong> u preemptivního multitaskingu</li>
+    <li>Vyhrazeno <strong>jen pro jádro OS</strong> – procesům musíme nabídnout jiné řešení</li>
+    <li>I uvnitř jádra je to <strong>nebezpečné</strong></li>
+    <li>Neřeší problém <strong>aktivního čekání</strong></li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Kde se používá</div>
+  <p>Běžně <strong>uvnitř jádra OS</strong> – na krátké kritické sekce, kde jiné řešení nemá smysl. Ale vždy s opatrností.</p>
+</div>
+</section>
+
+<!-- 08 TSL -->
+<section class="section" id="tsl">
+<div class="section-header"><span class="section-num">08</span><h2>Instrukce TSL (Test and Set Lock)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Test and Set Lock</div>
+  <p><strong>Nastaví proměnnou</strong> (zamkne) a zároveň <strong>vrátí její původní hodnotu</strong>. Celá tato akce musí být <strong>nepřerušitelná</strong> (atomická). Po výstupu z kritické sekce → proměnná na „false" (odemčeno).</p>
+</div>
+
+<h3>Implementace v CPU</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Speciální instrukce</h4>
+    <p>CPU má přímo strojovou instrukci TSL.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">SWAP / XCHG</h4>
+    <p>Prohození obsahu paměti s registrem – nepřerušitelné.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">Softwarová implementace</h4>
+    <p>Využijeme zákaz přerušení → služba jádra OS.</p>
+  </div>
+</div>
+
+<h3>Použití TSL v kódu</h3>
+<div class="code-block">
+<span class="comment">// Vstup do kritické sekce (aktivní čekání)</span><br>
+<strong>while</strong> TestAndSet(Lock) <strong>do</strong> { nothing };<br><br>
+<span class="comment">// ... kód kritické sekce ...</span><br><br>
+<span class="comment">// Výstup z kritické sekce</span><br>
+Lock := <strong>false</strong>;
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Aktivní čekání</div>
+  <p>TSL umisťujeme do <strong>čekací smyčky</strong> – proces neustále testuje zámek → <strong>spotřebovává čas CPU</strong> (busy waiting). Toto je hlavní nevýhoda TSL.</p>
+</div>
+</section>
+
+<!-- 09 SEMAFORY -->
+<section class="section" id="semafory">
+<div class="section-header"><span class="section-num">09</span><h2>Semafory</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Dijkstra, 1965</div>
+  <p>Proměnná boolean z TSL je nahrazena <strong>čítačem</strong> → do kritické sekce lze vpustit <strong>více procesů</strong> (pokud to dává smysl, např. omezený počet současných čtení).</p>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Operace P a V</div>
+  <ul>
+    <li><strong>Operace Down (P)</strong> – před kritickou sekcí:
+      <ul>
+        <li>Je-li čítač <strong>≤ 0</strong> → proces se <strong>zablokuje</strong> (čeká)</li>
+        <li>Je-li čítač <strong>&gt; 0</strong> → čítač je <strong>snížen o 1</strong> a vstup je povolen</li>
+      </ul>
+    </li>
+    <li><strong>Operace Up (V)</strong> – na konci kritické sekce:
+      <ul>
+        <li>Čítač je <strong>zvýšen o 1</strong></li>
+        <li>Pokud někdo čeká, je probuzen</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Typy semaforů</div>
+  <ul>
+    <li><strong>Binární semafor (mutex)</strong> – čítač 0 nebo 1, ekvivalent TSL zámku</li>
+    <li><strong>Obecný (čítací) semafor</strong> – čítač může být &gt; 1, vpouští N procesů</li>
+  </ul>
+  <p>Stále existuje problém aktivního čekání – řeší se <strong>pasivním čekáním</strong> (fronta).</p>
+</div>
+</section>
+
+<!-- 10 AKTIVNÍ VS. PASIVNÍ ČEKÁNÍ -->
+<section class="section" id="cekani">
+<div class="section-header"><span class="section-num">10</span><h2>Aktivní vs. pasivní čekání</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Aktivní čekání (busy waiting)</h4>
+    <p>Realizováno jako <strong>smyčka</strong> (neustálé testování). Zbytečně spotřebovává čas CPU. Není vhodné pro víceúlohové systémy. Výhodné jen pro <strong>krátkodobé čekání</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Pasivní čekání</h4>
+    <p>Realizováno <strong>frontou</strong> čekajících procesů. Zablokovaný proces odsunut do fronty. Odstraňuje problém aktivního čekání. Podobně jako blokování při I/O.</p>
+  </div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Spinlock</div>
+  <p><strong>Spinlock</strong> = aktivní čekání na zámek. Používá se v <strong>jádře Linuxu</strong> (<code>spinlock()</code>) pro velmi krátké kritické sekce, kde je režie přepnutí kontextu větší než samotné čekání.</p>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Pasivní čekání – implementace</div>
+  <ul>
+    <li>Čekající proces <strong>nemá spotřebovávat čas CPU</strong></li>
+    <li>Vytvoříme <strong>frontu čekajících procesů</strong></li>
+    <li>Zablokovaný proces odsunut do fronty – využijeme funkci jádra <code>sleep()</code></li>
+    <li>Při výstupu z kritické sekce → rozšíříme funkci <strong>Up (V)</strong> o obsluhu fronty → probudíme spící proces</li>
+  </ul>
+</div>
+
+<h3>Srovnání</h3>
+<table class="compare-table">
+  <tr><th>Vlastnost</th><th>Aktivní čekání</th><th>Pasivní čekání</th></tr>
+  <tr><td><strong>Mechanismus</strong></td><td>Smyčka (busy loop)</td><td>Fronta + sleep()</td></tr>
+  <tr><td><strong>Spotřeba CPU</strong></td><td>Vysoká (zbytečná)</td><td>Žádná (proces spí)</td></tr>
+  <tr><td><strong>Vhodné pro</strong></td><td>Krátkodobé čekání (spinlock)</td><td>Dlouhodobé čekání</td></tr>
+  <tr><td><strong>Složitost</strong></td><td>Jednoduchá implementace</td><td>Složitější (fronty, probouzení)</td></tr>
+  <tr><td><strong>Příklad</strong></td><td>spinlock() v jádře</td><td>Semafory s frontou, mutex</td></tr>
+</table>
+</section>
+
+<!-- 11 ZAMYKÁNÍ SOUBORŮ -->
+<section class="section" id="zamky-soubory">
+<div class="section-header"><span class="section-num">11</span><h2>Zamykání souborů</h2></div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Jednoduché zabránění souběhu</div>
+  <ul>
+    <li>V unixových systémech jen <strong>informativní (advisory)</strong> – jádro ho nevynutí</li>
+    <li>Všechny programy <strong>musí zámky respektovat</strong> (dohoda)</li>
+    <li>Funkce <code>fcntl()</code> a <code>flock()</code> → lze aplikovat i na <strong>části souboru</strong></li>
+  </ul>
+</div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Sdílené zámky</h4>
+    <p>Též nazývány jako <strong>zámky pro čtení</strong>. Více procesů může číst současně.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Exkluzivní zámky</h4>
+    <p>Též nazývány jako <strong>zámky pro zápis</strong>. Jen jeden proces může zapisovat.</p>
+  </div>
+</div>
+
+<details><summary>Souborové zámky (lock files)</summary>
+<div class="card">
+  <ul>
+    <li>Soubor signalizující „zamčeno" – např. <code>/etc/shadow.lock</code></li>
+    <li>Používáno i v <strong>MS Word</strong> nebo <strong>LibreOffice Writer</strong></li>
+    <li>Někdy název včetně <strong>PID procesu</strong>, který ho vytvořil</li>
+    <li>Vytvoření musí být <strong>atomická operace</strong> – v shellu <code>noclobber</code> nebo vytvoření adresáře</li>
+    <li>Problém <strong>„opuštěných zámků"</strong> (stale lock file) – proces skončil, ale zámek neodstranil</li>
+    <li>Používá se ve shellu a na FS bez podpory zámků (starší NFS)</li>
+  </ul>
+</div>
+</details>
+</section>
+
+<!-- 12 BKL -->
+<section class="section" id="bkl">
+<div class="section-header"><span class="section-num">12</span><h2>Big Kernel Lock (BKL)</h2></div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Jednoduchý zámek pro SMP jádro</div>
+  <ul>
+    <li>Hlídá <strong>jakýkoliv zápis</strong> do datových struktur jádra</li>
+    <li>Vše je pozastaveno, dokud se věc nevyřeší – i když by mohly proběhnout souběžně (u nekonfliktních dat)</li>
+    <li>Umožnil okamžité nasazení jednoprocesorového (UP) jádra na <strong>SMP</strong></li>
+    <li>Za cenu častého <strong>zbytečného čekání</strong></li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Současný stav</div>
+  <p>BKL v jádře <strong>Linuxu již dlouho neexistuje</strong> – nahrazen jemnějšími zámky pro jednotlivé subsystémy. Microsoft se pochlubil jeho odstraněním u Windows 7 (snížení ~25 % režie), ale kompletní odstranění nepotvrdil.</p>
+</div>
+</section>
+
+<!-- 13 UVÁZNUTÍ -->
+<section class="section" id="uvaznuty">
+<div class="section-header"><span class="section-num">13</span><h2>Uváznutí (deadlock)</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Definice</div>
+  <p>Dva nebo více procesů <strong>čeká na událost</strong>, ke které by došlo jen pokud by <strong>jeden z nich mohl pokračovat</strong>. Vzájemné čekání bez možnosti pokroku.</p>
+  <ul>
+    <li>Souvisí se <strong>zamykáním</strong> (viz souběh)</li>
+    <li>V běžném životě se řeší <strong>couváním</strong></li>
+    <li>Program (resp. CPU) couvat neumí – ale <strong>SQL server ano</strong> (rollback)</li>
+    <li>Problém uváznutí v jádře OS → <strong>reboot</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 14 PŘÍKLADY UVÁZNUTÍ -->
+<section class="section" id="uvaznuty-priklady">
+<div class="section-header"><span class="section-num">14</span><h2>Příklady uváznutí</h2></div>
+
+<h3>V dopravě</h3>
+<div class="card">
+  <p>Křižovatka, kde se 4 auta vzájemně blokují – žádné nemůže projet, protože každé čeká na to před sebou. Řešení v reálném životě: jedno auto couvne.</p>
+</div>
+
+<h3>V počítači</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Příklad s tiskárnou a disketou</div>
+</div>
+
+<div class="deadlock-vis">
+  <div class="dl-row">
+    <div class="dl-box dl-proc">Proces A<small>tiskne na tiskárnu</small></div>
+    <div class="dl-arrow">→</div>
+    <div class="dl-box dl-res">Tiskárna 🔒<small>výhradní přístup A</small></div>
+  </div>
+  <div class="dl-wait">A potřebuje disketu → čeká na B…</div>
+  <div class="dl-row">
+    <div class="dl-box dl-proc">Proces B<small>čte z diskety</small></div>
+    <div class="dl-arrow">→</div>
+    <div class="dl-box dl-res">Disketa 🔒<small>výhradní přístup B</small></div>
+  </div>
+  <div class="dl-wait">B potřebuje tiskárnu → čeká na A…</div>
+  <div style="margin-top:8px;padding:10px 20px;border-radius:8px;background:rgba(248,113,113,.15);color:var(--accent-5);border:1px solid rgba(248,113,113,.3);font-weight:600;text-align:center">
+    ⚠ DEADLOCK – vzájemné čekání bez řešení
+  </div>
+</div>
+</section>
+
+<!-- 15 ŘEŠENÍ UVÁZNUTÍ -->
+<section class="section" id="reseni-uvaznuty">
+<div class="section-header"><span class="section-num">15</span><h2>Řešení uváznutí – přehled</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--text-muted)">
+    <h4 style="color:var(--text-muted)">A: Ignorování</h4>
+    <p>Používá se v <strong>běžných OS</strong>. Většina subsystémů předchází uváznutí. Pokud nastane, uživatel (nebo správce) jeden proces ukončí.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">B: Předcházení</h4>
+    <p>Zabráníme splnění <strong>alespoň 1 ze 4 podmínek</strong> uváznutí. Proaktivní přístup.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">C: Vyhýbání se</h4>
+    <p>Systém zjišťuje, zda přidělením prostředku <strong>nezpůsobí uváznutí</strong>. Bankéřův algoritmus. Může být komplikované.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">D: Detekce a zotavení</h4>
+    <p>Údržba grafu přidělených prostředků. Cyklus v grafu = uváznutí. Používá se u <strong>SQL serverů</strong> (rollback).</p>
+  </div>
+</div>
+</section>
+
+<!-- 16 PŘEDCHÁZENÍ -->
+<section class="section" id="predchazeni">
+<div class="section-header"><span class="section-num">16</span><h2>Předcházení uváznutí (4 podmínky)</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Princip</div>
+  <p>Stačí <strong>odstranit jednu</strong> ze čtyř podmínek uváznutí a deadlock nemůže nastat.</p>
+</div>
+
+<h3>1. Výlučný přístup</h3>
+<div class="card">
+  <ul>
+    <li>Existence <strong>nesdílitelných prostředků</strong> (tiskárna, ext. disk, USB…)</li>
+    <li>Odstranění pomocí <strong>virtualizace prostředků</strong> – tzv. <strong>spooling</strong> (Simultaneous Peripheral Output On-Line)</li>
+    <li>Např. vytvoření <strong>fronty pro tiskárny</strong> → frontu obsluhuje jen jeden proces (démon)</li>
+    <li>Pro některé prostředky <strong>nelze použít</strong> (CPU, RAM)</li>
+  </ul>
+</div>
+
+<h3>2. Postupné přidělování prostředků</h3>
+<div class="card">
+  <ul>
+    <li>Znemožnění postupného přidělování → <strong>jednorázové přidělení</strong> všech prostředků najednou (při startu procesu)</li>
+    <li>Nebo: přidělování jen pokud proces <strong>žádné nemá</strong> – nejdřív vše vrátit, pak požádat o nové</li>
+    <li><strong>Nevýhody:</strong> plýtvání prostředky (nejsou potřeba celou dobu), stárnutí procesů</li>
+  </ul>
+</div>
+
+<h3>3. Přidělování bez preempce → zavedení preempce</h3>
+<div class="card green">
+  <ul>
+    <li><strong>Preempce = násilné odebrání prostředku</strong></li>
+    <li>Odebírat lze jen prostředky, u kterých lze snadno <strong>obnovit původní stav</strong> → nelze např. tiskárnu</li>
+    <li>Takto lze přidělovat <strong>procesor nebo paměť</strong></li>
+    <li><strong>Jediná reálně použitelná strategie</strong> ve většině situací</li>
+  </ul>
+</div>
+
+<h3>4. Cyklické čekání</h3>
+<div class="card">
+  <ul>
+    <li>Odstranění <strong>očíslováním prostředků</strong></li>
+    <li>Proces může žádat pouze o prostředky s <strong>vyšším číslem</strong> (než ty, které již vlastní)</li>
+    <li>Prostředky se stejným číslem – pouze <strong>najednou</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 17 VYHÝBÁNÍ SE -->
+<section class="section" id="vyhybani">
+<div class="section-header"><span class="section-num">17</span><h2>Vyhýbání se uváznutí – Bankéřův algoritmus</h2></div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Bankéřův algoritmus (Dijkstra)</div>
+  <ul>
+    <li>Při žádosti o prostředek se kontroluje: <strong>existuje po přidělení alespoň jeden proces, který lze dokončit?</strong></li>
+    <li>Po jeho dokončení musí existovat alespoň jeden další, atd. → musí být možné dokončit <strong>všechny procesy</strong></li>
+    <li>Proces <strong>deklaruje maximální požadavky</strong> předem</li>
+    <li>Systém si musí ponechat prostředky alespoň pro <strong>uspokojení jednoho procesu</strong></li>
+    <li>Po ukončení procesu jsou uvolněny prostředky pro další</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--text-muted)">Analogie s bankou</div>
+  <p>Bankéř (OS) má omezený rozpočet (prostředky). Klienti (procesy) žádají o úvěry (prostředky). Bankéř půjčí jen tehdy, pokud si je jistý, že dokáže uspokojit alespoň jednoho klienta úplně → ten pak peníze vrátí → bankéř může uspokojit dalšího, atd.</p>
+</div>
+</section>
+
+<!-- 18 DETEKCE -->
+<section class="section" id="detekce">
+<div class="section-header"><span class="section-num">18</span><h2>Detekce a zotavení</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Graf přidělených prostředků</div>
+  <ul>
+    <li>Údržba <strong>grafu přidělených prostředků</strong> (resource allocation graph)</li>
+    <li>Pokud je v grafu <strong>cyklus</strong> → došlo k uváznutí</li>
+    <li>Komplikace: některý prostředek existuje ve <strong>více exemplářích</strong> a procesy pak nežádají o konkrétní exemplář</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">Použití v praxi</div>
+  <ul>
+    <li>Používá se např. u <strong>SQL serverů</strong></li>
+    <li><strong>Rollback</strong> jednoho z procesů (vrácení transakcí), pak pokračování ostatních</li>
+    <li>SQL server dokáže „couvnout" – na rozdíl od běžného procesu</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 19 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">19</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SOUBĚH (RACE CONDITION)</p>
+<ul>
+  <li><strong>Souběh:</strong> dva+ procesů modifikuje stejná data → nekonzistence. Příklad: sekretářka + šéf, ztráta 500 Kč (načti-změň-ulož = neatomická operace)</li>
+  <li><strong>Kritická oblast:</strong> sdílená data. <strong>Kritická sekce:</strong> část kódu pracující s nimi (max. 1 proces)</li>
+  <li><strong>3 požadavky na kritickou sekci:</strong> výhradní přístup, vývoj (progress), omezené čekání</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">ŘEŠENÍ SOUBĚHU</p>
+<ul>
+  <li><strong>Atomická operace:</strong> proběhne jako celek, nelze přerušit. Jen výjimečně (1 instrukce). Na SMP nestačí</li>
+  <li><strong>Zákaz přerušení:</strong> jen v jádře OS, privilegovaná instrukce, NEŘEŠÍ SMP, nebezpečné</li>
+  <li><strong>TSL (Test and Set Lock):</strong> zamkni + vrať předchozí stav (atomicky). <code>while TSL(Lock) do nothing</code>. Aktivní čekání!</li>
+  <li><strong>Semafory (Dijkstra, 1965):</strong> čítač místo booleanu. Down (P) = vstup (sníží čítač), Up (V) = výstup (zvýší čítač). Binární semafor = mutex</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">AKTIVNÍ VS. PASIVNÍ ČEKÁNÍ</p>
+<ul>
+  <li><strong>Aktivní (busy waiting):</strong> smyčka, plýtvá CPU. Spinlock v jádře = OK pro krátké čekání</li>
+  <li><strong>Pasivní:</strong> fronta čekajících procesů, sleep(). Operace Up probudí spící proces. Efektivnější</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-4);margin-bottom:8px">ZAMYKÁNÍ SOUBORŮ A BKL</p>
+<ul>
+  <li><strong>Souborové zámky:</strong> advisory (Unix – jádro nevynutí), fcntl()/flock(). Sdílené (čtení) × exkluzivní (zápis). Lock files: /etc/shadow.lock, stale lock</li>
+  <li><strong>BKL:</strong> Big Kernel Lock – jednoduchý zámek pro celé jádro na SMP. Dnes v Linuxu neexistuje (nahrazen jemnějšími zámky)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">UVÁZNUTÍ (DEADLOCK)</p>
+<ul>
+  <li><strong>Uváznutí:</strong> dva+ procesů čeká na událost, ke které by došlo jen pokud by jeden z nich mohl pokračovat. Příklad: tiskárna + disketa</li>
+  <li><strong>4 řešení:</strong> A) ignorování (běžné OS, uživatel ukončí proces), B) předcházení (odstranit 1 ze 4 podmínek), C) vyhýbání (Bankéřův algoritmus), D) detekce + zotavení (graf, rollback)</li>
+  <li><strong>4 podmínky uváznutí:</strong> 1) výlučný přístup → spooling, 2) postupné přidělování → jednorázově, 3) bez preempce → zavést preempci (jediná reálná), 4) cyklické čekání → očíslování prostředků</li>
+  <li><strong>Bankéřův algoritmus:</strong> přidělí jen pokud existuje cesta k dokončení všech procesů. Procesy deklarují max. požadavky</li>
+  <li><strong>Detekce:</strong> graf přidělených prostředků, cyklus = deadlock. SQL server: rollback jednoho procesu</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

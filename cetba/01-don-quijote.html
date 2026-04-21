@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Důmyslný rytíř Don Quijote de la Mancha</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cormorant+Garamond:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a1410;
+  --bg-card:#221a13;
+  --bg-card-alt:#2b2017;
+  --border:#3d2f22;
+  --text:#d4c4a8;
+  --text-muted:#8a7658;
+  --heading:#f0e4c8;
+  --accent-1:#c9a961;     /* zlatá */
+  --accent-2:#8b3a3a;     /* vínová */
+  --accent-3:#7a8c5a;     /* olivová */
+  --accent-4:#d4a574;     /* pískovec */
+  --accent-5:#a63d3d;     /* rudá */
+  --accent-6:#b8762f;     /* skořicová */
+  --accent-7:#6b5b8e;     /* tlumená fialová */
+  --accent-8:#4a6b7a;     /* tlumená modrá */
+  --quijote:#c9a961;      /* hlavní akcent – zlato rytíře */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'EB Garamond',serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;background-image:radial-gradient(ellipse at top,rgba(139,58,58,.04) 0%,transparent 60%),radial-gradient(ellipse at bottom,rgba(201,169,97,.03) 0%,transparent 60%);background-attachment:fixed}
+
+.hero{background:linear-gradient(135deg,#1a1410 0%,#3d1f18 45%,#2b1a14 100%);border-bottom:1px solid var(--border);padding:70px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(201,169,97,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(139,58,58,.08) 0%,transparent 50%);pointer-events:none}
+.hero::after{content:'⚔';position:absolute;font-size:260px;color:rgba(201,169,97,.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;font-family:serif}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--quijote);margin-bottom:18px;position:relative}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5.5vw,48px);color:var(--heading);font-weight:600;line-height:1.15;position:relative;font-style:italic}
+.hero .author{font-family:'Cormorant Garamond',serif;color:var(--accent-4);margin-top:14px;font-size:18px;position:relative;letter-spacing:1px}
+.hero .subtitle{color:var(--text-muted);margin-top:10px;font-size:14px;position:relative;font-style:italic}
+
+.container{max-width:880px;margin:0 auto;padding:36px 22px 80px}
+
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:28px 32px;margin-bottom:48px;position:relative}
+.toc::before{content:'';position:absolute;top:0;left:20px;right:20px;height:1px;background:linear-gradient(90deg,transparent,var(--quijote),transparent);opacity:.4}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--quijote);margin-bottom:18px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:36px}
+.toc li{counter-increment:toc;padding:5px 0;font-size:15px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' · ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:4px}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--quijote)}
+
+.section{margin-bottom:52px}
+.section-header{display:flex;align-items:center;gap:16px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);position:relative}
+.section-header::after{content:'';position:absolute;bottom:-1px;left:0;width:60px;height:1px;background:var(--quijote)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1.5px;min-width:28px}
+.section-header h2{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--heading);font-weight:600;font-style:italic}
+
+h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--heading);margin:30px 0 14px;font-style:italic}
+h4{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--heading);margin:20px 0 10px}
+
+p{margin-bottom:14px}
+
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin:18px 0;position:relative}
+.card.highlight{border-left:3px solid var(--accent-1);background:rgba(201,169,97,.04)}
+.card.key{border-left:3px solid var(--accent-4);background:rgba(212,165,116,.05)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(166,61,61,.05)}
+.card.green{border-left:3px solid var(--accent-3);background:rgba(122,140,90,.05)}
+.card.purple{border-left:3px solid var(--accent-7);background:rgba(107,91,142,.05)}
+.card.quote{border-left:3px solid var(--quijote);background:rgba(201,169,97,.04);font-style:italic}
+
+.card-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--quijote)}
+
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(201,169,97,.1);color:var(--quijote);padding:2px 7px;border-radius:3px}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-4)}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:44px 0}
+
+.ornament{text-align:center;color:var(--quijote);font-size:22px;margin:36px 0;opacity:.5;letter-spacing:20px}
+
+/* Porovnávací grid */
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:6px;padding:18px 20px;position:relative}
+.device-card h4{margin:0 0 8px;font-size:15px;font-family:'Cormorant Garamond',serif}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* Postavy */
+.character{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin:16px 0;position:relative;overflow:hidden}
+.character::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--character-color,var(--quijote))}
+.character .char-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--heading);font-style:italic;margin-bottom:4px}
+.character .char-role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--character-color,var(--quijote));margin-bottom:12px}
+
+/* Citace */
+.quote-block{background:var(--bg-card-alt);border-left:3px solid var(--quijote);padding:18px 24px;margin:16px 0;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--heading);line-height:1.6;position:relative}
+.quote-block::before{content:'„';position:absolute;top:-10px;left:8px;font-size:48px;color:var(--quijote);opacity:.3;font-family:serif}
+.quote-source{display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--text-muted);font-style:normal;text-transform:uppercase}
+
+/* Scéna – pasáže z díla */
+.scene{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:24px 28px;margin:20px 0;position:relative}
+.scene-label{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--quijote);background:rgba(201,169,97,.08);padding:4px 10px;border-radius:3px;margin-bottom:14px}
+.scene-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--heading);margin-bottom:14px;font-style:italic}
+.scene-text{font-family:'EB Garamond',serif;font-size:15px;font-style:italic;color:var(--text);margin:14px 0;padding-left:18px;border-left:2px solid var(--border);line-height:1.7}
+.scene-context{font-size:14.5px;color:var(--text-muted);margin-top:12px;line-height:1.7}
+.scene-context strong{color:var(--accent-4)}
+
+/* Tabulka */
+.compare-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:12px 16px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* Tropy grid */
+.tropes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
+.trope-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:6px;padding:16px 18px}
+.trope-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--quijote);margin-bottom:6px}
+.trope-example{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--heading);font-size:15px;margin-bottom:6px}
+.trope-note{font-size:13px;color:var(--text-muted);line-height:1.55}
+
+/* Details */
+details{margin:14px 0;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:4px 18px}
+details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:12px 0;font-size:15px;list-style:none;display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-style:italic}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--quijote);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+/* Timeline – kompozice */
+.timeline{position:relative;margin:20px 0;padding-left:24px;border-left:2px solid var(--border)}
+.timeline-step{padding:12px 0 12px 20px;position:relative}
+.timeline-step::before{content:'';position:absolute;left:-9px;top:18px;width:12px;height:12px;border-radius:50%;border:2px solid var(--quijote);background:var(--bg)}
+.timeline-step .ts-title{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--heading);font-size:17px;font-style:italic}
+.timeline-step .ts-desc{color:var(--text-muted);font-size:14px;margin-top:4px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .hero{padding:50px 20px 40px}
+  .container{padding:24px 16px 60px}
+  .card,.scene,.character{padding:18px 20px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">Maturitní rozbor · Světová literatura</div>
+  <h1>Důmyslný rytíř<br>Don Quijote de la Mancha</h1>
+  <div class="author">Miguel de Cervantes Saavedra</div>
+  <div class="subtitle">1605 / 1615 · Španělsko · První moderní román</div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby a promluvy</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p>Dílo se skládá ze <strong>dvou dílů</strong>, z nichž první byl vydán <strong>roku 1605</strong> a druhý <strong>roku 1615</strong>. Mezi vydáním obou dílů uplynulo celých deset let, během nichž se objevilo i <em>falešné pokračování</em> od neznámého autora pod pseudonymem Avellaneda – Cervantes na něj reagoval právě ve svém druhém dílu, kde postavy otevřeně komentují tento podvrh.</p>
+
+<p>Román má <strong>chronologickou výstavbu s retrospektivními pasážemi</strong>. Typický výňatek může pocházet:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">Úvod</div>
+    <div class="ts-desc">Představení Dona Quijota, jeho pomatenost z četby rytířských románů a počátek jeho bláznivých výprav</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Střed</div>
+    <div class="ts-desc">Různá dobrodružství – boj s větrnými mlýny, souboje s domnělými rytíři, setkání s Dulcineou</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">Závěr</div>
+    <div class="ts-desc">Návrat domů, Quijotovo prozření před smrtí a smíření se světem</div>
+  </div>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Hlavní téma</div>
+  <p style="margin-bottom:0"><strong>Střet idealismu s realitou</strong>, kritika rytířských románů, pomatenost versus zdravý rozum, obraz španělské společnosti 16.–17. století.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Rytířství</strong> – ideál, který již zanikl, ale v Quijotově mysli ožívá</li>
+  <li><strong>Větrné mlýny</strong> – symbol marného boje proti neexistujícím nepřátelům</li>
+  <li><strong>Dulcinea</strong> – idealizovaná, nedosažitelná dáma srdce</li>
+  <li><strong>Panoš Sancho Panza</strong> – protiváha idealismu, prostý lidový rozum</li>
+  <li><strong>Dobrodružství a souboje</strong> – tradiční motivy rytířských románů, zde parodované</li>
+  <li><strong>Kastilská krajina</strong> – rozpálená, prašná, pustá – rámec Quijotových výprav</li>
+  <li><strong>Blouznění, čest, spravedlnost</strong> – morální osa díla</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Čas</h4>
+    <p>Konec 16. století – doba, kdy rytířské romány a rytířstvo již dávno zanikaly. Příběh se odehrává v průběhu několika měsíců až let, s různou denní dobou podle konkrétních dobrodružství.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Prostor</h4>
+    <p><strong>Španělsko</strong>, především provincie <em>La Mancha</em> (Kastilie) – venkovská krajina, vesnice, krčmy, prašné cesty. A hrady – ovšem pouze v Quijotově představách.</p>
+  </div>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> – dobrodružství následují po sobě v časové posloupnosti</li>
+  <li><strong>Rámcové uspořádání</strong> – příběh je stylizován jako záznam skutečných událostí, které Cervantes údajně objevil v rukopise maurského historika <em>Cida Hameta Benengeliho</em> a pouze přeložil</li>
+  <li><strong>Episodická struktura</strong> – každé dobrodružství tvoří relativně samostatný příběh</li>
+</ul>
+
+<h3>Části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Rozděleno na <strong>dva díly</strong>, každý obsahuje mnoho kapitol</li>
+    <li>Kapitoly popisují jednotlivá dobrodružství</li>
+    <li>Odstavce střídají <strong>vyprávění, dialogy a popisy</strong></li>
+    <li>Do hlavního děje jsou vkládány <strong>vedlejší příběhy</strong> (novely) – např. „Novela o nerozumně zvědavém"</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Literární druh</h4>
+    <p><strong>Epika</strong> – má rozvinutý děj, popisuje skutečnost (byť z ní Quijote uniká do fantazie).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Literární žánr</h4>
+    <p><strong>Román</strong> – rozsáhlé epické dílo s prvky <em>parodie</em>, <em>pikareskního románu</em> a <em>satirického románu</em>.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Zdůvodnění</div>
+  <p style="margin-bottom:0">Dílo má <strong>rozsáhlý děj s mnoha postavami</strong>, zachycuje celý život hlavního hrdiny a jeho proměnu, satiricky komentuje společnost i literární módu své doby. Spojuje prvky parodie (zesměšnění rytířských románů), pikareskního románu (epizodické dobrodružství chudého hrdiny na cestách) a satirického románu (společenská kritika).</p>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč</h2></div>
+
+<p><strong>Typ:</strong> Er-forma – vypravěč hovoří ve třetí osobě.</p>
+
+<h3>Vyprávěcí rovina</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>Vševědoucí vypravěč</strong> – vystupuje v er-formě, sleduje všechny postavy, komentuje jejich jednání, vidí do jejich myšlenek</li>
+    <li>Vypravěč <strong>ironicky poukazuje na rozpor</strong> mezi Quijotovým vnímáním a realitou</li>
+    <li>Někdy se <strong>stylizuje jako překladatel</strong> či editor starých záznamů maurského historika Cida Hameta Benengeliho – čímž se hra s fikcí posouvá na metaliterární rovinu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy</h2></div>
+
+<div class="character" style="--character-color:var(--accent-1)">
+  <div class="char-name">Don Quijote (Alonso Quijano)</div>
+  <div class="char-role">Hlavní postava · Tragikomický hrdina</div>
+  <ul style="margin:0">
+    <li>Stárnoucí šlechtic (hidalgo) z La Manchy</li>
+    <li>Pomatený vášnivým čtením rytířských románů</li>
+    <li><strong>Idealistický, naivní, šlechetný, odvážný</strong></li>
+    <li>Zaměňuje realitu za své představy (větrné mlýny = obři, krčma = hrad, selka = princezna)</li>
+    <li>Přijímá rytířské jméno Don Quijote de la Mancha</li>
+    <li>Na konci díla se uzdraví z bláznivosti a umírá jako moudrý člověk</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)">
+  <div class="char-name">Sancho Panza</div>
+  <div class="char-role">Hlavní postava · Věrný panoš</div>
+  <ul style="margin:0">
+    <li>Quijotův věrný panoš (<em>escudero</em>)</li>
+    <li>Prostý sedlák, realista, pragmatik</li>
+    <li><strong>Kontrast k idealistickému Quijotovi</strong></li>
+    <li>Tlustý, lačný, praktický, mluví v příslovích</li>
+    <li>Postupně se nechává strhnout Quijotovými ideály – jeho proměna je v díle stejně důležitá jako Quijotova</li>
+    <li>Cervantes mu slibuje guvernérství ostrova – ve 2. dílu se tento sen paradoxně splní</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-7)">
+  <div class="char-name">Dulcinea z Tobosa</div>
+  <div class="char-role">Hlavní postava · Dáma srdce (fiktivní)</div>
+  <ul style="margin:0">
+    <li>Quijotova idealizovaná dáma srdce</li>
+    <li>Ve skutečnosti prostá selka <em>Aldonza Lorenzo</em></li>
+    <li>Quijote ji zbožňuje, aniž by ji skutečně znal</li>
+    <li>Symbolizuje <strong>sílu představivosti</strong> – celý její vznešený obraz existuje jen v Quijotově hlavě</li>
+  </ul>
+</div>
+
+<h3>Vedlejší postavy</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Kněz a holič</strong> – Quijotovi přátelé, kteří se ho snaží přivést zpět k rozumu (spálí mu knihovnu)</li>
+    <li><strong>Neteř a hospodyně</strong> – starají se o Quijota a obávají se o jeho duševní zdraví</li>
+    <li><strong>Bakalář Samson Carrasco</strong> – ve 2. dílu se vydává za „Rytíře bílého měsíce" a porazí Quijota</li>
+    <li><strong>Rocinante</strong> – Quijotův vyzáblý kůň (byť postavou zvířecí, má v díle svou roli)</li>
+    <li><strong>Různí lidé potkáni na cestách</strong> – pastýři, šlechtici, vězni, herci, vévoda s vévodkyní</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">08</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card">
+  <div class="card-title" style="color:var(--quijote)">Přímá řeč</div>
+  <p>Časté dialogy mezi Quijotem a Sanchem – jsou páteří humoru celého díla.</p>
+  <div class="quote-block">Ty vidíš, Sancho, tamhle třicet nebo více obrů? Chci s nimi svést bitvu!</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-3)">Nepřímá řeč</div>
+  <p>Vypravěč reprodukuje myšlenky a slova postav vlastními slovy.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Don Quijote řekl svému panoši, že se musí připravit na velký boj.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-7)">Polopřímá řeč</div>
+  <p>Prolínání myšlenek postavy s vyprávěním – bez uvozovek, ale zachovává postavovu perspektivu.</p>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border)">Sancho se díval na mlýny, ne, tohle přece nemůžou být obři…</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Pásmo vypravěče</h4>
+    <p>Převažující forma – vypravěč popisuje události v er-formě, často s ironickým odstupem.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Dialog</h4>
+    <p>Časté rozhovory mezi Donem Quijotem a Sanchem Panzou o rytířství, spravedlnosti a realitě.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Monolog</h4>
+    <p>Quijotovy patetické projevy o rytířské cti, oslavy Dulciney, filosofické úvahy.</p>
+  </div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">09</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>rytíř, meč, kůň</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>oř</em> (kůň), <em>měsíček</em> (měsíc), šlechtic</td></tr>
+  <tr><td><strong>Archaismy</strong></td><td><em>hled</em> (vzhled), <em>lán</em> (pole) – navození historické atmosféry</td></tr>
+</table>
+
+<h3>Termíny rytířské</h3>
+<div class="card quote">
+  <p style="margin-bottom:0">vyznavač, panoš, brnění, turnaj, kopí, helmice, štít, oř, dáma srdce…</p>
+</div>
+<p style="color:var(--text-muted);font-size:14px">Slouží k vytvoření <strong>atmosféry rytířského románu</strong> – tím silnější je pak kontrast s prašnou realitou La Manchy.</p>
+
+<h3>Přechodníky</h3>
+<p><em>Běžíc, jeda</em> – archaické tvary slouží pro <strong>historický kolorit</strong> a parodii vysokého stylu.</p>
+
+<h3>Citově zabarvená slova</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Quijotův jazyk</h4>
+    <p><em>„Vznešená dámo", „ušlechtilý rytíři"</em> – květnatý, patetický, knižní styl rytířských románů.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Sanchův jazyk</h4>
+    <p>Prostý, lidový, plný přísloví a hrubších výrazů – jazyk selského rozumu.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li>Archaismy a knižní výrazy <strong>navozují atmosféru rytířských dob</strong></li>
+    <li>Kontrast mezi vznešeným jazykem Quijota a prostým jazykem Sancha <strong>podtrhuje rozdíl mezi iluzí a realitou</strong></li>
+    <li>Parodie stylu rytířských románů – Cervantes je na první čtení obdivuje, ve skutečnosti je zesměšňuje</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">10</span><h2>Tropy a figury</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">„Rocinante"</div>
+    <div class="trope-note">Jméno znamená „kdysi ušlechtilý kůň" – nyní je to vyzáblý herka. Samo jméno je vtip.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Třicet obrů místo mlýnů</div>
+    <div class="trope-note">Quijote vidí třicet obrovských nepřátel tam, kde jsou stavby na mletí obilí.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">„Velký rytíř"</div>
+    <div class="trope-note">Vypravěč ironicky komentuje Quijotovy porážky jako slavná vítězství.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Věrný jako pes</div>
+    <div class="trope-note">Sancho je věrný jako pes, tlustý jako sud – přirovnání až lidové prostoty.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Mlýny jako obři</div>
+    <div class="trope-note">Neživé stavby dostávají v Quijotově vnímání lidské (obří) rysy.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">„Důmyslný rytíř"</div>
+    <div class="trope-note">Básnický přívlastek – „důmyslný rytíř", „vznešená Dulcinea".</div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy <strong>zvýrazňují propast mezi Quijotovou představou a skutečností</strong>, ironie odhaluje absurditu situací a zároveň umožňuje Cervantesovi zachovat k hrdinovi sympatie – smějeme se Quijotovi, ale zároveň mu fandíme.</p>
+</div>
+</section>
+
+<!-- 11 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">11</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Miguel de Cervantes Saavedra (1547–1616)</div>
+  <p>Bojoval v bitvě u Lepanta (1571), kde přišel o levou ruku – odtud přezdívka „Mrzák od Lepanta". Byl pět let zajat u berberských pirátů v Alžíru. Pracoval jako daňový výběrčí a několikrát byl ve vězení – podle některých zdrojů začal Dona Quijota psát právě ve vězení v Seville.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Vrcholné dílo</strong> Miguela de Cervantese</li>
+  <li>Napsáno v závěru autorova života – <strong>první díl 1605, druhý díl 1615</strong></li>
+  <li>Cervantes zemřel rok po vydání druhého dílu (<strong>1616</strong>)</li>
+  <li>Autor napsal i jiná díla: novely (<em>Příkladné novely</em>), drama (<em>Numancie</em>), pastýřský román (<em>Galatea</em>), básnické dílo (<em>Cesta na Parnas</em>) – ale <strong>Don Quijote je jeho nejslavnější dílo</strong></li>
+</ul>
+</section>
+
+<!-- 12 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">12</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Přelom <strong>16. a 17. století</strong></li>
+    <li>Španělsko v období <strong>úpadku</strong> (po Zlatém věku / <em>Siglo de Oro</em>)</li>
+    <li>Umělecký sloh: <strong>baroko</strong> (v některých prvcích), přechod od renesance</li>
+    <li>Doba, kdy rytířské romány byly enormně populární – a Cervantes je svým dílem doslova pohřbil</li>
+  </ul>
+</div>
+
+<h3>Základní rysy díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)"><h4 style="color:var(--accent-1)">Kontrast</h4><p>Idealismus vs. realismus – dvě perspektivy na týž svět.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)"><h4 style="color:var(--accent-2)">Parodie</h4><p>Na rytířské romány, které byly v 16. století velmi populární.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Satira</h4><p>Společenská kritika dobové Španělska.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Psychologie</h4><p>Hloubka postav – Quijote i Sancho se v průběhu díla mění.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)"><h4 style="color:var(--accent-7)">Humanismus</h4><p>Lidskost, tolerance, víra v lepší svět.</p></div>
+</div>
+
+<h3>Další zástupci a díla</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Země</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Miguel de Cervantes</strong></td><td>Španělsko</td><td>Příkladné novely, Galatea</td></tr>
+  <tr><td><strong>William Shakespeare</strong></td><td>Anglie</td><td>Dramatik, zemřel stejný rok jako Cervantes (1616)</td></tr>
+  <tr><td><strong>Pedro Calderón de la Barca</strong></td><td>Španělsko</td><td>Barokní dramatik (<em>Život je sen</em>)</td></tr>
+  <tr><td><strong>Lope de Vega</strong></td><td>Španělsko</td><td>Dramatik a básník, Cervantesův rival</td></tr>
+  <tr><td><strong>Francisco de Quevedo</strong></td><td>Španělsko</td><td>Básník a prozaik, mistr barokní satiry</td></tr>
+</table>
+</section>
+
+<div class="ornament">⚔ · ⚔ · ⚔</div>
+
+<!-- 13 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">13</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene">
+  <span class="scene-label">01 · Úvodní charakteristika</span>
+  <div class="scene-title">Představení hidalga z La Manchy</div>
+  <div class="scene-text">V některé vesnici La Manchy, jejíž jméno si nechci pamatovat, žil před nedávnem jeden z těch hidalgů, kteří mají kopí ve stojanu, starý štít, vychrtlého koně a rychlého chrta.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Slavný úvodní výrok díla, který představuje hlavního hrdinu. Ironický tón už od prvních slov naznačuje, že půjde o <strong>parodii na rytířské romány</strong>. Slovní spojení „jejíž jméno si nechci pamatovat" je dnes jednou z nejznámějších vět světové literatury.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Kapitola VIII, Díl I.</span>
+  <div class="scene-title">Boj s větrnými mlýny</div>
+  <div class="scene-text">„Podívej se tam, příteli Sancho Panzo, vidíš třicet nebo více obludných obrů? Chci s nimi svést bitvu a všechny pobít."<br><br>„Jakých obrů?" pravil Sancho Panza.<br><br>„Těch, které tam vidíš," odpověděl jeho pán, „s dlouhými rameny; někteří z nich je mají skoro dvě míle dlouhé."<br><br>„Račte pohleděti," odpověděl Sancho, „že to, co tam vypadá jako ramena, jsou křídla větrných mlýnů."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Nejslavnější scéna díla, která se stala <strong>symbolem marného boje proti imaginárním nepřátelům</strong>. Don Quijote zaútočí na větrné mlýny v přesvědčení, že jsou to obři, a je svržen z koně.<br><br><strong>Význam:</strong> Výraz <em>„boj s větrnými mlýny"</em> se stal v mnoha jazycích idiomem pro marný boj s nereálnými problémy.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Úvod I. dílu</span>
+  <div class="scene-title">Pasování na rytíře v hostinci</div>
+  <div class="scene-context">Don Quijote prosí hostinského, kterého považuje za kastelána hradu, aby ho pasoval na rytíře. Hostinský, aby se pobavil, předstírá slavnostní rituál pasování.<br><br><strong>Kontext:</strong> Quijote se nechá „pasovat" na rytíře v prostém hostinci, který považuje za vznešený hrad. Scéna ukazuje <strong>propast mezi jeho představami a realitou</strong> – a zároveň ochotu okolí Quijotovi jeho fantazii potvrzovat.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Kapitola XXII, Díl I.</span>
+  <div class="scene-title">Osvobození galejníků</div>
+  <div class="scene-context">Don Quijote osvobodí skupinu vězňů vedených na galeje (nucené práce na lodích), protože považuje za nespravedlné, že jsou vedeni v okovech. Osvobození vězni ho pak <strong>kamenují a okradou</strong>.<br><br><strong>Kontext:</strong> Quijotova naivní víra v absolutní spravedlnost ho vede k činu, který má katastrofální následky. Ukazuje rozdíl mezi idealistickou představou a krutou realitou.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Díl I.</span>
+  <div class="scene-title">Dobrodružství s bičovaným pacholkem Andresem</div>
+  <div class="scene-context">Don Quijote zachrání mladého pastýřského mládence před tělesným trestem od jeho pána. Jakmile rytíř odjede, pán chlapce <strong>zbije ještě krutěji</strong>.<br><br><strong>Kontext:</strong> Další příklad, jak Quijotovy dobré úmysly vedou ke zhoršení situace. Jeho idealistické představy neberou v úvahu skutečný svět – a později, když Andresa znovu potká, chlapec Quijota prosí, aby už mu nikdy „nepomáhal".</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · Oslava Dulciney</span>
+  <div class="scene-title">Quijotova oslava dámy srdce</div>
+  <div class="scene-text">Ó princezno Dulcineo, paní tohoto zajatého srdce! Velkým příkořím jsi mě sužovala, když jsi mi zakázala a přísně rozkázala, abych se neukázal před líčem tvé krásy.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Quijotovy velkolepé projevy o Dulciney, kterou nikdy neviděl a která ve skutečnosti je prostá selka Aldonza Lorenzo. Čistá <strong>síla představivosti</strong> – Dulcinea existuje jen v Quijotově mysli.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Díl II.</span>
+  <div class="scene-title">Sancho Panza jako guvernér ostrova Barataria</div>
+  <div class="scene-context">Sancho dostane možnost vládnout „ostrovu" (ve skutečnosti vesnici, jde o žert vévody a vévodkyně). Překvapivě se ukazuje jako <strong>moudrý a spravedlivý vládce</strong>, ačkoli je negramotný sedlák.<br><br><strong>Kontext:</strong> Parodie na politiku a správu, ale také <strong>uznání přirozené moudrosti prostého člověka</strong>. Sancho nakonec dobrovolně abdikuje se slavnými slovy: „Nahý jsem se narodil, nahý jsem a ani neztrácím, ani nezískávám."</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Kapitola LXXIV, Díl II.</span>
+  <div class="scene-title">Quijotovo prozření a smrt</div>
+  <div class="scene-text">Já, přátelé, cítím, že umírám velmi rychle… Již nejsem Don Quijote de la Mancha, nýbrž Alonso Quijano, kterého mé zvyky daly přízvisko Dobrý.<br><br>Proklamuji, že opovrhuji rytířskými romány… Vím teď o jejich pošetilosti a klamu.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Dojemný závěr díla. Quijote se před smrtí uzdraví z bláznivosti, uvědomí si své pomatenosti a umírá jako moudrý, smířený člověk. Jeho přátelé paradoxně <strong>litují, že se uzdravil</strong>.<br><br><strong>Význam:</strong> Tragický závěr – když Quijote získá rozum, ztrácí svou esenci. Jeho šílenství bylo možná cennější než chladný rozum. Cervantes hrdinu „pohřbí" také proto, aby už nikdo nemohl napsat další falešné pokračování.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">09 · Kapitola LVIII, Díl II.</span>
+  <div class="scene-title">Dialog o svobodě</div>
+  <div class="scene-text">Svoboda, Sancho, je jedním z nejdrahocennějších darů, které nebesa dala lidem; s ní se nemohou vyrovnat žádné poklady, jež skrývá země nebo moře.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Quijotova filozofická úvaha o hodnotě svobody. Ukazuje, že <strong>za jeho bláznivostí jsou hluboké morální pravdy</strong> – a že jeho blouznění není jen komické, ale také nese vážné poselství.</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">10 · Kapitola XI, Díl I.</span>
+  <div class="scene-title">Quijotovo kázání o zlatém věku</div>
+  <div class="scene-context">Don Quijote pronáší <strong>dlouhou řeč o zlatém věku</strong>, kdy lidé žili v nevinnosti a harmonii, bez chamtivosti, válek a nespravedlnosti.<br><br><strong>Kontext:</strong> Quijotova <strong>nostalgie po idealizované minulosti</strong>. Odráží renesanční humanismus a touhu po lepším světě. Pastýři, kterým řeč pronáší, ji vůbec nechápou – ale čtenář ano.</div>
+</div>
+</section>
+
+<div class="ornament">⚔ · ⚔ · ⚔</div>
+
+<!-- 14 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">14</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Střet idealismu s realitou</strong>, kritika přehnaného nadšení pro zastaralé ideály, ale zároveň obdiv k čistotě a ušlechtilosti ideálů. Quijote je směšný, ale také <strong>obdivuhodný pro svou neochvějnou víru v dobro</strong>.</p>
+</div>
+
+<h3>Kompozice díla ve zkratce</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">První díl (1605)</h4>
+    <p>Quijotova dobrodružství, blouznění, souboje s mlýny, setkání s různými lidmi. Svět ještě neví, kdo je Don Quijote.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Druhý díl (1615)</h4>
+    <p>Quijote je již slavný (lidé v příběhu četli první díl!), setkávají se s ním a někdy mu <strong>záměrně nahrávají</strong> v jeho bláznivosti. Metaliterární hra.</p>
+  </div>
+</div>
+
+<h3>Symbol díla</h3>
+<div class="card quote">
+  <p style="margin-bottom:0"><strong>Větrné mlýny</strong> – symbol marného boje proti neexistujícím nepřátelům, ale také <strong>symbol odvahy bojovat za své ideály</strong>, i kdyby byli zdrcující převahou.</p>
+</div>
+
+<h3>Význam pro světovou literaturu</h3>
+<ul>
+  <li><strong>První moderní román</strong> světové literatury</li>
+  <li>Inspirace pro mnoho dalších spisovatelů (Flaubert, Dostojevskij, Kafka, Nabokov)</li>
+  <li>Kritika <strong>dogmatismu a slepého idealismu</strong></li>
+  <li>Zakládá tradici <strong>nespolehlivého vypravěče</strong> a metaliterární hry</li>
+  <li>Výraz „donkichotský" se stal mezinárodním pojmem</li>
+</ul>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-4)">Proč číst Dona Quijota dnes?</div>
+  <p style="margin-bottom:0">Dílo je dodnes aktuální – ukazuje, jak může člověk žít ve vlastním světě iluzí (sociální sítě, konspirační teorie, idealizované představy), ale také jak <strong>důležité je mít ideály a bojovat za ně</strong>, i když nás ostatní považují za blázny. Témata <strong>střetu snů a reality, hledání smyslu života, síly představivosti</strong> jsou bezčasová.</p>
+</div>
+
+<div class="quote-block" style="margin-top:30px">
+  Snít nemožný sen, bojovat s nepřemožitelným nepřítelem, nést nesnesitelnou tíseň…
+  <span class="quote-source">Duch Dona Quijota — parafráze</span>
+</div>
+</section>
+
+</div>
+</body>
+</html>

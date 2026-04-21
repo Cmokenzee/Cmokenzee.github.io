@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 12: Směrování, Směrovací tabulky, Směrovací protokoly</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #2e1f0f 50%, #0f2e1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(251,191,36,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(52,211,153,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-4); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(24px, 5vw, 40px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+  .tag-dv { background: rgba(251,146,60,0.15); color: var(--accent-6); }
+  .tag-ls { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+  .tag-pv { background: rgba(167,139,250,0.15); color: var(--accent-2); }
+  .tag-std { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+  .cli .route-c { color: var(--accent-3); }
+  .cli .route-s { color: var(--accent-4); }
+  .cli .route-r { color: var(--accent-6); }
+  .cli .route-o { color: var(--accent-1); }
+
+  /* AD bar */
+  .ad-bar { display: flex; flex-direction: column; gap: 4px; margin: 14px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .ad-row { display: flex; align-items: center; gap: 10px; }
+  .ad-label { min-width: 100px; font-weight: 600; font-size: 11px; }
+  .ad-val { min-width: 36px; text-align: right; font-weight: 700; }
+  .ad-fill { height: 18px; border-radius: 3px; transition: width 0.3s; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .ad-label { min-width: 70px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 12</div>
+  <h1>Směrování, Směrovací tabulky,<br>Směrovací protokoly</h1>
+  <p>Static/Dynamic • RIP • EIGRP • OSPF • BGP • Distance-Vector vs Link-State</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#routing">Směrování – základní pojmy</a></li>
+    <li><a href="#table">Směrovací tabulka</a></li>
+    <li><a href="#ad">Administrativní vzdálenost (AD)</a></li>
+    <li><a href="#metric">Metrika</a></li>
+    <li><a href="#static">Statické směrování</a></li>
+    <li><a href="#dynamic">Dynamické směrování</a></li>
+    <li><a href="#dv">Distance-Vector protokoly</a></li>
+    <li><a href="#ls">Link-State protokoly</a></li>
+    <li><a href="#dv-vs-ls">DV vs LS – porovnání</a></li>
+    <li><a href="#rip">RIP</a></li>
+    <li><a href="#eigrp">EIGRP</a></li>
+    <li><a href="#ospf">OSPF</a></li>
+    <li><a href="#bgp">BGP</a></li>
+    <li><a href="#examples">Příklady konfigurace</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 ROUTING -->
+<section class="section" id="routing">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Směrování – základní pojmy</h2>
+  </div>
+
+  <p><strong>Směrování (routing)</strong> = proces určování nejlepší cesty paketu přes síť routerů. Router přijme paket → zkontroluje Dest IP → konzultuje routing table → vybere best path → forwarduje.</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Klíčové pojmy</div>
+    <ul>
+      <li><strong>Routing table</strong> – databáze známých sítí a cest (network, next-hop, metric, AD, interface)</li>
+      <li><strong>Next-hop</strong> – IP adresa dalšího routeru na cestě k cíli</li>
+      <li><strong>Metric</strong> – kvalita cesty (nižší = lepší). Každý protokol má vlastní</li>
+      <li><strong>Administrative Distance (AD)</strong> – důvěryhodnost zdroje route (0–255, nižší = lepší)</li>
+      <li><strong>Konvergence</strong> – stav kdy všechny routery mají konzistentní tabulky</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 TABLE -->
+<section class="section" id="table">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Směrovací tabulka</h2>
+  </div>
+
+  <p>Zobrazení: <code>show ip route</code> (IPv4), <code>show ipv6 route</code> (IPv6).</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Příklad záznamu (Cisco)</div>
+    <div class="cli">
+      <span class="route-o">O</span>    192.168.20.0/24 [<span style="color:var(--accent-4)">110</span>/<span style="color:var(--accent-3)">65</span>] via 10.0.0.2, 00:10:23, GigabitEthernet0/1
+    </div>
+    <ul style="font-size:13px">
+      <li><strong>O</strong> = OSPF route</li>
+      <li><strong>192.168.20.0/24</strong> = cílová síť</li>
+      <li><strong>[110/65]</strong> = [AD / Metric]</li>
+      <li><strong>via 10.0.0.2</strong> = next-hop</li>
+      <li><strong>GigabitEthernet0/1</strong> = exit interface</li>
+    </ul>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Typy routes</div>
+    <table class="compare-table">
+      <tr><th>Kód</th><th>Zdroj</th><th>AD</th></tr>
+      <tr><td><strong>C</strong></td><td>Connected (přímo připojené)</td><td>0</td></tr>
+      <tr><td><strong>L</strong></td><td>Local (hostová adresa routeru, /32)</td><td>0</td></tr>
+      <tr><td><strong>S</strong></td><td>Static (manuální)</td><td>1</td></tr>
+      <tr><td><strong>R</strong></td><td>RIP</td><td>120</td></tr>
+      <tr><td><strong>D</strong></td><td>EIGRP (internal / external)</td><td>90 / 170</td></tr>
+      <tr><td><strong>O</strong></td><td>OSPF</td><td>110</td></tr>
+      <tr><td><strong>B</strong></td><td>BGP (eBGP / iBGP)</td><td>20 / 200</td></tr>
+    </table>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Default route:</strong> <code>0.0.0.0/0</code> (IPv4) nebo <code>::/0</code> (IPv6) – gateway of last resort.</p>
+  </div>
+</section>
+
+<!-- 03 AD -->
+<section class="section" id="ad">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Administrativní vzdálenost (AD)</h2>
+  </div>
+
+  <p>Číslo 0–255 vyjadřující <strong>důvěryhodnost</strong> zdroje route. Nižší AD = lepší. Rozhoduje mezi routes ze <strong>RŮZNÝCH</strong> zdrojů pro stejnou síť.</p>
+
+  <div class="ad-bar">
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-3)">Connected</span><span class="ad-val" style="color:var(--accent-3)">0</span><div class="ad-fill" style="width:2%;background:var(--accent-3)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-4)">Static</span><span class="ad-val" style="color:var(--accent-4)">1</span><div class="ad-fill" style="width:3%;background:var(--accent-4)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-2)">eBGP</span><span class="ad-val" style="color:var(--accent-2)">20</span><div class="ad-fill" style="width:10%;background:var(--accent-2)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-6)">EIGRP int</span><span class="ad-val" style="color:var(--accent-6)">90</span><div class="ad-fill" style="width:38%;background:var(--accent-6)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-1)">OSPF</span><span class="ad-val" style="color:var(--accent-1)">110</span><div class="ad-fill" style="width:46%;background:var(--accent-1)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-5)">RIP</span><span class="ad-val" style="color:var(--accent-5)">120</span><div class="ad-fill" style="width:50%;background:var(--accent-5)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--accent-7)">EIGRP ext</span><span class="ad-val" style="color:var(--accent-7)">170</span><div class="ad-fill" style="width:70%;background:var(--accent-7)"></div></div>
+    <div class="ad-row"><span class="ad-label" style="color:var(--text-muted)">iBGP</span><span class="ad-val" style="color:var(--text-muted)">200</span><div class="ad-fill" style="width:82%;background:var(--text-muted)"></div></div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">AD vs Metric – pravidlo!</div>
+    <p><strong>AD</strong> porovnává <strong>MEZI protokoly</strong> (OSPF vs RIP vs Static).</p>
+    <p><strong>Metric</strong> porovnává <strong>UVNITŘ jednoho protokolu</strong> (OSPF cesta A vs OSPF cesta B).</p>
+    <p style="margin-bottom:0"><strong>Pořadí:</strong> Nejprve AD → pokud stejné AD → metric → pokud stejné metric → load balancing (ECMP).</p>
+  </div>
+</section>
+
+<!-- 04 METRIC -->
+<section class="section" id="metric">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Metrika</h2>
+  </div>
+
+  <p>Hodnota vyjadřující náklady cesty. Nižší = lepší. <strong>Každý protokol má jinou metriku</strong> → nelze porovnávat mezi protokoly (proto AD).</p>
+
+  <table class="compare-table">
+    <tr><th>Protokol</th><th>Metrika</th><th>Výpočet</th><th>Pozn.</th></tr>
+    <tr><td><strong>RIP</strong></td><td>Hop count</td><td>Počet routerů na cestě</td><td>Max 15 (16 = unreachable). Ignoruje bandwidth!</td></tr>
+    <tr><td><strong>OSPF</strong></td><td>Cost</td><td>10⁸ / bandwidth (bps)</td><td>FastEth=1, Serial 64K=1562. Součet na cestě</td></tr>
+    <tr><td><strong>EIGRP</strong></td><td>Composite</td><td>(BW + Delay) × 256</td><td>BW = 10⁷/nejpomalejší link. Nejpřesnější</td></tr>
+    <tr><td><strong>BGP</strong></td><td>Path attributes</td><td>AS_PATH, LOCAL_PREF, MED</td><td>10+ kritérií, nejkomplexnější</td></tr>
+  </table>
+
+  <details>
+    <summary>OSPF cost – příklady</summary>
+    <p style="font-size:13px;color:var(--text-muted)">Default reference bandwidth = 100 Mbps (100,000,000):</p>
+    <ul>
+      <li>FastEthernet (100 Mbps): 100M / 100M = <strong>1</strong></li>
+      <li>GigabitEthernet (1 Gbps): 100M / 1000M = 0.1 → zaokrouhleno na <strong>1</strong> (problém!)</li>
+      <li>T1 (1.544 Mbps): 100M / 1.544M ≈ <strong>65</strong></li>
+      <li>Serial 64 Kbps: 100M / 0.064M = <strong>1562</strong></li>
+    </ul>
+    <p style="font-size:13px;color:var(--accent-4)">Řešení: <code>auto-cost reference-bandwidth 10000</code> (pro 10G sítě)</p>
+  </details>
+</section>
+
+<!-- 05 STATIC -->
+<section class="section" id="static">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Statické směrování</h2>
+  </div>
+
+  <p>Administrátor <strong>manuálně</strong> nakonfiguruje každou route. Router nekomunikuje s ostatními ohledně cest.</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p>Žádný overhead (šetří BW, CPU). Bezpečné (žádné fake routes). Plná kontrola. Předvídatelné. Jednoduché pro malé sítě.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p><strong>Neškálovatelné</strong> (100 routerů = stovky routes!). Žádná auto-konvergence (link selže → admin musí ručně). Chybovost (překlep). Žádný auto load balancing.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Kdy použít statické</div>
+    <ul>
+      <li><strong>Malé sítě</strong> (2–5 routerů), jednoduchá topologie</li>
+      <li><strong>Stub networks</strong> – síť s jedinou cestou ven (default route stačí)</li>
+      <li><strong>Floating static</strong> – backup route s vyšším AD (failover)</li>
+      <li><strong>Security</strong> – DMZ, kritické prostředí</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 DYNAMIC -->
+<section class="section" id="dynamic">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Dynamické směrování</h2>
+  </div>
+
+  <p>Routery <strong>automaticky</strong> vyměňují informace o sítích pomocí routing protocols. Učí se a adaptují na změny.</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p><strong>Škálovatelné</strong> (tisíce routerů, Internet = BGP 900K+ routes). Auto-konvergence (sekundy–minuty). ECMP load balancing. Fault tolerance.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p>Overhead (BW, CPU, RAM). Komplexnější konfigurace. Bezpečnostní rizika (fake routes → mitigace: authentication). Konvergenční čas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DV -->
+<section class="section" id="dv">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Distance-Vector protokoly</h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-6)">
+    <div class="card-title" style="color: var(--accent-6);">Princip: „Routing by rumor"</div>
+    <p>Router zná pouze <strong>vzdálenost</strong> (distance = metrika) a <strong>směr</strong> (vector = next-hop) k cíli. <strong>Nezná kompletní topologii!</strong></p>
+    <ul>
+      <li>Periodicky posílá <strong>celou routing table</strong> sousedům (RIP: 30 s)</li>
+      <li>Soused přijme → přidá cost svého linku → přepočítá (<strong>Bellman-Ford</strong> algoritmus)</li>
+      <li>Informace se šíří hop-by-hop</li>
+    </ul>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problémy a řešení</div>
+    <ul>
+      <li><strong>Counting to Infinity</strong> – route osciluje po výpadku (cost 1→2→…→16)</li>
+      <li><strong>Split Horizon</strong> – neposílej route zpět na interface, odkud přišla</li>
+      <li><strong>Route Poisoning</strong> – oznámíš failed route jako unreachable (metric=16)</li>
+      <li><strong>Hold-down timer</strong> – čekej X sekund po změně (stabilizace)</li>
+      <li><strong>Triggered updates</strong> – pošli update okamžitě při změně</li>
+    </ul>
+  </div>
+
+  <p><strong>Protokoly:</strong> RIP, EIGRP (hybrid).</p>
+</section>
+
+<!-- 08 LS -->
+<section class="section" id="ls">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Link-State protokoly</h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-1)">
+    <div class="card-title" style="color: var(--accent-1);">Princip: „Kompletní mapa sítě"</div>
+    <p>Každý router zná <strong>celou topologii</strong> (LSDB = Link-State Database). Vypočítá nejlepší cesty <strong>Dijkstra SPF</strong> algoritmem.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Hello packets → neighbor discovery</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">LSA (Link-State Advertisement) → popis SVÝCH linků</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Flooding LSA → všem routerům v area (jednou, ne periodic!)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">LSDB → kompletní topologická databáze</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">SPF výpočet → Dijkstra → routing table</div></div></div>
+    </div>
+  </div>
+
+  <p><strong>Výhody:</strong> Rychlá konvergence (sekundy), žádné loops (SPF), efektivní updates (pouze při změně), škálovatelné (areas).</p>
+  <p><strong>Nevýhody:</strong> Vyšší CPU/RAM (LSDB + SPF), komplexnější konfigurace, initial flooding.</p>
+  <p><strong>Protokoly:</strong> OSPF, IS-IS.</p>
+</section>
+
+<!-- 09 DV vs LS -->
+<section class="section" id="dv-vs-ls">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>DV vs LS – porovnání</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th><span class="tag tag-dv">Distance-Vector</span></th><th><span class="tag tag-ls">Link-State</span></th></tr>
+    <tr><td><strong>Znalost topologie</strong></td><td>Částečná (distance + direction)</td><td><strong>Kompletní</strong> (celá mapa)</td></tr>
+    <tr><td><strong>Algoritmus</strong></td><td>Bellman-Ford</td><td><strong>Dijkstra SPF</strong></td></tr>
+    <tr><td><strong>Updates</strong></td><td>Periodic (30 s), celá tabulka</td><td><strong>Event-triggered</strong>, pouze změny (LSA)</td></tr>
+    <tr><td><strong>Konvergence</strong></td><td style="color:var(--accent-5)">POMALÁ (minuty)</td><td style="color:var(--accent-3)"><strong>RYCHLÁ (sekundy)</strong></td></tr>
+    <tr><td><strong>Routing loops</strong></td><td style="color:var(--accent-5)">Možné</td><td style="color:var(--accent-3)"><strong>Žádné</strong> (SPF)</td></tr>
+    <tr><td><strong>BW overhead</strong></td><td>Vyšší (periodic full table)</td><td>Nižší (pouze změny)</td></tr>
+    <tr><td><strong>CPU / RAM</strong></td><td>Nízké</td><td>Vysoké (LSDB + SPF)</td></tr>
+    <tr><td><strong>Škálovabilita</strong></td><td>Nízká (RIP max 15 hopů)</td><td><strong>Vysoká</strong> (areas)</td></tr>
+    <tr><td><strong>Příklady</strong></td><td>RIP, EIGRP</td><td>OSPF, IS-IS</td></tr>
+  </table>
+</section>
+
+<!-- 10 RIP -->
+<section class="section" id="rip">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>RIP</h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-5)">
+    <div class="card-title" style="color: var(--accent-5);">RIP – Routing Information Protocol</div>
+    <p><span class="tag tag-dv">Distance-Vector</span> IGP. Metrika: <strong>hop count</strong> (max 15, 16 = unreachable). AD: 120. Updates: periodic 30 s, celá tabulka.</p>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Verze</th><th>Rok</th><th>Klíčové vlastnosti</th></tr>
+    <tr><td><strong>RIPv1</strong></td><td>1988</td><td>Classful (bez subnet mask!), broadcast, žádná auth. <strong>ZASTARALÉ.</strong></td></tr>
+    <tr><td><strong>RIPv2</strong></td><td>1994</td><td>Classless (VLSM, CIDR), multicast <code>224.0.0.9</code>, MD5 auth. Aktuální pro IPv4</td></tr>
+    <tr><td><strong>RIPng</strong></td><td>—</td><td>RIP pro <strong>IPv6</strong>. Multicast <code>FF02::9</code>. Stejné principy</td></tr>
+  </table>
+
+  <details>
+    <summary>RIP timery</summary>
+    <ul>
+      <li><strong>Update:</strong> 30 s – jak často se posílají updates</li>
+      <li><strong>Invalid:</strong> 180 s – route označena jako invalid</li>
+      <li><strong>Hold-down:</strong> 180 s – stabilizace</li>
+      <li><strong>Flush:</strong> 240 s – route kompletně odstraněna</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 11 EIGRP -->
+<section class="section" id="eigrp">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>EIGRP</h2>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-6)">
+    <div class="card-title" style="color: var(--accent-6);">EIGRP – Enhanced Interior Gateway Routing Protocol</div>
+    <p><span class="tag tag-dv">Advanced DV (hybrid)</span> IGP. Cisco proprietární. Metrika: <strong>composite (BW + delay)</strong>. AD: 90/170. Updates: <strong>incremental + triggered</strong> (ne celá tabulka!). Algoritmus: <strong>DUAL</strong> (loop-free).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">DUAL – klíčové koncepty</div>
+    <ul>
+      <li><strong>Successor</strong> – nejlepší route (lowest metric), používá se pro forwarding</li>
+      <li><strong>Feasible Successor (FS)</strong> – záložní route → <strong>okamžitý failover</strong> (sub-second!) bez přepočtu</li>
+      <li><strong>Feasibility Condition:</strong> Advertised Distance souseda < Feasible Distance → zabraňuje loops</li>
+    </ul>
+  </div>
+
+  <p><strong>Výhody:</strong> Velmi rychlá konvergence (sub-second díky FS), efektivní, unequal-cost load balancing. <strong>Nevýhody:</strong> Cisco proprietární (vendor lock-in).</p>
+</section>
+
+<!-- 12 OSPF -->
+<section class="section" id="ospf">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>OSPF</h2>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">OSPF – Open Shortest Path First <span class="tag tag-std">ENTERPRISE STANDARD</span></div>
+    <p><span class="tag tag-ls">Link-State</span> IGP. <strong>Open standard.</strong> Verze: OSPFv2 (IPv4), OSPFv3 (IPv6). Metrika: <strong>cost (10⁸/BW)</strong>. AD: 110. Algoritmus: <strong>Dijkstra SPF</strong>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Areas (hierarchie)</div>
+    <ul>
+      <li><strong>Area 0 (Backbone)</strong> – centrální area, musí existovat, propojuje ostatní</li>
+      <li><strong>Area 1, 2…</strong> – non-backbone, připojeny k Area 0</li>
+      <li><strong>ABR</strong> (Area Border Router) – router mezi areas</li>
+      <li><strong>ASBR</strong> (AS Boundary Router) – router mezi OSPF a jiným protokolem</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Proč areas? LSDB omezena na area → menší SPF výpočty → škálovabilita.</p>
+  </div>
+
+  <details>
+    <summary>LSA typy a DR/BDR</summary>
+    <ul>
+      <li><strong>Type 1 (Router):</strong> Popis routeru a linků uvnitř area</li>
+      <li><strong>Type 2 (Network):</strong> Multi-access segment, generován DR</li>
+      <li><strong>Type 3 (Summary):</strong> Inter-area routes (ABR)</li>
+      <li><strong>Type 5 (External):</strong> Externí routes (redistribuce)</li>
+    </ul>
+    <p><strong>DR/BDR:</strong> Na Ethernet segmentech se volí Designated Router a Backup DR → centralizace LSA exchange, snížení floodingu.</p>
+  </details>
+</section>
+
+<!-- 13 BGP -->
+<section class="section" id="bgp">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>BGP</h2>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">BGP – Border Gateway Protocol <span style="font-size:10px;color:var(--text-muted)">"Routing protocol of the Internet"</span></div>
+    <p><span class="tag tag-pv">Path-Vector</span> EGP. RFC 4271 (BGP-4). Transport: <strong>TCP port 179</strong>. Routing mezi Autonomous Systems (AS).</p>
+    <p>AD: <strong>20</strong> (eBGP – mezi AS) / <strong>200</strong> (iBGP – uvnitř AS).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Path Attributes (metrika)</div>
+    <ul>
+      <li><strong>AS_PATH</strong> – seznam AS na cestě. Kratší = lepší. Detekce loops (vlastní AS = loop)</li>
+      <li><strong>LOCAL_PREF</strong> – lokální preference (vyšší = lepší). Rozhoduje odchod z AS</li>
+      <li><strong>MED</strong> – hint sousedovi o preferovaném vstupu (nižší = lepší)</li>
+    </ul>
+  </div>
+
+  <p><strong>Výhody:</strong> Škálovatelné (900K+ routes), policy-based, loop prevention. <strong>Nevýhody:</strong> Velmi komplexní, pomalá konvergence, velká paměť.</p>
+</section>
+
+<!-- 14 EXAMPLES -->
+<section class="section" id="examples">
+  <div class="section-header">
+    <span class="section-num">14</span>
+    <h2>Příklady konfigurace</h2>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)">Topologie: R1 (LAN1 192.168.1.0/24) — 10.0.0.0/30 — R2 (LAN2 192.168.2.0/24) — 10.0.0.4/30 — R3 (LAN3 192.168.3.0/24)</p>
+
+  <details>
+    <summary>Příklad 1: Statické směrování (R1)</summary>
+    <div class="cli">
+      <span class="cmd">ip route 192.168.2.0 255.255.255.0 10.0.0.2</span>     <span class="comment">! k LAN2 přes R2</span><br>
+      <span class="cmd">ip route 192.168.3.0 255.255.255.0 10.0.0.2</span>     <span class="comment">! k LAN3 přes R2</span><br>
+      <span class="cmd">ip route 10.0.0.4   255.255.255.252 10.0.0.2</span>    <span class="comment">! k linku R2-R3</span>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted)">Výsledek: <code>S 192.168.2.0/24 [1/0] via 10.0.0.2</code>. Žádná auto-konvergence!</p>
+  </details>
+
+  <details>
+    <summary>Příklad 2: RIPv2 (všechny routery)</summary>
+    <div class="cli">
+      <span class="comment">! R1</span><br>
+      <span class="cmd">router rip</span><br>
+      <span class="cmd"> version 2</span><br>
+      <span class="cmd"> network 192.168.1.0</span><br>
+      <span class="cmd"> network 10.0.0.0</span><br>
+      <span class="cmd"> no auto-summary</span><br><br>
+      <span class="comment">! R2</span><br>
+      <span class="cmd">router rip</span><br>
+      <span class="cmd"> version 2</span><br>
+      <span class="cmd"> network 10.0.0.0</span><br>
+      <span class="cmd"> network 192.168.2.0</span><br>
+      <span class="cmd"> no auto-summary</span><br><br>
+      <span class="comment">! R3</span><br>
+      <span class="cmd">router rip</span><br>
+      <span class="cmd"> version 2</span><br>
+      <span class="cmd"> network 10.0.0.0</span><br>
+      <span class="cmd"> network 192.168.3.0</span><br>
+      <span class="cmd"> no auto-summary</span>
+    </div>
+  </details>
+
+  <details>
+    <summary>Výsledná tabulka R1 (RIPv2)</summary>
+    <div class="cli">
+      <span class="route-c">C</span>    192.168.1.0/24 is directly connected, GigabitEthernet0/0<br>
+      <span class="route-c">C</span>    10.0.0.0/30    is directly connected, Serial0/0/0<br>
+      <span class="route-r">R</span>    192.168.2.0/24 [<span style="color:var(--accent-4)">120</span>/<span style="color:var(--accent-3)">1</span>] via 10.0.0.2, Serial0/0/0<br>
+      <span class="route-r">R</span>    192.168.3.0/24 [<span style="color:var(--accent-4)">120</span>/<span style="color:var(--accent-3)">2</span>] via 10.0.0.2, Serial0/0/0<br>
+      <span class="route-r">R</span>    10.0.0.4/30    [<span style="color:var(--accent-4)">120</span>/<span style="color:var(--accent-3)">1</span>] via 10.0.0.2, Serial0/0/0
+    </div>
+    <p style="font-size:13px;color:var(--text-muted)">R = RIP. [120/1] = AD 120 / 1 hop. [120/2] = 2 hopy (R1→R2→R3). Link selže → triggered update → auto-konvergence!</p>
+  </details>
+</section>
+
+<!-- 15 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">15</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-4);margin-bottom:8px">AD A METRIKA</p>
+    <ul>
+      <li><strong>AD</strong> porovnává <strong>MEZI protokoly</strong> (nižší = lepší). Connected=0, Static=1, EIGRP=90, OSPF=110, RIP=120</li>
+      <li><strong>Metric</strong> porovnává <strong>UVNITŘ protokolu</strong>. AD má VŽDY přednost před metrikou!</li>
+      <li><strong>Routing table:</strong> Network, Next-hop, Metric, AD, Interface. Kódy: C/S/R/D/O/B</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">STATICKÉ vs DYNAMICKÉ</p>
+    <ul>
+      <li><strong>Statické:</strong> manuální, žádný overhead, žádná auto-konvergence. Malé sítě, stub, default route</li>
+      <li><strong>Dynamické:</strong> auto-učení, konvergence, škálovatelné, ECMP. Velké sítě, redundance</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">DV vs LS</p>
+    <ul>
+      <li><span class="tag tag-dv">DV</span> Bellman-Ford, periodic (30 s), celá tabulka, <strong>POMALÉ</strong> (minuty), loops možné. RIP, EIGRP</li>
+      <li><span class="tag tag-ls">LS</span> Dijkstra SPF, event-triggered (LSA), <strong>RYCHLÉ</strong> (sekundy), žádné loops, areas. OSPF, IS-IS</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">PROTOKOLY</p>
+    <ul>
+      <li><strong>RIP:</strong> hop count (max 15), AD=120, 30 s periodic. RIPv2: CIDR, multicast 224.0.0.9. RIPng: IPv6</li>
+      <li><strong>EIGRP:</strong> composite (BW+delay), AD=90, DUAL (Successor + Feasible Successor → sub-second failover). Cisco</li>
+      <li><strong>OSPF:</strong> cost (10⁸/BW), AD=110, Dijkstra SPF, areas (Area 0 backbone), LSA/LSDB. <strong>Enterprise standard!</strong></li>
+      <li><strong>BGP:</strong> path attributes (AS_PATH, LOCAL_PREF, MED), AD=20/200, TCP 179. Internet routing, eBGP/iBGP</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">KONFIGURACE</p>
+    <ul>
+      <li><strong>Static:</strong> <code>ip route &lt;network&gt; &lt;mask&gt; &lt;next-hop&gt;</code> → [1/0] v tabulce</li>
+      <li><strong>RIPv2:</strong> <code>router rip</code> / <code>version 2</code> / <code>network X.X.X.X</code> / <code>no auto-summary</code> → [120/hops]</li>
+      <li>Link selže → RIP triggered update → auto-konvergence. Static → admin musí ručně!</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

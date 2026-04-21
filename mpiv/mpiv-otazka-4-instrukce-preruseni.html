@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 4: Instrukční cyklus a přerušovací podsystém</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a0f2e 40%, #2e0f1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 25% 50%, rgba(167,139,250,0.08) 0%, transparent 50%), radial-gradient(ellipse at 75% 50%, rgba(248,113,113,0.06) 0%, transparent 50%); pointer-events: none; }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-2); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(24px, 5vw, 40px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; } .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); } .cli .comment { color: #4b5563; } .cli .kw { color: var(--accent-4); } .cli .val { color: var(--accent-6); } .cli .reg { color: var(--accent-1); }
+
+  /* Pipeline */
+  .pipeline { background: #0d0f14; border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .pipeline-grid { display: flex; flex-direction: column; gap: 3px; }
+  .pipeline-row { display: flex; gap: 3px; align-items: center; }
+  .pipeline-label { min-width: 30px; color: var(--text-muted); font-size: 10px; text-align: right; padding-right: 8px; }
+  .pipeline-cell { width: 44px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: 600; font-size: 10px; }
+  .pipeline-empty { width: 44px; height: 28px; }
+  .pc-f { background: rgba(248,113,113,0.2); color: var(--accent-5); }
+  .pc-d { background: rgba(251,191,36,0.2); color: var(--accent-4); }
+  .pc-e { background: rgba(52,211,153,0.2); color: var(--accent-3); }
+  .pc-m { background: rgba(96,165,250,0.2); color: var(--accent-1); }
+  .pc-w { background: rgba(167,139,250,0.2); color: var(--accent-2); }
+  .pc-stall { background: rgba(107,114,128,0.15); color: var(--text-muted); font-size: 8px; }
+  .pc-flush { background: rgba(248,113,113,0.1); color: var(--accent-5); font-size: 8px; border: 1px dashed rgba(248,113,113,0.3); }
+
+  /* ISR timeline */
+  .isr-timeline { display: flex; flex-direction: column; gap: 4px; margin: 14px 0; }
+  .isr-step { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .isr-num { font-weight: 700; min-width: 20px; font-size: 13px; }
+  .isr-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; }
+
+  /* Vector table */
+  .vtable { font-family: 'JetBrains Mono', monospace; font-size: 11px; margin: 14px 0; }
+  .vtable-row { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(42,46,61,0.3); }
+  .vtable-row:last-child { border-bottom: none; }
+  .vtable-addr { min-width: 60px; color: var(--accent-4); }
+  .vtable-name { color: var(--heading); min-width: 140px; }
+  .vtable-desc { color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; }
+
+  /* Branch prediction states */
+  .bp-states { display: flex; gap: 6px; margin: 14px 0; flex-wrap: wrap; }
+  .bp-state { padding: 10px 14px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; text-align: center; min-width: 100px; }
+  .bp-state .bps-label { font-size: 16px; font-weight: 700; display: block; }
+  .bp-state .bps-name { font-size: 9px; margin-top: 4px; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .bp-states { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 4</div>
+  <h1>Instrukční cyklus a<br>přerušovací podsystém</h1>
+  <p>Fáze zpracování • Pipeline • Hazardy • Přerušení • Výjimky • Vektory • ISR</p>
+</div>
+
+<div class="container">
+
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#phases">5 fází instrukčního cyklu</a></li>
+    <li><a href="#pipeline">Pipelining</a></li>
+    <li><a href="#data-hazard">Data Hazards (RAW)</a></li>
+    <li><a href="#control-hazard">Control Hazards (Branch)</a></li>
+    <li><a href="#struct-hazard">Structural Hazards</a></li>
+    <li><a href="#int-vs-exc">Přerušení vs Výjimky</a></li>
+    <li><a href="#masking">Maskování přerušení</a></li>
+    <li><a href="#vectors">Interrupt Vector Table</a></li>
+    <li><a href="#isr">Obsluha přerušení (ISR)</a></li>
+    <li><a href="#priority">Priorita a Nested Interrupts</a></li>
+    <li><a href="#latency">Interrupt Latency</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 PHASES -->
+<section class="section" id="phases">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>5 fází instrukčního cyklu</h2>
+  </div>
+
+  <p>Klasický RISC procesor vykonává instrukci v <strong>5 fázích</strong>:</p>
+
+  <div class="card">
+    <div class="steps">
+      <div class="step"><div class="step-num" style="color:var(--accent-5)">F</div><div class="step-content"><div class="step-label">FETCH – Načtení instrukce</div><div class="step-desc">PC → adresa na memory bus → instrukce do IR. <code>IR ← Memory[PC]; PC ← PC + 4</code></div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-4)">D</div><div class="step-content"><div class="step-label">DECODE – Dekódování</div><div class="step-desc">Extrahuj opcode, registry, immediate. Generuj control signals. Čti hodnoty registrů.</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-3)">E</div><div class="step-content"><div class="step-label">EXECUTE – Vykonání</div><div class="step-desc">ALU provede operaci. Status flags: Z (zero), N (negative), C (carry), V (overflow), H (half carry).</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-1)">M</div><div class="step-content"><div class="step-label">MEMORY ACCESS – Přístup k paměti</div><div class="step-desc">Pouze LOAD/STORE. L1 cache: 1–2 cy, L2: 5–10 cy, RAM (miss): 50–200 cy!</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-2)">W</div><div class="step-content"><div class="step-label">WRITE BACK – Zápis výsledku</div><div class="step-desc">Výsledek → cílový registr. STORE: žádný WB (data už v memory).</div></div></div>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Non-pipelined (sekvenční)</div>
+    <p style="margin-bottom:0">Všech 5 fází sekvenčně pro každou instrukci → <strong>CPI = 5</strong>. Během Execute je Fetch unit idle → plýtvání HW!</p>
+  </div>
+</section>
+
+<!-- 02 PIPELINE -->
+<section class="section" id="pipeline">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Pipelining</h2>
+  </div>
+
+  <p>Překrývání fází různých instrukcí. Jako assembly line – každá stage pracuje na jiné instrukci současně.</p>
+
+  <div class="pipeline">
+    <div style="font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px">5-STAGE RISC PIPELINE</div>
+    <div style="display:flex;gap:3px;margin-bottom:6px;padding-left:38px">
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C1</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C2</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C3</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C4</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C5</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C6</div>
+      <div style="width:44px;text-align:center;font-size:9px;color:var(--text-muted)">C7</div>
+    </div>
+    <div class="pipeline-grid">
+      <div class="pipeline-row"><div class="pipeline-label">I1</div><div class="pipeline-cell pc-f">F</div><div class="pipeline-cell pc-d">D</div><div class="pipeline-cell pc-e">E</div><div class="pipeline-cell pc-m">M</div><div class="pipeline-cell pc-w">W</div></div>
+      <div class="pipeline-row"><div class="pipeline-label">I2</div><div class="pipeline-empty"></div><div class="pipeline-cell pc-f">F</div><div class="pipeline-cell pc-d">D</div><div class="pipeline-cell pc-e">E</div><div class="pipeline-cell pc-m">M</div><div class="pipeline-cell pc-w">W</div></div>
+      <div class="pipeline-row"><div class="pipeline-label">I3</div><div class="pipeline-empty"></div><div class="pipeline-empty"></div><div class="pipeline-cell pc-f">F</div><div class="pipeline-cell pc-d">D</div><div class="pipeline-cell pc-e">E</div><div class="pipeline-cell pc-m">M</div><div class="pipeline-cell pc-w">W</div></div>
+      <div class="pipeline-row"><div class="pipeline-label">I4</div><div class="pipeline-empty"></div><div class="pipeline-empty"></div><div class="pipeline-empty"></div><div class="pipeline-cell pc-f">F</div><div class="pipeline-cell pc-d">D</div><div class="pipeline-cell pc-e">E</div><div class="pipeline-cell pc-m">M</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:10px;color:var(--accent-3)">Po naplnění: 1 instrukce dokončena KAŽDÝ cycle → CPI ≈ 1 (5× throughput!)</div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Latency vs Throughput</div>
+    <p><strong>Latency</strong> (jedna instrukce): stále 5 cycles.</p>
+    <p style="margin-bottom:0"><strong>Throughput</strong> (celkový výkon): 5× vyšší! Analogie: pračka trvá 1 h. 5 dávek bez pipeline = 5 h. S pipeline (wash→dry→fold overlap) = ~2 h.</p>
+  </div>
+</section>
+
+<!-- 03 DATA HAZARD -->
+<section class="section" id="data-hazard">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Data Hazards (RAW)</h2>
+  </div>
+
+  <p>Instrukce potřebuje výsledek předchozí, která ještě nedokončila Write Back.</p>
+
+  <div class="cli">
+    <span class="reg">I1:</span> <span class="cmd">ADD</span> <span class="val">R1</span>, R2, R3  <span class="comment">; R1 = R2 + R3</span><br>
+    <span class="reg">I2:</span> <span class="cmd">SUB</span> <span class="val">R4</span>, <span style="color:var(--accent-5)">R1</span>, R5  <span class="comment">; R4 = R1 - R5 ← potřebuje R1, ale I1 ještě nezapsala!</span>
+  </div>
+
+  <!-- Data hazard pipeline -->
+  <div class="pipeline">
+    <div style="font-size:10px;color:var(--accent-5);letter-spacing:1px;margin-bottom:10px">DATA HAZARD – I2 čte R1 v Decode, ale I1 zapíše až v Write Back!</div>
+    <div class="pipeline-grid">
+      <div class="pipeline-row"><div class="pipeline-label">I1</div><div class="pipeline-cell pc-f">F</div><div class="pipeline-cell pc-d">D</div><div class="pipeline-cell pc-e" style="border:2px solid var(--accent-3)">E✓</div><div class="pipeline-cell pc-m">M</div><div class="pipeline-cell pc-w" style="border:2px solid var(--accent-4)">W✓</div></div>
+      <div class="pipeline-row"><div class="pipeline-label">I2</div><div class="pipeline-empty"></div><div class="pipeline-cell pc-f">F</div><div class="pipeline-cell pc-d" style="border:2px solid var(--accent-5)">D⚠</div><div class="pipeline-cell pc-e">E</div><div class="pipeline-cell pc-m">M</div></div>
+    </div>
+    <div style="margin-top:6px;font-size:10px;color:var(--text-muted)"><span style="color:var(--accent-5)">⚠ I2 Decode</span> čte STAROU hodnotu R1 | <span style="color:var(--accent-4)">✓ I1 Write Back</span> zapíše R1 až za 2 cykly</div>
+  </div>
+
+  <h3>Řešení Data Hazards</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">A) Forwarding (Bypass)</h4>
+      <p><strong>Nejlepší!</strong> Výsledek z Execute/Memory I1 přímo forward do Execute I2. Bez čekání na WB. Žádný stall! Složitější HW (bypass mux).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">B) Pipeline Stall (Bubble)</h4>
+      <p>Zastavit I2 dokud I1 nedokončí WB. Vložit NOP do pipeline. <strong>Ztráta 2–3 cycles!</strong> Jednoduchý HW.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">C) Compiler Scheduling</h4>
+      <p>Kompilátor přeuspořádá instrukce – vloží nezávislou instrukci mezi I1 a I2. Žádný stall, jednoduchý HW. Ne vždy možné.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 CONTROL HAZARD -->
+<section class="section" id="control-hazard">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Control Hazards (Branch)</h2>
+  </div>
+
+  <p>Branch instrukce – nevíme kam skočit dokud se nevyhodnotí podmínka (Execute stage). Pipeline už fetchovala následující instrukce!</p>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém</div>
+    <p style="margin-bottom:0">Pipeline fetchuje I3, I4 sekvenčně… ale pokud branch taken → I3, I4 jsou ŠPATNÉ instrukce! 20–30 % instrukcí jsou branches → velký impact!</p>
+  </div>
+
+  <h3>Řešení</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">A) Pipeline Flush</h4>
+      <p>Počkej na vyhodnocení branchu → flush špatně fetchované instrukce. <strong>2–3 cycle penalty</strong> na každý branch.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">B) Branch Prediction</h4>
+      <p>Predikuj výsledek BEFORE vyhodnocení. Správná → žádný stall! Špatná → flush (2–3 cy). Moderní CPU: <strong>>95 % accuracy!</strong></p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">C) Branch Delay Slot</h4>
+      <p>Instrukce za branchem se VŽDY vykoná (MIPS, SPARC). Kompilátor naplní užitečnou instrukcí nebo NOP.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Branch Prediction – Static vs Dynamic</summary>
+    <p><strong>Static:</strong> Predict NOT TAKEN (sekvenčně), nebo Backward TAKEN / Forward NOT TAKEN (loops).</p>
+    <p><strong>Dynamic (2-bit saturating counter):</strong></p>
+    <div class="bp-states">
+      <div class="bp-state" style="background:rgba(248,113,113,0.15);color:var(--accent-5)"><span class="bps-label">00</span><span class="bps-name">Strongly NOT</span></div>
+      <div class="bp-state" style="background:rgba(251,146,60,0.15);color:var(--accent-6)"><span class="bps-label">01</span><span class="bps-name">Weakly NOT</span></div>
+      <div class="bp-state" style="background:rgba(96,165,250,0.15);color:var(--accent-1)"><span class="bps-label">10</span><span class="bps-name">Weakly TAKEN</span></div>
+      <div class="bp-state" style="background:rgba(52,211,153,0.15);color:var(--accent-3)"><span class="bps-label">11</span><span class="bps-name">Strongly TAKEN</span></div>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted)">Predikce se změní až po 2 špatných výsledcích → stabilnější. Branch History Table (BHT) ukládá historii.</p>
+  </details>
+</section>
+
+<!-- 05 STRUCTURAL -->
+<section class="section" id="struct-hazard">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Structural Hazards</h2>
+  </div>
+
+  <p>Dvě instrukce potřebují <strong>stejný HW resource</strong> současně. Příklad (Von Neumann): I1 Memory stage (LOAD data) + I4 Fetch stage (LOAD instruction) – obě potřebují memory bus!</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Řešení</div>
+    <ul>
+      <li><strong>Harvard architektura</strong> – oddělené instruction a data bus → eliminuje</li>
+      <li><strong>Separate I/D cache</strong> (Modified Harvard)</li>
+      <li><strong>Multi-ported memory</strong> / register file</li>
+      <li>Pipeline stall – jeden počká (špatný výkon)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 INT VS EXC -->
+<section class="section" id="int-vs-exc">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Přerušení vs Výjimky</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">INTERRUPT (Přerušení)</h4>
+      <p><strong>Asynchronní</strong> – nezávislé na aktuální instrukci. <strong>Externí zdroj</strong> – HW periférie. <strong>Lze maskovat.</strong> Příklady: Timer overflow, UART RX, GPIO pin change, ADC complete.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">EXCEPTION (Výjimka)</h4>
+      <p><strong>Synchronní</strong> – způsobená aktuální instrukcí. <strong>Interní</strong> – chyba v CPU/programu. <strong>Většinou nelze maskovat.</strong> Příklady: Divide by zero, invalid instruction, stack overflow.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Typy přerušení</div>
+    <ul>
+      <li><strong>Hardware Interrupts</strong> – externí pin (INT0, INT1), periférie (timer, ADC, UART)</li>
+      <li><strong>Software Interrupts</strong> – vyvolané instrukcí (SWI), syscalls v OS</li>
+      <li><strong>NMI (Non-Maskable)</strong> – nejvyšší priorita, nelze zamaskovat! Power failure, watchdog, HW error</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 MASKING -->
+<section class="section" id="masking">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Maskování přerušení</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Podmínky pro přerušení (VŠECHNY musí platit!)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num" style="color:var(--accent-3)">1</div><div class="step-content"><div class="step-label">I flag = 1 (global enable)</div><div class="step-desc"><code>SEI</code> = enable, <code>CLI</code> = disable</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-3)">2</div><div class="step-content"><div class="step-label">Individual enable bit = 1</div><div class="step-desc">Např. <code>TIMSK0 |= (1<<TOIE0)</code> pro Timer0 overflow</div></div></div>
+      <div class="step"><div class="step-num" style="color:var(--accent-3)">3</div><div class="step-content"><div class="step-label">Interrupt flag nastaven (událost nastala)</div></div></div>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Kdy maskovat (CLI/SEI)?</div>
+    <ul>
+      <li><strong>Kritické sekce</strong> – operace která nesmí být přerušena</li>
+      <li><strong>Atomic operations</strong> – read-modify-write sekvence</li>
+      <li><strong>Sdílená data</strong> mezi ISR a main → prevence race conditions</li>
+      <li><strong>Multi-byte operace</strong> – čtení 16-bit čítače</li>
+    </ul>
+  </div>
+
+  <div class="cli">
+    <span class="cmd">cli</span>();  <span class="comment">// Zakázat přerušení</span><br>
+    shared_variable++;  <span class="comment">// Atomic read-modify-write</span><br>
+    <span class="cmd">sei</span>();  <span class="comment">// Povolit přerušení</span>
+  </div>
+</section>
+
+<!-- 08 VECTORS -->
+<section class="section" id="vectors">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Interrupt Vector Table</h2>
+  </div>
+
+  <p><strong>Vector</strong> = adresa handleru (ISR) pro konkrétní přerušení. <strong>Vector table</strong> = tabulka adres na začátku Flash paměti (0x0000).</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Příklad Vector Table (ATmega328)</div>
+    <div class="vtable">
+      <div class="vtable-row"><span class="vtable-addr">0x0000</span><span class="vtable-name">RESET</span><span class="vtable-desc">Power-on / reset (nejvyšší priorita)</span></div>
+      <div class="vtable-row"><span class="vtable-addr">0x0002</span><span class="vtable-name">INT0</span><span class="vtable-desc">External Interrupt Request 0</span></div>
+      <div class="vtable-row"><span class="vtable-addr">0x0004</span><span class="vtable-name">INT1</span><span class="vtable-desc">External Interrupt Request 1</span></div>
+      <div class="vtable-row"><span class="vtable-addr">0x0006</span><span class="vtable-name">PCINT0</span><span class="vtable-desc">Pin Change Interrupt 0</span></div>
+      <div class="vtable-row"><span class="vtable-addr" style="opacity:0.5">…</span><span class="vtable-name" style="opacity:0.5">…</span><span class="vtable-desc"></span></div>
+      <div class="vtable-row"><span class="vtable-addr">0x0020</span><span class="vtable-name">TIMER0_OVF</span><span class="vtable-desc">Timer/Counter0 Overflow</span></div>
+      <div class="vtable-row"><span class="vtable-addr">0x0022</span><span class="vtable-name">TIMER0_COMPA</span><span class="vtable-desc">Timer0 Compare Match A</span></div>
+      <div class="vtable-row"><span class="vtable-addr" style="opacity:0.5">…</span><span class="vtable-name" style="opacity:0.5">celkem 26 vektorů</span><span class="vtable-desc"></span></div>
+    </div>
+    <p style="margin-bottom:0;font-size:12px;color:var(--text-muted)">Nižší adresa = vyšší priorita (AVR fixed priority).</p>
+  </div>
+</section>
+
+<!-- 09 ISR -->
+<section class="section" id="isr">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Obsluha přerušení (ISR) – 8 kroků</h2>
+  </div>
+
+  <div class="isr-timeline">
+    <div class="isr-step" style="background:rgba(248,113,113,0.08)"><span class="isr-num" style="color:var(--accent-5)">1</span><span class="isr-desc"><strong>Detekce</strong> – HW detekuje IRQ, interrupt flag nastaven</span></div>
+    <div class="isr-step" style="background:rgba(251,146,60,0.08)"><span class="isr-num" style="color:var(--accent-6)">2</span><span class="isr-desc"><strong>Finish instruction</strong> – CPU dokončí aktuální instrukci (atomic)</span></div>
+    <div class="isr-step" style="background:rgba(251,191,36,0.08)"><span class="isr-num" style="color:var(--accent-4)">3</span><span class="isr-desc"><strong>Save context</strong> – HW uloží PC + SREG na stack. SW může push další registry</span></div>
+    <div class="isr-step" style="background:rgba(96,165,250,0.08)"><span class="isr-num" style="color:var(--accent-1)">4</span><span class="isr-desc"><strong>Clear I flag</strong> – I=0 automaticky → zabrání nested interrupts (default)</span></div>
+    <div class="isr-step" style="background:rgba(167,139,250,0.08)"><span class="isr-num" style="color:var(--accent-2)">5</span><span class="isr-desc"><strong>Vector fetch</strong> – PC načte adresu z vector table → skok na ISR</span></div>
+    <div class="isr-step" style="background:rgba(52,211,153,0.08)"><span class="isr-num" style="color:var(--accent-3)">6</span><span class="isr-desc"><strong>Execute ISR</strong> – zpracování události, update dat, nastavení flags</span></div>
+    <div class="isr-step" style="background:rgba(244,114,182,0.08)"><span class="isr-num" style="color:var(--accent-7)">7</span><span class="isr-desc"><strong>Clear IRQ flag</strong> – HW automaticky nebo manuálně (jinak infinite loop!)</span></div>
+    <div class="isr-step" style="background:rgba(56,189,248,0.08)"><span class="isr-num" style="color:var(--accent-8)">8</span><span class="isr-desc"><strong>RETI</strong> – obnoví PC+SREG ze stacku, I=1, pokračuje odkud přerušen</span></div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">ISR Best Practices</div>
+    <ul>
+      <li><strong>Krátké!</strong> Minimalizuj čas v ISR → maximize responsiveness</li>
+      <li><strong>volatile</strong> proměnné pro sdílená data mezi ISR a main()</li>
+      <li><strong>Žádný blocking</strong> – delay(), printf(), busy-wait loops</li>
+      <li><strong>Flag pattern</strong> – set flag v ISR, process v main loop</li>
+      <li><strong>CLI/SEI</strong> kolem multi-byte read/write</li>
+      <li>Žádná floating-point math (pomalá, velký context save)</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>Příklad ISR kódu (AVR)</summary>
+    <div class="cli">
+      <span class="kw">volatile</span> <span class="reg">uint16_t</span> milliseconds = <span class="val">0</span>;<br><br>
+      <span class="kw">ISR</span>(<span class="val">TIMER0_OVF_vect</span>) {<br>
+      &nbsp;&nbsp;milliseconds++;  <span class="comment">// Inkrementuj čítač</span><br>
+      &nbsp;&nbsp;<span class="comment">// IRQ flag cleared automaticky HW</span><br>
+      &nbsp;&nbsp;<span class="comment">// RETI automaticky na konci</span><br>
+      }
+    </div>
+  </details>
+</section>
+
+<!-- 10 PRIORITY -->
+<section class="section" id="priority">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Priorita a Nested Interrupts</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">AVR – Fixed Priority</h4>
+      <p>Priorita daná pozicí ve vector table. Nižší adresa = vyšší priorita. RESET (0x0000) > INT0 (0x0002) > … > USART_RX. <strong>Nested: NE</strong> (default, I=0 v ISR).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">ARM Cortex-M – NVIC</h4>
+      <p>Nested Vectored Interrupt Controller. <strong>Programmable priority</strong> 0–255 (0 = nejvyšší). Preemption – vyšší priorita přeruší nižší ISR. <strong>Nested: ANO</strong> (HW podpora).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 LATENCY -->
+<section class="section" id="latency">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Interrupt Latency</h2>
+  </div>
+
+  <p>Čas od IRQ assertion do první instrukce ISR. <strong>Kritické pro real-time!</strong></p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Komponenty latency</div>
+    <table class="compare-table">
+      <tr><th>Fáze</th><th>Cycles</th></tr>
+      <tr><td>Instruction completion</td><td>1–N</td></tr>
+      <tr><td>Context save (push PC, SREG)</td><td>2–5</td></tr>
+      <tr><td>Vector fetch</td><td>2–3</td></tr>
+      <tr><td>Jump to ISR</td><td>1–2</td></tr>
+      <tr><td><strong>Celkem typicky</strong></td><td><strong>6–15+ cycles</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Faktory zvyšující latency</div>
+    <ul>
+      <li>Kritické sekce (CLI) – interrupt čeká až SEI</li>
+      <li>Vyšší prioritní ISR už běží</li>
+      <li>Cache miss – fetch ISR kódu z RAM</li>
+      <li>Dlouhá instrukce (division 10+ cy)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">AVR @ 16 MHz: best 5 cy = 0.3 μs, typical 10 cy = 0.6 μs, worst (CLI) 1000+ cy = 62+ μs.</p>
+  </div>
+</section>
+
+<!-- 12 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">INSTRUKČNÍ CYKLUS & PIPELINE</p>
+    <ul>
+      <li><strong>5 fází:</strong> Fetch → Decode → Execute → Memory → Write Back. Non-pipelined CPI = 5</li>
+      <li><strong>Pipeline:</strong> překrývání → CPI ≈ 1, throughput 5×. Latency stejná!</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">HAZARDY</p>
+    <ul>
+      <li><strong>Data (RAW):</strong> instrukce potřebuje výsledek předchozí → <strong>Forwarding</strong> (best), Stall, Scheduling</li>
+      <li><strong>Control (Branch):</strong> nevíme kam skočit → <strong>Branch Prediction</strong> (>95%), Flush, Delay Slot</li>
+      <li><strong>Structural:</strong> stejný HW resource → <strong>Harvard arch</strong>, separate cache</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">PŘERUŠENÍ</p>
+    <ul>
+      <li><strong>Interrupt</strong> = asynchronní, externí HW, lze maskovat. <strong>Exception</strong> = synchronní, interní chyba, většinou ne</li>
+      <li><strong>Podmínky:</strong> I flag = 1 AND individual enable = 1 AND IRQ flag = 1</li>
+      <li><strong>Maskování:</strong> <code>SEI</code> enable, <code>CLI</code> disable. Kritické sekce pro atomic operace</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ISR & VEKTORY</p>
+    <ul>
+      <li><strong>Vector table:</strong> na začátku Flash (0x0000+). Nižší adresa = vyšší priorita (AVR fixed)</li>
+      <li><strong>ISR 8 kroků:</strong> Detekce → Finish inst → Save context → I=0 → Vector fetch → Execute → Clear flag → <strong>RETI</strong></li>
+      <li><strong>ISR pravidla:</strong> krátké, <code>volatile</code>, žádný blocking, flag pattern</li>
+      <li><strong>ARM NVIC:</strong> programmable priority (0–255), nested interrupts HW podpora</li>
+      <li><strong>Latency:</strong> 6–15 cycles typicky. Kritické pro real-time</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

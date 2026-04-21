@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 10: Zvyšování odolnosti počítačů</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a2e0f 40%,#0f172e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(52,211,153,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(96,165,250,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-8);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Area grid */
+.area-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px;margin:14px 0}
+.area-item{text-align:center;padding:14px 8px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.area-item .ai-icon{font-size:20px;display:block;margin-bottom:4px}
+.area-item .ai-name{font-weight:700;font-size:11px;display:block}
+/* Lifecycle */
+.lc-flow{display:flex;gap:4px;margin:14px 0;flex-wrap:wrap;justify-content:center}
+.lc-step{text-align:center;padding:10px 12px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;min-width:80px;flex:1;max-width:130px}
+.lc-step .ls-num{font-size:16px;font-weight:700;display:block}
+/* Checklist item */
+.cl{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:8px 0}
+.cl strong{display:block;margin-bottom:3px;font-size:13px}
+.cl p{font-size:12px;color:var(--text-muted);margin:0}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.area-grid{grid-template-columns:repeat(2,1fr)}.lc-flow{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 10</div>
+  <h1>Zvyšování odolnosti počítačů</h1>
+  <p>Hardening • Patch Management • Firewall • Šifrování • AV/EDR • Server Hardening • Frameworks</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#intro">Co je hardening</a></li>
+  <li><a href="#patching">Patch Management</a></li>
+  <li><a href="#minimize">Minimalizace služeb a softwaru</a></li>
+  <li><a href="#accounts">Správa účtů a přístupů</a></li>
+  <li><a href="#firewall">Firewall a síťové zabezpečení</a></li>
+  <li><a href="#encryption">Šifrování</a></li>
+  <li><a href="#edr">Antivirus a EDR</a></li>
+  <li><a href="#logging">Logging a monitoring</a></li>
+  <li><a href="#physical">Fyzické zabezpečení</a></li>
+  <li><a href="#server">Server hardening</a></li>
+  <li><a href="#frameworks">Hardening frameworks</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+<div class="section-header"><span class="section-num">01</span><h2>Co je hardening</h2></div>
+
+<p><strong>Hardening</strong> = snížení útočné plochy (attack surface). Odstraňujeme zbytečné služby, zavíráme porty, konfigurujeme bezpečnostní nastavení. <strong>Default konfigurace je VŽDY nezabezpečená!</strong></p>
+
+<div class="area-grid">
+  <div class="area-item" style="background:rgba(248,113,113,.08);color:var(--accent-5)"><span class="ai-icon">🩹</span><span class="ai-name">Patching</span></div>
+  <div class="area-item" style="background:rgba(251,146,60,.08);color:var(--accent-6)"><span class="ai-icon">✂️</span><span class="ai-name">Minimalizace</span></div>
+  <div class="area-item" style="background:rgba(251,191,36,.08);color:var(--accent-4)"><span class="ai-icon">👤</span><span class="ai-name">Účty</span></div>
+  <div class="area-item" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="ai-icon">🔥</span><span class="ai-name">Firewall</span></div>
+  <div class="area-item" style="background:rgba(52,211,153,.08);color:var(--accent-3)"><span class="ai-icon">🔒</span><span class="ai-name">Šifrování</span></div>
+  <div class="area-item" style="background:rgba(167,139,250,.08);color:var(--accent-2)"><span class="ai-icon">🛡️</span><span class="ai-name">AV / EDR</span></div>
+  <div class="area-item" style="background:rgba(244,114,182,.08);color:var(--accent-7)"><span class="ai-icon">📋</span><span class="ai-name">Logging</span></div>
+  <div class="area-item" style="background:rgba(232,121,249,.08);color:var(--kb)"><span class="ai-icon">🏢</span><span class="ai-name">Fyzické</span></div>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">5 principů hardeningu</div>
+  <ul style="margin-bottom:0">
+    <li><strong>Least Privilege</strong> – minimální nutná práva</li>
+    <li><strong>Minimize Attack Surface</strong> – vypnout co není potřeba</li>
+    <li><strong>Defense in Depth</strong> – více vrstev ochrany</li>
+    <li><strong>Secure by Default</strong> – bezpečná výchozí konfigurace</li>
+    <li><strong>Fail Securely</strong> – při chybě systém zůstane zabezpečený</li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 PATCHING -->
+<section class="section" id="patching">
+<div class="section-header"><span class="section-num">02</span><h2>Patch Management</h2></div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">60 % breaches = ZNÁMÉ zranitelnosti s dostupným patchem!</div>
+  <p style="margin-bottom:0"><strong>WannaCry (2017):</strong> Patch dostupný 2 měsíce předem. <strong>Equifax (2017):</strong> Apache Struts patch 2 měsíce starý. Patching je #1 obrana.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-1)">Patch Management proces</div>
+  <ul>
+    <li><strong>1. Monitoring</strong> – sledování security bulletins (Microsoft, vendors)</li>
+    <li><strong>2. Assessment</strong> – vyhodnocení kritičnosti (CVSS score)</li>
+    <li><strong>3. Testing</strong> – test na non-production prostředí</li>
+    <li><strong>4. Deployment</strong> – nasazení (staged rollout)</li>
+    <li><strong>5. Verification</strong> – ověření že patch je nainstalovaný</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Priority:</strong> Critical (CVSS 9-10) → 24-48 h. High (7-8.9) → 1 týden. Medium/Low → měsíční cyklus. <strong>Nástroje:</strong> WSUS, SCCM, Ansible, Puppet.</p>
+</div>
+</section>
+
+<!-- 03 MINIMIZE -->
+<section class="section" id="minimize">
+<div class="section-header"><span class="section-num">03</span><h2>Minimalizace služeb a softwaru</h2></div>
+
+<p><strong>„If you don't need it, remove it."</strong> Každá služba = potenciální zranitelnost. Méně SW = menší attack surface.</p>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-6)">Vypnout služby</h4><p>Windows: Print Spooler, Remote Desktop, Telnet. Linux: FTP, Telnet, rsh, NFS. Web: directory listing, WebDAV.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-5)">Odstranit SW</h4><p>Bloatware, trial SW, Adobe Flash (EOL). Dev tools na production serverech. Inventář SW pro detekci shadow IT.</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-4)">Default accounts</h4><p>Přejmenuj/odstraň default admin. Vypni Guest. <strong>Změň default hesla!</strong> (router admin/admin).</p></div>
+</div>
+</section>
+
+<!-- 04 ACCOUNTS -->
+<section class="section" id="accounts">
+<div class="section-header"><span class="section-num">04</span><h2>Správa účtů a přístupů</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Principle of Least Privilege</div>
+  <ul>
+    <li><strong>Běžná práce = Standard User.</strong> Admin úkony = separate admin account (UAC/sudo)</li>
+    <li><strong>NIKDY nepracuj v admin účtu</strong> pro daily tasks!</li>
+    <li><strong>MFA VŽDY</strong> pro: admin účty, remote access (VPN, RDP), privileged ops</li>
+    <li><strong>Password Policy:</strong> 12+ znaků, komplexita, lockout po X pokusech</li>
+    <li><strong>Audit:</strong> Quarterly review, odstranění neaktivních (90+ dní), immediate disable při offboardingu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 05 FIREWALL -->
+<section class="section" id="firewall">
+<div class="section-header"><span class="section-num">05</span><h2>Firewall a síťové zabezpečení</h2></div>
+
+<div class="card" style="border-left:3px solid var(--accent-1)">
+  <div class="card-title" style="color:var(--accent-1)">Host-based Firewall = VŽDY zapnutý!</div>
+  <ul>
+    <li><strong>Default Deny:</strong> Vše zakázáno, explicitně povoluj jen nutný traffic</li>
+    <li><strong>Blokuj:</strong> Inbound connections (kromě povolených), nepotřebné porty, legacy protocols (Telnet 23, FTP 21, SMBv1)</li>
+    <li><strong>Scan sám sebe:</strong> <code>nmap -sS -sV localhost</code> → zjisti co běží</li>
+    <li><strong>Network Segmentation:</strong> VLANs – workstations, servery, dev, guest Wi-Fi izolovaná</li>
+    <li><strong>Disable unused NICs:</strong> Server má Wi-Fi ale používá Ethernet? → vypni Wi-Fi</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 ENCRYPTION -->
+<section class="section" id="encryption">
+<div class="section-header"><span class="section-num">06</span><h2>Šifrování</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Data at Rest (FDE)</h4><p>Full Disk Encryption: <strong>BitLocker</strong> (Win), <strong>FileVault</strong> (macOS), <strong>LUKS</strong> (Linux), VeraCrypt. Laptop ukraden → data nečitelná.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)"><h4 style="color:var(--accent-1)">Data in Transit</h4><p><strong>HTTPS</strong> místo HTTP, <strong>SSH</strong> místo Telnet, <strong>SFTP</strong> místo FTP, IMAPS/SMTPS. <strong>VPN</strong> pro remote access = povinné na veřejné Wi-Fi.</p></div>
+</div>
+</section>
+
+<!-- 07 EDR -->
+<section class="section" id="edr">
+<div class="section-header"><span class="section-num">07</span><h2>Antivirus a EDR</h2></div>
+
+<div class="card" style="border-left:3px solid var(--accent-2)">
+  <div class="card-title" style="color:var(--accent-2)">Moderní Endpoint Protection</div>
+  <p>Moderní AV ≠ jen signatures. Kombinuje: <strong>Signatures + Heuristics + Behavioral analysis + ML + Cloud reputation</strong>.</p>
+  <ul>
+    <li>Real-time scanning, auto updates, scheduled full scans</li>
+    <li>Ransomware protection, web protection, email scanning</li>
+    <li><strong>EDR</strong> (CrowdStrike, Defender for Endpoint, SentinelOne) = continuous monitoring + threat hunting + incident response</li>
+    <li><strong>Application Whitelisting</strong> (AppLocker) = jen schválené apps. Vše ostatní blokováno</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--accent-5)"><strong>AV není silver bullet!</strong> Je jen jedna vrstva. Nechrání před zero-days, social engineering nebo targeted attacks.</p>
+</div>
+</section>
+
+<!-- 08 LOGGING -->
+<section class="section" id="logging">
+<div class="section-header"><span class="section-num">08</span><h2>Logging a monitoring</h2></div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">Co logovat</div>
+  <p><strong>Auth events</strong> (login success/fail). <strong>Privileged ops</strong> (sudo, admin elevation). <strong>File access</strong> (citlivé soubory). <strong>System changes</strong> (config). <strong>Network connections.</strong></p>
+  <p><strong>Windows:</strong> Security Log, System Log, Application Log. <strong>Linux:</strong> /var/log/auth.log, /var/log/syslog.</p>
+  <p style="margin-bottom:0"><strong>Centralized logging → SIEM</strong> (Splunk, ELK, QRadar). Logy read-only, retention min 90 dní. Útočník často maže logy → proto centralizované!</p>
+</div>
+</section>
+
+<!-- 09 PHYSICAL -->
+<section class="section" id="physical">
+<div class="section-header"><span class="section-num">09</span><h2>Fyzické zabezpečení</h2></div>
+
+<div class="device-grid">
+  <div class="device-card"><h4 style="color:var(--accent-6)">BIOS/UEFI Password</h4><p>Prevence bootování z USB/CD, změn boot order. <strong>Secure Boot</strong> = bootuje jen signed OS (anti-bootkit/rootkit).</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-4)">Screen Lock + USB</h4><p>Auto-lock po N min nečinnosti. <strong>Win+L</strong> při odchodu. Disable USB ports nebo whitelist (anti rubber ducky, data exfiltration).</p></div>
+  <div class="device-card"><h4 style="color:var(--accent-2)">Cable Locks</h4><p>Kensington lock na laptopy. Fyzická prevence krádeže.</p></div>
+</div>
+</section>
+
+<!-- 10 SERVER -->
+<section class="section" id="server">
+<div class="section-header"><span class="section-num">10</span><h2>Server hardening</h2></div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-3)">Základy</div>
+  <ul>
+    <li><strong>Minimální instalace:</strong> Windows Server Core (bez GUI), Linux minimal. GUI = větší attack surface</li>
+    <li><strong>1 server = 1 role.</strong> Web ≠ DB ≠ File server. Separace = izolace kompromitace</li>
+    <li><strong>Dedikované service accounts</strong> s minimálními právy. NIKDY root/SYSTEM pokud není nutné</li>
+    <li><strong>Remote:</strong> SSH (ne Telnet), key-based auth, disable root login, NLA pro RDP, jen přes VPN</li>
+  </ul>
+</div>
+
+<details><summary>Web Server (Apache/Nginx/IIS)</summary>
+<ul>
+  <li>Disable directory listing, hide version numbers (<code>ServerTokens Prod</code>)</li>
+  <li>Disable unnecessary modules, proper file permissions</li>
+  <li><strong>HTTPS only</strong> (redirect HTTP → HTTPS), security headers (CSP, HSTS, X-Frame-Options)</li>
+</ul>
+</details>
+
+<details><summary>Database Server (MySQL/PostgreSQL/SQL Server)</summary>
+<ul>
+  <li>Change default ports (MySQL 3306, PostgreSQL 5432). Disable remote root login</li>
+  <li>Least privilege app accounts. TDE (Transparent Data Encryption). SSL/TLS connections</li>
+  <li>MySQL: <code>mysql_secure_installation</code>, remove test DBs, bind to localhost</li>
+</ul>
+</details>
+
+<details><summary>Virtualizace a kontejnery (Docker)</summary>
+<ul>
+  <li>Hypervisor patched (ESXi, Hyper-V). Isolate management network</li>
+  <li>Docker: official/verified images, scan (Trivy, Clair), run as non-root, limit resources, secrets management, read-only FS</li>
+</ul>
+</details>
+</section>
+
+<!-- 11 FRAMEWORKS -->
+<section class="section" id="frameworks">
+<div class="section-header"><span class="section-num">11</span><h2>Hardening frameworks a automatizace</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">CIS Benchmarks</h4><p>Center for Internet Security. Community-driven, free. Detailní checklist pro každou platformu (Win, Linux, Cloud, DB). <strong>Level 1</strong> (basic) a <strong>Level 2</strong> (defense in depth). CIS-CAT = automatický scanner.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)"><h4 style="color:var(--accent-5)">STIG</h4><p>DISA (US DoD). Velmi přísné, vojenský standard. Detailnější než CIS.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)"><h4 style="color:var(--accent-1)">NIST</h4><p>Cybersecurity Framework: Identify → Protect → Detect → Respond → Recover. NIST 800-53 = security controls.</p></div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Automatizace hardeningu</div>
+  <ul>
+    <li><strong>Ansible</strong> (agentless, YAML) – deploy hardening configs na 100 serverů</li>
+    <li><strong>Puppet / Chef</strong> (agent-based) – desired state, continuous enforcement</li>
+    <li><strong>Group Policy (GPO)</strong> – centrální Windows správa v AD</li>
+    <li><strong>Golden Images</strong> – pre-hardened VM/container template. Deploy → už je hardened</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Testování:</strong> Vulnerability scanning (Nessus, OpenVAS) měsíčně. Pen-testing ročně. Configuration audit quarterly.</p>
+</div>
+
+<h3>Hardening Lifecycle</h3>
+<div class="lc-flow">
+  <div class="lc-step" style="background:rgba(96,165,250,.1);color:var(--accent-1)"><span class="ls-num">1</span>Baseline</div>
+  <div class="lc-step" style="background:rgba(52,211,153,.1);color:var(--accent-3)"><span class="ls-num">2</span>Deploy</div>
+  <div class="lc-step" style="background:rgba(251,191,36,.1);color:var(--accent-4)"><span class="ls-num">3</span>Monitor</div>
+  <div class="lc-step" style="background:rgba(251,146,60,.1);color:var(--accent-6)"><span class="ls-num">4</span>Maintain</div>
+  <div class="lc-step" style="background:rgba(167,139,250,.1);color:var(--accent-2)"><span class="ls-num">5</span>Audit</div>
+</div>
+</section>
+
+<!-- 12 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">12</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">8 OBLASTÍ HARDENINGU</p>
+<ul>
+  <li><strong>🩹 Patching:</strong> #1 obrana. 60 % breaches = known vulns. Critical CVSS 9+ → 24–48 h. WSUS, Ansible</li>
+  <li><strong>✂️ Minimalizace:</strong> „If you don't need it, remove it." Služby, SW, default accounts</li>
+  <li><strong>👤 Účty:</strong> Least privilege, standard user pro daily, MFA pro admin/remote, quarterly audit</li>
+  <li><strong>🔥 Firewall:</strong> Host-based VŽDY ON. Default Deny. Zavřít nepoužívané porty. VLAN segmentace</li>
+  <li><strong>🔒 Šifrování:</strong> FDE (BitLocker/FileVault/LUKS). HTTPS/SSH/SFTP. VPN pro remote</li>
+  <li><strong>🛡️ AV/EDR:</strong> Signatures + behavioral + ML. EDR (CrowdStrike). AppLocker whitelisting. Není silver bullet!</li>
+  <li><strong>📋 Logging:</strong> Auth, privileged ops, file access → SIEM (Splunk). Read-only, centralizované, 90+ dní</li>
+  <li><strong>🏢 Fyzické:</strong> BIOS password, Secure Boot, screen lock (Win+L), USB control, cable locks</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">SERVER HARDENING</p>
+<ul>
+  <li><strong>Minimal install</strong> (Server Core, no GUI). <strong>1 server = 1 role.</strong> Dedikované service accounts</li>
+  <li><strong>Web:</strong> No directory listing, hide versions, HTTPS only, security headers</li>
+  <li><strong>DB:</strong> Change default ports, no remote root, TDE encryption, least privilege</li>
+  <li><strong>Docker:</strong> Official images, scan (Trivy), non-root, limit resources, secrets management</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">FRAMEWORKS & AUTOMATIZACE</p>
+<ul>
+  <li><strong>CIS Benchmarks</strong> (community, free, Level 1/2). <strong>STIG</strong> (vojenské). <strong>NIST</strong> (federal, Identify→Protect→Detect→Respond→Recover)</li>
+  <li><strong>Automatizace:</strong> Ansible/Puppet/Chef, Group Policy (GPO), Golden Images</li>
+  <li><strong>Lifecycle:</strong> Baseline → Deploy → Monitor → Maintain → Audit. <strong>Kontinuální proces!</strong></li>
+  <li><strong>80 % útoků = KNOWN vulnerabilities.</strong> Patching + hardening to řeší!</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

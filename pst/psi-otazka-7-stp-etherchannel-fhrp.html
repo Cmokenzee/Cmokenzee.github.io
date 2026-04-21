@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 7: Spolehlivá síť – STP, EtherChannel, FHRP</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1a2e 50%, #2e1a1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(248,113,113,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(96,165,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-5); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+
+  h3 { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 20px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+  .tag-cisco { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+  .tag-std { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+  .tag-best { background: rgba(251,191,36,0.15); color: var(--accent-4); }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+
+  /* STP port state flow */
+  .state-flow { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .state-item { padding: 8px 14px; border-radius: 6px; font-weight: 600; text-align: center; }
+  .state-arrow { color: var(--text-muted); font-size: 14px; }
+  .state-time { font-size: 10px; color: var(--text-muted); display: block; margin-top: 2px; font-weight: 400; }
+
+  /* STP cost table mini */
+  .cost-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 14px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .cost-item { text-align: center; padding: 10px 8px; border-radius: 6px; background: var(--bg-card-alt); border: 1px solid var(--border); }
+  .cost-item .cost-bw { font-size: 10px; color: var(--text-muted); }
+  .cost-item .cost-val { font-size: 16px; font-weight: 700; margin-top: 4px; }
+
+  /* EtherChannel visual */
+  .ec-visual { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .ec-box { padding: 14px 20px; border-radius: 8px; text-align: center; font-weight: 600; }
+  .ec-links { display: flex; flex-direction: column; gap: 3px; }
+  .ec-link { height: 3px; width: 60px; border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .state-flow { flex-direction: column; align-items: stretch; }
+    .cost-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 7</div>
+  <h1>Spolehlivá síť<br>STP, EtherChannel, FHRP</h1>
+  <p>Redundance • Spanning Tree • Agregace linky • Virtuální gateway</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#redundance">Redundance a problém smyček</a></li>
+    <li><a href="#stp">STP – Spanning Tree Protocol</a></li>
+    <li><a href="#sta">STP algoritmus (STA) – výpočet</a></li>
+    <li><a href="#stp-types">Druhy STP protokolů</a></li>
+    <li><a href="#stp-features">STP rozšíření (PortFast, BPDU Guard…)</a></li>
+    <li><a href="#etherchannel">EtherChannel – agregace linky</a></li>
+    <li><a href="#ec-protocols">EtherChannel protokoly a konfigurace</a></li>
+    <li><a href="#fhrp">FHRP – redundance gateway</a></li>
+    <li><a href="#fhrp-protocols">HSRP, VRRP, GLBP</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 REDUNDANCE -->
+<section class="section" id="redundance">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Redundance a problém smyček</h2>
+  </div>
+
+  <p>Cíl: síť dostupná 24/7 i při výpadku. Řešení = <strong>redundance</strong> – záložní cesty a zařízení. Ale redundance na L2 vytváří <strong>smyčky</strong>!</p>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Tři problémy L2 smyček</div>
+    <div class="device-grid" style="margin-top:12px">
+      <div class="device-card">
+        <h4 style="color:var(--accent-5)">Broadcast Storm</h4>
+        <p>Frame cirkuluje donekonečna a multiplikuje se (2→4→8→16…). Síť se během sekund zhroutí – 100% CPU, network meltdown.</p>
+      </div>
+      <div class="device-card">
+        <h4 style="color:var(--accent-6)">Duplicitní Frames</h4>
+        <p>Frame jde dvěma cestami → PC přijme stejný frame 2×. Může způsobit chyby aplikací (např. duplicitní DB zápisy).</p>
+      </div>
+      <div class="device-card">
+        <h4 style="color:var(--accent-4)">Nestabilní MAC tabulka</h4>
+        <p>MAC adresa osciluje mezi porty (port 1 → port 2 → port 1…). Switch neví kam forwardovat → flooding na všechny porty.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Řešení: STP</div>
+    <p style="margin-bottom:0"><strong>Spanning Tree Protocol</strong> blokuje redundantní porty → vytvoří logickou strom topologii BEZ smyček, ale zachová fyzickou redundanci. Pokud aktivní cesta selže → STP odblokuje záložní port.</p>
+  </div>
+</section>
+
+<!-- 02 STP -->
+<section class="section" id="stp">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>STP – Spanning Tree Protocol</h2>
+  </div>
+
+  <p><strong>IEEE 802.1D</strong> (1990). Eliminuje L2 smyčky v redundantních topologiích. Switche si vyměňují <strong>BPDU</strong> (Bridge Protocol Data Unit) zprávy → zjistí topologii → blokují redundantní porty.</p>
+
+  <h3>STP Port States (stavy portů)</h3>
+
+  <div class="state-flow">
+    <div class="state-item" style="background:rgba(248,113,113,0.15);color:var(--accent-5);">Blocking<span class="state-time">20 s (max age)</span></div>
+    <span class="state-arrow">→</span>
+    <div class="state-item" style="background:rgba(251,191,36,0.15);color:var(--accent-4);">Listening<span class="state-time">15 s</span></div>
+    <span class="state-arrow">→</span>
+    <div class="state-item" style="background:rgba(96,165,250,0.15);color:var(--accent-1);">Learning<span class="state-time">15 s</span></div>
+    <span class="state-arrow">→</span>
+    <div class="state-item" style="background:rgba(52,211,153,0.15);color:var(--accent-3);">Forwarding<span class="state-time">trvale</span></div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Konvergence STP</div>
+    <p style="margin-bottom:0">20 s (Blocking) + 15 s (Listening) + 15 s (Learning) = <strong>50 sekund</strong> → POMALÉ! RSTP řeší: <strong>~6 sekund</strong>.</p>
+  </div>
+
+  <h3>STP Cost (cena cesty)</h3>
+  <div class="cost-grid">
+    <div class="cost-item">
+      <div class="cost-bw">10 Mbps</div>
+      <div class="cost-val" style="color:var(--accent-5)">100</div>
+    </div>
+    <div class="cost-item">
+      <div class="cost-bw">100 Mbps</div>
+      <div class="cost-val" style="color:var(--accent-6)">19</div>
+    </div>
+    <div class="cost-item">
+      <div class="cost-bw">1 Gbps</div>
+      <div class="cost-val" style="color:var(--accent-4)">4</div>
+    </div>
+    <div class="cost-item">
+      <div class="cost-bw">10 Gbps</div>
+      <div class="cost-val" style="color:var(--accent-3)">2</div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted)">Celkový cost = součet costů na cestě k Root Bridge. Nižší cost = lepší cesta.</p>
+</section>
+
+<!-- 03 STA -->
+<section class="section" id="sta">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>STP algoritmus (STA) – výpočet</h2>
+  </div>
+
+  <p>Spanning Tree Algorithm ve 4 krocích:</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Krok 1 – Volba Root Bridge</div>
+    <p>Switch s <strong>nejnižší Bridge ID (BID)</strong> = Root Bridge.</p>
+    <p><strong>BID</strong> = Priority (2 B, default 32768) + MAC adresa (6 B). Stejná priority → rozhodne nižší MAC.</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Priority musí být násobek 4096. Konfigurace: <code>spanning-tree vlan 1 priority 4096</code></p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Krok 2 – Root Porty (na non-root switchech)</div>
+    <p>Root Port (RP) = port s <strong>nejnižší cost</strong> k Root Bridge. Každý non-root switch má <strong>právě jeden</strong> RP. Vždy ve stavu Forwarding.</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Tie-breaker: 1) nejnižší sender BID → 2) nejnižší sender Port ID → 3) nejnižší receiver Port ID</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-3);">Krok 3 – Designated Porty</div>
+    <p>Designated Port (DP) = port který forwarduje provoz pro daný segment. Každý segment má právě jeden DP. Na Root Bridge jsou <strong>všechny porty designated</strong>. Vždy Forwarding.</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Volba: switch s nejnižší cost k Root. Stejný cost → nižší BID.</p>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Krok 4 – Blokování</div>
+    <p style="margin-bottom:0">Port který <strong>není Root Port ani Designated Port</strong> → <strong>BLOCKING</strong>. Neforwarduje data → eliminuje smyčky!</p>
+  </div>
+
+  <details>
+    <summary>Příklad kompletního výpočtu</summary>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">Topologie: Switch A (BID 4096) ↔ Switch B (BID 32768) ↔ Switch C (BID 32768). Switch A ↔ Switch C (druhý link).</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Root Bridge = Switch A (nejnižší BID 4096)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Root Porty: Switch B port k A (cost 4), Switch C port k A (cost 4)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Designated Porty: Segment A–B a A–C = Switch A (Root). Segment B–C = Switch B (nižší port ID)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Switch C port do Switch B = BLOCKING → smyčka eliminována!</div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 04 STP TYPES -->
+<section class="section" id="stp-types">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Druhy STP protokolů</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Protokol</th><th>Standard</th><th>Konvergence</th><th>Vlastnosti</th></tr>
+    <tr>
+      <td><strong>STP</strong></td>
+      <td>802.1D</td>
+      <td style="color:var(--accent-5)">50 s</td>
+      <td>Původní, jedna instance pro všechny VLANy</td>
+    </tr>
+    <tr>
+      <td><strong>PVST+</strong></td>
+      <td><span class="tag tag-cisco">CISCO</span></td>
+      <td style="color:var(--accent-5)">50 s</td>
+      <td>Per-VLAN STP → load balancing mezi VLANy možný</td>
+    </tr>
+    <tr>
+      <td><strong>RSTP</strong></td>
+      <td>802.1w</td>
+      <td style="color:var(--accent-3)">~6 s</td>
+      <td>Rapid – rychlá konvergence, Proposal/Agreement</td>
+    </tr>
+    <tr>
+      <td><strong>Rapid PVST+</strong></td>
+      <td><span class="tag tag-cisco">CISCO</span> <span class="tag tag-best">NEJLEPŠÍ</span></td>
+      <td style="color:var(--accent-3)">~6 s</td>
+      <td>Per-VLAN + Rapid → rychlé + load balancing. Default na Cisco</td>
+    </tr>
+    <tr>
+      <td><strong>MSTP</strong></td>
+      <td>802.1s</td>
+      <td style="color:var(--accent-3)">~6 s</td>
+      <td>Skupiny VLANů do instancí → méně overhead než PVST+</td>
+    </tr>
+  </table>
+
+  <details>
+    <summary>RSTP – nové port roles a states</summary>
+    <ul>
+      <li><strong>Port roles:</strong> Root, Designated, <strong>Alternate</strong> (záloha k Root Port), <strong>Backup</strong> (záloha k Designated)</li>
+      <li><strong>Port states:</strong> <strong>Discarding</strong> (= Blocking + Listening), Learning, Forwarding</li>
+      <li>Proposal/Agreement handshake → velmi rychlý přechod do Forwarding</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 05 STP FEATURES -->
+<section class="section" id="stp-features">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>STP rozšíření</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">PortFast</h4>
+      <p>Port <strong>okamžitě do Forwarding</strong> (bez 30 s čekání). Pouze na <strong>access porty k PC</strong>! NIKDY na trunk/inter-switch porty.</p>
+      <p style="margin-top:8px"><code style="font-size:11px">spanning-tree portfast</code></p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">BPDU Guard</h4>
+      <p>Pokud PortFast port přijme BPDU → <strong>port se vypne</strong> (err-disabled). Ochrana proti nechtěnému připojení switche.</p>
+      <p style="margin-top:8px"><code style="font-size:11px">spanning-tree bpduguard enable</code></p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Root Guard</h4>
+      <p>Pokud port přijme superior BPDU (nižší BID) → <strong>root-inconsistent state</strong>. Zabrání nechtěné změně Root Bridge.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Loop Guard</h4>
+      <p>Pokud blocking port přestane přijímat BPDU → <strong>loop-inconsistent</strong> (zůstane blokován). Ochrana proti ztrátě BPDU.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Konfigurace priority a Root Bridge</summary>
+    <div class="cli">
+      <span class="comment">! Nastavení priority (musí být násobek 4096)</span><br>
+      <span class="cmd">spanning-tree vlan 1 priority 4096</span><br><br>
+      <span class="comment">! Nebo makro pro Root</span><br>
+      <span class="cmd">spanning-tree vlan 1 root primary</span>   <span class="comment">! priority 24576 nebo nižší</span><br>
+      <span class="cmd">spanning-tree vlan 1 root secondary</span> <span class="comment">! priority 28672</span><br><br>
+      <span class="comment">! Verify</span><br>
+      <span class="cmd">show spanning-tree</span><br>
+      <span class="cmd">show spanning-tree vlan 1</span>
+    </div>
+  </details>
+</section>
+
+<!-- 06 ETHERCHANNEL -->
+<section class="section" id="etherchannel">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>EtherChannel – agregace linky</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém</div>
+    <p style="margin-bottom:0">4 Gigabit linky mezi switchi → ale STP zablokuje 3 (redundance) → využiješ jen <strong>1 Gbps</strong> místo 4 Gbps!</p>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Řešení: EtherChannel (Port Channel)</div>
+    <p>Seskupení více fyzických linků do <strong>jednoho logického linku</strong>. STP vidí EtherChannel jako 1 link → <strong>neblokuje</strong>! Všechny linky aktivní → součet bandwidth.</p>
+  </div>
+
+  <!-- EC visual -->
+  <div class="ec-visual">
+    <div class="ec-box" style="background:rgba(96,165,250,0.12);color:var(--accent-1);border:1px solid rgba(96,165,250,0.3)">Switch A</div>
+    <div class="ec-links">
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-4);text-align:center">
+      Po1<br><span style="color:var(--accent-3);font-size:14px;font-weight:700">4 Gbps</span>
+    </div>
+    <div class="ec-links">
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+      <div class="ec-link" style="background:var(--accent-3)"></div>
+    </div>
+    <div class="ec-box" style="background:rgba(167,139,250,0.12);color:var(--accent-2);border:1px solid rgba(167,139,250,0.3)">Switch B</div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Výhody EtherChannel</div>
+    <ul>
+      <li><strong>N linků = N× bandwidth</strong> (4 × 1 Gbps = 4 Gbps)</li>
+      <li><strong>Redundance</strong> – pokud 1 link selže, ostatní fungují (3 Gbps)</li>
+      <li><strong>STP neblokuje</strong> – vidí jako 1 link</li>
+      <li><strong>Žádná STP re-konvergence</strong> při výpadku 1 fyzického linku</li>
+      <li><strong>Load balancing</strong> – provoz distribuován mezi linky</li>
+    </ul>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Požadavky – všechny linky MUSÍ být identické!</div>
+    <ul>
+      <li>Stejná <strong>rychlost</strong> (speed) a <strong>duplex</strong></li>
+      <li>Všechny <strong>access</strong> NEBO všechny <strong>trunk</strong> (nelze mix)</li>
+      <li>Stejná <strong>VLAN</strong> (access) / stejné <strong>allowed VLANs + native VLAN</strong> (trunk)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--accent-5)">Nesplněno → EtherChannel nebude fungovat (err-disabled / suspended)!</p>
+  </div>
+
+  <details>
+    <summary>Load Balancing algoritmy</summary>
+    <p>Provoz distribuován hashovacím algoritmem. Konfigurace: <code>port-channel load-balance &lt;method&gt;</code></p>
+    <ul>
+      <li><code>src-mac</code>, <code>dst-mac</code>, <code>src-dst-mac</code> (výchozí)</li>
+      <li><code>src-ip</code>, <code>dst-ip</code>, <code>src-dst-ip</code></li>
+    </ul>
+  </details>
+</section>
+
+<!-- 07 EC PROTOCOLS -->
+<section class="section" id="ec-protocols">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>EtherChannel protokoly a konfigurace</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Protokol</th><th>Typ</th><th>Módy</th><th>Fungující kombinace</th></tr>
+    <tr>
+      <td><strong>PAgP</strong></td>
+      <td><span class="tag tag-cisco">CISCO</span></td>
+      <td>Desirable / Auto</td>
+      <td>Des+Des ✓, Des+Auto ✓, <span style="color:var(--accent-5)">Auto+Auto ✗</span></td>
+    </tr>
+    <tr>
+      <td><strong>LACP</strong></td>
+      <td><span class="tag tag-std">IEEE 802.3ad</span> <span class="tag tag-best">DOPORUČENO</span></td>
+      <td>Active / Passive</td>
+      <td>Act+Act ✓, Act+Pass ✓, <span style="color:var(--accent-5)">Pass+Pass ✗</span></td>
+    </tr>
+    <tr>
+      <td><strong>Static (On)</strong></td>
+      <td>Žádný</td>
+      <td>On</td>
+      <td>On+On ✓ (žádná detekce chyb!)</td>
+    </tr>
+  </table>
+
+  <p style="font-size:13px;color:var(--text-muted)">LACP podporuje až 16 linků (8 aktivních + 8 standby). PAgP max 8. Doporučení: <strong>LACP Active na obou koncích</strong>.</p>
+
+  <details>
+    <summary>Konfigurace EtherChannel s LACP</summary>
+    <div class="cli">
+      <span class="comment">! Fyzické porty do Port-channel (LACP active)</span><br>
+      <span class="cmd">interface range GigabitEthernet0/1 - 4</span><br>
+      <span class="cmd"> channel-group 1 mode active</span><br>
+      <span class="cmd"> no shutdown</span><br><br>
+      <span class="comment">! Konfigurace Port-channel (trunk)</span><br>
+      <span class="cmd">interface port-channel 1</span><br>
+      <span class="cmd"> switchport mode trunk</span><br>
+      <span class="cmd"> switchport trunk allowed vlan 10,20,30</span><br>
+      <span class="cmd"> switchport trunk native vlan 99</span><br><br>
+      <span class="comment">! Verify</span><br>
+      <span class="cmd">show etherchannel summary</span><br>
+      <span class="cmd">show etherchannel port-channel</span>
+    </div>
+  </details>
+</section>
+
+<!-- 08 FHRP -->
+<section class="section" id="fhrp">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>FHRP – redundance gateway</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém</div>
+    <p style="margin-bottom:0">PC má default gateway = IP routeru. Pokud router <strong>selže</strong> → PC ztratí konektivitu ven ze sítě!</p>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Řešení: FHRP (First Hop Redundancy Protocol)</div>
+    <p>Dva+ routery sdílí <strong>virtuální IP (VIP)</strong>. PC má gateway = VIP. Jeden router = Active, druhý = Standby. Pokud Active selže → Standby <strong>okamžitě převezme VIP</strong> → konektivita zachována!</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Jak to funguje</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Router 1 (192.168.1.2) + Router 2 (192.168.1.3) → VIP 192.168.1.1</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">PC má gateway = 192.168.1.1 (VIP)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Router 1 = Active → forwarduje provoz, Router 2 = Standby → monitoruje</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Router 1 selže (3× hello timeout) → Router 2 převezme VIP</div><div class="step-desc">PC neví o výpadku → žádná změna konfigurace, failover < 3 s</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 FHRP PROTOCOLS -->
+<section class="section" id="fhrp-protocols">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>HSRP, VRRP, GLBP</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>HSRP</th><th>VRRP</th><th>GLBP</th></tr>
+    <tr><td><strong>Typ</strong></td><td><span class="tag tag-cisco">CISCO</span></td><td><span class="tag tag-std">IEEE standard</span></td><td><span class="tag tag-cisco">CISCO</span></td></tr>
+    <tr><td><strong>Role</strong></td><td>Active / Standby</td><td>Master / Backup</td><td>AVG / AVF</td></tr>
+    <tr><td><strong>Priority</strong></td><td>0–255, default 100</td><td>1–254, default 100</td><td>1–255, default 100</td></tr>
+    <tr><td><strong>Preemption</strong></td><td>Default <strong>OFF</strong></td><td>Default <strong>ON</strong></td><td>Default <strong>ON</strong></td></tr>
+    <tr><td><strong>Load Balancing</strong></td><td>Ne</td><td>Ne</td><td><strong>ANO (až 4 AVF!)</strong></td></tr>
+    <tr><td><strong>Virtual MAC</strong></td><td><code>0000.0C07.ACxx</code></td><td><code>0000.5E00.01xx</code></td><td><code>0007.B400.xxyy</code></td></tr>
+    <tr><td><strong>Timers</strong></td><td>Hello 3 s, Hold 10 s</td><td>Advert 1 s</td><td>Hello 3 s, Hold 10 s</td></tr>
+  </table>
+
+  <div class="device-grid" style="margin-top:20px">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">HSRP (Cisco)</h4>
+      <p>Hot Standby Router Protocol. 1 Active, 1 Standby. Preempt OFF default → vrácený router se nestane Active (musíš <code style="font-size:11px">standby preempt</code>). Jen Cisco.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">VRRP (Standard)</h4>
+      <p>Virtual Router Redundancy Protocol. 1 Master, N Backup. Preempt ON default → vyšší priority převezme okamžitě. Multi-vendor.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">GLBP (Cisco)</h4>
+      <p>Gateway Load Balancing Protocol. <strong>Jediný s load balancing!</strong> Až 4 AVF forwardují současně. Round-robin / Weighted / Host-dependent. Využití všech routerů.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Konfigurace FHRP (Cisco)</summary>
+    <div class="cli">
+      <span class="comment">! HSRP</span><br>
+      <span class="cmd">interface GigabitEthernet0/0</span><br>
+      <span class="cmd"> standby 1 ip 192.168.1.1</span>        <span class="comment">! VIP</span><br>
+      <span class="cmd"> standby 1 priority 110</span>           <span class="comment">! vyšší = preferovaný</span><br>
+      <span class="cmd"> standby 1 preempt</span>                <span class="comment">! povolení preemption</span><br>
+      <span class="cmd"> standby 1 timers 1 3</span>             <span class="comment">! hello 1s, hold 3s</span><br><br>
+      <span class="comment">! VRRP</span><br>
+      <span class="cmd"> vrrp 1 ip 192.168.1.1</span><br>
+      <span class="cmd"> vrrp 1 priority 110</span><br><br>
+      <span class="comment">! GLBP</span><br>
+      <span class="cmd"> glbp 1 ip 192.168.1.1</span><br>
+      <span class="cmd"> glbp 1 priority 110</span><br>
+      <span class="cmd"> glbp 1 load-balancing round-robin</span><br><br>
+      <span class="comment">! Verify</span><br>
+      <span class="cmd">show standby brief</span><br>
+      <span class="cmd">show vrrp brief</span><br>
+      <span class="cmd">show glbp brief</span>
+    </div>
+  </details>
+</section>
+
+<!-- 10 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">REDUNDANCE A SMYČKY</p>
+    <ul>
+      <li>Redundance na L2 vytváří <strong>smyčky</strong> → broadcast storm, duplicitní frames, nestabilní MAC tabulka</li>
+      <li>Řešení: <strong>STP blokuje redundantní porty</strong> → strom topologie bez smyček</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">STP (SPANNING TREE)</p>
+    <ul>
+      <li><strong>STA:</strong> 1) Root Bridge (nejnižší BID) → 2) Root Porty (nejnižší cost) → 3) Designated Porty → 4) Blokování</li>
+      <li><strong>BID</strong> = Priority (default 32768, násobek 4096) + MAC. Cost: 10M=100, 100M=19, 1G=4, 10G=2</li>
+      <li><strong>Konvergence:</strong> STP = 50 s (pomalé!), RSTP = ~6 s (rychlé)</li>
+      <li><strong>Rapid PVST+</strong> = per-VLAN + rapid → nejpoužívanější (default Cisco)</li>
+      <li><strong>PortFast</strong> = okamžitě Forwarding, <strong>POUZE access porty k PC!</strong></li>
+      <li><strong>BPDU Guard</strong> = vypne port při přijetí BPDU (ochrana PortFast portů)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ETHERCHANNEL</p>
+    <ul>
+      <li>Více linků jako 1 logický → <strong>STP neblokuje</strong>, N× bandwidth, redundance</li>
+      <li>Protokoly: PAgP (Cisco, desirable/auto), <strong>LACP</strong> (standard 802.3ad, active/passive – <strong>doporučeno</strong>), Static (on)</li>
+      <li>Active+Active ✓, Active+Passive ✓, <strong>Passive+Passive ✗</strong> (oba pasivní)</li>
+      <li>Všechny linky <strong>musí být identické</strong> (speed, duplex, VLAN, mode)</li>
+      <li>Konfigurace: <code>channel-group &lt;č&gt; mode active</code></li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">FHRP (VIRTUÁLNÍ GATEWAY)</p>
+    <ul>
+      <li>Více routerů sdílí <strong>virtuální IP (VIP)</strong>. PC má gateway = VIP. Active selže → Standby převezme</li>
+      <li><strong>HSRP</strong> (Cisco): Active/Standby, preempt OFF default</li>
+      <li><strong>VRRP</strong> (standard): Master/Backup, preempt ON default</li>
+      <li><strong>GLBP</strong> (Cisco): <strong>jediný s load balancing</strong> – až 4 AVF forwardují současně!</li>
+      <li>Konfigurace: <code>standby &lt;group&gt; ip &lt;VIP&gt;</code> (HSRP)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

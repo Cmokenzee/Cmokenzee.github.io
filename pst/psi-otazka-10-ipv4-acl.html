@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 10: Adresace IPv4, Cesta datagramu, ACL</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #2e1a0f 50%, #1a2e0f 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(251,146,60,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(52,211,153,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-6); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-1); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-1); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+
+  /* Class bars */
+  .class-bar { display: flex; margin: 14px 0; border-radius: 6px; overflow: hidden; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+  .class-seg { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px; font-weight: 600; min-width: 0; }
+  .class-seg .cs-label { font-size: 14px; }
+  .class-seg .cs-range { font-size: 9px; opacity: 0.7; margin-top: 2px; }
+
+  /* Path visual */
+  .path-flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .path-item { padding: 8px 14px; border-radius: 6px; font-weight: 600; text-align: center; }
+  .path-arrow { color: var(--text-muted); font-size: 16px; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .class-bar { flex-direction: column; }
+    .path-flow { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 10</div>
+  <h1>Adresace IPv4, Cesta datagramu, ACL</h1>
+  <p>MAC • Třídy IPv4 • Privátní adresy • Porty • IP/ICMP/ARP • Switch/Router/NAT • ACL</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#mac">Fyzické adresy (MAC)</a></li>
+    <li><a href="#cisco-ports">Značení portů (Cisco)</a></li>
+    <li><a href="#classes">Třídy adres IPv4</a></li>
+    <li><a href="#special">Rezervované (speciální) adresy</a></li>
+    <li><a href="#private">Veřejné a privátní adresy</a></li>
+    <li><a href="#ports">Porty (TCP/UDP)</a></li>
+    <li><a href="#protocols">Protokoly IP, ICMP, ARP</a></li>
+    <li><a href="#path-switch">Cesta datagramu – přes switch</a></li>
+    <li><a href="#path-router">Cesta datagramu – přes router</a></li>
+    <li><a href="#path-nat">Cesta datagramu – přes NAT</a></li>
+    <li><a href="#acl-types">ACL – typy a wildcard masky</a></li>
+    <li><a href="#acl-apply">ACL – nasazení a zabezpečení</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 MAC -->
+<section class="section" id="mac">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Fyzické adresy (MAC)</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">MAC adresa – 48 bitů (6 B)</div>
+    <p>Hardwarová adresa síťového interface (NIC). Formát: <code>00:1A:2B:3C:4D:5E</code> (hexadecimální).</p>
+    <ul>
+      <li><strong>Prvních 24 bitů (3 B)</strong> = OUI (výrobce). Přiděluje IEEE. Např. Cisco = 00:1A:A1</li>
+      <li><strong>Posledních 24 bitů (3 B)</strong> = Device ID (unikátní číslo od výrobce)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Burned-in address</strong> (BIA) – napálená ve výrobě. <strong>Lokální rozsah</strong> – platí pouze v LAN segmentu, nepřenáší se přes router. <strong>Flat addressing</strong> – žádná hierarchie.</p>
+  </div>
+
+  <p><strong>Speciální MAC:</strong> Broadcast <code>FF:FF:FF:FF:FF:FF</code> (všem v segmentu). Multicast <code>01:00:5E:xx:xx:xx</code> (IPv4) nebo <code>33:33:xx:xx</code> (IPv6).</p>
+</section>
+
+<!-- 02 CISCO PORTS -->
+<section class="section" id="cisco-ports">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Značení portů (Cisco)</h2>
+  </div>
+
+  <p>Cisco značení: <strong>Type Slot/Module/Port</strong></p>
+
+  <table class="compare-table">
+    <tr><th>Zkratka</th><th>Typ</th><th>Rychlost</th><th>Příklad</th></tr>
+    <tr><td><code>Fa</code></td><td>FastEthernet</td><td>100 Mbps</td><td>Fa0/1</td></tr>
+    <tr><td><code>Gi</code></td><td>GigabitEthernet</td><td>1 Gbps</td><td>Gi1/0/24</td></tr>
+    <tr><td><code>Te</code></td><td>TenGigabitEthernet</td><td>10 Gbps</td><td>Te1/1/1</td></tr>
+    <tr><td><code>Se</code></td><td>Serial</td><td>WAN</td><td>Se0/0/0</td></tr>
+  </table>
+</section>
+
+<!-- 03 CLASSES -->
+<section class="section" id="classes">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Třídy adres IPv4</h2>
+  </div>
+
+  <p><strong>IPv4</strong> = 32 bitů, 4 oktety, rozsah 0–255. Formát: <code>192.168.1.100</code>. Classful addressing je zastaralé (dnes CIDR), ale důležité pro pochopení.</p>
+
+  <!-- Class bar -->
+  <div class="class-bar">
+    <div class="class-seg" style="background:var(--accent-5);color:#0f1117;flex:126">
+      <div class="cs-label">A</div><div class="cs-range">1–126</div>
+    </div>
+    <div class="class-seg" style="background:var(--accent-6);color:#0f1117;flex:64">
+      <div class="cs-label">B</div><div class="cs-range">128–191</div>
+    </div>
+    <div class="class-seg" style="background:var(--accent-4);color:#0f1117;flex:32">
+      <div class="cs-label">C</div><div class="cs-range">192–223</div>
+    </div>
+    <div class="class-seg" style="background:var(--accent-2);color:#0f1117;flex:16">
+      <div class="cs-label">D</div><div class="cs-range">224–239</div>
+    </div>
+    <div class="class-seg" style="background:var(--text-muted);color:#0f1117;flex:16">
+      <div class="cs-label">E</div><div class="cs-range">240–255</div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Třída</th><th>Rozsah</th><th>Maska</th><th>Síť/Host</th><th>Hostů/síť</th><th>Použití</th></tr>
+    <tr><td style="color:var(--accent-5)"><strong>A</strong></td><td>1–126</td><td>/8 (255.0.0.0)</td><td>N.H.H.H</td><td>16,777,214</td><td>Velmi velké (ISP)</td></tr>
+    <tr><td style="color:var(--accent-6)"><strong>B</strong></td><td>128–191</td><td>/16 (255.255.0.0)</td><td>N.N.H.H</td><td>65,534</td><td>Střední (univerzity)</td></tr>
+    <tr><td style="color:var(--accent-4)"><strong>C</strong></td><td>192–223</td><td>/24 (255.255.255.0)</td><td>N.N.N.H</td><td>254</td><td>Malé (kanceláře)</td></tr>
+    <tr><td style="color:var(--accent-2)"><strong>D</strong></td><td>224–239</td><td>—</td><td>—</td><td>—</td><td>Multicast</td></tr>
+    <tr><td><strong>E</strong></td><td>240–255</td><td>—</td><td>—</td><td>—</td><td>Experimentální</td></tr>
+  </table>
+
+  <div class="card warn">
+    <p style="margin-bottom:0"><strong>Classful je zastaralé!</strong> Dnes se používá <strong>CIDR</strong> (Classless Inter-Domain Routing) – libovolná délka masky (např. /27, /22). Ale třídy stále důležité pro pochopení a zkoušku.</p>
+  </div>
+</section>
+
+<!-- 04 SPECIAL -->
+<section class="section" id="special">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Rezervované (speciální) adresy</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Adresa</th><th>Název</th><th>Účel</th></tr>
+    <tr><td><code>0.0.0.0/8</code></td><td>This network</td><td>DHCP klient před získáním IP (source 0.0.0.0)</td></tr>
+    <tr><td><code>127.0.0.0/8</code></td><td>Loopback</td><td>Localhost (127.0.0.1). Testování TCP/IP stacku</td></tr>
+    <tr><td><code>169.254.0.0/16</code></td><td>APIPA</td><td>Auto-konfigurace když DHCP nedostupný (link-local)</td></tr>
+    <tr><td>Host bity = 0</td><td>Network address</td><td>Identifikátor sítě (např. 192.168.1.<strong>0</strong>). Nesmí být přiřazena hostu!</td></tr>
+    <tr><td>Host bity = 1</td><td>Broadcast</td><td>Broadcast v subnetu (např. 192.168.1.<strong>255</strong>)</td></tr>
+    <tr><td><code>255.255.255.255</code></td><td>Limited broadcast</td><td>Broadcast v lokálním segmentu (nepřechází přes router)</td></tr>
+    <tr><td><code>224.0.0.0–239.x.x.x</code></td><td>Multicast (D)</td><td>Skupinová komunikace</td></tr>
+  </table>
+</section>
+
+<!-- 05 PRIVATE -->
+<section class="section" id="private">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Veřejné a privátní adresy</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Veřejné (Public)</h4>
+      <p>Globálně unikátní, routovatelné v internetu. Přiděluje IANA → RIR → ISP → zákazník. Pro servery, routery na internetu.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Privátní (RFC 1918)</h4>
+      <p>Neroutovatelné v internetu, pouze v LAN. Stejné adresy v různých sítích OK. Pro internet <strong>vyžadují NAT</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Tři privátní rozsahy (RFC 1918)</div>
+    <table class="compare-table">
+      <tr><th>Rozsah</th><th>CIDR</th><th>Třída</th><th>Adres</th><th>Použití</th></tr>
+      <tr><td><code>10.0.0.0–10.255.255.255</code></td><td>10.0.0.0/8</td><td>A</td><td>16.7 mil</td><td>Velké firmy, DC</td></tr>
+      <tr><td><code>172.16.0.0–172.31.255.255</code></td><td>172.16.0.0/12</td><td>B</td><td>1 mil</td><td>Střední podniky</td></tr>
+      <tr><td><code>192.168.0.0–192.168.255.255</code></td><td>192.168.0.0/16</td><td>C</td><td>65 536</td><td>Domácnosti (nejběžnější)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 06 PORTS -->
+<section class="section" id="ports">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Porty (TCP/UDP)</h2>
+  </div>
+
+  <p>16-bit číslo (0–65535) identifikující aplikaci. Umožňují multiplexování (více aplikací na jedné IP).</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Well-Known porty (0–1023)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px">
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">20/21</span> FTP</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">22</span> SSH</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">23</span> Telnet</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">25</span> SMTP</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">53</span> DNS</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">67/68</span> DHCP</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">80</span> HTTP</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">110</span> POP3</div>
+      <div style="background:var(--bg-card-alt);padding:6px 10px;border-radius:4px"><span style="color:var(--accent-4)">443</span> HTTPS</div>
+    </div>
+  </div>
+
+  <p><strong>Registered</strong> (1024–49151): MySQL 3306, RDP 3389, PostgreSQL 5432. <strong>Dynamic/Ephemeral</strong> (49152–65535): dočasné klientské porty.</p>
+</section>
+
+<!-- 07 PROTOCOLS -->
+<section class="section" id="protocols">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Protokoly IP, ICMP, ARP</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">IP (Internet Protocol)</h4>
+      <p>L3, connectionless, unreliable (best effort). Header 20 B. Klíčová pole: Source/Dest IP, <strong>TTL</strong> (decremented každým routerem), Protocol (TCP=6, UDP=17, ICMP=1).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">ICMP</h4>
+      <p>Diagnostika a error reporting. Protocol #1. <strong>Nepoužívá porty</strong> (L3, ne L4)! Type 8/0 = ping (Echo Req/Reply). Type 11 = Time Exceeded (traceroute). Type 3 = Dest Unreachable.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">ARP</h4>
+      <p>Překlad IP → MAC. Pouze lokální síť. EtherType 0x0806. <strong>Request = broadcast</strong> → <strong>Reply = unicast</strong>. ARP cache: 5–20 min TTL. <code>arp -a</code> pro zobrazení.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>ARP proces – krok za krokem</summary>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">PC1 chce poslat paket na 192.168.1.100</div><div class="step-desc">Zkontroluje ARP cache – je tam MAC pro tuto IP?</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">NE → ARP Request (broadcast)</div><div class="step-desc">Dst MAC: FF:FF:FF:FF:FF:FF → „Kdo má 192.168.1.100?"</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">PC2 rozpozná svou IP → ARP Reply (unicast)</div><div class="step-desc">„192.168.1.100 = 11:22:33:44:55:66"</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">PC1 uloží do ARP cache → může poslat data</div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 08 PATH SWITCH -->
+<section class="section" id="path-switch">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Cesta datagramu – přes switch</h2>
+  </div>
+
+  <p>PC1 (192.168.1.10, MAC AA:AA) → PC2 (192.168.1.20, MAC BB:BB) ve <strong>stejné síti</strong>.</p>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Průchod switchem (L2)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">PC1 vytvoří frame: Src MAC AA:AA → Dst MAC BB:BB</div><div class="step-desc">Dst MAC zjištěno přes ARP</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Switch přijme na Fa0/1 → učí se: AA:AA = Fa0/1</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Lookup Dst MAC BB:BB v MAC table</div><div class="step-desc">Nalezeno (Fa0/2) → unicast forwarding. Nenalezeno → flooding.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">PC2 přijme frame → dekapsuluje → zpracuje</div></div></div>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <p style="margin-bottom:0">Switch <strong>pouze forwarduje frames</strong> (L2). <strong>Nemodifikuje</strong> IP ani MAC adresy!</p>
+  </div>
+</section>
+
+<!-- 09 PATH ROUTER -->
+<section class="section" id="path-router">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Cesta datagramu – přes router</h2>
+  </div>
+
+  <p>PC1 (síť A, 192.168.1.10) → PC2 (síť B, 192.168.2.20) přes router.</p>
+
+  <div class="path-flow">
+    <span class="path-item" style="background:rgba(96,165,250,0.12);color:var(--accent-1);">PC1<br><span style="font-size:9px">.1.10</span></span>
+    <span class="path-arrow">→</span>
+    <span class="path-item" style="background:rgba(52,211,153,0.12);color:var(--accent-3);border:1px solid rgba(52,211,153,0.3)">Router<br><span style="font-size:9px">MAC změna, TTL−1</span></span>
+    <span class="path-arrow">→</span>
+    <span class="path-item" style="background:rgba(167,139,250,0.12);color:var(--accent-2);">PC2<br><span style="font-size:9px">.2.20</span></span>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Průchod routerem (L3)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">PC1: dest IP v jiné síti → pošle na default gateway (router)</div><div class="step-desc">ARP pro MAC routeru → Dst MAC = router MAC (RR:RR)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Router dekapsuluje frame → přečte IP paket</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Routing decision: Dest 192.168.2.20 → route via Gi0/1</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">TTL decremented (TTL−1). Pokud TTL=0 → zahodí + ICMP</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Re-enkapsulace: NOVÝ frame</div><div class="step-desc">Src MAC = router Gi0/1 MAC. Dst MAC = PC2 MAC (ARP). <strong>IP paket BEZE ZMĚNY!</strong></div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">PC2 přijme frame → zpracuje</div></div></div>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Klíčové pravidlo</div>
+    <p style="margin-bottom:0">Router <strong>MĚNÍ MAC adresy</strong> (L2), ale <strong>NEMĚNÍ IP adresy</strong> (L3)! TTL decremented na každém routeru.</p>
+  </div>
+</section>
+
+<!-- 10 PATH NAT -->
+<section class="section" id="path-nat">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Cesta datagramu – přes NAT</h2>
+  </div>
+
+  <p>PC1 (192.168.1.10, privátní) → Web server (8.8.8.8, veřejný) přes NAT router.</p>
+
+  <div class="path-flow">
+    <span class="path-item" style="background:rgba(96,165,250,0.12);color:var(--accent-1);">PC1<br><span style="font-size:9px">192.168.1.10:52341</span></span>
+    <span class="path-arrow">→</span>
+    <span class="path-item" style="background:rgba(251,191,36,0.12);color:var(--accent-4);border:1px solid rgba(251,191,36,0.3)">NAT Router<br><span style="font-size:9px">IP + Port změna!</span></span>
+    <span class="path-arrow">→</span>
+    <span class="path-item" style="background:rgba(52,211,153,0.12);color:var(--accent-3);">Internet<br><span style="font-size:9px">203.0.113.5:12345</span></span>
+    <span class="path-arrow">→</span>
+    <span class="path-item" style="background:rgba(167,139,250,0.12);color:var(--accent-2);">Server<br><span style="font-size:9px">8.8.8.8:80</span></span>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Průchod NATem</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-content"><div class="step-label">SNAT (odchozí): Source IP 192.168.1.10 → 203.0.113.5</div><div class="step-desc">Source Port 52341 → 12345. Uloží do NAT table.</div></div></div>
+      <div class="step"><div class="step-num">→</div><div class="step-content"><div class="step-label">Server vidí request z 203.0.113.5:12345 → odpoví</div></div></div>
+      <div class="step"><div class="step-num">←</div><div class="step-content"><div class="step-label">DNAT (příchozí): Dest IP 203.0.113.5 → 192.168.1.10</div><div class="step-desc">Dest Port 12345 → 52341. Lookup v NAT table.</div></div></div>
+      <div class="step"><div class="step-num">←</div><div class="step-content"><div class="step-label">PC1 přijme odpověď – transparentní!</div></div></div>
+    </div>
+  </div>
+
+  <div class="card key">
+    <p style="margin-bottom:0"><strong>NAT MĚNÍ IP adresy i porty!</strong> Umožňuje více privátních IP sdílet jednu veřejnou (PAT/NAT Overload).</p>
+  </div>
+</section>
+
+<!-- 11 ACL TYPES -->
+<section class="section" id="acl-types">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>ACL – typy a wildcard masky</h2>
+  </div>
+
+  <p><strong>ACL</strong> = seznam pravidel pro filtraci provozu. Paket porovnán shora dolů → <strong>první match → akce</strong> (permit/deny) → stop. Na konci: <strong>implicit deny</strong> (vše co nesedí = zahozeno)!</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Standardní ACL (1–99)</h4>
+      <p>Filtruje <strong>pouze source IP</strong>. Žádné dest IP, porty, protokoly. Umístit <strong>blízko CÍLE</strong>.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Rozšířený ACL (100–199)</h4>
+      <p>Filtruje: source/dest IP, protokol (TCP/UDP/ICMP), source/dest port, TCP flags. Umístit <strong>blízko ZDROJE</strong>.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Jmenný ACL (Named)</h4>
+      <p>Jméno místo čísla (např. „BLOCK_WEB"). Srozumitelnější, snadnější modifikace (vkládání/mazání pravidel). Standard i extended.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Wildcard masky</h3>
+  <p><strong>Inverzní k subnet masce</strong> (0 = match, 1 = ignore). Výpočet: 255.255.255.255 − subnet mask.</p>
+
+  <table class="compare-table">
+    <tr><th>Cíl</th><th>Adresa</th><th>Wildcard</th></tr>
+    <tr><td>Síť /24</td><td><code>192.168.1.0</code></td><td><code>0.0.0.255</code></td></tr>
+    <tr><td>Síť /28</td><td><code>192.168.1.0</code></td><td><code>0.0.0.15</code></td></tr>
+    <tr><td>Jeden host</td><td><code>192.168.1.10</code></td><td><code>0.0.0.0</code> (nebo <code>host</code>)</td></tr>
+    <tr><td>Cokoliv</td><td><code>0.0.0.0</code></td><td><code>255.255.255.255</code> (nebo <code>any</code>)</td></tr>
+  </table>
+
+  <details>
+    <summary>Příklady konfigurace ACL</summary>
+    <div class="cli">
+      <span class="comment">! Standardní ACL (1-99) – source IP only</span><br>
+      <span class="cmd">access-list 10 deny 192.168.1.0 0.0.0.255</span>  <span class="comment">! blokuj síť .1.0/24</span><br>
+      <span class="cmd">access-list 10 permit any</span>  <span class="comment">! povolí zbytek</span><br><br>
+      <span class="comment">! Rozšířený ACL (100-199) – src/dst IP, protocol, port</span><br>
+      <span class="cmd">access-list 100 deny tcp 192.168.1.0 0.0.0.255 10.0.0.5 0.0.0.0 eq 80</span><br>
+      <span class="comment">! blokuj HTTP na 10.0.0.5 z .1.0/24</span><br>
+      <span class="cmd">access-list 100 permit ip any any</span><br><br>
+      <span class="comment">! Jmenný ACL</span><br>
+      <span class="cmd">ip access-list extended BLOCK_WEB</span><br>
+      <span class="cmd"> deny tcp any any eq 80</span><br>
+      <span class="cmd"> permit ip any any</span>
+    </div>
+  </details>
+</section>
+
+<!-- 12 ACL APPLY -->
+<section class="section" id="acl-apply">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>ACL – nasazení a zabezpečení</h2>
+  </div>
+
+  <p>ACL <strong>musí být aplikován na interface</strong> (jinak nefunguje!).</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">IN vs OUT</div>
+    <div class="device-grid" style="margin-top:10px">
+      <div class="device-card">
+        <h4 style="color:var(--accent-3)">IN (inbound)</h4>
+        <p>Filtruje provoz <strong>přicházející</strong> na interface (do routeru). Příklad: ACL in na LAN interface → filtruje provoz OD LAN.</p>
+      </div>
+      <div class="device-card">
+        <h4 style="color:var(--accent-5)">OUT (outbound)</h4>
+        <p>Filtruje provoz <strong>odcházející</strong> z interface (z routeru). Příklad: ACL out na WAN interface → filtruje provoz DO WAN.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cli">
+    <span class="comment">! Nasazení ACL na interface</span><br>
+    <span class="cmd">interface GigabitEthernet0/0</span><br>
+    <span class="cmd"> ip access-group 100 in</span>  <span class="comment">! ACL 100 na příchozí provoz</span>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Doporučení umístění</div>
+    <ul>
+      <li><strong>Standardní ACL</strong> (source only) → blízko <strong>cíle</strong> (ne zdroje – blokovalo by vše)</li>
+      <li><strong>Rozšířený ACL</strong> (source+dest+port) → blízko <strong>zdroje</strong> (minimalizuje zbytečný provoz)</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Zabezpečení přístupu k managování</h3>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">VTY zabezpečení (SSH/Telnet)</div>
+    <p>Omez, kdo může SSH/Telnet na router/switch:</p>
+    <div class="cli">
+      <span class="cmd">access-list 50 permit 192.168.10.0 0.0.0.255</span>  <span class="comment">! jen admin síť</span><br>
+      <span class="cmd">line vty 0 4</span><br>
+      <span class="cmd"> access-class 50 in</span>  <span class="comment">! aplikuj ACL na VTY</span><br>
+      <span class="cmd"> transport input ssh</span>  <span class="comment">! jen SSH, ne Telnet!</span>
+    </div>
+  </div>
+
+  <details>
+    <summary>Zabezpečení Console</summary>
+    <div class="cli">
+      <span class="cmd">line console 0</span><br>
+      <span class="cmd"> password MojeHeslo123</span><br>
+      <span class="cmd"> login</span>  <span class="comment">! vyžaduj heslo</span>
+    </div>
+  </details>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">ADRESY</p>
+    <ul>
+      <li><strong>MAC</strong> = 48 bit (OUI + device ID), lokální rozsah (L2), flat. Broadcast: <code>FF:FF:FF:FF:FF:FF</code></li>
+      <li><strong>IPv4 třídy:</strong> A (1–126, /8), B (128–191, /16), C (192–223, /24), D (multicast), E (experimental). Dnes CIDR</li>
+      <li><strong>Speciální:</strong> 127.0.0.1 loopback, 169.254.x APIPA, 0.0.0.0 this network</li>
+      <li><strong>Privátní (RFC 1918):</strong> 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 → NAT pro internet</li>
+      <li><strong>Porty:</strong> Well-known 0–1023 (HTTP 80, HTTPS 443, SSH 22, DNS 53)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PROTOKOLY A CESTA PAKETU</p>
+    <ul>
+      <li><strong>IP</strong> = L3, connectionless, TTL decremented. <strong>ICMP</strong> = ping, traceroute. <strong>ARP</strong> = IP→MAC (broadcast req, unicast reply)</li>
+      <li><strong>Switch (L2):</strong> forwarduje frames podle MAC table. <strong>Nemodifikuje</strong> nic</li>
+      <li><strong>Router (L3):</strong> MĚNÍ MAC adresy, NEMĚNÍ IP. TTL−1. Routing decision → re-enkapsulace</li>
+      <li><strong>NAT:</strong> MĚNÍ IP adresy i porty! SNAT (ven: privátní→veřejná), DNAT (dovnitř: veřejná→privátní)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">ACL</p>
+    <ul>
+      <li><strong>Standardní (1–99):</strong> pouze source IP. Umístit blízko <strong>cíle</strong></li>
+      <li><strong>Rozšířený (100–199):</strong> source/dest IP, protocol, porty. Umístit blízko <strong>zdroje</strong></li>
+      <li><strong>Jmenný:</strong> jméno místo čísla, snadnější úpravy</li>
+      <li><strong>Wildcard:</strong> inverzní k masce. /24 → <code>0.0.0.255</code>, host → <code>0.0.0.0</code>, any → <code>255.255.255.255</code></li>
+      <li><strong>Nasazení:</strong> <code>ip access-group &lt;ACL&gt; in|out</code>. <strong>Implicit deny</strong> na konci!</li>
+      <li><strong>VTY:</strong> <code>access-class &lt;ACL&gt; in</code> + <code>transport input ssh</code></li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

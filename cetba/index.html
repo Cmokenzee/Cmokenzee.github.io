@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní četba · Rozbory 20 knih</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a1410;--bg-card:#221a13;--bg-card-hover:#2b2017;--border:#3d2f22;
+  --text:#d4c4a8;--text-muted:#8a7658;--heading:#f0e4c8;
+  --accent:#c9a961;--accent-2:#8b3a3a;--accent-3:#7a8c5a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;min-height:100vh;display:flex;flex-direction:column}
+
+.nav{position:sticky;top:0;z-index:100;background:rgba(26,20,16,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:12px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.nav a{color:var(--text);text-decoration:none;transition:color .2s}
+.nav a:hover{color:var(--accent)}
+
+.hero{background:linear-gradient(135deg,#1a1410 0%,#2a1f15 50%,#1a1a2e 100%);border-bottom:1px solid var(--border);padding:70px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 40%,rgba(201,169,97,.10) 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(139,58,58,.08) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,5.5vw,44px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:14px;font-size:15px;position:relative;max-width:620px;margin-left:auto;margin-right:auto}
+
+main{flex:1;max-width:900px;width:100%;margin:0 auto;padding:50px 24px 40px}
+
+.book-list{display:flex;flex-direction:column;gap:2px}
+.book-item{
+  display:flex;align-items:center;gap:16px;padding:16px 20px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+  text-decoration:none;color:inherit;
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.book-item:hover{background:var(--bg-card-hover);border-color:var(--accent);transform:translateX(4px)}
+.book-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:600;min-width:30px;letter-spacing:1px}
+.book-info{flex:1;min-width:0}
+.book-author{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.book-title{font-family:'Fraunces',serif;font-size:17px;color:var(--heading);font-weight:600;line-height:1.3}
+.book-arrow{color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:16px;transition:transform .2s,color .2s}
+.book-item:hover .book-arrow{color:var(--accent);transform:translateX(4px)}
+
+footer{padding:32px 24px 48px;text-align:center;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:auto}
+
+@media(max-width:640px){main{padding:36px 16px 30px}.book-item{padding:14px 16px;gap:12px}.book-title{font-size:15px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html">← Maturita</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-label">Maturitní četba · Česká a světová literatura</div>
+  <h1>Rozbory 20 knih</h1>
+  <p>Kompletní rozbory povinné četby — autor, kontext, děj, postavy, jazyk, kompozice, interpretace. Od Dona Quijota po Bylo nás pět.</p>
+</section>
+
+<main>
+  <div class="book-list">
+    <a class="book-item" href="01-don-quijote.html">
+      <span class="book-num">01</span>
+      <div class="book-info"><div class="book-author">Miguel de Cervantes</div><div class="book-title">Důmyslný rytíř Don Quijote de la Mancha</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="02-lakomec.html">
+      <span class="book-num">02</span>
+      <div class="book-info"><div class="book-author">Molière</div><div class="book-title">Lakomec</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="03-havran.html">
+      <span class="book-num">03</span>
+      <div class="book-info"><div class="book-author">Edgar Allan Poe</div><div class="book-title">Havran</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="04-tyrolske-elegie.html">
+      <span class="book-num">04</span>
+      <div class="book-info"><div class="book-author">Karel Havlíček Borovský</div><div class="book-title">Tyrolské elegie</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="05-vesnicky-roman.html">
+      <span class="book-num">05</span>
+      <div class="book-info"><div class="book-author">Karolína Světlá</div><div class="book-title">Vesnický román</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="06-noc-na-karlstejne.html">
+      <span class="book-num">06</span>
+      <div class="book-info"><div class="book-author">Jaroslav Vrchlický</div><div class="book-title">Noc na Karlštejně</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="07-hobit.html">
+      <span class="book-num">07</span>
+      <div class="book-info"><div class="book-author">J. R. R. Tolkien</div><div class="book-title">Hobit aneb Cesta tam a zase zpátky</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="08-spolecenstvo-prstenu.html">
+      <span class="book-num">08</span>
+      <div class="book-info"><div class="book-author">J. R. R. Tolkien</div><div class="book-title">Společenstvo prstenu</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="09-velky-gatsby.html">
+      <span class="book-num">09</span>
+      <div class="book-info"><div class="book-author">F. Scott Fitzgerald</div><div class="book-title">Velký Gatsby</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="10-na-zapadni-fronte-klid.html">
+      <span class="book-num">10</span>
+      <div class="book-info"><div class="book-author">Erich Maria Remarque</div><div class="book-title">Na západní frontě klid</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="11-farma-zvirat.html">
+      <span class="book-num">11</span>
+      <div class="book-info"><div class="book-author">George Orwell</div><div class="book-title">Farma zvířat</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="12-smrt-si-rika-engelchen.html">
+      <span class="book-num">12</span>
+      <div class="book-info"><div class="book-author">Ladislav Mňačko</div><div class="book-title">Smrt si říká Engelchen</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="13-stary-a-more.html">
+      <span class="book-num">13</span>
+      <div class="book-info"><div class="book-author">Ernest Hemingway</div><div class="book-title">Stařec a moře</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="14-nazi-a-mrtvi.html">
+      <span class="book-num">14</span>
+      <div class="book-info"><div class="book-author">Norman Mailer</div><div class="book-title">Nazí a mrtví</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="15-valka-s-mloky.html">
+      <span class="book-num">15</span>
+      <div class="book-info"><div class="book-author">Karel Čapek</div><div class="book-title">Válka s mloky</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="16-smrt-krasnych-srncu.html">
+      <span class="book-num">16</span>
+      <div class="book-info"><div class="book-author">Ota Pavel</div><div class="book-title">Smrt krásných srnců</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="17-spalovac-mrtvol.html">
+      <span class="book-num">17</span>
+      <div class="book-info"><div class="book-author">Ladislav Fuks</div><div class="book-title">Spalovač mrtvol</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="18-tankovy-prapor.html">
+      <span class="book-num">18</span>
+      <div class="book-info"><div class="book-author">Josef Škvorecký</div><div class="book-title">Tankový prapor</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="19-obcansky-prukaz.html">
+      <span class="book-num">19</span>
+      <div class="book-info"><div class="book-author">Petr Šabach</div><div class="book-title">Občanský průkaz</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+    <a class="book-item" href="20-bylo-nas-pet.html">
+      <span class="book-num">20</span>
+      <div class="book-info"><div class="book-author">Karel Poláček</div><div class="book-title">Bylo nás pět</div></div>
+      <span class="book-arrow">→</span>
+    </a>
+  </div>
+</main>
+
+<footer>Maturitní rozbory · <a href="../index.html" style="color:var(--accent);text-decoration:none">← zpět na rozcestník</a></footer>
+
+</body>
+</html>

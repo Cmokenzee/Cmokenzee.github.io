@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 1: Vrstva síťového přístupu, Ethernet</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --l1: #f87171;
+    --l2: #fb923c;
+    --l3: #fbbf24;
+    --l4: #34d399;
+    --l5: #60a5fa;
+    --l6: #a78bfa;
+    --l7: #f472b6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1d2e 50%, #1e1528 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(251,146,60,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(96,165,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-6);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--heading);
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+  }
+  .hero p {
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-size: 15px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .toc h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    margin-bottom: 16px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li {
+    counter-increment: toc;
+    padding: 4px 0;
+    font-size: 14px;
+    break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero) ' ';
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-right: 6px;
+  }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    min-width: 24px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--heading);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 28px 0 12px;
+  }
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin: 20px 0 8px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key {
+    border-left: 3px solid var(--accent-4);
+    background: rgba(251,191,36,0.04);
+  }
+  .card.warn {
+    border-left: 3px solid var(--accent-5);
+    background: rgba(248,113,113,0.04);
+  }
+  .card.green {
+    border-left: 3px solid var(--accent-3);
+    background: rgba(52,211,153,0.04);
+  }
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Layer detail cards */
+  .layer-detail {
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .layer-detail::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  .layer-detail.dl1::before { background: var(--l1); }
+  .layer-detail.dl2::before { background: var(--l2); }
+  .layer-detail.dl3::before { background: var(--l3); }
+  .layer-detail .layer-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .dl1 .layer-badge { background: rgba(248,113,113,0.15); color: var(--l1); }
+  .dl2 .layer-badge { background: rgba(251,146,60,0.15); color: var(--l2); }
+  .dl3 .layer-badge { background: rgba(251,191,36,0.15); color: var(--l3); }
+
+  .layer-detail h3 { margin-top: 0; font-size: 19px; }
+  .layer-detail .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .layer-detail .meta span { margin-right: 18px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(96,165,250,0.1);
+    color: var(--accent-1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .compare-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42,46,61,0.5);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-3);
+    min-width: 20px;
+    padding-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .device-card {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--heading);
+    padding: 10px 0;
+    font-size: 14px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details summary::before {
+    content: '▸';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-1);
+    transition: transform 0.2s;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  strong { color: var(--heading); }
+
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* Frame visual */
+  .frame-visual {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .frame-block {
+    padding: 10px 12px;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 60px;
+  }
+  .frame-block .fb-label {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+  .frame-block .fb-size {
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .mnemonic {
+    background: linear-gradient(135deg, rgba(251,146,60,0.08), rgba(96,165,250,0.08));
+    border: 1px solid rgba(251,146,60,0.2);
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .mnemonic .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-6);
+    margin-bottom: 8px;
+  }
+  .mnemonic .phrase {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--heading);
+    letter-spacing: 0.5px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .tag-smf { background: rgba(251,191,36,0.15); color: var(--accent-4); }
+  .tag-mmf { background: rgba(251,146,60,0.15); color: var(--accent-6); }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .frame-visual { flex-direction: column; }
+    .frame-block { min-width: auto; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 1</div>
+  <h1>Vrstva síťového přístupu<br>& Ethernet</h1>
+  <p>IEEE 802.3 • MAC/LLC • ARP • Rámce • Kabely • Optika • WiFi</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#intro">Vrstvový model a Network Access Layer</a></li>
+    <li><a href="#mac">MAC vrstva a MAC adresy</a></li>
+    <li><a href="#csma">CSMA/CD a přístup k médiu</a></li>
+    <li><a href="#llc">LLC vrstva</a></li>
+    <li><a href="#cast">Unicast, Broadcast, Multicast, Anycast</a></li>
+    <li><a href="#arp">ARP protokol</a></li>
+    <li><a href="#frame">Ethernet rámec</a></li>
+    <li><a href="#ppp">PPP protokol</a></li>
+    <li><a href="#modulation">Modulace a přenos signálu</a></li>
+    <li><a href="#copper">Metalické kabely (UTP/STP)</a></li>
+    <li><a href="#fiber">Optická vlákna</a></li>
+    <li><a href="#wifi">WiFi (IEEE 802.11)</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Vrstvový model a Network Access Layer</h2>
+  </div>
+
+  <p><strong>Vrstva síťového přístupu</strong> (Network Access Layer) v TCP/IP modelu odpovídá vrstvám <strong>L1 (Physical) + L2 (Data Link)</strong> v OSI. Odpovídá za fyzický přenos dat mezi zařízeními ve <em>stejné lokální síti</em> (LAN).</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Rozdělení na podvrstvy</div>
+    <ul>
+      <li><strong>LLC</strong> (Logical Link Control, IEEE 802.2) – rozhraní mezi síťovou a MAC vrstvou</li>
+      <li><strong>MAC</strong> (Media Access Control, IEEE 802.3) – přístup k médiu, MAC adresy</li>
+      <li><strong>Physical</strong> – fyzické přenášení bitů (kabely, signály, konektory)</li>
+    </ul>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Ethernet – IEEE 802.3</div>
+    <p><strong>Nejrozšířenější LAN technologie na světě.</strong> Definuje rámce, MAC adresy, CSMA/CD a fyzická média.</p>
+    <p style="margin-bottom:0">Historie: 1973 Xerox PARC → 1983 IEEE 802.3 (10 Mbps) → 1995 Fast Ethernet 100 Mbps → 1999 Gigabit → 2006 10G → dnes až 400 Gbps.</p>
+  </div>
+</section>
+
+<!-- 02 MAC -->
+<section class="section" id="mac">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>MAC vrstva a MAC adresy</h2>
+  </div>
+
+  <p>MAC vrstva řídí přístup k médiu, adresování pomocí MAC adres, sestavování/rozebírání rámců a detekci chyb.</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">MAC adresa – 48 bit (6 B)</div>
+    <p>Hardwarová adresa síťového rozhraní, globálně unikátní. Formát: <code>00:1A:2B:3C:4D:5E</code></p>
+    <ul>
+      <li><strong>Prvních 24 bitů (3 B)</strong> = OUI (Organizationally Unique Identifier) – identifikuje <strong>výrobce</strong></li>
+      <li><strong>Posledních 24 bitů (3 B)</strong> = sériové číslo zařízení (přiděluje výrobce)</li>
+    </ul>
+    <p style="margin-bottom:0"><strong>Speciální adresy:</strong> Broadcast <code>FF:FF:FF:FF:FF:FF</code> (všem v síti), Multicast <code>01:00:5E:xx:xx:xx</code></p>
+  </div>
+</section>
+
+<!-- 03 CSMA -->
+<section class="section" id="csma">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>CSMA/CD a přístup k médiu</h2>
+  </div>
+
+  <p><strong>CSMA/CD</strong> (Carrier Sense Multiple Access with Collision Detection) – mechanismus přístupu k médiu v původním (hub-based) Ethernetu.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Kroky CSMA/CD</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Carrier Sense – poslouchej, je médium volné?</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Pokud volné → začni vysílat</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Collision Detection – během vysílání detekuj kolizi</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Pokud kolize → zastav, pošli JAM signál</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Čekej náhodnou dobu (exponential backoff)</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Zkus znovu</div></div></div>
+    </div>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Moderní Ethernet – CSMA/CD NEPOTŘEBA!</div>
+    <p style="margin-bottom:0">Switchované sítě používají <strong>full-duplex</strong> – obousměrná komunikace současně, každý port má vlastní kolizní doménu → <strong>žádné kolize</strong>. CSMA/CD jen pro legacy half-duplex.</p>
+  </div>
+</section>
+
+<!-- 04 LLC -->
+<section class="section" id="llc">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>LLC vrstva (IEEE 802.2)</h2>
+  </div>
+
+  <p>Rozhraní mezi síťovou vrstvou (IP) a MAC vrstvou. Identifikuje protokol vyšší vrstvy. Hlavička: DSAP (1 B), SSAP (1 B), Control (1–2 B).</p>
+
+  <div class="mnemonic">
+    <div class="label">V praxi</div>
+    <div class="phrase">Moderní Ethernet většinou <strong>nepoužívá LLC</strong>. Místo toho <strong>EtherType</strong> v Ethernet II rámci přímo identifikuje protokol.</div>
+  </div>
+</section>
+
+<!-- 05 CAST TYPES -->
+<section class="section" id="cast">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Unicast, Broadcast, Multicast, Anycast</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">Unicast (1:1)</h4>
+      <p>Jeden odesílatel → jeden příjemce. Standardní komunikace (HTTP request na server).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Broadcast (1:ALL)</h4>
+      <p>Jeden → VŠICHNI v broadcast domain. MAC: <code style="font-size:11px">FF:FF:FF:FF:FF:FF</code>. IP: <code style="font-size:11px">255.255.255.255</code>. Použití: ARP, DHCP. Nevýhoda: zahlcuje síť.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Multicast (1:GROUP)</h4>
+      <p>Jeden → skupina přihlášených příjemců. IP: <code style="font-size:11px">224.0.0.0–239.x.x.x</code>. Použití: IPTV, video konference, OSPF. Protokol: IGMP.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">Anycast (1:NEAREST)</h4>
+      <p>Jedna IP na více zařízeních, paket doručen nejbližšímu. Použití: DNS root servery, CDN. IPv6 má native support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ARP -->
+<section class="section" id="arp">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>ARP protokol</h2>
+  </div>
+
+  <p><strong>ARP</strong> (Address Resolution Protocol) překládá <strong>IP adresy (L3) → MAC adresy (L2)</strong>. Když PC zná cílovou IP, ale nezná MAC → ARP request.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">ARP proces (příklad)</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">PC A (192.168.1.10) chce poslat paket PC B (192.168.1.20)</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">PC A kontroluje ARP cache – znám MAC pro 192.168.1.20?</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">NE → ARP REQUEST (broadcast)</div><div class="step-desc">Dst MAC: FF:FF:FF:FF:FF:FF → „Kdo má 192.168.1.20? Řekněte 192.168.1.10"</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">VŠICHNI přijmou ARP request (broadcast)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">PC B rozpozná svou IP → ARP REPLY (unicast)</div><div class="step-desc">„192.168.1.20 je na BB:BB:BB:BB:BB:BB"</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">PC A uloží do ARP cache</div><div class="step-desc">Mapování: 192.168.1.20 = BB:BB:BB:BB:BB:BB (timeout 2–20 min). Zobrazení: <code>arp -a</code></div></div></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>Gratuitous ARP a ARP spoofing</summary>
+    <p><strong>Gratuitous ARP</strong> – ARP request pro vlastní IP. Účel: detekce IP konfliktu, update ARP cache ostatních po změně MAC.</p>
+    <p><strong>ARP spoofing (útok)</strong> – útočník posílá falešné ARP replies → oběť si uloží špatné MAC→IP mapování → Man-in-the-Middle. Obrana: static ARP entries, Dynamic ARP Inspection (DAI).</p>
+  </details>
+</section>
+
+<!-- 07 FRAME -->
+<section class="section" id="frame">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Ethernet II rámec</h2>
+  </div>
+
+  <p>Nejběžnější formát Ethernet rámce dnes (DIX standard).</p>
+
+  <div class="frame-visual">
+    <div class="frame-block" style="background:rgba(107,114,128,0.15);color:var(--text-muted);">
+      <div class="fb-label">Preamble</div><div class="fb-size">7 B</div>
+    </div>
+    <div class="frame-block" style="background:rgba(107,114,128,0.15);color:var(--text-muted);">
+      <div class="fb-label">SFD</div><div class="fb-size">1 B</div>
+    </div>
+    <div class="frame-block" style="background:rgba(96,165,250,0.15);color:var(--accent-1);">
+      <div class="fb-label">Dst MAC</div><div class="fb-size">6 B</div>
+    </div>
+    <div class="frame-block" style="background:rgba(167,139,250,0.15);color:var(--accent-2);">
+      <div class="fb-label">Src MAC</div><div class="fb-size">6 B</div>
+    </div>
+    <div class="frame-block" style="background:rgba(251,191,36,0.15);color:var(--accent-4);">
+      <div class="fb-label">EtherType</div><div class="fb-size">2 B</div>
+    </div>
+    <div class="frame-block" style="background:rgba(52,211,153,0.12);color:var(--accent-3);flex:1;min-width:120px;">
+      <div class="fb-label">Payload (Data)</div><div class="fb-size">46–1500 B</div>
+    </div>
+    <div class="frame-block" style="background:rgba(248,113,113,0.15);color:var(--accent-5);">
+      <div class="fb-label">FCS</div><div class="fb-size">4 B</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Popis polí</div>
+    <ul>
+      <li><strong>Preamble</strong> (7 B) – synchronizace hodin (10101010…), není součást rámce (L1)</li>
+      <li><strong>SFD</strong> (1 B) – <code>10101011</code>, signalizuje začátek rámce</li>
+      <li><strong>Dst/Src MAC</strong> (6+6 B) – cílová a zdrojová MAC adresa</li>
+      <li><strong>EtherType</strong> (2 B) – <code>0x0800</code> IPv4, <code>0x0806</code> ARP, <code>0x86DD</code> IPv6, <code>0x8100</code> VLAN</li>
+      <li><strong>Payload</strong> (46–1500 B) – data z vyšší vrstvy. Min 46 B (jinak padding). Max 1500 B = <strong>MTU</strong></li>
+      <li><strong>FCS</strong> (4 B) – CRC-32 checksum. Nesedí → rámec zahozen</li>
+    </ul>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Velikost rámce</div>
+    <p><strong>Minimum:</strong> 64 B (6+6+2+46+4) bez preamble/SFD</p>
+    <p><strong>Maximum:</strong> 1518 B (6+6+2+1500+4) bez preamble/SFD</p>
+    <p style="margin-bottom:0"><strong>Jumbo frames:</strong> payload až 9000 B (non-standard, datacentra, všechna zařízení musí podporovat)</p>
+  </div>
+</section>
+
+<!-- 08 PPP -->
+<section class="section" id="ppp">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>PPP (Point-to-Point Protocol)</h2>
+  </div>
+
+  <p>Protokol pro point-to-point spojení (2 zařízení přímo propojená). Použití: sériové linky, dial-up, DSL (PPPoE), VPN.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Komponenty PPP</div>
+    <ul>
+      <li><strong>LCP</strong> (Link Control Protocol) – navazování, konfigurace, testování spojení</li>
+      <li><strong>NCP</strong> (Network Control Protocol) – konfigurace síťových protokolů (IPCP pro IP)</li>
+      <li><strong>Authentication</strong> – PAP (plaintext, slabé), CHAP (challenge-response, bezpečnější)</li>
+    </ul>
+  </div>
+
+  <details>
+    <summary>PPP rámec a PPPoE</summary>
+    <p>PPP rámec: Flag (0x7E) | Address (0xFF) | Control (0x03) | Protocol (2 B) | Data | FCS (2 B)</p>
+    <p><strong>PPPoE</strong> (PPP over Ethernet) – enkapsulace PPP do Ethernet rámců. DSL, kabelové modemy. EtherType <code>0x8864</code>.</p>
+  </details>
+</section>
+
+<!-- 09 MODULATION -->
+<section class="section" id="modulation">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Modulace a přenos signálu</h2>
+  </div>
+
+  <p><strong>Modulace</strong> = změna vlastností nosného signálu (carrier) podle dat. Umožňuje přenos digitálních dat přes analogová média.</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">ASK</h4>
+      <p>Amplitude Shift Keying – změna amplitudy. Citlivé na šum.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">FSK</h4>
+      <p>Frequency Shift Keying – změna frekvence. Odolnější. Starý dial-up.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">PSK</h4>
+      <p>Phase Shift Keying – změna fáze. BPSK (2 stavy), QPSK (4), 16-QAM (16). WiFi, LTE.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">QAM</h4>
+      <p>Kombinace amplitudy + fáze. 256-QAM = 8 bitů/symbol. WiFi 6, cable modemy.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Bandwidth, propustnost, latence</h3>
+  <ul>
+    <li><strong>Bandwidth</strong> (šířka pásma) – rozsah frekvencí média, měřeno v Hz. Vyšší → více dat/s</li>
+    <li><strong>Propustnost</strong> (throughput) – skutečná rychlost přenosu (bps, Mbps). Vždy < bandwidth kvůli overhead</li>
+    <li><strong>Latence</strong> – zpoždění v ms. RTT = round-trip time. Důležité pro gaming, VoIP</li>
+  </ul>
+</section>
+
+<!-- 10 COPPER -->
+<section class="section" id="copper">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Metalické kabely (UTP/STP)</h2>
+  </div>
+
+  <h3>Kroucená dvojlinka (Twisted Pair)</h3>
+  <p>Dva vodiče kroucené okolo sebe – kroucení redukuje EMI (differential signaling).</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">UTP (Unshielded)</h4>
+      <p>Žádné stínění, jen plast. Nejběžnější (kancelář, domácnost). Levné, flexibilní. Citlivé na EMI.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">STP (Shielded)</h4>
+      <p>Kovové stínění okolo párů. Lepší ochrana proti EMI. Dražší, nutné uzemnění. Průmysl, datacentra.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Varianty stínění</summary>
+    <ul>
+      <li><strong>U/UTP</strong> – žádné stínění (standard UTP)</li>
+      <li><strong>F/UTP</strong> – foil shield okolo všech párů</li>
+      <li><strong>U/FTP</strong> – každý pár má foil shield</li>
+      <li><strong>S/FTP</strong> – braided shield + foil per pár (maximum)</li>
+    </ul>
+  </details>
+
+  <div class="divider"></div>
+
+  <h3>Kategorie kabelů</h3>
+
+  <table class="compare-table">
+    <tr><th>Kategorie</th><th>Bandwidth</th><th>Rychlost</th><th>Max vzdálenost</th><th>Poznámka</th></tr>
+    <tr><td><strong>Cat 5e</strong></td><td>100 MHz</td><td>1 Gbps</td><td>100 m</td><td>MINIMUM pro nové instalace</td></tr>
+    <tr><td><strong>Cat 6</strong></td><td>250 MHz</td><td>10 Gbps (55 m) / 1G (100 m)</td><td>100 m</td><td>Doporučeno dnes</td></tr>
+    <tr><td><strong>Cat 6a</strong></td><td>500 MHz</td><td>10 Gbps</td><td>100 m</td><td>Obvykle STP, těžší</td></tr>
+    <tr><td><strong>Cat 7</strong></td><td>600 MHz</td><td>10 Gbps</td><td>100 m</td><td>Vždy S/FTP, GG45 konektor</td></tr>
+    <tr><td><strong>Cat 8</strong></td><td>2 GHz</td><td>25–40 Gbps</td><td>30 m!</td><td>Datacentra, patch cables</td></tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <h3>Konektory RJ45 a zapojení</h3>
+
+  <p><strong>RJ45</strong> (8P8C) – standard konektor pro Ethernet, 8 pinů, 4 páry. Dva standardy zapojení: <strong>T568A</strong> a <strong>T568B</strong> (rozdíl jen zelená ↔ oranžová).</p>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Straight-through</h4>
+      <p>Oba konce STEJNÉ zapojení (T568B–T568B). Použití: PC → Switch, Switch → Router.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Crossover</h4>
+      <p>T568A ↔ T568B. Dříve: PC↔PC, Switch↔Switch. Dnes: <strong>Auto-MDIX</strong> → nepotřeba!</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <p style="margin-bottom:0"><strong>Gigabit+</strong> Ethernet využívá <strong>všechny 4 páry</strong> (pin 1–8). Fast Ethernet (100 Mbps) jen 2 páry (pin 1,2,3,6).</p>
+  </div>
+</section>
+
+<!-- 11 FIBER -->
+<section class="section" id="fiber">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Optická vlákna</h2>
+  </div>
+
+  <p>Přenos dat pomocí <strong>světla</strong> (laser/LED) skrz skleněné vlákno. Princip: <strong>totální vnitřní odraz</strong> – světlo se odráží uvnitř jádra díky rozdílu indexů lomu.</p>
+
+  <details>
+    <summary>Struktura optického vlákna</summary>
+    <ul>
+      <li><strong>Jádro (core)</strong> – sklo, světlo se šíří zde (8–62.5 µm)</li>
+      <li><strong>Plášť (cladding)</strong> – sklo s nižším indexem lomu (125 µm)</li>
+      <li><strong>Ochranný obal</strong> – plast (250–900 µm)</li>
+      <li><strong>Vnější plášť</strong> – kevlar, PVC</li>
+    </ul>
+  </details>
+
+  <div class="device-grid" style="margin-top:20px">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4><span class="tag tag-smf">SMF</span> Single-Mode Fiber</h4>
+      <p>Core: 8–10 µm. Zdroj: LASER (1310/1550 nm). Jeden mód světla → žádná modální disperze. Vzdálenost: <strong>10–100+ km</strong>. Rychlost: 10G–400G+. Dražší. Barva: <strong>ŽLUTÁ</strong>. Použití: WAN, metro, submarine.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4><span class="tag tag-mmf">MMF</span> Multi-Mode Fiber</h4>
+      <p>Core: 50/62.5 µm. Zdroj: LED/VCSEL (850 nm). Více módů → modální disperze. Vzdálenost: <strong>max ~2 km</strong>. Levnější. Barva: <strong>ORANŽOVÁ</strong> (OM1/2) / <strong>AQUA</strong> (OM3/4/5). Použití: LAN, datacentra.</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>MMF kategorie (OM1–OM5)</summary>
+    <table class="compare-table">
+      <tr><th>Kat.</th><th>Core</th><th>10G dosah</th><th>40G dosah</th><th>Barva</th></tr>
+      <tr><td>OM1</td><td>62.5 µm</td><td>33 m</td><td>—</td><td>Oranžová</td></tr>
+      <tr><td>OM2</td><td>50 µm</td><td>82 m</td><td>—</td><td>Oranžová</td></tr>
+      <tr><td>OM3</td><td>50 µm opt.</td><td>300 m</td><td>100 m</td><td>Aqua</td></tr>
+      <tr><td>OM4</td><td>50 µm</td><td>550 m</td><td>150 m</td><td>Aqua</td></tr>
+      <tr><td>OM5</td><td>50 µm</td><td>550 m</td><td>150 m</td><td>Aqua (SWDM)</td></tr>
+    </table>
+  </details>
+
+  <div class="divider"></div>
+
+  <h3>Optické konektory</h3>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">LC (Lucent)</h4>
+      <p>Malý, push-pull, duplex. <strong>Nejběžnější v datacentrech</strong> (high density).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">SC (Subscriber)</h4>
+      <p>Push-pull čtvercový, snap-in. Běžný v LAN, FTTH.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">ST (Straight Tip)</h4>
+      <p>Bajonetový twist-lock, kulatý. Starší, campus networks.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">MTP/MPO</h4>
+      <p>12 nebo 24 vláken v jednom konektoru! 40G/100G, high-density datacentra.</p>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Polish types (leštění)</div>
+    <ul>
+      <li><strong>PC</strong> – plochý povrch, air gap</li>
+      <li><strong>UPC</strong> – zaoblený (convex), lepší kontakt → <strong>modrý</strong> konektor</li>
+      <li><strong>APC</strong> – 8° úhel, minimální back-reflection → <strong>zelený</strong> konektor</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 12 WIFI -->
+<section class="section" id="wifi">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>WiFi (IEEE 802.11)</h2>
+  </div>
+
+  <p>Přenos dat pomocí elektromagnetických vln vzduchem. Frekvence: 2.4 GHz, 5 GHz, 6 GHz.</p>
+
+  <table class="compare-table">
+    <tr><th>Standard</th><th>Název</th><th>Frekvence</th><th>Max rychlost</th><th>Klíčová technologie</th></tr>
+    <tr><td>802.11n</td><td>WiFi 4</td><td>2.4 / 5 GHz</td><td>600 Mbps</td><td>MIMO</td></tr>
+    <tr><td>802.11ac</td><td>WiFi 5</td><td>5 GHz</td><td>3.5 Gbps</td><td>MU-MIMO</td></tr>
+    <tr><td>802.11ax</td><td>WiFi 6/6E</td><td>2.4 / 5 / 6 GHz</td><td>9.6 Gbps</td><td>OFDMA, MU-MIMO</td></tr>
+    <tr><td>802.11be</td><td>WiFi 7</td><td>2.4 / 5 / 6 GHz</td><td>46 Gbps</td><td>320 MHz kanály</td></tr>
+  </table>
+
+  <div class="device-grid" style="margin-top:20px">
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">2.4 GHz</h4>
+      <p>Delší dosah, více interference (Bluetooth, mikrovlnky). Jen 3 non-overlapping kanály (1, 6, 11).</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">5 GHz</h4>
+      <p>Kratší dosah, méně interference, ~25 kanálů. Rychlejší.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">6 GHz (WiFi 6E)</h4>
+      <p>Velmi čisté spektrum, kratší dosah. Nové pásmo.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>CSMA/CA (Collision Avoidance)</h3>
+  <p>WiFi nemůže detekovat kolize (half-duplex radio) → <strong>vyhýbá se</strong> kolizím:</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Listen – je médium volné?</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">ANO → čekej random backoff</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">RTS (Request To Send) → AP odpoví CTS (Clear To Send)</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Vyšli data → AP pošle ACK</div></div></div>
+  </div>
+
+  <details>
+    <summary>MIMO a MU-MIMO</summary>
+    <p><strong>MIMO</strong> (Multiple Input Multiple Output) – více antén na vysílači i přijímači → paralelní streamy. 4×4 MIMO = až 4 simultánní streamy.</p>
+    <p><strong>MU-MIMO</strong> (Multi-User) – AP komunikuje s více klienty současně (WiFi 5+). Dříve jen sekvenčně.</p>
+  </details>
+
+  <details>
+    <summary>Další bezdrátové technologie</summary>
+    <ul>
+      <li><strong>Bluetooth</strong> – 2.4 GHz, 10–100 m, PAN (sluchátka, myš, klávesnice)</li>
+      <li><strong>Mobilní sítě (4G/5G)</strong> – 700 MHz–100 GHz, WAN přes buňkové věže</li>
+      <li><strong>LoRa/LoRaWAN</strong> – LPWAN, ~1 km město / 10+ km venkov, nízká spotřeba, IoT</li>
+    </ul>
+  </details>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+    <ul>
+      <li><strong>MAC adresa</strong> = 48-bit HW adresa. OUI (3 B) = výrobce. Broadcast: <code>FF:FF:FF:FF:FF:FF</code></li>
+      <li><strong>Ethernet rámec:</strong> min 64 B, max 1518 B, MTU = 1500 B. EtherType: <code>0x0800</code>=IPv4, <code>0x0806</code>=ARP</li>
+      <li><strong>ARP:</strong> překládá IP → MAC. Request = broadcast, Reply = unicast. Cache timeout 2–20 min</li>
+      <li><strong>CSMA/CD</strong> = Ethernet (detekce kolizí, legacy). <strong>CSMA/CA</strong> = WiFi (vyhýbání se kolizím). Moderní Ethernet = full-duplex, žádné kolize</li>
+      <li><strong>Cat 5e</strong> = minimum (1 Gbps). <strong>Cat 6a</strong> = 10 Gbps na 100 m</li>
+      <li><strong>RJ45:</strong> T568B = běžnější. Straight-through = PC→Switch. Auto-MDIX = crossover nepotřeba</li>
+      <li><strong>Gigabit+</strong> využívá všechny 4 páry (pin 1–8)</li>
+      <li><strong>SMF</strong> = laser, žlutá, 100+ km, WAN. <strong>MMF</strong> = LED, oranžová/aqua, max 2 km, LAN</li>
+      <li><strong>LC</strong> = nejběžnější konektor v datacentrech. <strong>UPC</strong> = modrý, <strong>APC</strong> = zelený</li>
+      <li><strong>WiFi 6</strong> (802.11ax) = 9.6 Gbps, OFDMA, MU-MIMO. 2.4 GHz = delší dosah, 5 GHz = rychlejší</li>
+      <li><strong>Unicast</strong> 1:1, <strong>Broadcast</strong> 1:ALL, <strong>Multicast</strong> 1:GROUP (IGMP), <strong>Anycast</strong> 1:NEAREST (DNS root)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

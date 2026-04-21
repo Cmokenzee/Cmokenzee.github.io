@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 12: Fyzická bezpečnost</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#2e1a0f 40%,#1a0f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(251,146,60,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(167,139,250,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-6);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,44px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Rings of security */
+.rings{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0}
+.ring{padding:10px 16px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
+/* Visitor flow */
+.vf{display:flex;gap:4px;margin:14px 0;flex-wrap:wrap;justify-content:center}
+.vf-step{text-align:center;padding:10px 8px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:9px;min-width:75px;flex:1;max-width:110px}
+.vf-step .vs-icon{font-size:16px;display:block;margin-bottom:3px}
+.vf-step .vs-name{font-weight:600;display:block;font-size:10px}
+/* DC grid */
+.dc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:14px 0}
+.dc-item{padding:14px;border-radius:8px;font-size:12px;background:var(--bg-card-alt);border:1px solid var(--border)}
+.dc-item strong{display:block;margin-bottom:3px;font-size:13px}
+.dc-item p{font-size:12px;color:var(--text-muted);margin:0}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.vf{flex-direction:column;align-items:center}.dc-grid{grid-template-columns:1fr}.ring{width:100%!important}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 12</div>
+  <h1>Fyzická bezpečnost</h1>
+  <p>Perimeter • Kamery • Access Control • Mantrap • Datacenter • Fire Suppression • Visitors</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#intro">Defense in Depth – vrstvy</a></li>
+  <li><a href="#perimeter">Perimeter Security</a></li>
+  <li><a href="#cctv">CCTV a osvětlení</a></li>
+  <li><a href="#access">Access Control systémy</a></li>
+  <li><a href="#barriers">Fyzické překážky vstupu</a></li>
+  <li><a href="#datacenter">Zabezpečení datacentra</a></li>
+  <li><a href="#people">Personální bezpečnost</a></li>
+  <li><a href="#disposal">Secure Disposal a alarmy</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 INTRO -->
+<section class="section" id="intro">
+<div class="section-header"><span class="section-num">01</span><h2>Defense in Depth – vrstvy fyzické ochrany</h2></div>
+
+<p>Fyzická bezpečnost = ochrana budov, zařízení, dat, personálu. <strong>Všechna kybernetická bezpečnost je zbytečná pokud útočník má fyzický přístup!</strong> Evil maid attack: keylogger, bootkit, krádež disků.</p>
+
+<div class="rings">
+  <div class="ring" style="background:rgba(248,113,113,.1);color:var(--accent-5);width:50%">🏢 5. ASSETS – server rack, safe</div>
+  <div class="ring" style="background:rgba(251,146,60,.08);color:var(--accent-6);width:60%">🔐 4. SECURE AREAS – server room, datacenter</div>
+  <div class="ring" style="background:rgba(251,191,36,.08);color:var(--accent-4);width:72%">🚶 3. BUILDING INTERIOR – lobby, chodby</div>
+  <div class="ring" style="background:rgba(96,165,250,.08);color:var(--accent-1);width:84%">🏗️ 2. BUILDING EXTERIOR – stěny, dveře, okna</div>
+  <div class="ring" style="background:rgba(52,211,153,.08);color:var(--accent-3);width:100%">🏗️ 1. PERIMETER – plot, brána, osvětlení, kamery</div>
+</div>
+<p style="text-align:center;font-size:11px;color:var(--text-muted)">Útočník musí překonat VŠECHNY vrstvy. Selhání jedné ≠ kompletní kompromitace.</p>
+</section>
+
+<!-- 02 PERIMETER -->
+<section class="section" id="perimeter">
+<div class="section-header"><span class="section-num">02</span><h2>Perimeter Security</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Ploty (Fencing) 🏗️</h4>
+    <p>Min <strong>2 m</strong> (deterrence), 2.5 m+ (high security). Chain-link, beton, wrought iron. Anti-climb: barbed wire, spikes. <strong>Clear zone 6–9 m</strong> na obou stranách (visibility).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Brány a guard booths 🚧</h4>
+    <p>Vehicle gates: <strong>bollards</strong> (anti-ram), rising barriers. Pedestrian: turnstiles, card readers. Guard booth: ověření identity, vehicle check, <strong>visitor log</strong>.</p>
+  </div>
+</div>
+</section>
+
+<!-- 03 CCTV -->
+<section class="section" id="cctv">
+<div class="section-header"><span class="section-num">03</span><h2>CCTV a osvětlení</h2></div>
+
+<div class="card" style="border-left:3px solid var(--accent-4)">
+  <div class="card-title" style="color:var(--accent-4)">Osvětlení 💡 – jeden z nejefektivnějších deterrentů!</div>
+  <p style="margin-bottom:0">Útočníci preferují tmu. <strong>Perimeter:</strong> 2 lux. <strong>Entry points:</strong> 10 lux. <strong>Parking:</strong> 5 lux. Typy: continuous, motion-activated, emergency (záložní při výpadku).</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-2)">CCTV 📹</div>
+  <p><strong>Účel:</strong> Deterrence (odrazuje), Detection (real-time), Evidence (forensics).</p>
+  <ul>
+    <li><strong>Fixed</strong> (statická), <strong>PTZ</strong> (Pan-Tilt-Zoom), <strong>Dome</strong> (diskrétní)</li>
+    <li>Outdoor (IP66+), Day/Night (IR filtr), <strong>IR</strong> (noční vidění)</li>
+    <li><strong>Moderní:</strong> IP kamery, 4K, motion detection, facial recognition, license plate reading, cloud storage</li>
+    <li><strong>Umístění:</strong> Entry/exit, perimeter, parking, lobby, hallways, server room vstup</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--accent-5)"><strong>GDPR:</strong> Signage (informace o kamerách), legitimate purpose, retention 30–90 dní. NESMÍ monitorovat koupelny, šatny!</p>
+</div>
+</section>
+
+<!-- 04 ACCESS -->
+<section class="section" id="access">
+<div class="section-header"><span class="section-num">04</span><h2>Access Control systémy</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">🔑 HAVE (vlastnictví)</h4>
+    <p><strong>Klíče:</strong> Jednoduché, levné, ale lze kopírovat, žádný audit. <strong>Access Cards:</strong> Magnetic, <strong>RFID proximity</strong>, smart card (chip). Audit trail, lze deaktivovat! <strong>Mobile:</strong> NFC/BLE smartphone.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">🧠 KNOW + 👤 ARE</h4>
+    <p><strong>PIN:</strong> 4–6 míst na keypadu. Nic neztratíš, ale shoulder surfing. <strong>Biometrie:</strong> Fingerprint (nejpoužívanější), Face recognition (bezkontaktní), Iris/Retina (high-sec), Hand geometry. <strong>MFA = Card + PIN nebo Card + Fingerprint!</strong></p>
+  </div>
+</div>
+</section>
+
+<!-- 05 BARRIERS -->
+<section class="section" id="barriers">
+<div class="section-header"><span class="section-num">05</span><h2>Fyzické překážky vstupu</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Zámky 🔒</h4>
+    <p><strong>Mechanical</strong> (klíč), <strong>Electronic</strong> (card/PIN), <strong>Maglock</strong> (elektromagnet). Dveře: <strong>Fail-safe</strong> (výpadek → odemkne, požární bezp.) vs <strong>Fail-secure</strong> (výpadek → zamčeno, high-sec).</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Turnikety & Mantrap</h4>
+    <p><strong>Turnstile:</strong> Jen 1 osoba najednou, anti-tailgating (waist-high / full-height). <strong>Mantrap:</strong> Malá místnost, <strong>jen 1 dveře otevřené</strong> současně. Vstup → zavření → auth → druhé dveře. Datacenter, bank vault.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Bollards</h4>
+    <p>Silné sloupy před budovou. Anti vehicle ramming. Fixed nebo retractable (zasunovací).</p>
+  </div>
+</div>
+</section>
+
+<!-- 06 DATACENTER -->
+<section class="section" id="datacenter">
+<div class="section-header"><span class="section-num">06</span><h2>Zabezpečení datacentra</h2></div>
+
+<p><strong>Datacenter = srdce IT.</strong> Kompromitace = katastrofa. Vyžaduje NEJVYŠŠÍ úroveň fyzické bezpečnosti.</p>
+
+<div class="dc-grid">
+  <div class="dc-item"><strong style="color:var(--accent-5)">🔐 Přístup</strong><p>MFA (Card+PIN+Bio). Mantrap vstup. Cabinet locks. RFID asset tags. 24/7 CCTV + guards.</p></div>
+  <div class="dc-item"><strong style="color:var(--accent-1)">❄️ HVAC</strong><p>Chlazení: <strong>18–27 °C</strong>, vlhkost <strong>40–60 %</strong>. Hot/Cold aisle design. Redundantní HVAC.</p></div>
+  <div class="dc-item"><strong style="color:var(--accent-5)">🔥 Fire Suppression</strong><p><strong>NE voda!</strong> Clean Agent (FM-200, Novec 1230). Inert Gas. Pre-action sprinklers. VESDA detektory.</p></div>
+  <div class="dc-item"><strong style="color:var(--accent-4)">⚡ Power</strong><p><strong>UPS</strong> (5–30 min). <strong>Generátor</strong> (hodiny–dny). <strong>Dual power feeds</strong> (2 nezávislé). ATS auto-přepnutí. PDU distribuce.</p></div>
+  <div class="dc-item"><strong style="color:var(--accent-2)">🏗️ Raised Floor</strong><p>30–60 cm nad základem. Pod podlahou: kabely, chlazení. Čisté prostředí, flexibilita, airflow.</p></div>
+</div>
+</section>
+
+<!-- 07 PEOPLE -->
+<section class="section" id="people">
+<div class="section-header"><span class="section-num">07</span><h2>Personální bezpečnost</h2></div>
+
+<h3>Visitor Management</h3>
+<div class="vf">
+  <div class="vf-step" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="vs-icon">📝</span><span class="vs-name">Pre-register</span></div>
+  <div class="vf-step" style="background:rgba(52,211,153,.08);color:var(--accent-3)"><span class="vs-icon">🪪</span><span class="vs-name">Check-in + ID</span></div>
+  <div class="vf-step" style="background:rgba(251,191,36,.08);color:var(--accent-4)"><span class="vs-icon">🏷️</span><span class="vs-name">Visitor Badge</span></div>
+  <div class="vf-step" style="background:rgba(251,146,60,.08);color:var(--accent-6)"><span class="vs-icon">🚶</span><span class="vs-name">Escort VŽDY</span></div>
+  <div class="vf-step" style="background:rgba(167,139,250,.08);color:var(--accent-2)"><span class="vs-icon">📋</span><span class="vs-name">Log záznam</span></div>
+  <div class="vf-step" style="background:rgba(248,113,113,.08);color:var(--accent-5)"><span class="vs-icon">✅</span><span class="vs-name">Check-out</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">Badge systém & školení</div>
+  <ul>
+    <li><strong>Badge:</strong> Photo ID, color coding (různé barvy = různé úrovně), expiration pro contractors, viditelný vždy</li>
+    <li><strong>Training:</strong> Tailgating prevention (nevpouštět za sebou!), badge challenge, social engineering, <strong>clean desk policy</strong>, screen lock (Win+L), reporting suspicious activity</li>
+    <li><strong>Background checks:</strong> Criminal record, employment verification. NDA pro citlivé oblasti</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 DISPOSAL -->
+<section class="section" id="disposal">
+<div class="section-header"><span class="section-num">08</span><h2>Secure Disposal a alarmy</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Secure Disposal 🗑️</h4>
+    <p><strong>Papír:</strong> Cross-cut shredder (ne strip-cut), locked shred bins. <strong>HDD:</strong> Degaussing / physical destruction. <strong>SSD:</strong> Crypto erase / destruction. NIST 800-88. Certificate of destruction.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Alarmy & Detekce 🚨</h4>
+    <p>Door/window sensors (magnetic). <strong>PIR motion sensors</strong>. Glass break sensors. Pressure mats. 24/7 SOC monitoring. Auto-notifikace policie.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Environmentální ochrana 🌊</h4>
+    <p><strong>Povodeň:</strong> DC na vyšších patrech, water sensors, sump pumps. <strong>Zemětřesení:</strong> Seismic bracing. <strong>EMP:</strong> Faraday cage. <strong>Cable:</strong> Conduits, fiber optic (těžko odposlechnout).</p>
+  </div>
+</div>
+</section>
+
+<!-- 09 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">09</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">5 VRSTEV (RINGS OF SECURITY)</p>
+<ul>
+  <li><strong>1. Perimeter:</strong> Plot (2 m+), brána, bollards, osvětlení (2–10 lux), CCTV</li>
+  <li><strong>2. Building Exterior:</strong> Stěny, dveře, okna</li>
+  <li><strong>3. Interior:</strong> Lobby, turnstiles, access cards</li>
+  <li><strong>4. Secure Areas:</strong> Mantrap (jen 1 dveře otevřené!), MFA (Card+PIN+Bio)</li>
+  <li><strong>5. Assets:</strong> Rack locks, cable locks, asset tags</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">ACCESS CONTROL + CCTV</p>
+<ul>
+  <li><strong>HAVE:</strong> Klíče, RFID karty (audit trail!), mobile (NFC/BLE). <strong>KNOW:</strong> PIN. <strong>ARE:</strong> Fingerprint, face, iris</li>
+  <li><strong>MFA = Card + PIN</strong> nebo <strong>Card + Fingerprint</strong> pro citlivé oblasti</li>
+  <li><strong>CCTV:</strong> Fixed/PTZ/Dome, IR noční vidění, 4K, facial recognition. Retention 30–90 dní. GDPR: signage, no bathrooms</li>
+  <li><strong>Fail-safe</strong> (odemkne při výpadku – požární) vs <strong>Fail-secure</strong> (zamčeno – high-sec)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">DATACENTER</p>
+<ul>
+  <li><strong>HVAC:</strong> 18–27 °C, 40–60 % vlhkost, hot/cold aisle, redundantní</li>
+  <li><strong>Fire:</strong> NE VODA! Clean Agent (FM-200, Novec 1230), Inert Gas, VESDA detekce</li>
+  <li><strong>Power:</strong> UPS (5–30 min) → Generátor (hodiny–dny) → Dual power feeds. ATS auto-přepnutí</li>
+  <li><strong>Raised floor:</strong> 30–60 cm, kabely + chlazení pod podlahou</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">LIDÉ + DISPOSAL</p>
+<ul>
+  <li><strong>Visitors:</strong> Pre-register → Check-in → Badge → <strong>Escort VŽDY</strong> → Log → Check-out. NDA pro citlivé zóny</li>
+  <li><strong>Školení:</strong> Anti-tailgating, badge challenge, clean desk, screen lock, reporting</li>
+  <li><strong>Disposal:</strong> Cross-cut shredder (papír). Degaussing/destruction (HDD). Crypto erase (SSD). NIST 800-88</li>
+  <li><strong>Fyzická bezpečnost je ZÁKLAD!</strong> Bez ní je kybernetická bezpečnost bezcenná. Defense in Depth: vrstvy!</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

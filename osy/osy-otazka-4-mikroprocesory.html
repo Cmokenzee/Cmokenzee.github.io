@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSY – Otázka 4: Mikroprocesory</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--osy:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1438 40%,#0f1f2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(167,139,250,.1) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(56,189,248,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--osy);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,40px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--osy);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--osy)}
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}
+p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card.purple{border-left:3px solid var(--osy);background:rgba(167,139,250,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(167,139,250,.1);color:var(--osy);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+.steps{margin:14px 0}.step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,46,61,.5)}
+.step:last-child{border-bottom:none}.step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;min-width:24px;padding-top:2px}
+.step-content{flex:1}.step-label{font-weight:600;color:var(--heading);font-size:14px}.step-desc{color:var(--text-muted);font-size:13px;margin-top:3px}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--osy);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* CPU block diagram */
+.cpu-diagram{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;gap:8px;margin:18px 0;padding:18px;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.cpu-cell{padding:12px 8px;text-align:center;border-radius:6px;font-weight:600}
+.cpu-cell small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.8;margin-top:3px}
+.cpu-alu{background:rgba(96,165,250,.15);color:var(--accent-1);border:1px solid rgba(96,165,250,.3);grid-column:1;grid-row:1/3}
+.cpu-acc{background:rgba(251,191,36,.15);color:var(--accent-4);border:1px solid rgba(251,191,36,.3);grid-column:2;grid-row:1}
+.cpu-ctrl{background:rgba(167,139,250,.15);color:var(--osy);border:1px solid rgba(167,139,250,.3);grid-column:2;grid-row:2}
+.cpu-dec{background:rgba(52,211,153,.15);color:var(--accent-3);border:1px solid rgba(52,211,153,.3);grid-column:3;grid-row:1}
+.cpu-mmu{background:rgba(248,113,113,.15);color:var(--accent-5);border:1px solid rgba(248,113,113,.3);grid-column:3;grid-row:2}
+.cpu-ext{background:var(--bg-card);color:var(--text-muted);border:1px dashed var(--border);grid-row:3}
+/* Bitovost timeline table */
+.bit-row{display:grid;grid-template-columns:80px 80px 1fr 100px 120px;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(42,46,61,.5);font-size:13px;align-items:center}
+.bit-row.header{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);border-bottom:2px solid var(--border);font-weight:600}
+.bit-row:last-child{border-bottom:none}
+.bit-year{font-family:'JetBrains Mono',monospace;color:var(--osy);font-weight:600}
+.bit-cpu{font-weight:600;color:var(--heading)}
+.bit-val{font-family:'JetBrains Mono',monospace;color:var(--accent-4);text-align:right}
+/* Arch layers virtualization */
+.virt-stack{margin:16px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.virt-layer{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid rgba(0,0,0,.3)}
+.virt-layer:last-child{border-bottom:none}
+.vl-guest{background:rgba(167,139,250,.2);color:var(--osy)}
+.vl-guest small{display:block;font-family:'DM Sans',sans-serif;font-weight:400;font-size:10px;opacity:.7;margin-top:2px}
+.vl-hyp{background:rgba(248,113,113,.2);color:var(--accent-5)}
+.vl-host{background:rgba(52,211,153,.2);color:var(--accent-3)}
+.vl-hw{background:rgba(107,114,128,.2);color:var(--text-muted)}
+.virt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.cpu-diagram{grid-template-columns:1fr}.cpu-alu,.cpu-acc,.cpu-ctrl,.cpu-dec,.cpu-mmu,.cpu-ext{grid-column:1;grid-row:auto}.bit-row{grid-template-columns:60px 1fr 60px;font-size:12px}.bit-row > *:nth-child(4),.bit-row > *:nth-child(5){display:none}.virt-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">OSY</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">OSY – Maturitní otázka č. 4</div>
+  <h1>Mikroprocesory</h1>
+  <p>RISC • CISC • Mikrokód • 32/64 bit • SMP/NUMA • Virtualizace • Kontejnery</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#cpu">Procesor – co to je</a></li>
+  <li><a href="#mikro">Mikroprocesor a jeho části</a></li>
+  <li><a href="#vlastnosti">Vlastnosti CPU</a></li>
+  <li><a href="#proudy">SISD, SIMD, MIMD</a></li>
+  <li><a href="#instrukce">Strojová instrukce, JSA, strojový kód</a></li>
+  <li><a href="#risc-cisc">RISC × CISC – srovnání</a></li>
+  <li><a href="#mikrokod">Mikrokód a CISC jako interní RISC</a></li>
+  <li><a href="#chyby">Chyby v procesorech</a></li>
+  <li><a href="#bitovost">Bitovost CPU pro PC (8086 → x86-64)</a></li>
+  <li><a href="#kompatibilita">Kompatibilita x86 a režimy</a></li>
+  <li><a href="#os-cpu">OS a CPU (DOS, Windows, Linux)</a></li>
+  <li><a href="#historie">Historie CPU</a></li>
+  <li><a href="#schopnosti">Schopnosti CPU (atomicita, superskalarita, pipeline, ortogonalita)</a></li>
+  <li><a href="#mp">Víceprocesorové systémy (SMP, ASMP, NUMA)</a></li>
+  <li><a href="#multicore">Multicore a hyperthreading</a></li>
+  <li><a href="#virt">Virtualizace</a></li>
+  <li><a href="#kontejnery">Kontejnery</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 CPU -->
+<section class="section" id="cpu">
+<div class="section-header"><span class="section-num">01</span><h2>Procesor – co to je</h2></div>
+
+<p><strong>CPU</strong> (Central Processing Unit), česky <em>hlavní výkonná jednotka</em>. Vykonává <strong>aritmetické, logické a řídící instrukce</strong>, které jsou uloženy v operační paměti (dnes typicky RAM).</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Historie</div>
+  <ul>
+    <li><strong>1883 Charles Babbage</strong> – mechanický (dřevěný) počítač: CPU = <strong>mlýnice</strong>, RAM = <strong>sklad</strong></li>
+    <li>Původně CPU složen z <strong>diskrétních součástek</strong> – u sálových počítačů i několik skříní</li>
+    <li>Vývoj: <strong>elektronky → tranzistory → integrované obvody</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 02 MIKROPROCESOR -->
+<section class="section" id="mikro">
+<div class="section-header"><span class="section-num">02</span><h2>Mikroprocesor a jeho části</h2></div>
+
+<p>Sloučena zhruba desítka integrovaných obvodů → vzniká <strong>univerzální integrovaný obvod</strong> řízený programem.</p>
+
+<h3>Blokové schéma procesoru</h3>
+<div class="cpu-diagram">
+  <div class="cpu-cell cpu-alu">ALU<small>aritmeticko-logická jednotka</small></div>
+  <div class="cpu-cell cpu-acc">Akumulátor<small>+ ostatní registry</small></div>
+  <div class="cpu-cell cpu-dec">Dekodér<small>strojových instrukcí</small></div>
+  <div class="cpu-cell cpu-ctrl">Řídící jednotka<small>řadič</small></div>
+  <div class="cpu-cell cpu-mmu">MMU<small>řadič paměti</small></div>
+  <div class="cpu-cell cpu-ext" style="grid-column:1">RAM</div>
+  <div class="cpu-cell cpu-ext" style="grid-column:2">Vstup</div>
+  <div class="cpu-cell cpu-ext" style="grid-column:3">Výstup</div>
+</div>
+
+<div class="card">
+  <ul>
+    <li><strong>Řadič</strong> – řídí činnost CPU (sám taktován hodinami)</li>
+    <li><strong>Registry</strong> – paměť přímo v CPU, velmi rychlá</li>
+    <li><strong>ALU</strong> – aritmeticko-logická jednotka, pracuje s registrem <strong>A (akumulátor)</strong></li>
+    <li><strong>Dekodér strojových instrukcí</strong></li>
+    <li><strong>Řadič paměti (MMU)</strong> – řídí přístupy do paměti, převádí virtuální adresy na fyzické</li>
+  </ul>
+</div>
+</section>
+
+<!-- 03 VLASTNOSTI -->
+<section class="section" id="vlastnosti">
+<div class="section-header"><span class="section-num">03</span><h2>Vlastnosti CPU</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Bitovost</h4>
+    <p>Šířka akumulátoru (registru A) – <strong>4, 8, 16, 32, 64, … 512 bitů</strong>. V jednom kroku zpracuje příslušně velké číslo. Větší čísla se zpracovávají několika instrukcemi.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Architektura</h4>
+    <p><strong>RISC</strong> a <strong>CISC</strong>. Typy: klasické, vektorové (GPU), koprocesor, UI akcelerátor.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Specializace</h4>
+    <p>Klasické, <strong>jednočipové</strong>, <strong>SoC</strong> (System on Chip), mikrokontroléry, <strong>DSP</strong> (digitální převodníky).</p>
+  </div>
+</div>
+</section>
+
+<!-- 04 PROUDY -->
+<section class="section" id="proudy">
+<div class="section-header"><span class="section-num">04</span><h2>Instrukční a datové proudy</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">SISD</h4>
+    <p><strong>Single Instruction, Single Data</strong>. Běžné CPU v PC. Jedna strojová instrukce → jedny data.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--osy)">
+    <h4 style="color:var(--osy)">SIMD</h4>
+    <p><strong>Single Instruction, Multiple Data</strong>. Jedna instrukce zpracovává více dat (typicky paralelně). <strong>GPU</strong>, UI akcelerátory. Dnes mají SISD procesory SIMD instrukce – rozšíření <strong>Intel MMX</strong> (1997), <strong>AMD 3DNow!</strong> (1998).</p>
+  </div>
+</div>
+
+<div class="card key">
+  <p style="margin-bottom:0"><strong>MISD</strong> a <strong>MIMD</strong> jako klasifikace <strong>neexistují</strong>! (Superskalární CPU bývá typově MIMD, ale stále v jednom vlákně – viz dále.)</p>
+</div>
+</section>
+
+<!-- 05 INSTRUKCE -->
+<section class="section" id="instrukce">
+<div class="section-header"><span class="section-num">05</span><h2>Strojová instrukce, JSA, strojový kód</h2></div>
+
+<h3>Strojová instrukce</h3>
+<div class="card highlight">
+  <ul>
+    <li>Provádí nějakou <strong>základní operaci</strong></li>
+    <li>Je <strong>nedělitelná (atomická)</strong>, uložena v operační paměti</li>
+    <li><strong>Strojový kód</strong> = více strojových instrukcí – typicky instrukce a data</li>
+    <li>Typy: aritmetické, logické, operace s pamětí, řídící</li>
+    <li><strong>Operandy</strong> – umístěny v paměti za instrukcí, data, se kterými pracuje. Mohou být číslo, registr, adresa</li>
+  </ul>
+</div>
+
+<h3>Mnemonika a JSA</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>Mnemonika</strong> – symbolický zápis instrukcí</li>
+    <li><strong>JSA</strong> (jazyk symbolických adres, Assembly language)</li>
+    <li>Převod JSA → čísla provádí <strong>assembler</strong> (překladač). Dříve se dělalo ručně</li>
+    <li>Jedna strojová instrukce = 1 nebo více slov (bajtů)</li>
+    <li>Do strojového kódu se překládá i z jiných jazyků – výsledek = <strong>binární soubor</strong> (<code>.EXE</code>, <code>.COM</code>)</li>
+    <li>Zpětný převod pomocí <strong>disassembleru</strong> je netriviální: Kde začít? Co jsou data? Selfmodify?</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 RISC × CISC -->
+<section class="section" id="risc-cisc">
+<div class="section-header"><span class="section-num">06</span><h2>RISC × CISC – srovnání</h2></div>
+
+<h3>RISC</h3>
+<div class="card green">
+  <p><strong>Reduced Instruction Set Computer</strong> – procesory s redukovanou instrukční sadou.</p>
+  <ul>
+    <li>Jednotný formát instrukcí (<strong>stejná délka, obvykle 4 bajty</strong>)</li>
+    <li>Více <strong>univerzálních registrů</strong></li>
+    <li>Eliminace složených instrukcí – jen základní</li>
+    <li><strong>1 instrukce = 1 přístup do paměti (1 cyklus)</strong></li>
+    <li>Zjednodušení interní stavby → <strong>snížení spotřeby</strong></li>
+    <li>Úspěšní zástupci: <strong>ARM, RISC-V, MIPS</strong></li>
+    <li>Mobilní a vestavěná zařízení; dnes <strong>energeticky efektivnější než CISC</strong>, škálovatelnost v datacentrech</li>
+  </ul>
+</div>
+
+<h3>CISC</h3>
+<div class="card warn">
+  <p><strong>Complex Instruction Set Computer</strong> – procesory s rozšířenou instrukční sadou.</p>
+  <ul>
+    <li>Používány v PC (<strong>x86</strong> – Intel a kompatibilní)</li>
+    <li>Obsahují <strong>komplikované (složené) instrukce</strong> – např. načti z paměti, přičti číslo, ulož zpět</li>
+    <li>Jedna instrukce může mít <strong>několik přístupů do paměti</strong></li>
+    <li>Instrukce nejsou stejně dlouhé (počet bajtů, operandy, trvání v cyklech)</li>
+    <li>Podpora pro komplexní čísla, vektorové operace</li>
+    <li><strong>Horší rychlost i spotřeba energie</strong> – dnes evidentně méně efektivní</li>
+    <li>Současné CISC procesory jsou <strong>interně RISC</strong></li>
+  </ul>
+</div>
+
+<h3>Kdy má CISC smysl?</h3>
+<div class="card purple">
+  <ul>
+    <li>Dříve <strong>usnadňoval programování</strong> – programátor ručně zapisoval strojový kód</li>
+    <li>Dnes se ve strojovém kódu / JSA téměř neprogramuje – překladač sám generuje sofistikovaný kód</li>
+    <li>Rozšiřující instrukce (MMX, SSE) nepřinášejí významný výkon</li>
+    <li>RISC těží z jednoduchého designu: lacinější vývoj, menší čip, nižší náklady, nižší spotřeba, snadné přizpůsobení zákazníkovi</li>
+  </ul>
+</div>
+
+<h3>Počet instrukcí za sekundu (orientačně)</h3>
+<table class="compare-table">
+  <tr><th>Architektura</th><th>1 s</th><th>1 ms</th><th>1 µs</th></tr>
+  <tr><td><strong>RISC 2 GHz</strong> (1 instr/takt)</td><td>2 mld.</td><td>2 mil.</td><td>2 000</td></tr>
+  <tr><td><strong>CISC 3 GHz</strong> (~15 taktů/instr)</td><td>200 mil.</td><td>200 tis.</td><td>200</td></tr>
+</table>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-1)">Závěr srovnání výkonu</div>
+  <ul>
+    <li><strong>RISC:</strong> více instrukcí za sekundu + superskalarita, pro výpočet je potřeba více instrukcí. Interpret (Java v Androidu) i nativní (iOS). <strong>Energeticky úspornější</strong></li>
+    <li><strong>CISC:</strong> méně instrukcí za sekundu, pro výpočet potřeba méně instrukcí. Programy běží v nativním kódu → rychlejší</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 MIKROKÓD -->
+<section class="section" id="mikrokod">
+<div class="section-header"><span class="section-num">07</span><h2>Mikrokód a CISC jako interní RISC</h2></div>
+
+<p>Dnešní <strong>CISC procesor má RISC jádro</strong>. Umí jen elementární operace (čtení/zápis paměti, sčítání, odčítání). <strong>Neumí násobit</strong>, vektorové operace ani komplexní čísla.</p>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Jak to funguje</div>
+  <ul>
+    <li>Procesor obsahuje <strong>mikrokód</strong></li>
+    <li>CISC instrukce vykonávány pomocí RISC instrukcí</li>
+    <li><strong>1 CISC instrukce → více RISC instrukcí</strong></li>
+    <li>Procesor je řízen programem (mikrokódem)</li>
+  </ul>
+</div>
+
+<h3>Aktualizace mikrokódu</h3>
+<div class="card highlight">
+  <ul>
+    <li>Zavádí buď <strong>BIOS</strong> nebo <strong>sám OS</strong> (Windows i Linux)</li>
+    <li>Vždy <strong>při startu</strong> – v procesoru není flash paměť</li>
+    <li>Mikrokódy jsou <strong>šifrovány, zatím nebyl cracknut</strong></li>
+    <li>Jen <strong>oprava částí</strong> mikrokódu – Intel má omezený počet <strong>„opravných slotů"</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 CHYBY -->
+<section class="section" id="chyby">
+<div class="section-header"><span class="section-num">08</span><h2>Chyby v procesorech</h2></div>
+
+<p>Způsobeny <strong>nedostatečným testováním</strong> a také <strong>komplexností CISC</strong>.</p>
+
+<h3>Staré chyby</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">F00F bug (Intel)</h4>
+    <p>Použití prefixu způsobilo <strong>zastavení CPU</strong>. Problém na víceuživatelských systémech. Oprava využívá porušení ochrany paměti – CPU začne instrukci provádět, ale před zastavením vyvolá kód.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">FDIV bug (Intel)</h4>
+    <p><strong>Chyba při dělení</strong>, viditelná třeba v Excelu. Bez opravy („vtip").</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">HLT bug (Intel i486)</h4>
+    <p>CPU někdy <strong>není probuzen ze spánku</strong> pro úsporu energie.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-7)">
+    <h4 style="color:var(--accent-7)">Cyrix coma bug</h4>
+    <p>Zastavení CPU.</p>
+  </div>
+</div>
+
+<h3>Nové chyby – spekulativní provádění</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Meltdown a Spectre</div>
+  <ul>
+    <li>Objevil <strong>Google v roce 2017</strong></li>
+    <li>Opravy <strong>zpomalují CPU</strong> → aktualizace firmware CPU</li>
+    <li><strong>Meltdown:</strong> snadněji zneužitelný, čtení paměti, kam aplikace nemá přístup</li>
+    <li><strong>Spectre:</strong> čtení paměti jiného procesu</li>
+    <li>Od té doby objeveno mnoho dalších chyb</li>
+    <li>Problémem jsou <strong>víceuživatelské stroje a pronájem cloudu</strong></li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Apple M1 (2021)</div>
+  <p style="margin-bottom:0"><strong>Neopravitelná chyba</strong> – nelze opravit mikrokódem.</p>
+</div>
+</section>
+
+<!-- 09 BITOVOST -->
+<section class="section" id="bitovost">
+<div class="section-header"><span class="section-num">09</span><h2>Bitovost CPU pro PC</h2></div>
+
+<h3>Vlastnosti CPU pro PC (chronologie)</h3>
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:8px 0;margin:14px 0">
+  <div class="bit-row header">
+    <span>Rok</span><span>CPU</span><span>Bitovost</span><span>Adr. sb.</span><span>Max. RAM</span>
+  </div>
+  <div class="bit-row">
+    <span class="bit-year">1974</span><span class="bit-cpu">8080</span><span>8 bit</span><span class="bit-val">16</span><span class="bit-val">64 KiB</span>
+  </div>
+  <div class="bit-row">
+    <span class="bit-year">1978</span><span class="bit-cpu">8086 / 8088</span><span>16 bit</span><span class="bit-val">20</span><span class="bit-val">1 MiB</span>
+  </div>
+  <div class="bit-row">
+    <span class="bit-year">1982</span><span class="bit-cpu">80286</span><span>16 bit</span><span class="bit-val">24</span><span class="bit-val">16 MiB</span>
+  </div>
+  <div class="bit-row">
+    <span class="bit-year">1985</span><span class="bit-cpu">80386</span><span>32 bit</span><span class="bit-val">32</span><span class="bit-val">4 GiB</span>
+  </div>
+  <div class="bit-row">
+    <span class="bit-year">2003</span><span class="bit-cpu">x86-64</span><span>64 bit</span><span class="bit-val">64</span><span class="bit-val">16 EiB</span>
+  </div>
+</div>
+
+<h3>Generace CPU pro PC</h3>
+<div class="card highlight">
+  <ul>
+    <li><strong>16bitové – 8086, 8088</strong> (1981 – Intel vybrán pro IBM PC, Motorola odmítnuta). Nevhodný návrh Intelu <strong>limituje paměť na 1 MiB</strong>. Microsoft získal exkluzivní smlouvu s IBM → koupil QDOS</li>
+    <li><strong>32bitové – 80386</strong> (1985). Dotaženy schopnosti CPU (instrukční sada). Nedostatečný rozsah paměti (<strong>4 GiB</strong>)</li>
+    <li><strong>64bitové – x86-64</strong> (2003). <strong>AMD odstranilo limity</strong> adresních omezení Intelu. Provoz různých OS: DOS, Windows, Linux, BSD, Solaris, Mac OS X (2006)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 KOMPATIBILITA -->
+<section class="section" id="kompatibilita">
+<div class="section-header"><span class="section-num">10</span><h2>Kompatibilita x86 a režimy</h2></div>
+
+<h3>16bitové počátky</h3>
+<div class="card">
+  <ul>
+    <li>Původní IBM PC mělo <strong>Intel 8088</strong> (1979) – vnitřně 16bit, ale vnější <strong>8bit sběrnice</strong> (nižší náklady na základní desku). Kompatibilita s 8086 byla 100%</li>
+    <li>IBM nepoužila vlastní nebo Motorolu <strong>kvůli rychlejšímu vývoji</strong></li>
+    <li><strong>80286</strong> – stále 16bit, <strong>rozšířený režim</strong> → 16 MiB paměti. Speciální rozšíření uvnitř OS/programu</li>
+    <li><strong>Windows 2.1</strong> (1988) ve verzi pro 286 a 386 – při koupi si uživatel musel vybrat</li>
+  </ul>
+</div>
+
+<h3>80386 – 32bitový chráněný režim</h3>
+<div class="card purple">
+  <ul>
+    <li>Procesor <strong>startuje v 16bit režimu</strong></li>
+    <li>Aplikace (v DOSu) nebo jádro OS přepne do <strong>32bit režimu</strong></li>
+    <li>V 32bit režimu je k dispozici tzv. <strong>V86</strong> – vyhrazení úseku 1 MiB, zde 16bit prostředí (fungují 16bit strojové instrukce)</li>
+    <li>Tím zajištěna <strong>téměř 100% zpětná kompatibilita</strong> pro SW</li>
+  </ul>
+</div>
+
+<h3>x86-64 – 64bitový režim (long mode)</h3>
+<div class="card purple">
+  <ul>
+    <li>Koexistence <strong>64bit + 32bit</strong> (podobně jako u i386)</li>
+    <li>V long mode <strong>není přístupný V86</strong></li>
+    <li>16bit aplikace lze spouštět jen <strong>uvnitř virtuálního systému</strong></li>
+  </ul>
+</div>
+
+<h3>Novinky x86_64</h3>
+<div class="card highlight">
+  <ul>
+    <li><strong>Dostatečně velký adresní prostor</strong></li>
+    <li>Paměť <strong>rozdělena na dvě půlky</strong> (podle nejvyššího bitu adresy). Snadná kontrola. Zabránění opakování chyby Windows NT (2+2 GiB)</li>
+    <li><strong>NX bit</strong> – ve stránce paměti nelze provádět strojové instrukce. Obrana proti chybě <strong>„přepsání zásobníku"</strong> (typické využití ke spuštění malware kódu)</li>
+  </ul>
+</div>
+
+<h3>64bitový ARM (ARMv8, AArch64)</h3>
+<div class="card">
+  <ul>
+    <li>Poprvé <strong>Apple A7</strong> (2013, iPhone 5S). Samsung Note 4 (2014)</li>
+    <li>Odstranění omezení adresní sběrnice (32bitová) → <strong>přímá adresace &gt; 4 GiB RAM</strong></li>
+    <li>Nedojde však ke zdvojnásobení rychlosti – jedna instrukce zpracuje větší číslo, ale ne vždy se s velkými pracuje</li>
+    <li>Problém <strong>snížení hustoty kódu a dat</strong>. RISC má nižší hustotu než CISC → další zhoršení. Adresy v RAM jsou 64bit → delší strojový kód</li>
+    <li>Pro Android nebyl problém palčivý – <strong>nebylo nutné znovu překládat aplikace</strong> (Java bytecode)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 OS A CPU -->
+<section class="section" id="os-cpu">
+<div class="section-header"><span class="section-num">11</span><h2>OS a CPU (DOS, Windows, Linux)</h2></div>
+
+<h3>DOS a CPU</h3>
+<div class="card warn">
+  <ul>
+    <li>Původní systém pro IBM PC – <strong>16bit, bez správy paměti, není víceúlohový</strong></li>
+    <li>Využívá režim procesoru 8086 s omezenými schopnostmi</li>
+    <li><strong>Rozšíření (extendery):</strong></li>
+    <li style="list-style:none">&nbsp;&nbsp;• <code>HIMEM.SYS</code>, <code>EMM386</code> – zpřístupnění paměti nad 1 MiB pomocí mapování („okénko")</li>
+    <li style="list-style:none">&nbsp;&nbsp;• <code>DPMI</code>, <code>DJGPP</code> – aplikace startuje 16bit, ale přepíná si CPU do 32bit</li>
+    <li>Původně měl MS-DOS v3 podporovat multitasking – <strong>nebylo realizováno</strong> (MS tlačil Windows)</li>
+  </ul>
+</div>
+
+<details><summary>DOS dnes</summary>
+<ul>
+  <li><strong>FreeDOS</strong> – open source projekt (zdarma). Potíže s ovladači, přístupem do sítě</li>
+  <li><strong>Wine, DosBox</strong> – podpora pro DOS v Linuxu. Někdy problémy s extendery</li>
+  <li><strong>NTVDM</strong> – emulátor prostředí DOSu ve Windows NT. Každá verze Windows přidává omezení. Kvůli CPU <strong>nefunguje v 64bitovém systému</strong></li>
+</ul>
+</details>
+
+<h3>Windows pro DOS</h3>
+<div class="card">
+  <ul>
+    <li><strong>Verze 3.11</strong> už jen pro <strong>32bit CPU</strong> (1993) – nešla spustit na starších</li>
+    <li>Interně je však jádro <strong>stále 16bitové</strong>, 32bit jsou jen některé části</li>
+    <li>32bit jsou ovladače, některé aplikace → <strong>Win32s</strong></li>
+    <li>Ani Win95, 98, ME <strong>nejsou plně 32bitové</strong> – stále plně nevyužívají schopnosti 32bit CPU</li>
+    <li><strong>Vadná aplikace způsobí pád systému</strong> (či zatuhnutí)</li>
+    <li>Změnilo se jen GUI, systém zůstal stejný jako ve Win 3.x</li>
+  </ul>
+</div>
+
+<h3>Windows NT a CPU</h3>
+<div class="card highlight">
+  <ul>
+    <li>Verze 3.1 v roce <strong>1993</strong>, první použitelná byla 3.51 v roce 1995</li>
+    <li>NT má <strong>32bitové jádro</strong> → využity schopnosti CPU. Funguje až od <strong>80386</strong></li>
+    <li>Paměťový model <strong>2 + 2 GiB</strong> (proces + jádro) – zbytečně mnoho pro jádro</li>
+    <li>Kvůli zpětné kompatibilitě nesnadné využití <strong>3 + 1 GiB</strong> (MS SQL Server, Exchange)</li>
+    <li>Rozšíření <strong>PAE</strong> jen v serverové edici (RAM &gt; 4 GiB pro cache, databáze). Desktop PAE nevyužívá</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Windows NT vs 64bit</div>
+  <ul>
+    <li>64bit jádro dlouho vyvíjeno. AMD prodával 64bit CPU od <strong>2003</strong></li>
+    <li>64bit režim využíván vlastně jen na <strong>Linuxových serverech</strong></li>
+    <li><strong>Windows XP 64bit</strong> až v roce 2005 – málo ovladačů → prakticky nepoužitelné</li>
+    <li><strong>Vista</strong> (2007) při zahájení prodeje 32 i 64bit verze</li>
+    <li>64bit režim (long mode) neumí 16bit → v 64bit Windows <strong>nefungují DOS aplikace</strong></li>
+    <li>Pro 16bit aplikace nutný <strong>virtualizovaný systém</strong> – součástí Visty byl <strong>„XP Mode"</strong></li>
+  </ul>
+</div>
+
+<h3>Unixové systémy a CPU</h3>
+<div class="card green">
+  <ul>
+    <li>Zaměření <strong>server nebo workstation</strong></li>
+    <li>Linux <strong>kanibalizoval komerční Unixy</strong> – dnes mezi posledními končí i Solaris</li>
+    <li>Menší vliv mají BSD (FreeBSD, OpenBSD)</li>
+    <li>Jádro Linuxu je <strong>multiplatformní</strong> – snadná podpora 32 i 64bit</li>
+    <li>Původně úzce zaměřen na 80386</li>
+    <li>Od 1991 přecházejí Unixy na 64bit CPU: <strong>SGI MIPS, DEC Alpha, Sun UltraSPARC</strong></li>
+    <li>Svět PC následuje až <strong>po roce 2010</strong></li>
+  </ul>
+</div>
+
+<div class="card purple">
+  <div class="card-title" style="color:var(--osy)">Linux a CPU</div>
+  <ul>
+    <li><strong>1991</strong> – první verze pro 80386. 32bit OS → plně využity schopnosti CPU</li>
+    <li>Podpora <strong>PAE</strong> (až 64 GB RAM v 32bit jádře)</li>
+    <li>Různé modely adresace: <strong>2+2, 3+1, 4+4</strong> – aplikace bez problémů (rekompilace)</li>
+    <li><strong>64bit verze funkční před vydáním CPU</strong> (2001, testováno na emulátorech AMD64; CPU v 2003)</li>
+    <li>Některé aplikace musely být opraveny (OOo)</li>
+    <li>Porty: Alpha, PPC, SPARC, UltraSPARC, ARM, MIPS…</li>
+  </ul>
+</div>
+
+<details><summary>IBM – vlastní svět</summary>
+<ul>
+  <li><strong>OS/360, OS/390, z/OS</strong> (+ linie DOS, VM, TPF)</li>
+  <li>Platforma je <strong>HW i SW zpětně kompatibilní</strong> – téměř „navždy"</li>
+  <li>Využití v bankách, průmyslu</li>
+  <li>IBM udává evoluční směr ostatních OS: multitasking, databázový základ, zero downtime, transakční RTOS</li>
+</ul>
+</details>
+</section>
+
+<!-- 12 HISTORIE -->
+<section class="section" id="historie">
+<div class="section-header"><span class="section-num">12</span><h2>Historie CPU</h2></div>
+
+<div class="steps">
+  <div class="step"><div class="step-num" style="color:var(--accent-6)">1970</div><div class="step-content"><div class="step-label">Four Phase Systems AL1</div><div class="step-desc">Procesor byl součástí produktu, ne samostatně. Firmu koupila Motorola.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-6)">1971</div><div class="step-content"><div class="step-label">Intel 4004</div><div class="step-desc">První komerčně prodávaný mikroprocesor. <strong>4bit, 740 kHz, 2 300 tranzistorů</strong>.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-4)">1974</div><div class="step-content"><div class="step-label">Intel 8080</div><div class="step-desc">Základ 8bit počítačů, adresa 16bit (64 KiB).</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-4)">1976</div><div class="step-content"><div class="step-label">Zilog Z80</div><div class="step-desc">Vylepšený 8080 → Sinclair ZX Spectrum.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-3)">1978</div><div class="step-content"><div class="step-label">Intel 8086, 8088</div><div class="step-desc">16bit, 1 MB (20 bitů) → <strong>rodina x86</strong>.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-3)">1979</div><div class="step-content"><div class="step-label">Motorola 68000</div><div class="step-desc">32bit, zpětně kompatibilní. Apple Macintosh, Atari ST, Commodore Amiga.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-1)">1980</div><div class="step-content"><div class="step-label">Intel 8051</div><div class="step-desc">8bit, vestavěné systémy.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-1)">1982</div><div class="step-content"><div class="step-label">Intel 80286</div><div class="step-desc">16bit, 16 MB (24 bitů).</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--osy)">1985</div><div class="step-content"><div class="step-label">Intel 80386</div><div class="step-desc">32bit, 4 GB (AMD v 1991). <strong>Dokáže chránit OS, SW virtualizace.</strong></div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--osy)">1989</div><div class="step-content"><div class="step-label">Intel 80486</div><div class="step-desc">Integrován matematický koprocesor.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-2)">1991</div><div class="step-content"><div class="step-label">SGI MIPS R4000</div><div class="step-desc">64bit RISC.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-2)">1992</div><div class="step-content"><div class="step-label">DEC Alpha</div><div class="step-desc">64bit, běžel na něm 32bit Windows NT (1993–1999).</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-7)">1993</div><div class="step-content"><div class="step-label">Intel Pentium</div><div class="step-desc">32bit, ochranná známka (AMD K5 v 1996).</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-7)">1995</div><div class="step-content"><div class="step-label">Sun UltraSPARC</div><div class="step-desc">64bit RISC.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-5)">2001</div><div class="step-content"><div class="step-label">Intel Itanium</div><div class="step-desc">64bit RISC, zpětná kompatibilita jen emulací → <strong>neúspěch</strong>.</div></div></div>
+  <div class="step"><div class="step-num" style="color:var(--accent-5)">2003</div><div class="step-content"><div class="step-label">AMD Athlon 64</div><div class="step-desc">64bit, <strong>zpětně kompatibilní s 32 a 16bit x86</strong>. 64bit Intel Xeon v 2004.</div></div></div>
+</div>
+
+<h3>Očekávaný vývoj</h3>
+<div class="card purple">
+  <ul>
+    <li><strong>GPU</strong> jsou už dnes 512bitové – budou využívány pro výpočty paralelně k CPU</li>
+    <li>CPU v PC zůstanou delší dobu <strong>64bitové</strong></li>
+    <li>Zvýšení bitovosti <strong>prodlužuje binárky</strong> („řidší kód"). Načítání dat do RAM je limitující → <strong>nepřináší vyšší výkon</strong></li>
+    <li>Na PC malý benefit přechodu na 64bit – význam jen v přímé využitelnosti paměti <strong>nad 4 GiB (resp. 2 GiB)</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 13 SCHOPNOSTI -->
+<section class="section" id="schopnosti">
+<div class="section-header"><span class="section-num">13</span><h2>Schopnosti CPU</h2></div>
+
+<h3>Atomicita</h3>
+<div class="card highlight">
+  <ul>
+    <li>Operace je provedena <strong>celá nebo vůbec</strong></li>
+    <li>Důležité u programování – jedno z řešení pro konkurenční zápis dat (dva procesy mění stejná data)</li>
+    <li>Je-li operace atomická, <strong>není nutné měněná data zamykat</strong> (téma Souběh)</li>
+    <li>Strojová instrukce <strong>je atomická</strong> – nelze ji přerušit vnějším zásahem (vnější přerušení)</li>
+    <li>Vykonávání však <strong>může selhat</strong> (vnitřní přerušení)</li>
+    <li>Problémem je <strong>superskalarita</strong> – musí se emulovat</li>
+  </ul>
+</div>
+
+<h3>Superskalarita</h3>
+<div class="card purple">
+  <ul>
+    <li>Zpracování <strong>více instrukcí najednou</strong> – zvýšení výkonu, ale není to víc procesorů</li>
+    <li>CPU je pak typově <strong>MIMD</strong> (Multiple Instruction, Multiple Data)</li>
+    <li>Výpočet je stále prováděn <strong>v jednom vlákně</strong></li>
+    <li>V jednom taktu může být dokončeno více strojových instrukcí</li>
+    <li><strong>Duplikované vnitřní části</strong> – ALU, celočíselná násobička, bitové posuny, <strong>FPU</strong></li>
+    <li>Problém <strong>závislosti</strong> instrukce na výsledku předchozí – někdy nutné zahodit (podmíněné skoky)</li>
+    <li>Problém atomicity → musí se emulovat</li>
+  </ul>
+</div>
+
+<h3>Pipelining (zřetězené zpracování)</h3>
+<div class="card green">
+  <ul>
+    <li>Instrukce v <strong>různém stupni rozpracování</strong> – každá v několika krocích: načtení (+ dekódování) a provedení (+ uložení)</li>
+    <li>Odlišené kroky lze <strong>provádět paralelně</strong> – při dekódování jedné je už načítána další</li>
+    <li>Superskalární CPU typicky implementuje i pipelining (ale jsou to <strong>odlišné techniky</strong>)</li>
+    <li>Pipeline <strong>nevyžaduje duplikaci</strong> interních komponent</li>
+    <li>Problém závislosti na předchozím výsledku → <strong>hazard</strong></li>
+    <li>Řešení: <strong>spekulativní provádění instrukcí</strong>, optimalizace pořadí</li>
+  </ul>
+</div>
+
+<h3>Ortogonalita</h3>
+<div class="card key">
+  <ul>
+    <li>Instrukce <strong>nejsou redundantní</strong> – pro každou operaci existuje právě jedna instrukce</li>
+    <li>Každá instrukce může použít <strong>jakýkoliv registr v jakémkoliv adresním režimu</strong></li>
+    <li>Instrukce a operandy jsou nezávislé – nejsou specifické instrukce pracující jen se specifickými registry</li>
+    <li><strong>Příklady:</strong> Motorola 68000 (téměř ortogonální), <strong>ARMv6 plně ortogonální</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 14 MULTIPROCESOR -->
+<section class="section" id="mp">
+<div class="section-header"><span class="section-num">14</span><h2>Víceprocesorové systémy (SMP, ASMP, NUMA)</h2></div>
+
+<p>Jeden počítač obsahuje <strong>více procesorů</strong> – multiprocesor (MP) vs uniprocesor (UP). Všechny CPU mají <strong>společnou paměť</strong>, musí spolu vzájemně komunikovat. CPU pro MP má typicky více vývodů a je dražší, složitější obsluha → dražší základní deska.</p>
+
+<div class="card highlight">
+  <p style="margin-bottom:0">Ovlivňuje stavbu jádra OS – historicky typu UP, pak přizpůsobení. <strong>Lepší je, když je navrženo rovnou jako MP</strong> (problém <strong>BKL</strong> – Big Kernel Lock).</p>
+</div>
+
+<h3>SMP vs ASMP</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">SMP – symetrický</h4>
+    <p><strong>Nejrozšířenější, efektivní řešení.</strong> Výkon však zvyšováním počtu CPU neroste lineárně. Všechny procesory jsou si rovny. Datové struktury se důsledně <strong>zamykají</strong> – při zamykání vzniká problém <strong>uváznutí (deadlock)</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">ASMP – asymetrický</h4>
+    <p>Procesory pro různé činnosti (IRQ, I/O, jádro OS). ASMP OS: <strong>Novell NetWare</strong>. Jen jeden procesor vykonává kód jádra → jednoduché, ale dle zátěže se musí na uvolnění čekat.</p>
+  </div>
+</div>
+
+<h3>NUMA</h3>
+<div class="card purple">
+  <p><strong>Non-Uniform Memory Access</strong> – zvýšení škálovatelnosti víceprocesorových počítačů. Snížení režie vznikající při SMP. <strong>CPU od AMD</strong>.</p>
+  <ul>
+    <li>Každý procesor má <strong>„vlastní" oblast paměti</strong> – paměť je předem rozdělena na regiony</li>
+    <li>Pracuje-li CPU se svojí pamětí, <strong>nemusí vyjednávat</strong> → klesá režie při komunikaci</li>
+    <li>Zvyšuje se režie <strong>koherence cache</strong>, latence se vzdálenými uzly</li>
+    <li>NUMA musí podporovat i <strong>jádro systému</strong></li>
+    <li>I tak se často pracuje se společnými daty – snížení režie není v běžném systému výrazné</li>
+  </ul>
+</div>
+</section>
+
+<!-- 15 MULTICORE -->
+<section class="section" id="multicore">
+<div class="section-header"><span class="section-num">15</span><h2>Multicore a hyperthreading</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Multicore</h4>
+    <p>V <strong>jednom pouzdru procesoru je více jader</strong>. Lacinější než více fyzických procesorů na základní desce. Dnes i v běžných (laciných) procesorech.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Hyperthreading</h4>
+    <p>V procesoru je <strong>více řídících jednotek</strong>. Využívá se superskalarity – procesorů je „jakoby více". <strong>Není to plně víceprocesorový systém</strong> – občas se čeká na uvolnění komponenty CPU. <strong>Zneužíváno pro útoky</strong> → dnes se většinou vypíná (v BIOSu).</p>
+  </div>
+</div>
+</section>
+
+<!-- 16 VIRTUALIZACE -->
+<section class="section" id="virt">
+<div class="section-header"><span class="section-num">16</span><h2>Virtualizace</h2></div>
+
+<h3>Výhody virtualizace</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Úspora nákladů</h4>
+    <p>Jeden stroj provozuje <strong>více systémů</strong>, systémy dostávají různou část prostředků. Málo vytížený spotřebuje málo výkonu, zbytek jde náročnějšímu.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Zabezpečení</h4>
+    <p>Virtualizace <strong>odděluje systémy</strong> – napadení jednoho neovlivní ostatní.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)">
+    <h4 style="color:var(--accent-1)">Redundance, migrace</h4>
+    <p>Virtualizovaný systém je <strong>snadné přenést jinam</strong>. Data na síťovém úložišti (iSCSI, NFS). Stačí jeden záložní systém schopný virtualizace.</p>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">Riziko: virus-hypervisor</div>
+  <p style="margin-bottom:0">Virus ovládne hypervisor a tím i celý počítač. Z virtualizovaného systému je (téměř) <strong>nedetekovatelný</strong> – <strong>Blue Pill</strong> (Joanna Rutkowska).</p>
+</div>
+
+<h3>Pojmy ve virtualizaci</h3>
+<div class="virt-stack">
+  <div class="virt-layer vl-guest">GUEST 1<small>hostovaný systém</small></div>
+  <div class="virt-layer vl-guest">GUEST 2<small>hostovaný systém</small></div>
+  <div class="virt-layer vl-hyp">HYPERVISOR (hostitel – „host")</div>
+  <div class="virt-layer vl-hw">HARDWARE</div>
+</div>
+
+<div class="card highlight">
+  <ul>
+    <li><strong>Hypervisor / host</strong> – řídí běh ostatních OS, <strong>nejvyšší arbitr</strong>, nesmí ztratit kontrolu nad HW. Buď samostatný, nebo součást jádra OS (KVM)</li>
+    <li><strong>Hostované systémy (guest)</strong> – běží ve sdíleném prostoru hostitele, jsou <strong>plně izolovány</strong> mezi sebou i od hypervisoru. Sdílí CPU, paměť, přístup k I/O. Vidí <strong>virtualizovaná I/O zařízení</strong> a nemusí vědět, že jsou ve virtuálním prostředí</li>
+  </ul>
+</div>
+
+<h3>Typy hypervisorů</h3>
+<div class="virt-grid">
+  <div class="card purple" style="margin:0">
+    <div class="card-title" style="color:var(--osy)">Type 1 – „bare metal"</div>
+    <p>Běží <strong>přímo na hardware</strong> a vše ostatní pod jeho řízením.</p>
+    <ul>
+      <li>Hyper-V ve Windows</li>
+      <li>Xen v Linuxu</li>
+      <li>VMware ESXi</li>
+    </ul>
+  </div>
+  <div class="card purple" style="margin:0">
+    <div class="card-title" style="color:var(--osy)">Type 2 – hostovaný</div>
+    <p>Využívá <strong>běžný operační systém</strong>.</p>
+    <ul>
+      <li>VirtualBox</li>
+      <li>VMware Workstation</li>
+      <li>KVM pro Linux</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Paravirtualizace</h3>
+<div class="card green">
+  <ul>
+    <li>Snaha o <strong>vyšší výkon</strong> virtualizovaných OS</li>
+    <li>Virtualizovaný OS je <strong>modifikován</strong> – problém s MS Windows (nutnost, ale nejsou zdrojáky)</li>
+    <li>Problematické pasáže řešeny efektivněji (přímý přístup k HW je modifikován)</li>
+    <li>Virtuální stroj si je <strong>vědom toho, že je virtuální</strong></li>
+    <li>Paravirtualizované ovladače: <strong>VirtualBox „Přídavky pro hosta"</strong> ve Windows, <strong>VirtIO</strong> ovladače v Linuxu</li>
+  </ul>
+</div>
+
+<h3>Virtualizace na x86</h3>
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">i386 – pouze softwarová</div>
+  <ul>
+    <li>Nebyla virtualizována <strong>IOMMU</strong> (jednotka CPU pro přístup k I/O a paměti)</li>
+    <li>Možná <strong>softwarová emulace I/O zařízení</strong></li>
+    <li>Problém zachycení práce s tabulkou stránek</li>
+    <li>Řešení pomocí <strong>paravirtualizace</strong> – modifikace hostovaného systému, nepoužívá privilegované instrukce, zodpovědnost je na hypervisoru</li>
+    <li><strong>Není možné pro MS Windows</strong> – nejsou zdrojáky</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--accent-3)">x86_64 – HW podpora virtualizace</div>
+  <ul>
+    <li>Umožňuje <strong>efektivní běh nemodifikovaného systému</strong> – důležité pro MS Windows</li>
+    <li>Někdy nutné podporu zapnout v BIOSu</li>
+    <li><strong>Intel (2005):</strong> Vanderpool, dnes <strong>VT-x</strong> – mobilní CPU někdy dodnes nepodporují</li>
+    <li><strong>AMD (2006):</strong> Pacifica, dnes <strong>AMD-V</strong></li>
+    <li>Vylepšení: virtualizace I/O a MMU (<strong>IOMMU v CPU</strong>), přímý přístup k HW, přemapování I/O a přerušení</li>
+  </ul>
+</div>
+</section>
+
+<!-- 17 KONTEJNERY -->
+<section class="section" id="kontejnery">
+<div class="section-header"><span class="section-num">17</span><h2>Kontejnery</h2></div>
+
+<p>Snaha o <strong>významné snížení režie virtualizace</strong>. K čemu nám je duplikované jádro? → Virtualizace na úrovni OS.</p>
+
+<div class="card purple">
+  <ul>
+    <li>Stačí pouze <strong>izolace skupiny procesů</strong> = kontejner</li>
+    <li>Kontejner <strong>nevidí okolní procesy</strong>, ale <strong>vidí jádro</strong></li>
+    <li>V kontejneru musíme mít všechny knihovny i nástroje</li>
+  </ul>
+  <p style="margin-top:10px"><strong>Nástroje:</strong></p>
+  <ul>
+    <li><strong>Docker</strong> – vytvoření kontejneru</li>
+    <li><strong>Kubernetes</strong> – orchestrace</li>
+  </ul>
+</div>
+
+<div class="virt-stack">
+  <div class="virt-layer vl-guest">KONTEJNER 1<small>proc + knihovny</small></div>
+  <div class="virt-layer vl-guest">KONTEJNER 2<small>proc + knihovny</small></div>
+  <div class="virt-layer vl-host">HOST OS (sdílené jádro)</div>
+  <div class="virt-layer vl-hw">HARDWARE</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 18 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">18</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">STAVBA CPU</p>
+<ul>
+  <li><strong>ALU</strong> (ar.-log. jednotka) + <strong>registry</strong> (včetně akumulátoru A) + <strong>řadič</strong> + <strong>dekodér instrukcí</strong> + <strong>MMU</strong> (řadič paměti, virtuální→fyzické adresy)</li>
+  <li>Vlastnosti: <strong>bitovost</strong>, <strong>architektura</strong> (RISC/CISC), <strong>specializace</strong> (klasika, SoC, mikrokontrolér, DSP)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--osy);margin-bottom:8px">RISC × CISC + MIKROKÓD</p>
+<ul>
+  <li><strong>RISC:</strong> stejná délka instrukce (4 B), 1 cyklus = 1 instr., více registrů, energeticky efektivní → ARM, RISC-V, MIPS</li>
+  <li><strong>CISC:</strong> složené instrukce, různé délky, více přístupů do paměti → x86 (Intel, AMD)</li>
+  <li><strong>CISC je interně RISC:</strong> mikrokód překládá CISC → RISC. Mikrokód se aktualizuje při startu (BIOS/OS), šifrován, omezený počet opravných slotů</li>
+  <li><strong>Meltdown + Spectre</strong> (Google 2017) – spekulativní provádění, opravy zpomalují CPU</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">BITOVOST A KOMPATIBILITA x86</p>
+<ul>
+  <li>Chronologie: <strong>8080 (1974, 8b, 64 KiB) → 8086 (1978, 16b, 1 MiB) → 80286 (1982, 16 MiB) → 80386 (1985, 32b, 4 GiB) → x86-64 (2003, AMD, 16 EiB)</strong></li>
+  <li>Režimy: 16bit real mode → 32bit chráněný (s V86 pro zpětnou kompat.) → 64bit long mode (V86 už není, 16bit jen ve VM)</li>
+  <li>Novinky x86_64: <strong>NX bit</strong> (obrana proti přepsání zásobníku), adresa rozdělena podle nejvyššího bitu</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">OS A CPU</p>
+<ul>
+  <li><strong>DOS:</strong> 16b, bez správy paměti, bez multitaskingu. Extendery: HIMEM, EMM386, DPMI</li>
+  <li><strong>Win 3.x/95/98/ME:</strong> interně stále 16bit jádro, Win32s</li>
+  <li><strong>Windows NT:</strong> 32bit jádro (od 386), paměť 2+2 GiB, PAE jen pro server</li>
+  <li><strong>64bit Windows:</strong> XP64 (2005), Vista (2007, XP Mode pro 16bit)</li>
+  <li><strong>Linux:</strong> od 1991, multiplatformní, 64bit funkční před vydáním CPU, porty (Alpha, PPC, SPARC, ARM, MIPS)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">SCHOPNOSTI + MULTIPROCESORY</p>
+<ul>
+  <li><strong>Atomicita:</strong> celá nebo nic; strojová instrukce atomická vůči vnějšímu přerušení</li>
+  <li><strong>Superskalarita:</strong> více instrukcí v 1 taktu, MIMD, duplikované ALU/FPU</li>
+  <li><strong>Pipelining:</strong> zřetězení kroků, hazardy řešeny spekulativním prováděním</li>
+  <li><strong>Ortogonalita:</strong> každá op. právě jedna instr., každý registr v každém režimu (ARMv6 plně, M68000 téměř)</li>
+  <li><strong>SMP</strong> (zámky, deadlock) × <strong>ASMP</strong> (jádro na CPU#0, NetWare) × <strong>NUMA</strong> (AMD, CPU má svoji paměť)</li>
+  <li><strong>Multicore</strong> (víc jader v pouzdru) × <strong>Hyperthreading</strong> (víc řídících jednotek, dnes se vypíná kvůli útokům)</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">VIRTUALIZACE + KONTEJNERY</p>
+<ul>
+  <li><strong>Hypervisor (host)</strong> × <strong>guest</strong>. <strong>Type 1</strong> bare metal (Hyper-V, Xen, ESXi) × <strong>Type 2</strong> hostovaný (VirtualBox, VMware Workstation, KVM)</li>
+  <li><strong>Paravirtualizace:</strong> guest ví, že je VM (VirtIO, Přídavky pro hosta) – nejde pro Windows bez zdrojáků</li>
+  <li><strong>HW podpora:</strong> Intel VT-x (2005), AMD-V (2006), IOMMU</li>
+  <li><strong>Blue Pill</strong> (Rutkowska) – virus-hypervisor, nedetekovatelný z guestu</li>
+  <li><strong>Kontejnery</strong> (Docker, Kubernetes): sdílené jádro, jen izolace procesů – mnohem menší režie než VM</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

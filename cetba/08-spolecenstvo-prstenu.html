@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – J. R. R. Tolkien: Společenstvo prstenu</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0e14;
+  --bg-card:#13161f;
+  --bg-card-alt:#1a1e2a;
+  --border:#262b3a;
+  --text:#c0c4d0;
+  --text-muted:#6a7082;
+  --heading:#e6eaf2;
+  --accent-1:#c49a4a;     /* zlato prstenu */
+  --accent-2:#5a7a6b;     /* elfská zeleň */
+  --accent-3:#8b9bb5;     /* elfské stříbro */
+  --accent-4:#a86b4a;     /* dračí oheň / eldar */
+  --accent-5:#9c2a3a;     /* krev */
+  --accent-6:#6b5a8c;     /* Lothlórien */
+  --accent-7:#3a5a7a;     /* noční modř */
+  --accent-8:#4a6a7a;     /* Anduin */
+  --gold:#c49a4a;         /* zlato */
+  --ring:#e8b858;         /* prsten moci - zářivé */
+  --mordor:#9c2a3a;       /* Mordor / oheň */
+  --elven:#a8c2c8;        /* elfská bílá */
+  --forest:#5a7a6b;       /* les */
+  --shire:#7a8a5c;        /* Kraj */
+  --shadow:#000;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(156,42,58,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(90,122,107,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — Oko Saurona v temnotě */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(12,14,20,.3) 0%,rgba(12,14,20,.9) 100%),
+    linear-gradient(135deg,#0a0814 0%,#1a0a18 30%,#0c0614 65%,#080510 100%);
+  border-bottom:2px solid var(--gold);
+  padding:100px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 40%,rgba(232,184,88,.08) 0%,transparent 40%),
+    radial-gradient(ellipse at 50% 40%,rgba(156,42,58,.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+/* Oko Saurona — centrální glow */
+.hero-eye{
+  display:inline-block;
+  margin-bottom:24px;
+  color:var(--ring);
+  font-size:54px;
+  opacity:.6;
+  position:relative;
+  filter:drop-shadow(0 0 30px rgba(232,184,88,.5)) drop-shadow(0 0 60px rgba(156,42,58,.3));
+  line-height:1;
+  animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:.6;filter:drop-shadow(0 0 30px rgba(232,184,88,.5)) drop-shadow(0 0 60px rgba(156,42,58,.3))}
+  50%{opacity:.8;filter:drop-shadow(0 0 40px rgba(232,184,88,.6)) drop-shadow(0 0 80px rgba(156,42,58,.5))}
+}
+.hero-label{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:22px;position:relative;
+  opacity:.85;
+  font-weight:600;
+}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(38px,6.5vw,60px);
+  color:var(--heading);
+  font-weight:900;
+  line-height:1.05;
+  position:relative;
+  letter-spacing:3px;
+  text-shadow:0 2px 30px rgba(232,184,88,.3);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--accent-3);
+  font-size:.32em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  opacity:.75;
+}
+.hero h1 .part{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.42em;
+  font-style:italic;
+  color:var(--gold);
+  letter-spacing:4px;
+  margin-top:14px;
+  font-weight:500;
+  text-transform:uppercase;
+}
+.hero .author{
+  font-family:'Cinzel',serif;
+  color:var(--accent-3);
+  margin-top:28px;
+  font-size:20px;
+  position:relative;
+  letter-spacing:3px;
+  font-weight:500;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:14px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2px;
+}
+.hero-quote{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--ring);
+  font-size:18px;
+  margin-top:40px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:1px;
+  opacity:.85;
+  line-height:1.6;
+}
+.hero-quote em{
+  display:block;
+  font-size:.7em;
+  color:var(--text-muted);
+  margin-top:8px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH */
+.toc{
+  background:var(--bg-card);
+  border:2px solid var(--border);
+  border-top:3px double var(--gold);
+  border-bottom:3px double var(--gold);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before,.toc::after{
+  content:'◈';
+  position:absolute;
+  color:var(--ring);
+  font-size:16px;
+  top:-11px;
+  background:var(--bg);
+  padding:0 10px;
+  opacity:.7;
+}
+.toc::before{left:30px}
+.toc::after{right:30px}
+.toc h2{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;text-align:center;
+  font-weight:600;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,upper-roman) '. ';
+  font-family:'Cinzel',serif;
+  color:var(--ring);
+  font-size:12px;margin-right:6px;
+  font-weight:500;
+  opacity:.8;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--ring)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--mordor));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Cinzel',serif;
+  font-size:30px;color:var(--gold);
+  font-weight:700;
+  min-width:60px;opacity:.5;
+  line-height:1;
+  letter-spacing:2px;
+}
+.section-header h2{
+  font-family:'Cinzel',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:1.5px;
+}
+
+h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Cinzel',serif;
+  font-size:14px;font-weight:600;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--gold);background:rgba(196,154,74,.04)}
+.card.key{border-left:3px solid var(--accent-3);background:rgba(139,155,181,.05)}
+.card.warn{border-left:3px solid var(--mordor);background:rgba(156,42,58,.05)}
+.card.green{border-left:3px solid var(--forest);background:rgba(90,122,107,.06)}
+.card.purple{border-left:3px solid var(--accent-6);background:rgba(107,90,140,.05)}
+.card.ring{border-left:3px solid var(--ring);background:rgba(232,184,88,.05)}
+.card.elven{border-left:3px solid var(--elven);background:rgba(168,194,200,.04)}
+
+.card-title{
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:600;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--gold)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(196,154,74,.1);
+  color:var(--gold);
+  padding:2px 7px;border-radius:2px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--accent-3);font-style:italic}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:44px 0;
+}
+
+/* Eye divider */
+.eye-divider{
+  text-align:center;
+  margin:44px 0;
+  color:var(--ring);
+  font-size:18px;
+  letter-spacing:20px;
+  opacity:.4;
+  font-family:serif;
+}
+.eye-divider::before,.eye-divider::after{
+  content:'';
+  display:inline-block;
+  width:60px;height:1px;
+  background:var(--ring);
+  vertical-align:middle;
+  margin:0 14px;
+  opacity:.5;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--gold));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:56px;
+  opacity:.06;
+  pointer-events:none;
+  font-family:serif;
+}
+.character .char-name{
+  font-family:'Cinzel',serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:1.5px;
+}
+.character .char-name em{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  letter-spacing:0;
+  font-style:italic;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--gold));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--gold);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--gold);
+  opacity:.3;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* BÁSEŇ O PRSTENECH — speciální blok */
+.ring-poem{
+  background:
+    linear-gradient(135deg,rgba(196,154,74,.04) 0%,rgba(156,42,58,.04) 100%);
+  border:1px solid var(--ring);
+  border-image:linear-gradient(135deg,var(--ring),var(--mordor)) 1;
+  padding:32px 36px;
+  margin:24px 0;
+  font-family:'Cinzel',serif;
+  font-size:16px;
+  color:var(--ring);
+  line-height:2;
+  text-align:center;
+  letter-spacing:1px;
+  font-weight:500;
+  white-space:pre-line;
+  position:relative;
+  box-shadow:inset 0 0 40px rgba(232,184,88,.04);
+}
+.ring-poem::before{
+  content:'◉';
+  display:block;
+  font-size:24px;
+  color:var(--ring);
+  margin-bottom:20px;
+  opacity:.6;
+  filter:drop-shadow(0 0 10px rgba(232,184,88,.4));
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--mordor),var(--gold));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  background:rgba(196,154,74,.06);
+  padding:5px 12px;border-radius:2px;
+  margin-bottom:16px;
+  border:1px solid rgba(196,154,74,.2);
+  font-weight:600;
+}
+.scene-title{
+  font-family:'Cinzel',serif;
+  font-size:20px;font-weight:600;
+  color:var(--heading);
+  margin-bottom:16px;
+  letter-spacing:1px;
+}
+.scene-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--gold);
+  background:rgba(196,154,74,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--accent-3)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(156,42,58,.05);
+  border-left:2px solid var(--mordor);
+  border-radius:0 2px 2px 0;
+}
+.scene-meaning strong{color:var(--mordor)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--gold);
+  font-weight:600;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:2px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* SPOLEČENSTVO DEVÍTI */
+.fellowship{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:24px 28px;
+  margin:24px 0;
+}
+.fellowship-title{
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  color:var(--gold);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  text-align:center;
+  margin-bottom:20px;
+  font-weight:600;
+}
+.fellowship-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;
+}
+.fellowship-member{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-top:3px solid var(--member-color,var(--gold));
+  border-radius:2px;
+  padding:14px 12px;
+  text-align:center;
+  position:relative;
+}
+.fellowship-member .fm-num{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  color:var(--text-muted);
+  letter-spacing:1.5px;
+  margin-bottom:6px;
+  opacity:.7;
+}
+.fellowship-member .fm-name{
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  color:var(--heading);
+  font-weight:600;
+  letter-spacing:.5px;
+  line-height:1.2;
+  margin-bottom:4px;
+}
+.fellowship-member .fm-race{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;
+  color:var(--member-color,var(--gold));
+  font-style:italic;
+  letter-spacing:1px;
+}
+
+/* MÍSTA — mapa */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  color:var(--gold);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  font-weight:600;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--gold));
+  border-radius:0 2px 2px 0;
+}
+.location-name{
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  color:var(--heading);
+  letter-spacing:1px;
+  font-weight:600;
+}
+.location-name em{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;
+  color:var(--text-muted);
+  font-weight:400;
+  font-style:italic;
+  letter-spacing:0;
+  margin-left:4px;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  background:var(--bg);
+}
+.timeline-step.dark::before{
+  border-color:var(--mordor);
+  background:rgba(156,42,58,.3);
+}
+.timeline-step .ts-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-book{
+  font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--gold);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.8;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:2px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:600;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--gold);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .fellowship-grid{grid-template-columns:repeat(2,1fr)}
+  .locations-list{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+  .ring-poem{padding:22px 18px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-eye">◉</div>
+  <div class="hero-label">Maturitní rozbor · Světová literatura · Epická fantasy</div>
+  <h1><em>Pán prstenů · První díl trilogie</em>Společenstvo<span class="part">prstenu</span></h1>
+  <div class="author">J. R. R. Tolkien</div>
+  <div class="subtitle">1954 · Středozem · Třetí věk</div>
+  <div class="hero-quote">
+    Jeden prsten, jenž všechny ovládne<br>
+    Jeden, jenž najde je<br>
+    Jeden, jenž všechny přivede a v temnotě sváže
+    <em>— Báseň o prstenech</em>
+  </div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy a Společenstvo</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a alegorie</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#interpretace">Interpretace a symbolika</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Společenstvo prstenu</strong> je <strong>první díl trilogie Pán prstenů</strong>, publikovaný v roce <strong>1954</strong>. Dílo má chronologickou výstavbu s občasnými retrospektivními pasážemi. Tolkien na něm pracoval <strong>více než 12 let</strong> (1937–1949). <strong>Původně mělo být jedno dílo</strong> — na tři svazky ho rozdělilo nakladatelství z praktických důvodů (nákladů a papíru v poválečné Anglii).</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-book">Kniha I · Kap. 1–3</span> Úvod</div>
+    <div class="ts-desc">Bilbova oslava, odhalení nebezpečí prstenu, Frodův útěk</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-book">Kniha I · Kap. 4–12</span> Cesta do Rokliny</div>
+    <div class="ts-desc">Setkání s Aragornem, pronásledování Modrookými, záchrana u Elronda</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-book">Kniha II · Kap. 1–3</span> Rada a Společenstvo</div>
+    <div class="ts-desc">Rada v Rokli, formování Společenstva devíti</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title"><span class="ts-book">Kniha II · Kap. 4–10</span> Rozpad</div>
+    <div class="ts-desc">Cesta přes Morii, smrt Gandalfa, Lothlórien, rozpad Společenstva</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj pokrývá <strong>několik měsíců</strong> (od podzimu do jara). Odehrává se <strong>60 let po událostech Hobita</strong> — Frodo je Bilbův dědic a synovec (ve skutečnosti bratranec).</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Boj dobra se zlem, pokušení mocí, přátelství a věrnost, oběť pro společné dobro</strong>, korupce absolutní moci, hrdinství malých bytostí, ztráta nevinnosti, nostalgická touha po minulosti.</p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Jeden prsten</strong> — ústřední symbol moci a korupce</li>
+  <li><strong>Sauron</strong> — temný pán, ztělesněné zlo</li>
+  <li><strong>Středozem</strong> — fiktivní svět s vlastní historií</li>
+  <li><strong>Společenstvo</strong> — devět členů různých ras</li>
+  <li><strong>Cesta do Mordoru</strong> — mise zničení prstenu</li>
+  <li><strong>Nazgûlové (Modrookí)</strong> — devět černých jezdců, služebníci Saurona</li>
+  <li><strong>Gandalf, Aragorn, elfové, trpaslíci, lidé, hobiti</strong> — spojenci</li>
+  <li><strong>Moria, Lothlórien</strong> — symbolické lokace</li>
+  <li><strong>Pokušení, věrnost, oběť</strong> — morální osa díla</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Čas</h4>
+    <p><strong>Třetí věk Středozemě</strong>. Cca 60 let po Hobitovi. Několik měsíců děje. Epocha <strong>konce elfů a začátku věku lidí</strong>.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--forest)">
+    <h4 style="color:var(--forest)">Prostor</h4>
+    <p><strong>Středozem</strong> — kompletně vybudovaný svět s vlastní geografií, historií, jazyky a kulturami.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Cesta Společenstva prstenu ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--shire)">
+      <div class="location-name">Kraj <em>(Shire)</em></div>
+      <div class="location-note">Domov hobitů — pokojný začátek</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-4)">
+      <div class="location-name">Hůrka <em>(Bree)</em></div>
+      <div class="location-note">Lidské město, první setkání s Aragornem</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-3)">
+      <div class="location-name">Větrná skála <em>(Weathertop)</em></div>
+      <div class="location-note">Útok Modrookých, Frodo zraněn</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--elven)">
+      <div class="location-name">Roklina <em>(Rivendell)</em></div>
+      <div class="location-note">Elfské sídlo Elronda, Rada</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-8)">
+      <div class="location-name">Caradhras</div>
+      <div class="location-note">Hora, kterou nedokážou překročit</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-7)">
+      <div class="location-name">Moria</div>
+      <div class="location-note">Opuštěné trpasličí město, pád Gandalfa</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--accent-6)">
+      <div class="location-name">Lothlórien</div>
+      <div class="location-note">Zlatý elfský les Galadriely</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--mordor)">
+      <div class="location-name">Amon Hen</div>
+      <div class="location-note">Rozpad Společenstva, Boromirova smrt</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — cesta od Kraje přes různá místa</li>
+  <li><strong>Epická struktura</strong> — velkolepý příběh s mnoha zápletkami</li>
+  <li><strong>Paralelní příběhy</strong> — různé postavy, různé osudy (naplno od 2. dílu)</li>
+</ul>
+
+<h3>Části díla</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Rozděleno na <strong>2 knihy</strong> (každá má několik kapitol)</li>
+    <li><strong>Kniha I:</strong> Od Kraje po Roklinku (kapitoly 1–12)</li>
+    <li><strong>Kniha II:</strong> Od Rokliny po rozpad Společenstva (kapitoly 1–10)</li>
+    <li><strong>Dodatky:</strong> mapy, jazyky, genealogie, kalendáře</li>
+  </ul>
+</div>
+
+<h3>Vnitřní struktura</h3>
+<div class="timeline">
+  <div class="timeline-step">
+    <div class="ts-title">1. Prolog a úvod</div>
+    <div class="ts-desc"><strong>Kniha I, kap. 1–3</strong> — Bilbova oslava, odhalení pravdy o prstenu</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Cesta do Rokliny</div>
+    <div class="ts-desc"><strong>Kniha I, kap. 4–12</strong> — Útěky před Modrookými, setkání s Aragornem</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">3. Rada v Rokli</div>
+    <div class="ts-desc"><strong>Kniha II, kap. 2</strong> — Rozhodnutí zničit prsten</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">4. Formování Společenstva</div>
+    <div class="ts-desc"><strong>Kniha II, kap. 3</strong> — Devět poutníků proti devíti Modrookým</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">5. Cesta Společenstva</div>
+    <div class="ts-desc"><strong>Kniha II, kap. 4–9</strong> — Moria, Gandalfův pád, Lothlórien</div>
+  </div>
+  <div class="timeline-step dark">
+    <div class="ts-title">6. Rozpad Společenstva</div>
+    <div class="ts-desc"><strong>Kniha II, kap. 10</strong> — Boromirovo pokušení a smrt, rozdělení</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">V</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost (fiktivní svět Středozemě).</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Epická fantasy</h4>
+    <p>Velkolepý příběh ve fiktivním světě. <strong>Tolkien vytvořil vzor celého žánru.</strong></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)">
+    <h4 style="color:var(--accent-4)">Hrdinský epos</h4>
+    <p>Cesta hrdinů proti zlu — navazuje na Beowulfa a severské ságy.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--mordor)">
+    <h4 style="color:var(--mordor)">Dobrodružný román</h4>
+    <p>Série nebezpečných událostí a zkoušek.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)">
+    <h4 style="color:var(--accent-6)">Alegorický příběh</h4>
+    <p>Symbolické významy — byť Tolkien alegorii <em>výslovně nenáviděl</em>.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--accent-3)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Monumentální rozsah</strong> (trilogie, 1200+ stran)</li>
+    <li><strong>Epické téma</strong> — záchrana světa</li>
+    <li>Fiktivní svět s magií a mytologií</li>
+    <li>Hrdinové čelící zlu</li>
+    <li><strong>Vysoký styl vyprávění</strong></li>
+    <li>Filozofické a morální otázky</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VI</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Vševědoucí vypravěč</strong> — zná myšlenky postav, vidí všechny děje</li>
+  <li><strong>Objektivní vypravěč</strong> — často se drží faktů bez komentáře</li>
+  <li><strong>Epický vypravěč</strong> — vznešený, archaický tón</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Nezúčastněný, distancovaný</li>
+    <li><strong>Epický, vznešený styl</strong></li>
+    <li>Používá archaismy a poetický jazyk</li>
+    <li>Střídá perspektivy různých postav</li>
+    <li>Objektivní, nestraní žádné postavě</li>
+    <li><strong>Historický tón — jako kronikář</strong> záznamu dávných událostí</li>
+  </ul>
+</div>
+
+<div class="card elven">
+  <div class="card-title" style="color:var(--elven)">Rozdíl oproti Hobitovi</div>
+  <p style="margin-bottom:0">Zatímco <em>Hobit</em> měl <strong>přátelský, pohádkový tón</strong> vyprávění u krbu, v Pánu prstenů Tolkien přechází k <strong>vážnému epickému stylu</strong> kronikáře. Čtenář se z dětského vyprávění dostává do mytologie pro dospělé.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY A SPOLECENSTVO -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VII</span><h2>Postavy a Společenstvo</h2></div>
+
+<div class="fellowship">
+  <div class="fellowship-title">◆ Společenstvo prstenu · Devět poutníků ◆</div>
+  <div class="fellowship-grid">
+    <div class="fellowship-member" style="--member-color:var(--shire)">
+      <div class="fm-num">I</div>
+      <div class="fm-name">Frodo</div>
+      <div class="fm-race">hobit</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--shire)">
+      <div class="fm-num">II</div>
+      <div class="fm-name">Sam</div>
+      <div class="fm-race">hobit</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--shire)">
+      <div class="fm-num">III</div>
+      <div class="fm-name">Smíšek</div>
+      <div class="fm-race">hobit</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--shire)">
+      <div class="fm-num">IV</div>
+      <div class="fm-name">Pipin</div>
+      <div class="fm-race">hobit</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--gold)">
+      <div class="fm-num">V</div>
+      <div class="fm-name">Gandalf</div>
+      <div class="fm-race">Maia · čaroděj</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--accent-4)">
+      <div class="fm-num">VI</div>
+      <div class="fm-name">Aragorn</div>
+      <div class="fm-race">člověk · dědic</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--mordor)">
+      <div class="fm-num">VII</div>
+      <div class="fm-name">Boromir</div>
+      <div class="fm-race">člověk · Gondor</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--elven)">
+      <div class="fm-num">VIII</div>
+      <div class="fm-name">Legolas</div>
+      <div class="fm-race">elf · princ</div>
+    </div>
+    <div class="fellowship-member" style="--member-color:var(--accent-3)">
+      <div class="fm-num">IX</div>
+      <div class="fm-name">Gimli</div>
+      <div class="fm-race">trpaslík</div>
+    </div>
+  </div>
+</div>
+
+<h3>Hlavní postavy</h3>
+
+<div class="character" style="--character-color:var(--shire)" data-symbol="◉">
+  <div class="char-name">Frodo Pytlík <em>(Frodo Baggins)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Nositel prstenu</div>
+  <ul style="margin:0">
+    <li>Hobit, Bilbův synovec (vlastně bratranec)</li>
+    <li><strong>Nositel prstenu</strong></li>
+    <li><strong>Na začátku:</strong> nevinný, zvědavý</li>
+    <li><strong>Postupně:</strong> zatížený, trpící, odhodlaný</li>
+    <li>Symbol malého člověka s velkou zodpovědností</li>
+    <li>Vnitřní boj s pokušením prstenu</li>
+    <li><strong>Hrdina neochotný, ale nutný</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--shire)" data-symbol="♥">
+  <div class="char-name">Samvěd Křepelka <em>(Samwise Gamgee)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Věrný druh</div>
+  <ul style="margin:0">
+    <li>Frodův zahradník a <strong>věrný přítel</strong></li>
+    <li>Nejloajálnější člen Společenstva</li>
+    <li>Prostý, ale moudrý</li>
+    <li>Symbol věrného přítele</li>
+    <li><strong>Nikdy nepodlehne pokušení prstenu</strong></li>
+    <li>Praktický, optimistický</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--gold)" data-symbol="✹">
+  <div class="char-name">Gandalf Šedý</div>
+  <div class="char-role">Hlavní postava · Kladná · Čaroděj</div>
+  <ul style="margin:0">
+    <li>Mocný čaroděj — <strong>Maia</strong> (bytost podobná andělům)</li>
+    <li>Moudrý mentor, vůdce Společenstva</li>
+    <li><strong>„Umírá" v Morii</strong> — padá s Balrogem</li>
+    <li>Symbol moudrosti a obětivosti</li>
+    <li>Ve 2. díle se vrací jako <em>Gandalf Bílý</em></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-4)" data-symbol="♛">
+  <div class="char-name">Aragorn <em>(Barabáš · Strider)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Skrytý král</div>
+  <ul style="margin:0">
+    <li>Tulák, ale ve skutečnosti <strong>dědic trůnu Gondoru</strong></li>
+    <li>Zkušený bojovník a vůdce</li>
+    <li>Miluje elfskou princeznu <strong>Arwen</strong></li>
+    <li>Symbol skrytého krále</li>
+    <li>Po Gandalfově pádu vede Společenstvo</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--elven)" data-symbol="➵">
+  <div class="char-name">Legolas</div>
+  <div class="char-role">Hlavní postava · Kladná · Elf</div>
+  <ul style="margin:0">
+    <li>Elfský princ z Temného hvozdu</li>
+    <li><strong>Mistr lučištník</strong></li>
+    <li>Elegantní, bystrý, nesmrtelný</li>
+    <li>Přátelství s Gimlim — <strong>elf a trpaslík, neobvyklé spojení</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-3)" data-symbol="⚒">
+  <div class="char-name">Gimli</div>
+  <div class="char-role">Hlavní postava · Kladná · Trpaslík</div>
+  <ul style="margin:0">
+    <li>Trpasličí bojovník</li>
+    <li>Syn <strong>Glóina</strong> (trpaslík z Hobita!)</li>
+    <li>Hrdý, statečný</li>
+    <li>Přátelství s Legolasem překonává <strong>rasové předsudky</strong></li>
+    <li>Zamiluje se do Galadriely (platonicky)</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mordor)" data-symbol="⚔">
+  <div class="char-name">Boromir</div>
+  <div class="char-role">Hlavní postava · Tragická · Gondorský bojovník</div>
+  <ul style="margin:0">
+    <li>Člověk z Gondoru, <strong>syn místodržícího</strong> Denethora</li>
+    <li>Statečný bojovník</li>
+    <li><strong>Podlehne pokušení prstenu</strong></li>
+    <li>Pokusí se vzít prsten Frodovi</li>
+    <li><strong>Umírá hrdinskou smrtí</strong> bránící hobity</li>
+    <li>Symbol <strong>lidské slabosti a vykoupení</strong></li>
+  </ul>
+</div>
+
+<h3>Další členové Společenstva — hobiti</h3>
+
+<div class="character" style="--character-color:var(--shire)" data-symbol="◎">
+  <div class="char-name">Smíšek <em>(Meriadoc · Merry)</em></div>
+  <div class="char-role">Vedlejší · Kladná · Hobit</div>
+  <ul style="margin:0">
+    <li>Hobit, Frodův přítel</li>
+    <li>Zvědavý, odvážný</li>
+    <li>Později bojuje za Rohan</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--shire)" data-symbol="◇">
+  <div class="char-name">Pipin <em>(Peregrin Bral · Pippin)</em></div>
+  <div class="char-role">Vedlejší · Kladná · Hobit</div>
+  <ul style="margin:0">
+    <li>Hobit, Frodův přítel</li>
+    <li><strong>Nejmladší člen Společenstva</strong></li>
+    <li>Nevinný, trochu neopatrný</li>
+    <li>Postupně dospívá</li>
+  </ul>
+</div>
+
+<h3>Elfové · Antagonisté · Tragické postavy</h3>
+
+<div class="character" style="--character-color:var(--elven)" data-symbol="❦">
+  <div class="char-name">Elrond Pololelf</div>
+  <div class="char-role">Vedlejší · Kladná · Elfský pán</div>
+  <ul style="margin:0">
+    <li>Elfský pán Rokliny</li>
+    <li>Moudrý, laskavý</li>
+    <li><strong>Svolává Radu</strong></li>
+    <li>Otec Arwen</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="✦">
+  <div class="char-name">Galadriel</div>
+  <div class="char-role">Vedlejší · Kladná · Elfská královna</div>
+  <ul style="margin:0">
+    <li>Mocná elfská královna <strong>Lothlórienu</strong></li>
+    <li><strong>Nejstarší a nejmocnější elf</strong> ve Středozemi</li>
+    <li>Vlastní jeden z elfských prstenů (Nenya)</li>
+    <li><strong>Odolá pokušení</strong> Jednoho prstenu</li>
+    <li>Symbol čistoty a moci</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="❀">
+  <div class="char-name">Arwen</div>
+  <div class="char-role">Vedlejší · Kladná · Elfská princezna</div>
+  <ul style="margin:0">
+    <li>Elfská princezna, dcera Elronda</li>
+    <li>Miluje Aragorna</li>
+    <li><strong>Volí smrtelnost</strong> kvůli lásce</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mordor)" data-symbol="☠">
+  <div class="char-name">Saruman Bílý</div>
+  <div class="char-role">Vedlejší · Záporná · Zrádný čaroděj</div>
+  <ul style="margin:0">
+    <li>Kdysi nejmocnější čaroděj</li>
+    <li><strong>Zrazen touhou po moci</strong></li>
+    <li>Spojenec Saurona</li>
+    <li>Symbol <strong>korupce moci</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mordor)" data-symbol="◉">
+  <div class="char-name">Sauron</div>
+  <div class="char-role">Hlavní antagonista · Temný pán</div>
+  <ul style="margin:0">
+    <li><strong>Temný pán Mordoru</strong></li>
+    <li>Tvůrce Jednoho prstenu</li>
+    <li>Ztělesněné zlo</li>
+    <li><strong>Fyzicky nepřítomen</strong> — jen jako Oko</li>
+    <li>Symbol absolutní tyranie</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--mordor)" data-symbol="⚚">
+  <div class="char-name">Nazgûl <em>(Modrookí · Černí jezdci)</em></div>
+  <div class="char-role">Vedlejší · Záporné · Prokletí králové</div>
+  <ul style="margin:0">
+    <li><strong>Devět prokletých králů</strong>, otroci prstenu</li>
+    <li>Sauronovi služebníci</li>
+    <li>Nemrtví, děsiví</li>
+    <li>Pronásledují Froda s Prstenem</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--accent-6)" data-symbol="☾">
+  <div class="char-name">Glum <em>(Gollum · Sméagol)</em></div>
+  <div class="char-role">Vedlejší · Tragická · Bývalý nositel</div>
+  <ul style="margin:0">
+    <li><strong>Bývalý nositel prstenu</strong></li>
+    <li>Zvrácený, rozpolcený (Sméagol/Gollum)</li>
+    <li>Miluje i nenávidí prsten</li>
+    <li>Pomáhá i škodí</li>
+    <li>Symbol <strong>korupce prstenu</strong></li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">VIII</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Přímá řeč · Ikonický Gandalfův výrok</div>
+  <div class="quote-block" style="margin:0">Všichni, kdo žijí v takových časech, si to přejí. Ale my si to nemůžeme vybrat. Vše, co můžeme rozhodnout, je, co uděláme s časem, který nám byl dán.<span class="quote-source">Gandalf Frodovi</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-3)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Frodo cítil tíhu prstenu na krku a věděl, že cesta bude dlouhá a nebezpečná.</p>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">Polopřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Frodo seděl a přemýšlel. Jak měl tento úkol dokončit? Cesta byla tak dlouhá, nepřítel tak mocný.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--gold)"><h4 style="color:var(--gold)">Pásmo vypravěče</h4><p>Převažující forma — epické vyprávění, popisy krajin, bitev, historie.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-6)"><h4 style="color:var(--accent-6)">Monolog</h4><p>Vnitřní úvahy postav (zejména Froda o prstenu).</p></div>
+  <div class="device-card" style="border-top:2px solid var(--mordor)"><h4 style="color:var(--mordor)">Dialog</h4><p>Rozhovory — Rada v Rokli, diskuse v Morii, Galadrielino zrcadlo.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--forest)"><h4 style="color:var(--forest)">Popis</h4><p>Detailní popisy krajin, měst, kultur Středozemě.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Historické vyprávění</h4><p>Příběhy o minulosti Středozemě — vložené legendy a kroniky.</p></div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">IX</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Spisovná slova</h3>
+<table class="compare-table">
+  <tr><th>Vrstva</th><th>Příklady</th></tr>
+  <tr><td><strong>Neutrální</strong></td><td>cesta, hora, prsten, meč</td></tr>
+  <tr><td><strong>Knižní</strong></td><td><em>zbroj, soumrak, síň, válečník</em></td></tr>
+  <tr><td><strong>Poetismy</strong></td><td><em>hvězdný, stříbrolesklý</em></td></tr>
+</table>
+
+<h3>Archaismy — epická atmosféra</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Velmi časté</strong> pro epickou atmosféru</li>
+    <li><em>„Hle!", „pravil", „věru", „ejhle"</em></li>
+    <li>Starobylé gramatické tvary</li>
+    <li>Archaické konstrukce vět</li>
+    <li>Imitují styl středověkých eposů a Bible krále Jakuba</li>
+  </ul>
+</div>
+
+<h3>Neologismy — kompletní slovník</h3>
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Tolkienovy vlastní jazyky</div>
+  <ul style="margin:0">
+    <li><strong>Quenya</strong> — vysoká elfština (inspirováno finštinou, Kalevalou)</li>
+    <li><strong>Sindarština</strong> — šedá elfština (inspirováno velštinou)</li>
+    <li><strong>Khuzdul</strong> — trpasličtina (inspirováno hebrejštinou)</li>
+    <li><strong>Černá řeč</strong> Mordoru — zlověstný jazyk skřetů</li>
+    <li><strong>Rohanština</strong> — inspirováno starou angličtinou</li>
+    <li>Jména míst, osob, národů — Tolkien vymýšlel jména dřív než jejich nositele</li>
+  </ul>
+</div>
+
+<h3>Poezie a písně</h3>
+<div class="card purple">
+  <ul style="margin:0">
+    <li><strong>Mnoho básní vložených do textu</strong></li>
+    <li>Elfské písně, lidové písně, trpasličí zpěvy</li>
+    <li>Báseň o prstenech je <strong>nejslavnější</strong></li>
+    <li>Každá kultura má svou poezii — prohlubuje worldbuilding</li>
+  </ul>
+</div>
+
+<h3>Vznešený styl</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>Epický tón</strong></li>
+    <li>Dlouhá, složitá souvětí</li>
+    <li>Poetické obrazy</li>
+    <li>Formální jazyk</li>
+    <li>Variace stylu podle postav — hobiti mluví prostě, elfové vznešeně</li>
+  </ul>
+</div>
+
+<div class="card elven">
+  <div class="card-title" style="color:var(--elven)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Archaismy</strong> vytvářejí pocit bájné minulosti</li>
+    <li><strong>Neologismy</strong> budují autentický svět</li>
+    <li><strong>Poezie</strong> dodává kulturní hloubku</li>
+    <li><strong>Vznešený styl</strong> odpovídá epickému žánru</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">X</span><h2>Tropy, figury a alegorie</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Prsten = moc</div>
+    <div class="trope-note">Prsten = absolutní moc, korupce. Cesta = životní pouť. Tma = zlo, Světlo = dobro.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Oko Saurona</div>
+    <div class="trope-note">Prsten = pokušení. Gandalf = moudrost. Aragorn = naděje. Společenstvo = jednota.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Stará Hůrka · Oko</div>
+    <div class="trope-note">Příroda má vůli (Stará Hůrka, později Enti). Zlo má fyzickou podobu (Oko Saurona).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">„Moudrý Elrond"</div>
+    <div class="trope-note">„Moudrý Elrond", „statečný Aragorn", „věrný Sam" — archetypální přívlastky.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Světlo vs. Tma</div>
+    <div class="trope-note">Dobro vs. Zlo. Moudrost vs. Síla. Pokora vs. Pýcha. Svoboda vs. Tyranie.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">Epická nadsázka</div>
+    <div class="trope-note">Přehánění při popisech zla, monster, bitev — epický žánr si to žádá.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Alegorie</div>
+    <div class="trope-example">Moc korumpuje</div>
+    <div class="trope-note">Celý příběh lze číst alegoricky: malí mohou změnit svět, jednota je síla, oběť nutná.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Dech chladné smrti</div>
+    <div class="trope-note">Rozšířená přirovnání v popisech — elfská krása, dračí zlo.</div>
+  </div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--mordor)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0">Tropy vytvářejí <strong>mnohovrstevnatý příběh</strong> s hlubokými významy, budují <strong>mytologickou atmosféru</strong>, zdůrazňují morální a filozofické otázky. Každý obraz je čitelný na úrovni doslovné i symbolické.</p>
+</div>
+
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Tolkien a alegorie</div>
+  <p style="margin-bottom:0">Tolkien <strong>výslovně nenáviděl alegorii</strong>. V předmluvě k 2. vydání napsal: <em>„Dávám přednost dějinám, pravým nebo předstíraným, s jejich různorodou aplikací na myšlenky a zkušenosti čtenáře."</em> Čtenáři si tedy mohou vykládat prsten jako atomovou bombu, totalitarismus, technologii — ale není to autorův záměr.</p>
+</div>
+</section>
+
+<!-- 11 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XI</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">J. R. R. Tolkien (1892–1973)</div>
+  <p>Britský spisovatel, filolog, profesor staroanglické literatury na Oxfordu. Narozen v Jižní Africe. <strong>Veterán 1. světové války — bitva na Sommě 1916</strong>, kde ztratil většinu nejbližších přátel. Horlivý katolík. Manžel <strong>Edith Brattové</strong> (její jméno na náhrobku je Lúthien, jeho Beren — postavy z Silmarillionu). Byl součástí oxfordského literárního kroužku <strong>„Inklings"</strong> spolu s <strong>C. S. Lewisem</strong> (autor Narnie). <strong>Na Pánu prstenů pracoval 12 let.</strong></p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Hlavní dílo Tolkienova života</strong></li>
+  <li>Psáno více než 12 let <strong>(1937–1949)</strong></li>
+  <li>Publikováno <strong>1954–1955</strong></li>
+  <li>Pokračování <em>Hobita</em></li>
+  <li>Vrchol <strong>legendaria o Středozemi</strong></li>
+</ul>
+
+<h3>Další Tolkienova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Hobit</strong></td><td>1937</td><td>Předchůdce — vstup do Středozemě</td></tr>
+  <tr><td><strong>Pán prstenů</strong></td><td>1954–1955</td><td>Trilogie: Společenstvo prstenu, Dvě věže, Návrat krále</td></tr>
+  <tr><td><strong>Silmarillion</strong></td><td>1977 <em>(posmrtně)</em></td><td>Mytologie Středozemě, příběhy První věku</td></tr>
+  <tr><td><strong>Nedokončené příběhy</strong></td><td>1980 <em>(posmrtně)</em></td><td>Další texty, editoval syn Christopher</td></tr>
+  <tr><td><strong>Děti Húrinovy</strong></td><td>2007 <em>(posmrtně)</em></td><td>Tragický příběh Prvního věku</td></tr>
+</table>
+
+<h3>Akademická práce</h3>
+<ul>
+  <li>Profesor staroanglické a středověké literatury na Oxfordu</li>
+  <li>Odborník na <strong>Beowulfa</strong> (přednáška <em>The Monsters and the Critics</em> revolucionovala beowulfské studie)</li>
+  <li>Filolog a lingvista</li>
+  <li>Esej <em>O pohádkách</em> (1947) — teoretický základ fantasy</li>
+</ul>
+
+<h3>Tolkienův přístup</h3>
+<ul>
+  <li><strong>Vytvoření úplné mytologie</strong> — „anglická mytologie"</li>
+  <li>Vlastní jazyky jako základ (psal gramatiky dřív než příběhy!)</li>
+  <li><strong>Křesťanská symbolika</strong> bez explicitního náboženství</li>
+  <li>Kritika modernizace a industrializace</li>
+  <li>Témata: korupce moci, ekologie, přátelství, naděje</li>
+</ul>
+</section>
+
+<!-- 12 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Napsáno <strong>během a po 2. světové válce</strong></li>
+    <li>Publikováno v <strong>50. letech</strong> (studená válka)</li>
+    <li>Anglie po válce — únava, racionalizace</li>
+    <li>Umělecký sloh: <strong>FANTASY</strong> (Tolkien vytvořil vlastní žánr)</li>
+  </ul>
+</div>
+
+<h3>Tolkien jako zakladatel žánru</h3>
+<div class="card ring">
+  <ul style="margin:0">
+    <li>Vytváří <strong>nový literární žánr</strong> — epická fantasy</li>
+    <li>Komplexní worldbuilding — standard pro budoucí autory</li>
+    <li>Inspirace mytologií, ale originální</li>
+    <li><strong>Vysoký literární styl</strong> — fantasy není jen pro děti</li>
+  </ul>
+</div>
+
+<h3>Inspirační zdroje</h3>
+<table class="compare-table">
+  <tr><th>Zdroj</th><th>Co odtud pochází</th></tr>
+  <tr><td><strong>Beowulf</strong></td><td>Staroanglický epos — hrdinský styl, hodnoty cti</td></tr>
+  <tr><td><strong>Edda</strong></td><td>Severská mytologie — trpaslíci, jména (Thorin, Balin…)</td></tr>
+  <tr><td><strong>Kalevala</strong></td><td>Finský epos — inspirace pro elfštinu (quenya)</td></tr>
+  <tr><td><strong>Artušovské legendy</strong></td><td>Rytířská tradice, Aragorn jako návrat krále</td></tr>
+  <tr><td><strong>Středověká literatura</strong></td><td>Sir Gawain a Zelený rytíř, Pearl</td></tr>
+  <tr><td><strong>1. světová válka</strong></td><td>Zkušenost s hrůzou — Mordor, skřeti, Mrtvé močály</td></tr>
+</table>
+
+<h3>Vliv na světovou literaturu</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Tolkienovi dědicové</div>
+  <ul style="margin:0">
+    <li><strong>Ursula K. Le Guin</strong> — <em>Zeměmoří</em></li>
+    <li><strong>Terry Brooks</strong> — <em>Shannara</em></li>
+    <li><strong>Robert Jordan</strong> — <em>Kolo času</em></li>
+    <li><strong>George R. R. Martin</strong> — <em>Píseň ledu a ohně / Hra o trůny</em></li>
+    <li><strong>J. K. Rowling</strong> — <em>Harry Potter</em></li>
+    <li><strong>Andrzej Sapkowski</strong> — <em>Zaklínač</em></li>
+    <li><strong>Brandon Sanderson, Patrick Rothfuss, Joe Abercrombie</strong>…</li>
+    <li>Tisíce dalších autorů</li>
+  </ul>
+</div>
+</section>
+
+<div class="eye-divider">◆ ◉ ◆</div>
+
+<!-- 13 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIII</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<h3>★ Báseň o prstenech moci</h3>
+<div class="ring-poem">Tři prsteny elfským králům v jejich nebes síních,
+Sedm prstenů trpasličím pánům v jejich kamenných sálech,
+Devět smrtelným lidem určeným zemřít,
+Jeden pán temnoty na temném trůnu
+V zemi Mordor, kde leží stíny.
+Jeden prsten, jenž všechny ovládne, Jeden, jenž najde je,
+Jeden, jenž všechny přivede a v temnotě sváže
+V zemi Mordor, kde leží stíny.</div>
+
+<div class="scene">
+  <span class="scene-label">01 · Kniha I, kap. 1 · Oslava</span>
+  <div class="scene-title">Bilbova oslava</div>
+  <div class="scene-context">Když Bilbo Pytlík z Pytlíkova vršku ohlásil, že brzy oslaví své <strong>stojedenácté narozeniny</strong> velkou oslavou, nastal ve vesnici značný rozruch.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Navázání na Hobita</li>
+      <li>Klidný začátek před bouří</li>
+      <li>Bilbo zmizí pomocí prstenu — spouštěcí moment</li>
+      <li>Ukázka hobití kultury</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(196,154,74,.12);border-color:var(--gold)">★ 02 · Kniha I, kap. 2 · GANDALFŮV VÝROK ★</span>
+  <div class="scene-title">O čase, který nám byl dán</div>
+  <div class="scene-text">Všichni, kdo žijí v takových časech, si to přejí. Ale my si to nemůžeme vybrat. Vše, co můžeme rozhodnout, je, co uděláme s časem, který nám byl dán.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Gandalf odpovídá Frodovi, který si přeje, „aby se nic z toho nestalo v jeho době".</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Nejcitovanější výrok z díla</strong></li>
+      <li>Filozofické poselství o zodpovědnosti</li>
+      <li>Téma rozhodování ve světě, který si nevybíráme</li>
+      <li><strong>Univerzální, nadčasová moudrost</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Kniha I, kap. 2 · Pravda</span>
+  <div class="scene-title">Odhalení pravdy o prstenu</div>
+  <div class="scene-text">Tento prsten je Jeden prsten, jenž všechny ovládá. Byl ztracen po mnoho věků, ale nyní byl znovu nalezen. Sauron ho hledá. Pokud ho získá, ovládne celou Středozem.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Gandalf vysvětluje Frodovi nebezpečí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Odhalení zápletky</li>
+      <li><strong>Tíha zodpovědnosti</strong> na Frodovi</li>
+      <li>Apokalyptická hrozba</li>
+      <li>Začátek mise</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Kniha I, kap. 10 · Hůrka</span>
+  <div class="scene-title">Setkání s Aragornem v Hůrce</div>
+  <div class="scene-context">Vysoká postava vyšla ze stínů. Měl na sobě otrhané šaty tuláka, ale oči mu zářily inteligencí a autoritou. <em>„Jsem Barabáš,"</em> řekl. <em>„A pokud se chcete dostat do Rokliny, budete potřebovat mou pomoc."</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Představení Aragorna — klíčové postavy</li>
+      <li>Tajemná postava (tulák, ale král)</li>
+      <li><strong>Motiv skrytého krále</strong> — archetyp</li>
+      <li>Začátek přátelství</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">05 · Kniha I, kap. 11 · Útok</span>
+  <div class="scene-title">Útok Modrookých u Větrné skály</div>
+  <div class="scene-context">Z temnoty se vynořili Modrookí — černé postavy na černých koních. Jejich dech byl jako chlad smrti. Frodo cítil pokušení nasadit si prsten, ale když to udělal, viděl jejich skutečnou podobu — <strong>hrozné přízraky služebníků tmy</strong>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Frodo pobodán <strong>morgulskou dýkou</strong></li>
+      <li>Nebezpečí prstenu — dělá Froda viditelným pro Saurona</li>
+      <li>Napětí — hodinová honička</li>
+      <li>Arwenino dramatické zachránění (ve filmu)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--elven)">
+  <span class="scene-label" style="background:rgba(168,194,200,.08);border-color:var(--elven);color:var(--elven)">★ 06 · Kniha II, kap. 2 · RADA V ROKLI ★</span>
+  <div class="scene-title">Rada v Rokli</div>
+  <div class="scene-text">„Neměli bychom posílat prsten do Mordoru?" zeptal se někdo.
+„Nikdo z nás není dost silný, aby použil prsten proti Sauronovi," řekl Gandalf. „Musí být zničen. A to lze jen v ohni Hory osudu, kde byl ukován."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Velká rada rozhoduje o osudu prstenu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Klíčové rozhodnutí celého příběhu</strong></li>
+      <li>Představení různých zástupců národů</li>
+      <li>Boromirovo pokušení začíná</li>
+      <li>Frodo se <strong>dobrovolně přihlásí</strong>: „Vezmu ten prsten, i když neznám cestu."</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">07 · Kniha II, kap. 3 · Devět</span>
+  <div class="scene-title">Formování Společenstva</div>
+  <div class="scene-text">Devět poutníků, řekl Elrond. Proti devíti Modrookým. Půjdete jako Společenstvo prstenu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Symbolické číslo devět</strong></li>
+      <li>Různorodá skupina — hobiti, elf, trpaslík, lidé, čaroděj</li>
+      <li><strong>Jednota v různorodosti</strong></li>
+      <li>Přátelství překonává rasové rozdíly</li>
+      <li>Odtud název celého díla</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--mordor)">
+  <span class="scene-label" style="background:rgba(156,42,58,.12);border-color:var(--mordor);color:var(--mordor)">★ 08 · Kniha II, kap. 5 · „NEMŮŽEŠ PROJÍT!" ★</span>
+  <div class="scene-title">Gandalf proti Balrogovi</div>
+  <div class="scene-text">„Nemůžeš projít!" vykřikl Gandalf Balrogovi. „Jsem služebník Tajného ohně, vládce plamene Anoru. Temný oheň ti nepomůže, plameni Udûnu! Jdi zpět do stínu! NEMŮŽEŠ PROJÍT!"</div>
+  <div class="scene-context"><strong>Kontext:</strong> Gandalf čelí Balrogovi na mostě <em>Khazad-dûm</em>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Gandalfova největší chvíle</strong></li>
+      <li>Epická konfrontace</li>
+      <li><em>„You shall not pass!"</em> — <strong>ikonický výrok</strong></li>
+      <li>Oběť pro záchranu ostatních</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--gold)">
+  <span class="scene-label" style="background:rgba(196,154,74,.12);border-color:var(--gold)">★ 09 · Kniha II, kap. 5 · GANDALFŮV PÁD ★</span>
+  <div class="scene-title">Gandalfův pád</div>
+  <div class="scene-context">Gandalf stál na mostě. Balrog se řítil vpřed, ale most se pod ním rozpadl. Padal do propasti. Ale jeho bič se omotal kolem Gandalfových kotníků a <strong>strhl ho s sebou</strong>. <em>„Utíkejte, blázni!"</em> byla Gandalfova poslední slova, než zmizel v temnotě.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Šokující „smrt" mentora</strong></li>
+      <li>Společenstvo ztratilo vůdce</li>
+      <li>Frodova zodpovědnost se zvětšuje</li>
+      <li>Připravuje Gandalfův návrat jako <em>Bílý</em></li>
+      <li><strong>Emocionální vrchol</strong> první knihy</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--accent-6)">
+  <span class="scene-label" style="background:rgba(107,90,140,.1);border-color:var(--accent-6);color:var(--accent-6)">★ 10 · Kniha II, kap. 7 · GALADRIEL ★</span>
+  <div class="scene-title">Lothlórien a Galadriel</div>
+  <div class="scene-context"><em>„Ukážu ti, co touží vidět tvé srdce,"</em> řekla Galadriel a ukázala Frodovi Zrcadlo. Frodo viděl hrůzy budoucnosti. Pak mu Galadriel nabídla prsten. <em>„Dáš mi ho dobrovolně?"</em> zeptala se. Frodo váhal, ale pak ho podal. Galadriel se na chvíli proměnila — mocná a děsivá. <strong>„Odmítám!"</strong> řekla. <em>„Půjdu na Západ a zůstanu Galadrielou."</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>I nejmocnější mohou odolat</strong></li>
+      <li>Galadriel má vlastní prsten moci (Nenya), ale zná nebezpečí</li>
+      <li>Frodova důvěra</li>
+      <li>Téma <strong>pokory vs. pýchy</strong></li>
+      <li>Žena odolá tam, kde muži selhali</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--mordor)">
+  <span class="scene-label" style="background:rgba(156,42,58,.1);border-color:var(--mordor);color:var(--mordor)">★ 11 · Kniha II, kap. 10 · PÁD BOROMIRA ★</span>
+  <div class="scene-title">Boromirovo pokušení</div>
+  <div class="scene-text">„Dej mi ten prsten!" křičel Boromir a chytil Froda. „Můžeme ho použít! Pro Gondor! Pro naši záchranu!"
+Frodo nasadil prsten a zmizel. Boromir klesl na kolena a plakal. „Co jsem to udělal? Frodo, odpusť mi!"</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Boromirovo selhání</strong></li>
+      <li>Prsten korumpuje i šlechetné</li>
+      <li>Zlom — Frodo se rozhodne jít sám</li>
+      <li>Téma pokušení</li>
+      <li>Předznamenání Boromirovy smrti</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">12 · Kniha II, kap. 10 · Boromirova smrt</span>
+  <div class="scene-title">Boromirova hrdinská smrt</div>
+  <div class="scene-context">Boromir bránil Smíška a Pipina proti skřetům. Byl zasažen mnoha šípy, ale bojoval dál. Když Aragorn přišel, Boromir umíral. <em>„Promiň mi,"</em> šeptal. <em>„Pokusil jsem se vzít prsten. Selhal jsem."</em><br><em>„Ne,"</em> řekl Aragorn. <strong>„Zvítězil jsi. Jen málokdo ukázal takovou odvahu."</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Vykoupení vinou</strong></li>
+      <li>Hrdinská smrt</li>
+      <li>Tragická postava</li>
+      <li>Téma <strong>odpuštění</strong></li>
+      <li>Lidskost — chyba a náprava</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--shire)">
+  <span class="scene-label" style="background:rgba(122,138,92,.1);border-color:var(--shire);color:var(--shire)">★ 13 · Kniha II, kap. 10 · VĚRNÝ SAM ★</span>
+  <div class="scene-title">Rozpad Společenstva · Sam následuje</div>
+  <div class="scene-text">Frodo nasedl do člunu. Sam běžel za ním. „Jdu s vámi, pane Frodo! Slíbil jsem panu Gandalfovi, že vás neopustím. A neopustím!"
+Frodo se usmál přes slzy. „Pojď tedy, Same. Půjdeme spolu."</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Věrnost Sama</strong> — nejdůležitější vztah díla</li>
+      <li>Rozpad Společenstva na tři části</li>
+      <li>Konec první knihy</li>
+      <li><strong>Začátek skutečné mise</strong></li>
+      <li>Symbol věrného přátelství</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="eye-divider">◆ ◉ ◆</div>
+
+<!-- 14 INTERPRETACE -->
+<section class="section" id="interpretace">
+<div class="section-header"><span class="section-num">XIV</span><h2>Interpretace a symbolika</h2></div>
+
+<h3>Tři roviny interpretace</h3>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--mordor)">1. Alegorie moci</div>
+  <ul style="margin:0">
+    <li><strong>Prsten = atomová bomba</strong> (Tolkien to popíral, ale interpretace je běžná)</li>
+    <li><strong>Prsten = absolutní moc</strong> (kterákoli)</li>
+    <li><strong>Sauron = totalitarismus</strong> (fašismus, stalinismus)</li>
+  </ul>
+</div>
+
+<div class="card elven">
+  <div class="card-title" style="color:var(--elven)">2. Křesťanská symbolika</div>
+  <ul style="margin:0">
+    <li><strong>Gandalf = postava Kristova</strong> (smrt v Morii a zmrtvýchvstání jako Bílý)</li>
+    <li><strong>Frodo = nositel kříže</strong> (břemene hříchu)</li>
+    <li><strong>Aragorn = král, který se vrací</strong> (mesiášský archetyp)</li>
+    <li>Téma oběti, vykoupení, milosrdenství</li>
+    <li>„Deus ex machina" v podobě Orlů</li>
+  </ul>
+</div>
+
+<div class="card green">
+  <div class="card-title" style="color:var(--forest)">3. Ekologická kritika</div>
+  <ul style="margin:0">
+    <li><strong>Skřeti ničí přírodu</strong> (industrializace)</li>
+    <li><strong>Saruman kácí lesy</strong> — Isengard jako továrna</li>
+    <li>Elfové žijí v <strong>harmonii s přírodou</strong></li>
+    <li>Kraj = předindustriální idyla</li>
+    <li>Aktuální ekologické čtení</li>
+  </ul>
+</div>
+
+<h3>Morální poselství</h3>
+<ul>
+  <li>Ani dobří nejsou dokonalí <em>(Boromir, Saruman)</em></li>
+  <li>Malí mohou měnit svět <em>(hobiti)</em></li>
+  <li>Moc musí být odmítnuta, ne použita <em>(Galadriel)</em></li>
+  <li>Milosrdenství je důležité <em>(Gandalf o Glumovi: „Mnoho žijících si zasluhuje smrt. A mnoho mrtvých život. Můžeš jim ho dát?")</em></li>
+  <li>Přátelství překonává vše <em>(Sam a Frodo)</em></li>
+</ul>
+
+<div class="card ring">
+  <div class="card-title" style="color:var(--ring)">Klíčový symbol · Prsten</div>
+  <p style="margin-bottom:0">Prsten není jen kouzelný předmět, ale <strong>symbol absolutní moci, která korumpuje absolutně</strong> (parafráze Lorda Actona). I dobří lidé (Boromir, Saruman) podlehnou touze po moci. Jen ti <strong>nejpokornější</strong> (hobiti) a <strong>nejmocnější</strong>, kteří už moc znají (Galadriel, Gandalf) dokážou odolat. Tolkienova lekce: <em>moc nelze použít „pro dobro" — sama sebe pokřiví</em>.</p>
+</div>
+</section>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--gold)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Absolutní moc korumpuje absolutně a musí být zničena, ne použita.</strong> Malí, pokorní lidé mohou změnit běh dějin. <strong>Věrnost a přátelství</strong> jsou silnější než moc. Zlo může být poraženo jen obětí a jednotou.</p>
+</div>
+
+<h3>Struktura trilogie</h3>
+<table class="compare-table">
+  <tr><th>Díl</th><th>Rok</th><th>Obsah</th></tr>
+  <tr><td><strong>Společenstvo prstenu</strong></td><td>1954</td><td>Formování mise, Bilbova oslava → rozpad Společenstva</td></tr>
+  <tr><td><strong>Dvě věže</strong></td><td>1954</td><td>Rozdělení, paralelní příběhy, Isengard, Šíré pole</td></tr>
+  <tr><td><strong>Návrat krále</strong></td><td>1955</td><td>Vyvrcholení, vítězství, ztráta, návrat Aragorna</td></tr>
+</table>
+
+<h3>Tolkienova mytologie</h3>
+<div class="card ring">
+  <p style="margin-bottom:0">Pán prstenů je jen <strong>špička ledovce</strong>. Tolkien vytvořil: kompletní historii Středozemě (tisíce let), několik jazyků (gramatika, slovníky), mytologii stvoření světa (<em>Silmarillion</em>), genealogie národů, mapy, kalendáře, písemnosti. Je to <strong>nejkomplexnější fiktivní svět v literatuře</strong>.</p>
+</div>
+
+<h3>Křesťanské pozadí</h3>
+<details>
+  <summary>Tolkien a katolictví</summary>
+  <p>Tolkien byl hluboce katolický. Dílo obsahuje křesťanské motivy: <strong>milosrdenství</strong> (Frodo šetří Gluma), <strong>oběť</strong> (Gandalf, Frodo), <strong>vykoupení</strong> (Boromir), naděje proti naději, pokora vs. pýcha. Ale <strong>NENÍ to náboženská alegorie</strong> — Tolkien to zdůrazňoval: <em>„Je to v zásadě náboženské a katolické dílo; zprvu nevědomky, ale při revizi vědomě."</em></p>
+</details>
+
+<h3>Vliv války</h3>
+<details>
+  <summary>Tolkien ve válce</summary>
+  <p>Tolkien bojoval v 1. světové válce — <strong>bitva na Sommě 1916</strong>. Zkušenost s hrůzou, smrtí, mechanizovaným zabíjením. <strong>Mrtvé močály</strong> v díle jsou popisem opravdových bojišť s těly vojáků v bahně. Skřeti = stroje války, industrializace. Ale <strong>NENÍ to alegorie 2. světové války</strong> — Tolkien na trilogii pracoval už od 30. let, dávno před Hirošimou. Prsten ≠ atomová bomba.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li>Téma <strong>zneužití moci</strong></li>
+    <li><strong>Ekologická kritika</strong> — aktuální dnes víc než kdy jindy</li>
+    <li>Důležitost přátelství a věrnosti</li>
+    <li>Nebezpečí technologie bez morálky</li>
+    <li>Odvaha malých proti mocným</li>
+    <li><strong>Naděje v temných časech</strong></li>
+  </ul>
+</div>
+
+<h3>Filmová adaptace Petera Jacksona (2001–2003)</h3>
+<details>
+  <summary>Trilogie Petera Jacksona</summary>
+  <p><strong>Peter Jackson natočil trilogii 2001–2003</strong> v atmosféře Nového Zélandu. Obrovský úspěch — <strong>17 Oscarů celkem</strong>, z toho 11 pro Návrat krále (rekord společně s Titanicem a Ben-Hurem). <strong>Kulturní fenomén</strong> — věrná duchu, některé změny v detailech. Uvedla Tolkiena nové generaci. V hlavních rolích: <strong>Elijah Wood</strong> (Frodo), <strong>Ian McKellen</strong> (Gandalf), <strong>Viggo Mortensen</strong> (Aragorn), <strong>Sean Astin</strong> (Sam).</p>
+</details>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Jak kniha vznikla</summary>
+  <p>Psáno <strong>12 let (1937–1949)</strong>. Vydavatel Stanley Unwin váhal (příliš dlouhé, experimentální). <strong>Původně mělo být jedno dílo</strong> — rozděleno na tři svazky kvůli nákladům a nedostatku papíru v poválečné Anglii. Tolkien sám <strong>kreslil mapy a ilustrace</strong>. Synové (zejména Christopher) editovali a dopisovali další texty po jeho smrti (Silmarillion, Nedokončené příběhy).</p>
+</details>
+<details>
+  <summary>Beatles chtěli natočit film</summary>
+  <p><strong>Beatles v 60. letech</strong> chtěli natočit filmovou adaptaci Pána prstenů s Paulem McCartneym jako Frodem, Ringo Starrem jako Samem, Georgem Harrisonem jako Gandalfem a Johnem Lennonem jako Glumem. Chtěli jako režiséra Stanleyho Kubricka. <strong>Tolkien to odmítl</strong> — a Kubrick později prohlásil, že je to stejně nefilmovatelné.</p>
+</details>
+<details>
+  <summary>Filologie jako základ</summary>
+  <p>Tolkien byl především <strong>filolog</strong>. <em>„Nejdříve jsem vymyslel jazyky, pak jsem hledal svět, kde by se jimi mohlo mluvit."</em> Elfština quenya má kompletní gramatiku a slovníky. Tolkien ji učil své děti a psal v ní dopisy.</p>
+</details>
+<details>
+  <summary>Tolkien nenáviděl alegorie</summary>
+  <p>V předmluvě k 2. vydání Tolkien napsal: <em>„Srdečně nesnáším alegorii ve všech jejích podobách, a vždy jsem ji nesnášel, co jsem starý a dost bdělý, abych si všiml jejího působení."</em> Odmítal, že prsten = atomová bomba nebo Sauron = Hitler. Dává přednost <strong>aplikovatelnosti</strong> (čtenář si sám najde paralely) před alegorií (autor vnucuje výklad).</p>
+</details>
+
+<h3>Kulturní vliv</h3>
+<ul>
+  <li><strong>Nejprodávanější román 20. století</strong> (150+ milionů výtisků)</li>
+  <li>Hlasování <strong>„kniha století"</strong> (BBC, Waterstones)</li>
+  <li>Inspirace pro počítačové hry (Dungeons &amp; Dragons, World of Warcraft)</li>
+  <li>Heavy metal hudba (Led Zeppelin, Blind Guardian)</li>
+  <li>Generace fantasy autorů</li>
+  <li>Film, TV (seriál <em>Prsteny moci</em> Amazon 2022+), komiks</li>
+  <li><strong>Tolkien Society, konvence, fandomy, akademické studium</strong></li>
+</ul>
+
+<div class="quote-block" style="margin-top:40px;text-align:center">
+Vše, co můžeme rozhodnout, je,<br>
+co uděláme s časem, který nám byl dán.
+<span class="quote-source">Gandalf Frodovi · Kniha I, kapitola 2</span>
+</div>
+</section>
+
+<div class="eye-divider" style="margin-top:50px">◆ ◉ ◆</div>
+
+</div>
+</body>
+</html>

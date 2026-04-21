@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB – Otázka 8: Autentizace uživatelů</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg-card:#181b24;--bg-card-alt:#1e2230;--border:#2a2e3d;--text:#c8cdd8;--text-muted:#6b7280;--heading:#e8ecf4;--accent-1:#60a5fa;--accent-2:#a78bfa;--accent-3:#34d399;--accent-4:#fbbf24;--accent-5:#f87171;--accent-6:#fb923c;--accent-7:#f472b6;--accent-8:#38bdf8;--kb:#e879f9}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#2e0f28 40%,#0f1a2e 100%);border-bottom:1px solid var(--border);padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 25% 50%,rgba(232,121,249,.08) 0%,transparent 50%),radial-gradient(ellipse at 75% 50%,rgba(96,165,250,.06) 0%,transparent 50%);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--kb);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,42px);color:var(--heading);font-weight:700;line-height:1.2;position:relative}
+.hero p{color:var(--text-muted);margin-top:12px;font-size:15px;position:relative}
+.container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px}
+.toc h2{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--kb);margin-bottom:16px}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:32px}
+.toc li{counter-increment:toc;padding:4px 0;font-size:14px;break-inside:avoid}
+.toc li::before{content:counter(toc,decimal-leading-zero) ' ';font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:12px;margin-right:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--kb)}
+.section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:1px;min-width:24px}
+.section-header h2{font-family:'Fraunces',serif;font-size:22px;color:var(--heading);font-weight:700}
+h3{font-size:17px;font-weight:700;color:var(--heading);margin:28px 0 12px}p{margin-bottom:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0}
+.card.highlight{border-left:3px solid var(--accent-1)}.card.key{border-left:3px solid var(--accent-4);background:rgba(251,191,36,.04)}
+.card.warn{border-left:3px solid var(--accent-5);background:rgba(248,113,113,.04)}.card.green{border-left:3px solid var(--accent-3);background:rgba(52,211,153,.04)}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+ul{padding-left:20px;margin:8px 0 14px}li{margin-bottom:5px;line-height:1.6}li::marker{color:var(--text-muted)}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(232,121,249,.1);color:var(--kb);padding:2px 6px;border-radius:4px}
+strong{color:var(--heading)}.divider{height:1px;background:var(--border);margin:40px 0}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.compare-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border)}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}.compare-table tr:last-child td{border-bottom:none}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.device-card{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.device-card h4{margin:0 0 6px;font-size:14px}.device-card p{font-size:13px;color:var(--text-muted);margin:0}
+details{margin:12px 0}details summary{cursor:pointer;font-weight:600;color:var(--heading);padding:10px 0;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:'▸';font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--kb);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}details summary::-webkit-details-marker{display:none}
+/* Factor cards */
+.factor-row{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;justify-content:center}
+.factor{flex:1;min-width:150px;max-width:220px;padding:18px 14px;border-radius:10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px}
+.factor .f-icon{font-size:28px;display:block;margin-bottom:8px}
+.factor .f-name{font-weight:700;font-size:12px;display:block}
+.factor .f-ex{font-size:9px;font-family:'DM Sans',sans-serif;margin-top:6px;opacity:.8}
+/* MFA flow */
+.mfa-flow{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px}
+.mfa-box{padding:12px 16px;border-radius:8px;font-weight:600;text-align:center;min-width:70px}
+.mfa-plus{color:var(--text-muted);font-size:18px;font-weight:700}
+/* 2FA type grid */
+.tfa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:14px 0}
+.tfa-item{padding:14px 12px;border-radius:8px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px}
+.tfa-item .ti-icon{font-size:22px;display:block;margin-bottom:4px}
+.tfa-item .ti-name{font-weight:700;font-size:11px;display:block}
+.tfa-item .ti-desc{font-size:9px;font-family:'DM Sans',sans-serif;margin-top:4px;opacity:.8}
+/* Protocol cards */
+.proto{position:relative;overflow:hidden;border-radius:10px;padding:16px 20px;margin:10px 0;background:var(--bg-card);border:1px solid var(--border)}
+.proto::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.proto-h{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.proto-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+.proto-tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px}
+/* SSO visual */
+.sso-vis{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0}
+.sso-center{text-align:center;padding:14px 20px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;margin:0 auto 14px;max-width:200px}
+.sso-apps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.sso-app{padding:8px 14px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600}
+@media(max-width:640px){.toc ol{columns:1}.device-grid{grid-template-columns:1fr}.factor-row{flex-direction:column;align-items:center}.tfa-grid{grid-template-columns:repeat(2,1fr)}.mfa-flow{flex-direction:column}}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">KYB</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">KB – Maturitní otázka č. 8</div>
+  <h1>Autentizace uživatelů</h1>
+  <p>Hesla • 2FA/MFA • Biometrie • Tokeny • Certifikáty • SSO • LDAP/PAP/CHAP/EAP/TLS</p>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah</h2>
+<ol>
+  <li><a href="#factors">Tři faktory autentizace</a></li>
+  <li><a href="#passwords">Password-based authentication</a></li>
+  <li><a href="#mfa">2FA / MFA</a></li>
+  <li><a href="#bio">Biometrická autentizace</a></li>
+  <li><a href="#tokens">Token-based authentication</a></li>
+  <li><a href="#certs">Certificate-based authentication</a></li>
+  <li><a href="#sso">Single Sign-On (SSO)</a></li>
+  <li><a href="#protocols">Autentizační protokoly</a></li>
+  <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+</ol>
+</nav>
+
+<!-- 01 FACTORS -->
+<section class="section" id="factors">
+<div class="section-header"><span class="section-num">01</span><h2>Tři faktory autentizace</h2></div>
+
+<p><strong>Autentizace</strong> = ověření identity. „Je to opravdu TY?" První krok v AAA (Authentication → Authorization → Accounting). <strong>81 % data breaches = slabá/ukradená hesla.</strong></p>
+
+<div class="factor-row">
+  <div class="factor" style="background:rgba(96,165,250,.1);color:var(--accent-1);border:1px solid rgba(96,165,250,.2)">
+    <span class="f-icon">🧠</span><span class="f-name">KNOW</span>
+    <span class="f-ex">Heslo, PIN, bezpečnostní otázka. Nejběžnější ale nejslabší.</span>
+  </div>
+  <div class="factor" style="background:rgba(52,211,153,.1);color:var(--accent-3);border:1px solid rgba(52,211,153,.2)">
+    <span class="f-icon">🔑</span><span class="f-name">HAVE</span>
+    <span class="f-ex">Smartphone, YubiKey, smart card, certifikát. Může být ztracen.</span>
+  </div>
+  <div class="factor" style="background:rgba(232,121,249,.1);color:var(--kb);border:1px solid rgba(232,121,249,.2)">
+    <span class="f-icon">👤</span><span class="f-name">ARE</span>
+    <span class="f-ex">Otisk prstu, Face ID, iris, hlas. Nelze změnit při kompromitaci!</span>
+  </div>
+</div>
+
+<p style="font-size:13px;color:var(--text-muted)">Bonusové faktory: <strong>Somewhere you ARE</strong> (GPS, IP), <strong>Something you DO</strong> (typing pattern, gait analysis).</p>
+</section>
+
+<!-- 02 PASSWORDS -->
+<section class="section" id="passwords">
+<div class="section-header"><span class="section-num">02</span><h2>Password-based authentication</h2></div>
+
+<p>Nejstarší metoda. Username + password → systém porovná s uloženým hashem. <strong>Jednoduché, ale slabé</strong> bez správné implementace.</p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Slabá hesla ❌</h4>
+    <p>"password123" (slovníkové), "qwerty" (keyboard pattern), "JanNovak1990" (osobní info). Krátká, předvídatelná.</p>
+  </div>
+  <div class="device-card" style="border-top:3px solid var(--accent-3)">
+    <h4 style="color:var(--accent-3)">Silná hesla ✅</h4>
+    <p>Min. <strong>12+ znaků</strong>, mix velkých/malých/číslic/symbolů, unikátní per účet. Passphrase: "c0rrect-h0rse-b@ttery-st@ple"</p>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">Password Manager = řešení!</div>
+  <p style="margin-bottom:0">Bezpečně ukládá všechna hesla šifrovaně. Stačí 1 master password. Generuje náhodná silná hesla. Auto-fill. Příklady: <strong>1Password, Bitwarden, KeePass</strong>.</p>
+</div>
+
+<details><summary>Útoky na hesla</summary>
+<ul>
+  <li><strong>Brute Force:</strong> Všechny kombinace. <strong>Dictionary:</strong> Slovníková slova</li>
+  <li><strong>Rainbow Table:</strong> Precomputed hashe (obrana: salt!)</li>
+  <li><strong>Credential Stuffing:</strong> Ukradené credentials z jiného breache</li>
+  <li><strong>Phishing:</strong> Social engineering. <strong>Keylogging:</strong> Malware</li>
+</ul>
+<p style="font-size:13px;color:var(--text-muted)">Obrana: <strong>bcrypt/Argon2 + salt</strong>, rate limiting, CAPTCHA, breach notification, <strong>MFA</strong>.</p>
+</details>
+</section>
+
+<!-- 03 MFA -->
+<section class="section" id="mfa">
+<div class="section-header"><span class="section-num">03</span><h2>2FA / MFA</h2></div>
+
+<p><strong>Dva nebo více faktorů z RŮZNÝCH kategorií.</strong> Není to „dvě hesla"! Musí to být dva TYPY (heslo + SMS kód). <strong>MFA blokuje 99.9 % automatizovaných útoků.</strong></p>
+
+<div class="mfa-flow">
+  <div class="mfa-box" style="background:rgba(96,165,250,.12);color:var(--accent-1)">🧠 Heslo<div style="font-size:9px;opacity:.7">KNOW</div></div>
+  <div class="mfa-plus">+</div>
+  <div class="mfa-box" style="background:rgba(52,211,153,.12);color:var(--accent-3)">📱 SMS kód<div style="font-size:9px;opacity:.7">HAVE</div></div>
+  <div class="mfa-plus">=</div>
+  <div class="mfa-box" style="background:rgba(232,121,249,.15);color:var(--kb)">✅ 2FA<div style="font-size:9px;opacity:.7">Přihlášen!</div></div>
+</div>
+
+<h3>Typy 2FA</h3>
+<div class="tfa-grid">
+  <div class="tfa-item" style="background:rgba(248,113,113,.08);color:var(--accent-5)"><span class="ti-icon">📲</span><span class="ti-name">SMS/Voice OTP</span><span class="ti-desc">6-místný kód přes SMS. Nejméně bezpečné! SIM swapping, SS7.</span></div>
+  <div class="tfa-item" style="background:rgba(52,211,153,.08);color:var(--accent-3)"><span class="ti-icon">🔢</span><span class="ti-name">Authenticator (TOTP)</span><span class="ti-desc">App generuje kód (30 s). Offline, nelze interceptovat. Google/MS Auth.</span></div>
+  <div class="tfa-item" style="background:rgba(96,165,250,.08);color:var(--accent-1)"><span class="ti-icon">🔔</span><span class="ti-name">Push Notification</span><span class="ti-desc">„Schválit přihlášení?" Tap Approve/Deny. Duo, Okta.</span></div>
+  <div class="tfa-item" style="background:rgba(251,191,36,.08);color:var(--accent-4)"><span class="ti-icon">🔐</span><span class="ti-name">Hardware Token</span><span class="ti-desc">YubiKey, RSA SecurID. USB klíč. Velmi bezpečné, phishing-proof.</span></div>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--accent-5)">MFA Fatigue Attack</div>
+  <p style="margin-bottom:0">Útočník má heslo → spamuje push notifikace dokud omylem neschválíš. <strong>Obrana: Number matching</strong> – musíš zadat číslo z webu do app.</p>
+</div>
+</section>
+
+<!-- 04 BIO -->
+<section class="section" id="bio">
+<div class="section-header"><span class="section-num">04</span><h2>Biometrická autentizace</h2></div>
+
+<p>Unikátní fyzické nebo behaviorální charakteristiky. <strong>Nelze zapomenout, ale při kompromitaci NELZE změnit!</strong></p>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:3px solid var(--accent-3)"><h4 style="color:var(--accent-3)">Fingerprint 👆</h4><p>Nejpoužívanější. Smartphone, laptop. Rychlé. Zranitelnost: fake prst (gummy bear attack).</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-1)"><h4 style="color:var(--accent-1)">Face Recognition 🤳</h4><p>Face ID, Windows Hello. 3D senzory bezpečnější (nelze oklamat fotkou). Zranitelnost: dvojčata.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-2)"><h4 style="color:var(--accent-2)">Iris/Retina 👁️</h4><p>Extrémně přesné. High-security prostředí. Drahé senzory.</p></div>
+  <div class="device-card" style="border-top:3px solid var(--accent-4)"><h4 style="color:var(--accent-4)">Voice + Behavioral 🗣️</h4><p>Hlas, typing pattern, gait. Continuous auth. Zranitelnost: nahrávka hlasu.</p></div>
+</div>
+
+<div class="card green">
+  <p style="margin-bottom:0"><strong>Best practice:</strong> Biometrika VŽDY kombinovat s jiným faktorem (MFA). Nikdy nespoléhat jen na biometriku! Při kompromitaci nelze změnit otisk prstu.</p>
+</div>
+</section>
+
+<!-- 05 TOKENS -->
+<section class="section" id="tokens">
+<div class="section-header"><span class="section-num">05</span><h2>Token-based authentication</h2></div>
+
+<p>Po přihlášení dostaneš <strong>TOKEN</strong> (kryptograficky podepsaný string). S každým requestem posíláš token místo credentials.</p>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-4)">JWT (JSON Web Token) – nejpoužívanější</div>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)"><span style="color:var(--accent-5)">Header</span>.<span style="color:var(--accent-4)">Payload</span>.<span style="color:var(--accent-3)">Signature</span></p>
+  <ul>
+    <li><strong style="color:var(--accent-5)">Header:</strong> Typ (JWT) + signing algoritmus</li>
+    <li><strong style="color:var(--accent-4)">Payload:</strong> Data (user ID, role, expiration)</li>
+    <li><strong style="color:var(--accent-3)">Signature:</strong> Kryptografický podpis (ověřuje nezměněnost)</li>
+  </ul>
+  <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>Access Token</strong> (15 min – 1 h) pro requesty. <strong>Refresh Token</strong> (dny–měsíce) pro nový access token.</p>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--accent-8)">OAuth 2.0 – „Sign in with Google"</div>
+  <p style="margin-bottom:0">Klikneš „Sign in with Google" → Google: „App XYZ chce přístup. Povolit?" → Schválíš → Google pošle token → App přistupuje k datům <strong>BEZ tvého hesla!</strong></p>
+</div>
+</section>
+
+<!-- 06 CERTS -->
+<section class="section" id="certs">
+<div class="section-header"><span class="section-num">06</span><h2>Certificate-based authentication</h2></div>
+
+<div class="card" style="border-left:3px solid var(--accent-2);background:rgba(167,139,250,.04)">
+  <div class="card-title" style="color:var(--accent-2)">X.509 certifikáty místo hesel</div>
+  <p>Uživatel má certifikát (.p12/.pfx) s private key (na PC nebo smart card). Server ověří: důvěryhodná CA? Platný? Nerevokován? Klient podepíše challenge private key → server ověří.</p>
+  <p style="margin-bottom:0"><strong>Použití:</strong> Smart cards, VPN, S/MIME email, code signing, SSL client certs, vojenství. <strong>Mutual TLS (mTLS):</strong> Obě strany certifikát → vzájemné ověření.</p>
+</div>
+</section>
+
+<!-- 07 SSO -->
+<section class="section" id="sso">
+<div class="section-header"><span class="section-num">07</span><h2>Single Sign-On (SSO)</h2></div>
+
+<p>Přihlásíš se <strong>JEDNOU</strong> → přístup k VÍCE aplikacím bez opakovaného přihlašování.</p>
+
+<div class="sso-vis">
+  <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px">SINGLE SIGN-ON</div>
+  <div class="sso-center" style="background:rgba(232,121,249,.15);color:var(--kb)">🔐 Identity Provider<div style="font-size:10px;opacity:.7">Okta / Azure AD / Google</div></div>
+  <div style="text-align:center;color:var(--text-muted);font-size:14px;margin-bottom:10px">↓ token/assertion ↓</div>
+  <div class="sso-apps">
+    <div class="sso-app" style="background:rgba(96,165,250,.12);color:var(--accent-1)">📧 Email</div>
+    <div class="sso-app" style="background:rgba(52,211,153,.1);color:var(--accent-3)">💼 Salesforce</div>
+    <div class="sso-app" style="background:rgba(251,191,36,.1);color:var(--accent-4)">📊 Jira</div>
+    <div class="sso-app" style="background:rgba(167,139,250,.1);color:var(--accent-2)">💬 Slack</div>
+    <div class="sso-app" style="background:rgba(244,114,182,.1);color:var(--accent-7)">☁️ AWS</div>
+  </div>
+  <div style="text-align:center;font-size:10px;color:var(--text-muted);margin-top:10px">1 přihlášení → přístup ke všem apps. Žádné opakované zadávání hesla.</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--accent-6)">SSO protokoly</div>
+  <ul>
+    <li><strong>SAML:</strong> XML-based, enterprise standard. SAML assertion s identitou. Okta, Azure AD</li>
+    <li><strong>OpenID Connect (OIDC):</strong> Na OAuth 2.0, JSON/JWT. Modernější. „Sign in with Google"</li>
+    <li><strong>Kerberos:</strong> Ticket-based (Active Directory). TGT → service tickets</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <p style="margin-bottom:0"><strong>Riziko:</strong> Single point of failure + single point of attack. Kompromitace SSO = přístup ke VŠEM apps. <strong>SSO MUSÍ být kombinováno s MFA!</strong></p>
+</div>
+</section>
+
+<!-- 08 PROTOCOLS -->
+<section class="section" id="protocols">
+<div class="section-header"><span class="section-num">08</span><h2>Autentizační protokoly</h2></div>
+
+<div class="proto" style="border-color:rgba(96,165,250,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-1)"></div>
+  <div class="proto-h"><span class="proto-name" style="color:var(--accent-1)">LDAP</span><span class="proto-tag" style="background:rgba(96,165,250,.15);color:var(--accent-1)">DIRECTORY SERVICE</span></div>
+  <p style="margin-bottom:0">Protokol pro přístup k directory (hierarchická DB uživatelů). App pošle username+password → LDAP server hledá → bind operace → Success/Fail. <strong>Active Directory</strong> je na LDAP. OpenLDAP = open-source.</p>
+</div>
+
+<div class="proto" style="border-color:rgba(248,113,113,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-5)"></div>
+  <div class="proto-h"><span class="proto-name" style="color:var(--accent-5)">PAP</span><span class="proto-tag" style="background:rgba(248,113,113,.15);color:var(--accent-5)">PLAIN TEXT – NEBEZPEČNÉ!</span></div>
+  <p style="margin-bottom:0">Username + password posílány v <strong>PLAIN TEXT</strong>. Žádná ochrana proti sniffing/replay. Jen přes zabezpečený kanál (VPN, TLS).</p>
+</div>
+
+<div class="proto" style="border-color:rgba(52,211,153,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-3)"></div>
+  <div class="proto-h"><span class="proto-name" style="color:var(--accent-3)">CHAP</span><span class="proto-tag" style="background:rgba(52,211,153,.15);color:var(--accent-3)">CHALLENGE-RESPONSE</span></div>
+  <p style="margin-bottom:0">Heslo NIKDY nejde přes síť! Server pošle challenge → klient: <code>hash = MD5(challenge + password)</code> → pošle hash. Server porovná. Ochrana proti replay (challenge vždy jiný).</p>
+</div>
+
+<div class="proto" style="border-color:rgba(167,139,250,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-2)"></div>
+  <div class="proto-h"><span class="proto-name" style="color:var(--accent-2)">EAP</span><span class="proto-tag" style="background:rgba(167,139,250,.15);color:var(--accent-2)">FRAMEWORK</span></div>
+  <p><strong>Framework</strong> pro různé autentizační metody (ne jeden protokol). Zapojíš různé mechanismy:</p>
+  <ul style="margin-bottom:0">
+    <li><strong>EAP-TLS:</strong> Mutual certifikáty – nejbezpečnější</li>
+    <li><strong>EAP-TTLS:</strong> TLS tunnel + password uvnitř</li>
+    <li><strong>PEAP:</strong> TLS tunnel + password (Microsoft, Wi-Fi WPA2-Enterprise)</li>
+  </ul>
+</div>
+
+<div class="proto" style="border-color:rgba(232,121,249,.3)">
+  <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--kb)"></div>
+  <div class="proto-h"><span class="proto-name" style="color:var(--kb)">SSL/TLS</span><span class="proto-tag" style="background:rgba(232,121,249,.15);color:var(--kb)">MUTUAL AUTH</span></div>
+  <p style="margin-bottom:0">Normální TLS: jen server cert. <strong>Mutual TLS (mTLS):</strong> Obě strany certifikáty → vzájemné ověření. API auth, microservices, Zero Trust.</p>
+</div>
+</section>
+
+<!-- 09 SUMMARY -->
+<section class="section" id="summary">
+<div class="section-header"><span class="section-num">09</span><h2>Shrnutí klíčových bodů</h2></div>
+
+<div class="card key">
+<div class="card-title" style="color:var(--accent-4)">Na zkoušku si zapamatuj</div>
+
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--kb);margin-bottom:8px">TŘI FAKTORY</p>
+<ul>
+  <li><strong>KNOW</strong> (heslo, PIN), <strong>HAVE</strong> (telefon, YubiKey), <strong>ARE</strong> (otisk, Face ID). MFA = 2+ faktorů z RŮZNÝCH kategorií</li>
+  <li><strong>MFA blokuje 99.9 %</strong> automatizovaných útoků. SMS 2FA < TOTP < Hardware token</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">METODY AUTENTIZACE</p>
+<ul>
+  <li><strong>Hesla:</strong> Min 12+ znaků, unikátní, password manager. bcrypt/Argon2 + salt. 81 % breaches = slabá hesla</li>
+  <li><strong>Biometrie:</strong> Fingerprint, Face ID, iris, voice. Nelze změnit při kompromitaci → vždy + MFA</li>
+  <li><strong>Tokeny (JWT):</strong> Header.Payload.Signature. Access (krátký) + Refresh (dlouhý). OAuth 2.0 = „Sign in with Google"</li>
+  <li><strong>Certifikáty:</strong> X.509, PKI. Smart cards, VPN. Mutual TLS (mTLS). Nejbezpečnější ale komplexní</li>
+  <li><strong>SSO:</strong> 1 přihlášení → všechny apps. SAML (XML), OIDC (JSON/JWT), Kerberos (tickets). <strong>MUSÍ + MFA!</strong></li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PROTOKOLY</p>
+<ul>
+  <li><strong>LDAP:</strong> Directory service (Active Directory). Centrální DB uživatelů</li>
+  <li><strong>PAP:</strong> Plain text heslo – <strong>NEBEZPEČNÉ!</strong> Jen přes VPN/TLS</li>
+  <li><strong>CHAP:</strong> Challenge-response, heslo nikdy na síti. hash(challenge + password)</li>
+  <li><strong>EAP:</strong> Framework pro Wi-Fi Enterprise. EAP-TLS (certifikáty, nejbezpečnější), PEAP (TLS tunnel + password)</li>
+  <li><strong>mTLS:</strong> Mutual TLS – obě strany certifikáty. Zero Trust, microservices</li>
+</ul>
+
+<div style="height:1px;background:var(--border);margin:14px 0"></div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">TREND</p>
+<ul>
+  <li><strong>Passwordless</strong> = budoucnost (FIDO2/WebAuthn: biometrika + HW token, žádná hesla)</li>
+  <li><strong>Zero Trust:</strong> „Never trust, always verify" – kontinuální autentizace (device, lokace, risk score)</li>
+</ul>
+</div>
+</section>
+
+</div>
+</body>
+</html>

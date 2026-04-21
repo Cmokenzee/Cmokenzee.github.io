@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Ernest Hemingway: Stařec a moře</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1418;
+  --bg-card:#131b1f;
+  --bg-card-alt:#1a2227;
+  --border:#2a3238;
+  --text:#b8c2c8;
+  --text-muted:#6a7478;
+  --heading:#dce4e8;
+  --accent-1:#4a7a8c;     /* modř karibského moře */
+  --accent-2:#d4a858;     /* kubánské slunce */
+  --accent-3:#8a6a4a;     /* zvětralé dřevo */
+  --accent-4:#9a2a1a;     /* rybí krev */
+  --accent-5:#5a7a6a;     /* mořská tráva */
+  --accent-6:#e8d9b8;     /* vybělené kosti */
+  --accent-7:#3a5a6a;     /* hluboká voda */
+  --accent-8:#c89868;     /* kůže, písek */
+  --sea:#4a7a8c;          /* moře */
+  --sun:#d4a858;          /* slunce */
+  --wood:#8a6a4a;         /* dřevo */
+  --blood:#9a2a1a;        /* krev */
+  --bone:#e8d9b8;         /* kosti */
+  --sand:#c89868;         /* písek */
+  --deep:#3a5a6a;         /* hlubiny */
+  --dawn:#8a7a5a;         /* svítání */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(74,122,140,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(212,168,88,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — moře za svítání */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(14,20,24,.3) 0%,rgba(14,20,24,.9) 100%),
+    linear-gradient(135deg,#0a1418 0%,#152628 30%,#10181e 65%,#0a0e14 100%);
+  border-bottom:3px solid var(--sea);
+  padding:100px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 70% 30%,rgba(212,168,88,.1) 0%,transparent 45%),
+    radial-gradient(ellipse at 30% 80%,rgba(74,122,140,.1) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Horizont */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--sea) 30%,
+    var(--sun) 50%,
+    var(--sea) 70%,
+    transparent 100%);
+  opacity:.5;
+}
+.hero-sun{
+  display:inline-block;
+  color:var(--sun);
+  font-size:46px;
+  line-height:1;
+  margin-bottom:28px;
+  opacity:.85;
+  position:relative;
+  filter:drop-shadow(0 0 25px rgba(212,168,88,.4));
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--sun);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Libre Caslon Text',serif;
+  font-size:clamp(42px,7vw,70px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1.1;
+  position:relative;
+  letter-spacing:1px;
+  text-shadow:0 2px 30px rgba(74,122,140,.25);
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--sand);
+  font-size:.3em;
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.8;
+}
+.hero h1 .subtitle-original{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.35em;
+  font-style:italic;
+  color:var(--sun);
+  letter-spacing:3px;
+  margin-top:16px;
+  font-weight:500;
+  opacity:.85;
+}
+.hero .author{
+  font-family:'Libre Caslon Text',serif;
+  color:var(--sand);
+  margin-top:30px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:2px;
+  font-weight:700;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Libre Caslon Text',serif;
+  color:var(--sun);
+  font-size:19px;
+  margin:40px auto 0;
+  max-width:600px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.6;
+  opacity:.9;
+  padding:22px 28px;
+  border-top:1px solid var(--sea);
+  border-bottom:1px solid var(--sea);
+}
+.hero-quote em{
+  display:block;
+  font-size:.7em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--sea);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'≈ ≈ ≈';
+  position:absolute;
+  top:-12px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--sea);
+  font-family:'Oswald',sans-serif;
+  font-size:14px;
+  letter-spacing:6px;
+  font-weight:500;
+  opacity:.8;
+}
+.toc h2{
+  font-family:'Libre Caslon Text',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--sun);
+  margin-bottom:20px;text-align:center;
+  font-weight:700;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,decimal-leading-zero) ' · ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--sea);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--sun)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--sea),var(--sun));
+  opacity:.8;
+}
+.section-num{
+  font-family:'Libre Caslon Text',serif;
+  font-size:36px;color:var(--sea);
+  font-weight:700;
+  min-width:70px;opacity:.6;
+  line-height:1;
+  letter-spacing:1px;
+}
+.section-header h2{
+  font-family:'Libre Caslon Text',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+h3{
+  font-family:'Libre Caslon Text',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Libre Caslon Text',serif;
+  font-size:14px;font-weight:700;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--sea);background:rgba(74,122,140,.04)}
+.card.key{border-left:3px solid var(--sun);background:rgba(212,168,88,.04)}
+.card.warn{border-left:3px solid var(--blood);background:rgba(154,42,26,.05)}
+.card.wood{border-left:3px solid var(--wood);background:rgba(138,106,74,.05)}
+.card.deep{border-left:3px solid var(--deep);background:rgba(58,90,106,.06)}
+.card.bone{border-left:3px solid var(--bone);background:rgba(232,217,184,.04)}
+
+.card-title{
+  font-family:'Libre Caslon Text',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--sea)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(74,122,140,.1);
+  color:var(--sea);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--sun);font-style:italic}
+
+/* Mořský dělič — vlny */
+.sea-divider{
+  text-align:center;
+  margin:48px 0;
+  color:var(--sea);
+  font-family:'Oswald',sans-serif;
+  font-size:18px;
+  letter-spacing:12px;
+  opacity:.5;
+  position:relative;
+}
+.sea-divider::before,.sea-divider::after{
+  content:'';
+  display:inline-block;
+  width:70px;height:1px;
+  background:var(--sea);
+  vertical-align:middle;
+  margin:0 12px;
+  opacity:.5;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--sea));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.06;
+  pointer-events:none;
+  font-family:'Libre Caslon Text',serif;
+}
+.character .char-name{
+  font-family:'Libre Caslon Text',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:.5px;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--sea));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--sun);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Libre Caslon Text',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--sun);
+  opacity:.35;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* KLÍČOVÝ CITÁT — speciální */
+.key-quote{
+  background:
+    linear-gradient(135deg,rgba(74,122,140,.05) 0%,rgba(212,168,88,.05) 100%);
+  border:2px solid var(--sun);
+  padding:30px 36px;
+  margin:28px 0;
+  position:relative;
+  text-align:center;
+}
+.key-quote::before{
+  content:'☀';
+  display:block;
+  font-size:26px;
+  color:var(--sun);
+  margin-bottom:16px;
+  opacity:.7;
+}
+.key-quote-text{
+  font-family:'Libre Caslon Text',serif;
+  font-size:22px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  line-height:1.5;
+  letter-spacing:.5px;
+}
+.key-quote-english{
+  font-family:'Libre Caslon Text',serif;
+  font-size:16px;
+  color:var(--sand);
+  font-style:italic;
+  margin-top:12px;
+  letter-spacing:1px;
+  opacity:.85;
+}
+.key-quote-source{
+  display:block;
+  margin-top:18px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* KOSTRA RYBY — pro závěr */
+.fish-skeleton{
+  text-align:center;
+  font-family:'Oswald',sans-serif;
+  font-size:22px;
+  letter-spacing:4px;
+  color:var(--bone);
+  opacity:.5;
+  margin:32px 0;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--sea),var(--sun),var(--sea));
+  opacity:.6;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--sea);
+  background:rgba(74,122,140,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(74,122,140,.25);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Libre Caslon Text',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Libre Caslon Text',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--sun);
+  background:rgba(212,168,88,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--sand)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(74,122,140,.05);
+  border-left:2px solid var(--sea);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--sea)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Libre Caslon Text',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--sea);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--sea);
+  font-weight:700;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--sea),transparent);
+  opacity:.6;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--sea);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Libre Caslon Text',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* SYMBOLY — speciální grid */
+.symbols-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;margin:20px 0;
+}
+.symbol-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--sym-color,var(--sea));
+  padding:20px 22px;
+  text-align:center;
+}
+.symbol-icon{
+  font-size:28px;
+  color:var(--sym-color,var(--sea));
+  margin-bottom:10px;
+  opacity:.8;
+  font-family:'Libre Caslon Text',serif;
+}
+.symbol-name{
+  font-family:'Libre Caslon Text',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:700;
+  letter-spacing:1px;
+  margin-bottom:6px;
+  text-transform:uppercase;
+}
+.symbol-meaning{
+  font-family:'Crimson Pro',serif;
+  font-size:13.5px;
+  color:var(--text-muted);
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* LEDOVCOVÁ TEORIE */
+.iceberg{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:26px 32px;
+  margin:24px 0;
+  text-align:center;
+  position:relative;
+}
+.iceberg-visual{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  margin:20px 0;
+}
+.iceberg-above{
+  width:80px;height:30px;
+  background:linear-gradient(180deg,var(--sea),var(--deep));
+  clip-path:polygon(10% 100%,90% 100%,100% 60%,80% 20%,50% 0%,20% 20%,0% 60%);
+}
+.iceberg-line{
+  width:180px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--sea),transparent);
+  margin:2px 0;
+}
+.iceberg-below{
+  width:180px;height:80px;
+  background:linear-gradient(180deg,var(--deep),var(--accent-7));
+  clip-path:polygon(20% 0%,80% 0%,100% 30%,90% 70%,60% 100%,30% 90%,10% 60%,0% 20%);
+  opacity:.6;
+}
+.iceberg-label-above{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--sun);
+  letter-spacing:2px;
+  margin-bottom:6px;
+  font-weight:500;
+}
+.iceberg-label-below{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  margin-top:8px;
+  font-style:italic;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--sea);
+  background:var(--bg);
+}
+.timeline-step.battle::before{
+  border-color:var(--blood);
+  background:rgba(154,42,26,.3);
+}
+.timeline-step.peaceful::before{
+  border-color:var(--sun);
+  background:rgba(212,168,88,.2);
+}
+.timeline-step .ts-title{
+  font-family:'Libre Caslon Text',serif;
+  font-weight:700;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-day{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--sea);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Libre Caslon Text',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--sea);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .symbols-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character,.key-quote{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-sun">☀</div>
+  <div class="hero-label">Maturitní rozbor · Světová literatura · Novela</div>
+  <h1><em>The Old Man and the Sea · 1952</em>Stařec a moře<span class="subtitle-original">aneb Zničit lze, porazit ne</span></h1>
+  <div class="author">Ernest Hemingway</div>
+  <div class="subtitle">Kuba · Golfský proud · Tři dny a dvě noci</div>
+  <div class="hero-quote">Člověka můžete zničit,<br>ale nemůžete ho porazit.<em>— Santiago · Nejslavnější citát díla</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Kuba</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky · Ledovec</a></li>
+  <li><a href="#tropy">Tropy, figury a symbolika</a></li>
+  <li><a href="#symbolika">Klíčová symbolika díla</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">01</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Stařec a moře</strong> <em>(The Old Man and the Sea)</em> je novela publikovaná v roce <strong>1952</strong>. Dílo má chronologickou výstavbu s retrospektivními pasážemi. <strong>Hemingway ji napsal za pouhých 8 týdnů</strong> v roce 1951 — původně měla být součástí většího díla. Kniha <strong>obnovila jeho pověst</strong> po slabě přijatém románu <em>Přes řeku do lesů</em> (1950) a přinesla mu v roce 1953 <strong>Pulitzerovu cenu</strong> a v roce 1954 <strong>Nobelovu cenu za literaturu</strong>.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step peaceful">
+    <div class="ts-title"><span class="ts-day">Úvod</span> Santiago a Manolin</div>
+    <div class="ts-desc">Představení Santiaga, příprava na lov, 84 dní bez úlovku</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-day">Den 1</span> Výlov</div>
+    <div class="ts-desc">Santiago vyplouvá, marlin zabere udici</div>
+  </div>
+  <div class="timeline-step battle">
+    <div class="ts-title"><span class="ts-day">Dny 2–3</span> Boj</div>
+    <div class="ts-desc">Třídenní epický boj s obrovskou rybou</div>
+  </div>
+  <div class="timeline-step battle">
+    <div class="ts-title"><span class="ts-day">Den 3</span> Žraloci</div>
+    <div class="ts-desc">Zabití marlina, útoky žraloků, destrukce úlovku</div>
+  </div>
+  <div class="timeline-step peaceful">
+    <div class="ts-title"><span class="ts-day">Závěr</span> Návrat</div>
+    <div class="ts-desc">Santiagova porážka i vítězství, spánek, sen o lvech</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Časový rámec</div>
+  <p style="margin-bottom:0">Děj se odehrává během <strong>tří dnů a dvou nocí na moři</strong>, plus úvodní a závěrečné scény ve vesnici.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">02</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Lidská důstojnost v porážce, boj člověka s přírodou, vytrvalost, odvaha, osamělost, stáří, vztah učitele a žáka, smysl života, nikdy se nevzdávat.</strong></p>
+</div>
+
+<h3>Motivy</h3>
+<ul>
+  <li><strong>Moře</strong> — život, osud, příroda</li>
+  <li><strong>Marlin</strong> — obrovská ryba, soupeř i bratr</li>
+  <li><strong>Žraloci</strong> — destrukce, zlo</li>
+  <li><strong>Santiago</strong> — starý rybář, „code hero"</li>
+  <li><strong>Manolin</strong> — chlapec, žák, naděje</li>
+  <li><strong>Baseball</strong> — Joe DiMaggio jako vzor</li>
+  <li><strong>Lvi na pláži</strong> (sen) — mládí, síla</li>
+  <li><strong>Samota, vytrvalost, síla, porážka, vítězství v porážce</strong></li>
+  <li><strong>Kostra ryby</strong> — podstata, důkaz</li>
+  <li><strong>Ruce</strong> (zranění) — nástroj práce, důstojnost</li>
+  <li><strong>Úcta k soupeři</strong></li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">03</span><h2>Časoprostor · Kuba</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Čas</h4>
+    <p><strong>Neurčitá současnost</strong> (40.–50. léta 20. století). Děj trvá <strong>tři dny a dvě noci</strong> plus úvodní a závěrečné scény.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sea)">
+    <h4 style="color:var(--sea)">Prostor</h4>
+    <p><strong>Kuba</strong> — rybářská vesnice u Havany. <strong>Karibské moře</strong> (Mexický záliv, Golfský proud). Santiagova chatrč, malá loďka, otevřené moře.</p>
+  </div>
+</div>
+
+<h3>Klíčová místa</h3>
+<div class="card wood">
+  <ul style="margin:0">
+    <li><strong>Rybářská vesnice Cojímar</strong> u Havany — reálná lokace, kterou Hemingway znal</li>
+    <li><strong>Santiagova chatrč</strong> — s postelí, stolem, obrazy Panny Marie a Nejsvětějšího srdce</li>
+    <li><strong>Loď</strong> — malá rybářská loďka (skif)</li>
+    <li><strong>Otevřené moře</strong> — Golfský proud, hlubinné vody daleko od břehu</li>
+    <li><strong>Santiago zašel „příliš daleko"</strong> — překročil hranici bezpečného lovu</li>
+  </ul>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">04</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — od přípravy přes lov k návratu</li>
+  <li><strong>Retrospektivní pasáže</strong> — vzpomínky na mládí, na lvy v Africe, na baseball</li>
+  <li><strong>Trojdílná struktura</strong>: příprava — boj — návrat</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Bez formálního dělení na kapitoly</div>
+  <p style="margin-bottom:0">Novela <strong>není formálně rozdělena na kapitoly</strong> — jde o plynulé vyprávění jednoho souvislého zážitku. To zesiluje pocit <strong>nepřerušovaného boje</strong>.</p>
+</div>
+
+<h3>Vnitřní struktura — dějové části</h3>
+<div class="timeline">
+  <div class="timeline-step peaceful">
+    <div class="ts-title">1. Úvod · Santiago a Manolin</div>
+    <div class="ts-desc">Příprava, 84 dní bez úlovku, vztah se žákem</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. První den · Výlov marlina</div>
+    <div class="ts-desc">Santiago vyplouvá daleko, ryba zabere udici, začátek boje</div>
+  </div>
+  <div class="timeline-step battle">
+    <div class="ts-title">3. Druhý den · Pokračování boje</div>
+    <div class="ts-desc">Ryba táhne loďku, Santiago vytrvá</div>
+  </div>
+  <div class="timeline-step battle">
+    <div class="ts-title">4. Třetí den · Zabití marlina, žraloci</div>
+    <div class="ts-desc">Santiago zabije rybu, žraloci ji začnou ničit</div>
+  </div>
+  <div class="timeline-step peaceful">
+    <div class="ts-title">5. Návrat · Porážka i vítězství</div>
+    <div class="ts-desc">Návrat s kostrou, Manolin u Santiaga, sen o lvech</div>
+  </div>
+</div>
+
+<h3>Klasická dramatická struktura</h3>
+<table class="compare-table">
+  <tr><th>Fáze</th><th>Obsah</th></tr>
+  <tr><td><strong>Expozice</strong></td><td>Santiago jako smolař, 84 dní bez úlovku</td></tr>
+  <tr><td><strong>Kolize</strong></td><td>Chycení obrovského marlina</td></tr>
+  <tr><td><strong>Krize</strong></td><td>Boj s rybou, vyčerpání</td></tr>
+  <tr><td><strong>Peripetie</strong></td><td>Zabití marlina</td></tr>
+  <tr><td><strong>Katastrofa</strong></td><td>Žraloci zničí rybu</td></tr>
+  <tr><td><strong>Rozuzlení</strong></td><td>Návrat s kostrou, morální vítězství</td></tr>
+</table>
+</section>
+
+<!-- 05 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">05</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — má děj, popisuje skutečnost.</p>
+</div>
+
+<h3>Literární žánr — čtyřnásobná charakteristika</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sea)">
+    <h4 style="color:var(--sea)">Novela</h4>
+    <p>Kratší než román (~100 stran), soustředěný děj, jeden hlavní konflikt.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Filozofická próza</h4>
+    <p>Existenciální otázky — smysl života, důstojnost, porážka.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deep)">
+    <h4 style="color:var(--deep)">Alegorická povídka</h4>
+    <p>Hlubší symbolický význam — Santiago = každý člověk v boji s osudem.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--wood)">
+    <h4 style="color:var(--wood)">Moderní epos</h4>
+    <p>Hrdinský boj člověka — novodobý Odysseus či Job.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li>Kratší rozsah (cca 100 stran)</li>
+    <li><strong>Jeden hlavní děj</strong> (lov marlina)</li>
+    <li><strong>Filozofické téma</strong> — smysl života, důstojnost</li>
+    <li>Symbolická rovina (marlin = ideál, žraloci = destrukce)</li>
+    <li>Epický tón — hrdina v boji</li>
+  </ul>
+</div>
+</section>
+
+<!-- 06 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">06</span><h2>Vypravěč</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Typ</div>
+  <p style="margin-bottom:0"><strong>Er-forma</strong> — vypravěč hovoří ve 3. osobě.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Vševědoucí vypravěč</strong> — zná Santiagovy myšlenky</li>
+  <li><strong>Objektivní popis</strong> — střídá se s vnitřním monologem</li>
+  <li><strong>Neutrální tón</strong> — bez emocí, faktický</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Nezúčastněný pozorovatel</strong></li>
+    <li>Prostý, jednoduchý jazyk</li>
+    <li><strong>Hemingwayovský „ledovcový" styl</strong> — většina pod povrchem</li>
+    <li>Střídmý v popisech</li>
+    <li>Nechává čtenáře domýšlet</li>
+    <li>Soustředěný na <strong>akci a dialog</strong></li>
+  </ul>
+</div>
+
+<div class="card deep">
+  <div class="card-title" style="color:var(--deep)">Vypravěč vs. Santiagův vnitřní hlas</div>
+  <p style="margin-bottom:0">Vnější vypravěč se plynule střídá se <strong>Santiagovým vnitřním monologem</strong>. Santiago často <em>mluví nahlas sám se sebou</em> — to je jediná jeho společnost na moři. Toto střídání perspektivy dává novele její intimitu a hloubku.</p>
+</div>
+</section>
+
+<!-- 07 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">07</span><h2>Postavy</h2></div>
+
+<div class="character" style="--character-color:var(--sun)" data-symbol="☀">
+  <div class="char-name">Santiago <em>(Starý rybář)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · „Code hero"</div>
+  <ul style="margin:0">
+    <li><strong>Starý kubánský rybář</strong> (odhaduje se 60–70 let)</li>
+    <li><strong>84 dní bez úlovku</strong> — považován za smolaře (<em>„salao"</em> = nejhorší druh smůly)</li>
+    <li>Chudý, osamělý, <strong>vdovec</strong></li>
+    <li>Zkušený, moudrý, vytrvalý</li>
+    <li>Má rád <strong>baseball</strong> — obdivuje Joe DiMaggia</li>
+    <li>Sní o <strong>lvech na africkém pobřeží</strong> (vzpomínka na mládí)</li>
+    <li>Neklesá na mysli navzdory porážce</li>
+    <li>Symbol <strong>lidské důstojnosti</strong></li>
+    <li><strong>„Nikdy se nevzdává"</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--sea)" data-symbol="♥">
+  <div class="char-name">Manolin <em>(Chlapec)</em></div>
+  <div class="char-role">Hlavní postava · Kladná · Žák a přítel</div>
+  <ul style="margin:0">
+    <li>Mladý chlapec (odhaduje se 12–14 let)</li>
+    <li><strong>Santiagův žák a přítel</strong></li>
+    <li>Rodiče mu <strong>zakázali plout se Santiagem</strong> (považují ho za smolaře)</li>
+    <li>Obdivuje Santiaga</li>
+    <li>Stará se o něj — <strong>jídlo, návnady, kávu</strong></li>
+    <li>Symbol <strong>lásky, věrnosti, naděje</strong></li>
+    <li>Pokračovatel Santiagovy tradice</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--deep)" data-symbol="◊">
+  <div class="char-name">Marlin <em>(Ryba)</em></div>
+  <div class="char-role">„Postava" · Soupeř · Bratr</div>
+  <ul style="margin:0">
+    <li><strong>Obrovská modrá ryba</strong> (odhaduje se 5–6 metrů, přes 700 kg)</li>
+    <li>Krásná, silná, důstojná</li>
+    <li>Santiago k ní cítí <strong>úctu</strong></li>
+    <li>Není nepřítel, ale <em>„bratr"</em></li>
+    <li>Symbol <strong>ideálu, krásy, přírody</strong></li>
+    <li>Santiago ji nazývá <em>„bratře"</em></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--blood)" data-symbol="⚔">
+  <div class="char-name">Žraloci</div>
+  <div class="char-role">„Postavy" · Antagonisté</div>
+  <ul style="margin:0">
+    <li>Různé druhy žraloků (mako, galano)</li>
+    <li><strong>Ničí Santiagův úlovek</strong></li>
+    <li>Symbol <strong>destrukce, zla, marnosti</strong></li>
+    <li>Santiago proti nim bojuje harpunou, pádlem, holýma rukama</li>
+    <li>Nedají se zastavit</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--wood)" data-symbol="⚾">
+  <div class="char-name">Joe DiMaggio</div>
+  <div class="char-role">Nepřímá postava · Inspirace</div>
+  <ul style="margin:0">
+    <li><strong>Slavný baseballový hráč</strong> (New York Yankees)</li>
+    <li>Santiago ho obdivuje</li>
+    <li>Symbol <strong>vytrvalosti navzdory bolestem</strong></li>
+    <li>DiMaggio trpěl <strong>ostruhami na patě</strong> — ale hrál dál</li>
+    <li>Inspirace pro Santiaga: <em>„Musím si počínat jako velký DiMaggio."</em></li>
+    <li>DiMaggiův otec byl rybář — paralela se Santiagem</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">08</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Přímá řeč · Santiago k rybě</div>
+  <div class="quote-block" style="margin:0">„Rybo," řekl, „miluji tě a respektuji tě velmi. Ale zabiju tě dřív, než skončí tento den."<span class="quote-source">Santiago k marlinu</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--sea)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Starý muž si pomyslel, že musí vydržet. Ryba je silná, ale on je zkušenější.</p>
+</div>
+
+<div class="card deep">
+  <div class="card-title" style="color:var(--deep)">Vnitřní monolog · Santiagovy úvahy</div>
+  <p style="font-style:italic;color:var(--heading);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Musel bych si přát být rybou, pomyslel si. Se vším, co má, proti mně pouze s mojí inteligencí.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sea)"><h4 style="color:var(--sea)">Pásmo vypravěče</h4><p>Převažující forma — popis akcí.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sun)"><h4 style="color:var(--sun)">Monolog</h4><p>Santiagovy rozhovory sám se sebou — <strong>mluví nahlas</strong>, aby si dělal společnost.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--wood)"><h4 style="color:var(--wood)">Dialog</h4><p>Rozhovory Santiago–Manolin (na začátku a konci).</p></div>
+  <div class="device-card" style="border-top:2px solid var(--deep)"><h4 style="color:var(--deep)">Popis</h4><p>Moře, ryba, příroda — ale <strong>velmi střídmý</strong>.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Úvaha</h4><p>Santiagovy filozofické myšlenky — nejsou pronášeny, jen promýšleny.</p></div>
+</div>
+</section>
+
+<!-- 09 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">09</span><h2>Jazykové prostředky · Ledovec</h2></div>
+
+<h3>Hemingwayův „ledovcový" princip</h3>
+
+<div class="iceberg">
+  <div class="iceberg-label-above">NAD HLADINOU · 10 % · Text</div>
+  <div class="iceberg-visual">
+    <div class="iceberg-above"></div>
+    <div class="iceberg-line"></div>
+    <div class="iceberg-below"></div>
+  </div>
+  <div class="iceberg-label-below">POD HLADINOU · 90 % · Podtext, význam, emoce</div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Iceberg theory</div>
+  <p style="margin-bottom:0">Hemingway formuloval svou <strong>teorii ledovce</strong> v roce 1932: <em>„Když spisovatel dost ví o tom, o čem píše, může vynechat věci, které zná, a čtenář, pokud spisovatel píše opravdově, bude mít pocit těchto věcí tak silně, jako kdyby je spisovatel řekl."</em> <strong>Důstojnost textu je v tom, co není napsáno.</strong> 10 % viditelné, 90 % skryté.</p>
+</div>
+
+<h3>Jednoduchý jazyk</h3>
+<div class="card wood">
+  <ul style="margin:0">
+    <li><strong>Krátké věty</strong></li>
+    <li>Prostý slovník</li>
+    <li><strong>Minimální adjektiva</strong></li>
+    <li>„Ledovcový" styl Hemingwaye — <strong>90 % pod povrchem</strong></li>
+  </ul>
+</div>
+
+<h3>Opakování</h3>
+<ul>
+  <li><em>„He was an old man…"</em> — rytmické opakování</li>
+  <li>Opakování slov pro důraz</li>
+  <li><strong>Biblický rytmus</strong> vyprávění</li>
+</ul>
+
+<h3>Hemingwayovský styl</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Stručnost, úspornost</strong></li>
+    <li>Žádné ozdoby</li>
+    <li>Dialog bez <em>„řekl", „odpověděl"</em></li>
+    <li><strong>Fakta, ne emoce</strong></li>
+    <li>Princip ledovce — většina nevysloveno</li>
+    <li><strong>„Ukázat, ne říct"</strong> (show, don't tell)</li>
+  </ul>
+</div>
+
+<h3>Symbolický jazyk</h3>
+<ul>
+  <li>Jednoduchá slova mají <strong>hluboký význam</strong></li>
+  <li>Moře = život</li>
+  <li>Marlin = ideál</li>
+  <li>Žraloci = destrukce</li>
+</ul>
+
+<h3>Španělské výrazy</h3>
+<div class="card deep">
+  <p style="margin-bottom:0">Hemingway prokládá text <strong>španělskými slovy</strong> pro autenticitu:</p>
+  <ul style="margin:10px 0 0">
+    <li><em>„Salao"</em> — smolař (nejhorší druh smůly)</li>
+    <li><em>„La mar"</em> — moře (ženský rod) — Santiago ho tak nazývá s láskou</li>
+    <li><em>„El mar"</em> — moře (mužský rod) — takto mluví mladší rybáři, co ho vnímají jako nepřítele</li>
+    <li><em>„Qué va"</em> — „ale jdi"</li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Jednoduchý jazyk</strong> umožňuje široké pochopení</li>
+    <li><strong>Opakování</strong> vytváří rytmus</li>
+    <li><strong>Hemingwayovský styl</strong> nutí čtenáře přemýšlet</li>
+    <li><strong>Symbolika</strong> dodává hlubší význam</li>
+  </ul>
+</div>
+</section>
+
+<!-- 10 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">10</span><h2>Tropy, figury a symbolika</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Marlin · Moře · Lvi</div>
+    <div class="trope-note">Marlin = ideál. Žraloci = destrukce. Moře = život. Lvi = mládí. Kostra = podstata.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">Boj = život</div>
+    <div class="trope-note">Boj s marlinem = životní boj. Santiago = každý člověk v boji s osudem.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">„La mar" · „bratr"</div>
+    <div class="trope-note">Moře jako <em>„la mar"</em> (ženský rod) — matka, milenka. Marlin je „bratr".</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">Jako lev</div>
+    <div class="trope-note">Santiago silný „jako lev". Ruce „jako drápy orla".</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antiteze</div>
+    <div class="trope-example">Stáří vs. mládí</div>
+    <div class="trope-note">Vítězství vs. porážka. Síla vs. slabost. Člověk vs. příroda.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Paradox</div>
+    <div class="trope-example">Porážka = vítězství</div>
+    <div class="trope-note"><strong>Ústřední paradox díla</strong>. Santiago prohrál materiálně, ale vyhrál morálně.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Alegorie</div>
+    <div class="trope-example">Lidský život</div>
+    <div class="trope-note">Celý příběh = alegorie lidského života a boje se smrtelností.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Opakování</div>
+    <div class="trope-example">Biblický rytmus</div>
+    <div class="trope-note">Rytmické opakování slov a frází — jako žalmy, jako moře.</div>
+  </div>
+</div>
+
+<div class="card bone">
+  <div class="card-title" style="color:var(--bone)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Symboly</strong> nesou filozofický význam, <strong>paradox</strong> vyjadřuje základní myšlenku díla. Každý detail má druhý, hlubší význam — v duchu ledovcové teorie.</p>
+</div>
+</section>
+
+<!-- 11 SYMBOLIKA -->
+<section class="section" id="symbolika">
+<div class="section-header"><span class="section-num">11</span><h2>Klíčová symbolika díla</h2></div>
+
+<p>Stařec a moře je mistrovské dílo <strong>symbolické vícevrstevnaté prózy</strong>. Každý předmět, bytost a detail nese hlubší význam.</p>
+
+<div class="symbols-grid">
+  <div class="symbol-card" style="--sym-color:var(--deep)">
+    <div class="symbol-icon">◊</div>
+    <div class="symbol-name">Marlin</div>
+    <div class="symbol-meaning">Ideál, dokonalost, krása přírody</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--blood)">
+    <div class="symbol-icon">⚔</div>
+    <div class="symbol-name">Žraloci</div>
+    <div class="symbol-meaning">Destrukce, zlo, marnost</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--sea)">
+    <div class="symbol-icon">≈</div>
+    <div class="symbol-name">Moře</div>
+    <div class="symbol-meaning">Život, osud, příroda</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--sun)">
+    <div class="symbol-icon">☀</div>
+    <div class="symbol-name">Lvi ve snu</div>
+    <div class="symbol-meaning">Mládí, síla, Afrika, vzpomínka</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--wood)">
+    <div class="symbol-icon">✋</div>
+    <div class="symbol-name">Ruce</div>
+    <div class="symbol-meaning">Nástroj práce, důstojnost, utrpení</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--bone)">
+    <div class="symbol-icon">〡〡</div>
+    <div class="symbol-name">Kostra</div>
+    <div class="symbol-meaning">Podstata, důkaz — vítězství i porážka</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--sand)">
+    <div class="symbol-icon">⚾</div>
+    <div class="symbol-name">Baseball</div>
+    <div class="symbol-meaning">Spojení se světem, inspirace</div>
+  </div>
+  <div class="symbol-card" style="--sym-color:var(--accent-5)">
+    <div class="symbol-icon">✕</div>
+    <div class="symbol-name">84 dní</div>
+    <div class="symbol-meaning">Téměř 3 měsíce smůly, biblická zkouška</div>
+  </div>
+</div>
+
+<h3>Biblické a mytologické odkazy</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Santiago = Saint James (svatý Jakub)</strong> — patron rybářů</li>
+    <li><strong>Santiago nesoucí stožár na rameni</strong> = Kristus nesoucí kříž</li>
+    <li>Santiagovy <strong>zraněné ruce</strong> = stigmata</li>
+    <li><strong>84 dní</strong> = biblické číslo (blízké 40 dnům na poušti)</li>
+    <li><strong>Santiago jako Odysseus</strong> — hrdina sám na moři</li>
+    <li><strong>Santiago jako Job</strong> — trpící, ale neporažený</li>
+    <li>Boj <strong>3 dny</strong> = Kristovo utrpení</li>
+  </ul>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">12</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="char-title" style="color:var(--sea)"></div>
+  <div class="card-title" style="color:var(--sea)">Ernest Miller Hemingway (1899–1961)</div>
+  <p>Americký spisovatel a novinář, narozen v <strong>Oak Park, Illinois</strong>. Už jako 18letý odešel dobrovolně jako <strong>řidič sanitky v italské armádě za 1. světové války</strong> — <strong>byl těžce zraněn</strong> rakouskou minometnou palbou. Po válce pracoval jako novinář v Paříži, kde patřil k <strong>„ztracené generaci"</strong> kolem Gertrude Stein. Jeho přáteli byli Fitzgerald, Ezra Pound, James Joyce. Jezdil na <strong>safari do Afriky, na korridu do Španělska, rybařit na Kubu</strong>. Byl válečným zpravodajem ve <strong>Španělské občanské válce</strong> (na straně republikánů) a za <strong>2. světové války</strong> (vylodění v Normandii, osvobození Paříže). Byl <strong>4× ženatý</strong>. Trpěl <strong>alkoholismem a depresemi</strong>. Na Kubě žil v domě <em>Finca Vigía</em> u Havany, odkud lovil marliny na lodi <strong>Pilar</strong>. V roce 1954 přežil <strong>dvě letecká neštěstí po sobě</strong> v Africe — způsobila mu trvalé zdravotní následky. Postupně ztrácel schopnost psát. <strong>V roce 1961 spáchal sebevraždu</strong> — stejně jako jeho otec a později i jeho vnučka.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Poslední významné dílo</strong> (1952)</li>
+  <li><strong>Pulitzerova cena (1953)</strong></li>
+  <li><strong>Nobelova cena za literaturu (1954)</strong> — <em>„za umění vyprávění, které zvládl ve své novele Stařec a moře"</em></li>
+  <li>Comeback po kritice předchozího díla <em>Přes řeku do lesů</em> (1950)</li>
+</ul>
+
+<h3>Další Hemingwayova díla</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Fiesta / I slunce vychází</strong></td><td>1926</td><td>Ztracená generace v Paříži a Španělsku, corrida</td></tr>
+  <tr><td><strong>Sbohem, armádo</strong></td><td>1929</td><td>1. světová válka, italská fronta — autobiografické</td></tr>
+  <tr><td><strong>Zelené pahorky africké</strong></td><td>1935</td><td>Safari, reportážní próza</td></tr>
+  <tr><td><strong>Sníh na Kilimandžáru</strong></td><td>1936</td><td>Povídka o umírajícím spisovateli</td></tr>
+  <tr><td><strong>Komu zvoní hrana</strong></td><td>1940</td><td>Španělská občanská válka</td></tr>
+  <tr><td><strong>Stařec a moře</strong></td><td>1952</td><td>Vrcholné dílo — Nobelova cena</td></tr>
+  <tr><td><strong>Pohyblivý svátek</strong></td><td>1964 <em>(posm.)</em></td><td>Vzpomínky na Paříž 20. let</td></tr>
+</table>
+
+<h3>Hemingwayův styl</h3>
+<ul>
+  <li><strong>„Ledovcový" princip</strong> (iceberg theory)</li>
+  <li>Stručnost, úspornost</li>
+  <li>Minimální popisy</li>
+  <li>Důraz na <strong>dialog a akci</strong></li>
+  <li><em>„Ukázat, ne říct"</em> (show, don't tell)</li>
+  <li><strong>Muži v extrémních situacích</strong></li>
+  <li><strong>Code hero</strong> — etický kodex hrdiny</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--sun)">Code Hero (Hemingwayovský kodex)</div>
+  <p style="margin-bottom:0">Hemingwayův <strong>code hero</strong> je postava s <strong>přísným morálním kodexem</strong> — čelí osudu bez stěžování, zachovává <strong>grace under pressure</strong> (důstojnost pod tlakem), neklesá na mysli. <strong>Santiago je ideální ztělesnění code hero</strong>. Další příklady: Jake Barnes v Fiestě, Robert Jordan v Komu zvoní hrana.</p>
+</div>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">13</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li>Publikováno <strong>1952</strong></li>
+    <li><strong>Studená válka</strong></li>
+    <li>Poválečné období</li>
+    <li><strong>Existencialismus</strong> v literatuře</li>
+    <li>Umělecký sloh: <strong>MODERNÍ PRÓZA / EXISTENCIALISMUS</strong></li>
+  </ul>
+</div>
+
+<h3>Základní rysy moderní prózy a existencialismu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)"><h4 style="color:var(--sun)">Existenciální otázky</h4><p>Smysl života, smrt, svoboda.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--blood)"><h4 style="color:var(--blood)">Hrdina v extrémní situaci</h4><p>Zkouška ohněm — Santiago na moři.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sea)"><h4 style="color:var(--sea)">Autenticita</h4><p>Život bez přetvářky, opravdový.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--wood)"><h4 style="color:var(--wood)">Svoboda a odpovědnost</h4><p>Svobodně volit, nést důsledky.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--deep)"><h4 style="color:var(--deep)">Absurdita existence</h4><p>Svět je absurdní, člověk přesto jedná.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--bone)"><h4 style="color:var(--bone)">Důstojnost v porážce</h4><p>Prohraj, ale se ctí.</p></div>
+</div>
+
+<h3>Hemingway a ztracená generace</h3>
+<div class="card wood">
+  <ul style="margin:0">
+    <li><strong>Lost Generation</strong> — ztracená generace po 1. sv. válce</li>
+    <li>Zklamání z války, hledání smyslu</li>
+    <li>Nihilismus vs. vlastní kód</li>
+    <li>Termín vytvořila <strong>Gertrude Stein</strong></li>
+  </ul>
+</div>
+
+<h3>Další zástupci ztracené generace</h3>
+<ul>
+  <li><strong>F. Scott Fitzgerald</strong> — <em>Velký Gatsby</em></li>
+  <li><strong>John Dos Passos</strong> — <em>Manhattan Transfer</em></li>
+  <li><strong>Gertrude Stein</strong> — teoretička, mentorka generace</li>
+  <li><strong>Ezra Pound</strong> — básník</li>
+</ul>
+
+<h3>Existencialismus ve světě</h3>
+<table class="compare-table">
+  <tr><th>Země</th><th>Autor</th><th>Dílo</th></tr>
+  <tr><td><strong>Francie</strong></td><td>Jean-Paul Sartre</td><td><em>Zeď, Nevolnost</em></td></tr>
+  <tr><td><strong>Francie</strong></td><td>Albert Camus</td><td><em>Cizinec, Mor</em></td></tr>
+  <tr><td><strong>USA</strong></td><td>William Faulkner</td><td><em>Hluk a vřava</em></td></tr>
+  <tr><td><strong>USA</strong></td><td>John Steinbeck</td><td><em>Hrozny hněvu</em></td></tr>
+</table>
+
+<div class="card deep">
+  <div class="card-title" style="color:var(--deep)">Srovnání s Camusovým Sisyfem</div>
+  <p style="margin-bottom:0">Santiago je blízký <strong>Camusovu Sisyfovi</strong> (<em>Mýtus o Sisyfovi</em>, 1942). Oba vedou <strong>marný, ale důstojný boj</strong> proti osudu. Camus: <em>„Musíme si představit Sisyfa šťastného."</em> Hemingway: <em>„Člověk může být zničen, ale ne poražen."</em> Oba hrdinové přijímají absurditu a stále bojují.</p>
+</div>
+</section>
+
+<div class="sea-divider">≈ ≈ ≈</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">14</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--sun)">
+  <span class="scene-label" style="background:rgba(212,168,88,.1);border-color:var(--sun);color:var(--sun)">★ 01 · Úvod · SLAVNÁ PRVNÍ VĚTA ★</span>
+  <div class="scene-title">Úvodní charakteristika</div>
+  <div class="scene-text">Byl to starý muž, který lovil sám v malé lodi v Golfském proudu a bylo to už osmdesát čtyři dny, co nechytil žádnou rybu.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Slavný začátek novely.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Jednoduchá, stručná expozice</strong></li>
+      <li>Typický Hemingwayův styl</li>
+      <li>Představení situace — smolař</li>
+      <li>Číslo <strong>84 má symbolický význam</strong> (84 dní = téměř 3 měsíce)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">02 · Úvod · Portrét</span>
+  <div class="scene-title">Santiagovy oči</div>
+  <div class="scene-text">Všechno na něm bylo staré, kromě očí. A ty měly barvu moře a byly veselé a neporažené.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Kontrast</strong>: tělo staré, duch mladý</li>
+      <li>Oči = zrcadlo duše</li>
+      <li><em>„Neporažené"</em> — klíčové slovo</li>
+      <li>Santiago <strong>nikdy neklesl na mysli</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">03 · Úvod · Vztah</span>
+  <div class="scene-title">Santiago a Manolin — Láska a péče</div>
+  <div class="scene-text">Chlapec miloval starého muže a bylo mu ho líto.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Jednoduchá věta, hluboký význam</strong></li>
+      <li>Láska bez sentimentu</li>
+      <li>Vztah učitel–žák, otec–syn</li>
+      <li>Manolin představuje <strong>naději</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">04 · Moře · Vzor</span>
+  <div class="scene-title">Baseball a Joe DiMaggio</div>
+  <div class="scene-text">„Musím si počínat jako velký DiMaggio," řekl si. „On dělá všechno dokonale, i když má bolesti v patě."</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>DiMaggio = inspirace</li>
+      <li><strong>Vytrvalost navzdory bolesti</strong></li>
+      <li>Santiago hledá vzory</li>
+      <li>Baseball = spojení s životem mimo moře</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--deep)">
+  <span class="scene-label" style="background:rgba(58,90,106,.1);border-color:var(--deep);color:var(--deep)">★ 05 · Moře · ÚCTA K SOUPEŘI ★</span>
+  <div class="scene-title">„Rybo, jsem s tebou až do smrti"</div>
+  <div class="scene-text">„Rybo," řekl, „miluji tě a respektuji tě velmi. Ale zabiju tě dřív, než skončí tento den."</div>
+  <div class="scene-context"><strong>Kontext:</strong> Santiago mluví k marlinu během boje.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Úcta k soupeři</strong></li>
+      <li>Paradox: miluje, ale zabije</li>
+      <li>Ryba není nepřítel, ale <strong>bratr</strong></li>
+      <li>Morální dilema lovce</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">06 · Moře · Filozofie</span>
+  <div class="scene-title">Samomluva na moři</div>
+  <div class="scene-text">Kéž bych byl rybou, pomyslel si, se vším, co má, proti mně pouze s mojí inteligencí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Úcta k rybě</li>
+      <li>Ryba má sílu, člověk inteligenci</li>
+      <li>Filozofická úvaha</li>
+      <li><strong>Pokora</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--sun)">
+  <span class="scene-label" style="background:rgba(212,168,88,.1);border-color:var(--sun);color:var(--sun)">★ 07 · Sen · LVI NA PLÁŽI ★</span>
+  <div class="scene-title">Vzpomínka na lvy</div>
+  <div class="scene-context">Snil o lvech na pláži. Jako mladík je viděl v Africe. <strong>Teď už snil jen o lvech.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Lvi = symbol síly, mládí, Afriky</strong></li>
+      <li>Nostalgie po mládí</li>
+      <li>Sny jako útěcha</li>
+      <li><strong>Opakující se motiv</strong> — v úvodu i v závěru</li>
+    </ul>
+  </div>
+</div>
+
+<div class="key-quote">
+  <div class="key-quote-text">Člověka můžete zničit,<br>ale nemůžete ho porazit.</div>
+  <div class="key-quote-english">A man can be destroyed but not defeated.</div>
+  <div class="key-quote-source">★ Santiago · Ústřední myšlenka díla · Kapitola 16 ★</div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">08 · Moře · Klíčový citát</span>
+  <div class="scene-title">„Člověk se nenarodil k porážce"</div>
+  <div class="scene-context"><strong>Kontext:</strong> Santiagova úvaha během boje.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Nejslavnější citát z díla</strong></li>
+      <li>Základní myšlenka novely</li>
+      <li><strong>Důstojnost v porážce</strong></li>
+      <li>Existenciální poselství</li>
+      <li>Fyzická porážka ≠ duchovní porážka</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(154,42,26,.08);border-color:var(--blood);color:var(--blood)">★ 09 · Moře · ZABITÍ MARLINA ★</span>
+  <div class="scene-title">Zabití marlina</div>
+  <div class="scene-context">Vytáhl meč a vrhl ho celou silou do ryby. Cítil, jak vniká, pak ještě jednou. Ryba vyskočila vysoko nad vodu a pak pomalu klesla. <strong>Byla mrtvá.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Vyvrcholení boje</strong></li>
+      <li>Vítězství (zdánlivé)</li>
+      <li>Smrt krásného tvora</li>
+      <li><strong>Začátek konce</strong> (přijdou žraloci)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--blood)">
+  <span class="scene-label" style="background:rgba(154,42,26,.08);border-color:var(--blood);color:var(--blood)">★ 10 · Moře · ŽRALOCI ★</span>
+  <div class="scene-title">Boj se žraloky — Marnost</div>
+  <div class="scene-context">Bojoval proti žralokům. Jednoho po druhém. Ale bylo jich stále víc. Vzali mu harpunu. Bojoval pádlem. <strong>Pak holýma rukama.</strong> Ale nemohl je zastavit. Jedli jeho rybu.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Epický, ale marný boj</strong></li>
+      <li>Santiago se nevzdává, i když ví, že prohrává</li>
+      <li>Vytrvalost navzdory beznaději</li>
+      <li><strong>Tragédie</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene">
+  <span class="scene-label">11 · Moře · Sebereflexe</span>
+  <div class="scene-title">Smíření s porážkou</div>
+  <div class="scene-text">„Zašel jsem příliš daleko," řekl nahlas. „Zašel jsem za hranice."</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Sebereflexe</strong></li>
+      <li><em>„Příliš daleko"</em> = za hranice lidských možností</li>
+      <li>Ale nelituje — musel to zkusit</li>
+      <li><strong>Hybris (pýcha) vs. lidskost</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--bone);background:rgba(232,217,184,.02)">
+  <span class="scene-label" style="background:rgba(232,217,184,.06);border-color:var(--bone);color:var(--bone)">★ 12 · Návrat · KOSTRA RYBY ★</span>
+  <div class="scene-title">Návrat s kostrou</div>
+  <div class="scene-context">Plul zpět s kostrou ryby přivázanou k lodi. Byla krásná, i když z ní zbyly jen kosti. <strong>Hlava a ocas a páteř. To bylo vše.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Vizuální obraz porážky</li>
+      <li>Ale i <strong>důkaz</strong> — ryba byla obrovská</li>
+      <li>Kostra = symbol — zůstává podstata</li>
+      <li><strong>Materiální porážka, morální vítězství</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="fish-skeleton">〡〡〡〡〡〡〡〡〡〡〡〡〡〡〡</div>
+
+<div class="scene">
+  <span class="scene-label">13 · Návrat · Ironie</span>
+  <div class="scene-title">Turisté a neporozumění</div>
+  <div class="scene-context">Turisté u restaurace viděli kostru. <em>„Co je to?"</em> ptali se. <em>„Žralok,"</em> odpověděl číšník. <strong>Nevěděli nic o tom, co se stalo.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Ironie</strong></li>
+      <li>Svět nerozumí Santiagovu hrdinství</li>
+      <li>Neznalost vs. znalost</li>
+      <li>Santiagův boj byl jen pro něj (a Manolina)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--sun)">
+  <span class="scene-label" style="background:rgba(212,168,88,.1);border-color:var(--sun);color:var(--sun)">★ 14 · Závěr · NADĚJE ★</span>
+  <div class="scene-title">Manolin a naděje — Závěr</div>
+  <div class="scene-context">Chlapec plakal, když viděl Santiagovy zraněné ruce. <em>„Půjdu s vámi zase,"</em> řekl. <em>„Rodiče mohou počkat. Naučíte mě všechno."</em><br><strong>A Santiago snil o lvech.</strong></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li>Manolin se vrací k Santiagovi</li>
+      <li>Naděje — <strong>tradice pokračuje</strong></li>
+      <li>Generační předání</li>
+      <li>Santiago opět sní o lvech — <strong>kruh se uzavírá</strong></li>
+      <li>Navzdory porážce zůstává důstojnost a naděje</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="sea-divider">≈ ≈ ≈</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">15</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--sea)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Člověka můžete zničit, ale nemůžete ho porazit.</strong> Smysl života není v konečném vítězství, ale v <strong>důstojném boji</strong>. Nikdy se nevzdávat navzdory beznaději. Úcta k soupeři a přírodě. Předávání moudrosti další generaci.</p>
+</div>
+
+<h3>Hlavní témata díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Důstojnost v porážce</h4>
+    <p>„Zničen, ne poražen" — ústřední myšlenka.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sea)">
+    <h4 style="color:var(--sea)">Vytrvalost</h4>
+    <p>Nikdy se nevzdávat — i když ví, že nemůže vyhrát.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deep)">
+    <h4 style="color:var(--deep)">Osamělost</h4>
+    <p>Člověk sám proti osudu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--wood)">
+    <h4 style="color:var(--wood)">Stáří</h4>
+    <p>Moudrost vs. ubývající síla.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--accent-5)">
+    <h4 style="color:var(--accent-5)">Úcta</h4>
+    <p>K soupeři, k přírodě, k životu.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--blood)">
+    <h4 style="color:var(--blood)">Láska</h4>
+    <p>Santiago–Manolin, učitel–žák.</p>
+  </div>
+</div>
+
+<h3>Autobiografické prvky</h3>
+<details>
+  <summary>Hemingwayova Kuba</summary>
+  <p>Hemingway <strong>miloval rybaření na Kubě</strong>. Vlastnil loď <strong>„Pilar"</strong>. Znal kubánské rybáře z vesnice Cojímar. Lovil <strong>marliny</strong> — obrovské ryby, které ho fascinovaly. Na Kubě měl vilu <strong>Finca Vigía</strong> v předměstí Havany, kde bydlel 20 let. Dnes je z ní muzeum. <strong>Inspirací pro Santiaga</strong> byl pravděpodobně kubánský rybář <strong>Gregorio Fuentes</strong>, který byl Hemingwayovým kapitánem Pilaru a přítelem po 30 let. Fuentes se dožil 104 let — zemřel v roce 2002.</p>
+</details>
+
+<details>
+  <summary>Nobelova cena 1954</summary>
+  <p>Hemingway dostal <strong>Nobelovu cenu za literaturu 1954</strong>. Zdůvodnění Švédské akademie: <em>„za umění vyprávění, které ve vrcholné formě předvedl ve své novele Stařec a moře, a za vliv, který měl na moderní styl."</em> Hemingway se <strong>nedostavil na ceremonii</strong> — přes dvě letecká neštěstí v Africe byl fyzicky i psychicky vyčerpaný. <strong>Peněžní výhru věnoval svatyni Panny Marie v Cobre na Kubě.</strong> Celou medaili věnoval kubánskému lidu — dnes je v Santiagu de Cuba.</p>
+</details>
+
+<h3>Biblické a mytologické odkazy</h3>
+<div class="card deep">
+  <ul style="margin:0">
+    <li><strong>Santiago = San Diego = svatý Jakub</strong> (patron rybářů)</li>
+    <li><strong>40 dní</strong> (biblické číslo) — Santiagových 84 dní</li>
+    <li><strong>Kristovská symbolika</strong> — ruce, utrpení, Santiago nese stožár na rameni</li>
+    <li><strong>Odysseus</strong> — hrdina sám na moři</li>
+    <li><strong>Job</strong> — trpící, ale neporažený</li>
+  </ul>
+</div>
+
+<h3>Filmové adaptace</h3>
+<details>
+  <summary>Film 1958 — Spencer Tracy</summary>
+  <p><strong>Spencer Tracy jako Santiago</strong>, režie John Sturges. Dílo bylo <strong>těžko filmovat</strong> (většina je vnitřní monolog). Tracy byl nominován na Oscara. Film získal Oscara za hudbu. Kritiky smíšené — vizuálně působivé, ale nedokázalo zachytit vnitřní hloubku textu.</p>
+</details>
+<details>
+  <summary>Další adaptace</summary>
+  <p><strong>1990</strong> — TV film s Anthonym Quinnem jako Santiagem. <strong>1999</strong> — <strong>animovaný krátký film</strong> ruského režiséra Alexandra Petrova, který získal <strong>Oscara</strong>. Film byl malován ručně olejovými barvami na skle — naprostá vizuální hříčka.</p>
+</details>
+
+<h3>Aktuálnost</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Univerzální příběh</strong> o lidském údělu</li>
+    <li>Inspirace v těžkých časech</li>
+    <li><strong>„Nevzdávej se nikdy"</strong></li>
+    <li>Úcta k přírodě</li>
+    <li>Důstojnost v porážce</li>
+    <li>Mezigenerační vztahy</li>
+    <li>Stárnutí s grácí</li>
+  </ul>
+</div>
+
+<h3>Zajímavosti</h3>
+<details>
+  <summary>Rekordně rychlé vydání</summary>
+  <p>Novela byla <strong>napsána za 8 týdnů</strong> (1951). Nejprve vyšla v časopise <strong>Life</strong> v září 1952 — <strong>prodalo se 5,3 milionu výtisků za dva dny</strong>. Teprve pak knižně u Scribner's Sons. Stala se okamžitou senzací.</p>
+</details>
+<details>
+  <summary>Comeback po kritice</summary>
+  <p>Před Starcem a mořem vyšel Hemingwayův román <em>Přes řeku do lesů</em> (1950), který byl <strong>zničen kritikou</strong>. Mnozí už Hemingwaye odepsali jako spisovatele. <strong>Stařec a moře byl jeho velkolepý návrat</strong> — kritika i čtenářstvo byli nadšeni.</p>
+</details>
+<details>
+  <summary>Hemingwayova smrt</summary>
+  <p>Po Nobelově ceně Hemingway už <strong>nenapsal žádné významné dílo</strong>. Trpěl depresemi, alkoholismem, paranoi. Byl léčen elektrošoky v psychiatrické léčebně Mayo Clinic. <strong>2. července 1961 spáchal sebevraždu</strong> ve svém domě v Ketchumu, Idaho, použil svou loveckou pušku. <strong>Stejný osud stihl jeho otce, dva sourozence i vnučku</strong> — herečku Margaux Hemingway. Rodina měla genetickou predispozici k depresím.</p>
+</details>
+<details>
+  <summary>Kulturní dědictví</summary>
+  <p><em>„A man can be destroyed but not defeated"</em> — <strong>jeden z nejcitovanějších anglických citátů</strong>. Symbol vytrvalosti a důstojnosti. <strong>Inspiroval sportovce, bojovníky, veterány</strong>. Stařec a moře je <strong>klasikou americké literatury</strong> a povinnou četbou na středních školách po celém světě.</p>
+</details>
+
+<div class="key-quote" style="margin-top:40px">
+  <div class="key-quote-text">A Santiago snil o lvech.</div>
+  <div class="key-quote-english">And the old man dreamed of lions.</div>
+  <div class="key-quote-source">Poslední věta novely</div>
+</div>
+</section>
+
+<div class="sea-divider" style="margin-top:50px">≈ ≈ ≈</div>
+
+</div>
+</body>
+</html>

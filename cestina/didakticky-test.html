@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Didaktický test – Čeština k maturitě · Komplexní pomůcka</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141812;
+  --bg-card:#1c2018;
+  --bg-card-alt:#232720;
+  --border:#323529;
+  --text:#b8b098;
+  --text-muted:#706a58;
+  --heading:#dcd2ba;
+  --accent-1:#4a6a4a;
+  --accent-2:#8a7248;
+  --accent-3:#6a5a38;
+  --accent-4:#a8882a;
+  --accent-5:#5a7858;
+  --accent-6:#8a4a38;
+  --accent-7:#6a3a28;
+  --accent-8:#c4a260;
+  --river:#4a6a4a;
+  --gold:#8a7248;
+  --earth:#6a5a38;
+  --star:#a8882a;
+  --moss:#5a7858;
+  --deer:#8a4a38;
+  --forest:#6a3a28;
+  --sun:#c4a260;
+  --sepia:#b8985a;
+  --correct:#5a7858;
+  --wrong:#8a4a38;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(74,106,74,.05) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(138,114,72,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(20,24,18,.3) 0%,rgba(20,24,18,.92) 100%),
+    linear-gradient(135deg,#1a1e16 0%,#24281c 30%,#181c14 65%,#10140e 100%);
+  border-bottom:3px solid var(--river);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(74,106,74,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(196,162,96,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--river) 20%,
+    var(--sun) 50%,
+    var(--river) 80%,
+    transparent 100%);
+  opacity:.5;
+}
+.hero-symbol{
+  display:inline-block;
+  font-size:42px;
+  line-height:1;
+  margin-bottom:26px;
+  color:var(--sun);
+  opacity:.8;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(196,162,96,.3));
+  letter-spacing:12px;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--sepia);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Lora',serif;
+  font-size:clamp(40px,7vw,68px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1.1;
+  position:relative;
+  letter-spacing:.5px;
+  text-shadow:0 2px 30px rgba(74,106,74,.2);
+  font-style:italic;
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-weight:400;
+  color:var(--sepia);
+  font-size:.3em;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.8;
+  font-style:normal;
+}
+.hero h1 .sub-title{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.38em;
+  font-style:italic;
+  color:var(--sun);
+  letter-spacing:2.5px;
+  margin-top:16px;
+  font-weight:500;
+  opacity:.9;
+}
+.hero .author{
+  font-family:'Lora',serif;
+  color:var(--sepia);
+  margin-top:30px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:2px;
+  font-weight:600;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Lora',serif;
+  color:var(--heading);
+  font-size:18px;
+  margin:40px auto 0;
+  max-width:640px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.6;
+  opacity:.9;
+  padding:22px 28px;
+  border-top:1px solid var(--river);
+  border-bottom:1px solid var(--river);
+}
+.hero-quote em{
+  display:block;
+  font-size:.7em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:920px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--river);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'❦';
+  position:absolute;
+  top:-14px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--sun);
+  font-size:20px;
+  opacity:.75;
+}
+.toc h2{
+  font-family:'Lora',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--sun);
+  margin-bottom:20px;text-align:center;
+  font-weight:600;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,decimal-leading-zero) ' · ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--river);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--sun)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--river),var(--sun));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Lora',serif;
+  font-size:36px;color:var(--river);
+  font-weight:700;
+  min-width:70px;opacity:.6;
+  line-height:1;
+  letter-spacing:1px;
+  font-style:italic;
+}
+.section-header h2{
+  font-family:'Lora',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+  font-style:italic;
+}
+
+h3{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Lora',serif;
+  font-size:14px;font-weight:700;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--river);background:rgba(74,106,74,.05)}
+.card.key{border-left:3px solid var(--sun);background:rgba(196,162,96,.04)}
+.card.warn{border-left:3px solid var(--star);background:rgba(168,136,42,.05)}
+.card.earth{border-left:3px solid var(--earth);background:rgba(106,90,56,.05)}
+.card.forest{border-left:3px solid var(--forest);background:rgba(106,58,40,.05)}
+.card.deer{border-left:3px solid var(--deer);background:rgba(138,74,56,.05)}
+
+.card-title{
+  font-family:'Lora',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--river)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(74,106,74,.1);
+  color:var(--river);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--sun);font-style:italic}
+
+/* Říční dělič */
+.river-divider{
+  text-align:center;
+  margin:48px 0;
+  color:var(--river);
+  opacity:.5;
+  font-family:'Lora',serif;
+  font-size:22px;
+  letter-spacing:6px;
+}
+.river-divider::before,.river-divider::after{
+  content:'';
+  display:inline-block;
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--river),transparent);
+  vertical-align:middle;
+  margin:0 14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* PRAVIDLO — velký blok s pravopisným/mluvnickým pravidlem */
+.rule{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:20px 0;
+  position:relative;
+}
+.rule::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--river),var(--sun),var(--river));
+  opacity:.5;
+}
+.rule-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--river);
+  background:rgba(74,106,74,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:14px;
+  border:1px solid rgba(74,106,74,.3);
+  font-weight:500;
+}
+.rule-title{
+  font-family:'Lora',serif;
+  font-size:20px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:14px;
+  font-style:italic;
+}
+.rule-body{
+  font-size:15.5px;
+  color:var(--text);
+  line-height:1.75;
+}
+
+/* PŘÍKLADY — správně × špatně */
+.examples{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:14px 0;
+}
+.ex-ok, .ex-bad{
+  padding:12px 16px;
+  border-radius:1px;
+  font-family:'Lora',serif;
+  font-size:15px;
+  line-height:1.65;
+}
+.ex-ok{
+  background:rgba(90,120,88,.08);
+  border-left:2px solid var(--correct);
+  color:var(--heading);
+}
+.ex-ok::before{
+  content:'✓';
+  color:var(--correct);
+  font-weight:700;
+  margin-right:8px;
+  font-family:'JetBrains Mono',monospace;
+}
+.ex-bad{
+  background:rgba(138,74,56,.06);
+  border-left:2px solid var(--wrong);
+  color:var(--text-muted);
+  text-decoration:line-through;
+  text-decoration-color:rgba(138,74,56,.5);
+}
+.ex-bad::before{
+  content:'✗';
+  color:var(--wrong);
+  font-weight:700;
+  margin-right:8px;
+  font-family:'JetBrains Mono',monospace;
+  text-decoration:none;
+  display:inline-block;
+}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14.5px;
+}
+.compare-table th{
+  font-family:'Lora',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--river);text-align:left;
+  padding:12px 14px;
+  border-bottom:2px solid var(--river);
+  font-weight:700;
+  background:rgba(74,106,74,.04);
+}
+.compare-table td{
+  padding:11px 14px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table td:first-child{
+  font-family:'Lora',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-weight:600;
+  width:32%;
+}
+
+/* TROPY — vizuální karty */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--river),transparent);
+  opacity:.7;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--river);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Lora',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* MOTIVY-GRID */
+.motifs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin:20px 0;
+}
+.motif-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:2px solid var(--motif-color,var(--river));
+  padding:14px 12px;
+  text-align:center;
+}
+.motif-icon{
+  font-size:22px;
+  color:var(--motif-color,var(--river));
+  margin-bottom:6px;
+  opacity:.75;
+}
+.motif-name{
+  font-family:'Lora',serif;
+  font-size:13px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+
+/* MEMO — žlutá "lepící karta" tipů */
+.memo{
+  background:var(--bg-card-alt);
+  border:1px solid var(--sepia);
+  padding:20px 26px;
+  margin:22px 0;
+  position:relative;
+  font-family:'Lora',serif;
+  color:var(--heading);
+  font-size:15.5px;
+  line-height:1.75;
+}
+.memo::before{
+  content:'❦ TIP K ZAPAMATOVÁNÍ ❦';
+  position:absolute;
+  top:-11px;left:24px;
+  background:var(--bg);
+  padding:0 14px;
+  color:var(--sepia);
+  font-family:'Lora',serif;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:600;
+  text-transform:uppercase;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Lora',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--river);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+/* VZORCE — malé boxy pro pravopis */
+.pattern-box{
+  display:inline-block;
+  background:rgba(196,162,96,.08);
+  border:1px solid rgba(196,162,96,.3);
+  border-radius:1px;
+  padding:6px 12px;
+  margin:4px 4px 4px 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  color:var(--sun);
+  font-weight:500;
+}
+
+/* GENRE — žánrové karty */
+.genre-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:18px 22px;
+  margin:10px 0;
+  border-left:3px solid var(--genre-color,var(--river));
+}
+.genre-name{
+  font-family:'Lora',serif;
+  font-size:17px;
+  font-weight:700;
+  color:var(--heading);
+  font-style:italic;
+  margin-bottom:6px;
+}
+.genre-desc{
+  font-size:14.5px;
+  color:var(--text);
+  line-height:1.7;
+}
+.genre-desc strong{color:var(--genre-color,var(--river))}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .examples{grid-template-columns:1fr}
+  .motifs-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.rule{padding:20px 22px}
+  .compare-table{font-size:13.5px}
+  .compare-table th, .compare-table td{padding:9px 10px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a></nav>
+
+
+<div class="hero">
+  <div class="hero-symbol">✦ ≈ ✦</div>
+  <div class="hero-label">Maturita · Český jazyk a literatura · Didaktický test</div>
+  <h1><em>Komplexní přehled · Vše na jednom místě</em>Čeština<br>k maturitě<span class="sub-title">literatura · pravopis · mluvnice · sloh</span></h1>
+  <div class="author">Didaktický test</div>
+  <div class="subtitle">75 minut · 32 úloh · 50 bodů · úspěšnost 44 %</div>
+  <div class="hero-quote">Didaktický test neověřuje, co víš o konkrétní knize — ověřuje, jestli rozumíš jazyku, textu a pravidlům. Kdo čte pozorně a zná systém, ten projde.<em>— Strategie testu</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah pomůcky</h2>
+<ol>
+  <li><a href="#test">Jak test funguje · Strategie</a></li>
+  <li><a href="#druhy">Literární druhy a žánry</a></li>
+  <li><a href="#obdobi">Literární období · přehled</a></li>
+  <li><a href="#tropy">Tropy a figury</a></li>
+  <li><a href="#verse">Verš, rým, stopa</a></li>
+  <li><a href="#styly">Funkční styly</a></li>
+  <li><a href="#utvary">Slohové útvary</a></li>
+  <li><a href="#pravopis">Pravopis · i/y, s/z, mě/mně</a></li>
+  <li><a href="#velka">Velká písmena · zkratky · čárky</a></li>
+  <li><a href="#tvarosl">Tvarosloví · slovní druhy</a></li>
+  <li><a href="#skladba">Skladba · věta jednoduchá a souvětí</a></li>
+  <li><a href="#slovotvorba">Slovotvorba a význam slov</a></li>
+  <li><a href="#cten">Práce s textem · čtení s porozuměním</a></li>
+  <li><a href="#chytaky">Typické chytáky v testu</a></li>
+  <li><a href="#denpred">Den před testem · checklist</a></li>
+</ol>
+</nav>
+
+<!-- 01 TEST -->
+<section class="section" id="test">
+<div class="section-header"><span class="section-num">I</span><h2>Jak test funguje · Strategie</h2></div>
+
+<p>Didaktický test z češtiny trvá <strong>75 minut</strong>, obsahuje <strong>32 úloh</strong> a je za <strong>50 bodů</strong>. Úspěšná hranice je <strong>44 %</strong> (tedy cca 22 bodů). Test je anonymní, opravuje se centrálně. Odpovídá se do záznamového archu — <strong>do testovacího sešitu si poznámky dělat můžeš</strong>, ale hodnotí se jen to, co je v archu.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Typy úloh v testu</div>
+  <ul style="margin-bottom:0">
+    <li><strong>Uzavřené</strong> — výběr z možností A–D (většina úloh)</li>
+    <li><strong>Uzavřené ano/ne</strong> — sada tvrzení, u každého A = ano, N = ne</li>
+    <li><strong>Přiřazovací</strong> — přiřaď písmeno k textu / k pojmu</li>
+    <li><strong>Uspořádací</strong> — seřaď části textu do správného pořadí</li>
+    <li><strong>Otevřené</strong> — krátká odpověď (jedno slovo, věta)</li>
+  </ul>
+</div>
+
+<h3>Strategie — jak test napsat</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">1. Začni od konce</h4>
+    <p>Otevřené úlohy jsou často lehčí, než vypadají. Udělej je první, než tě omrzí čtení.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">2. Čti nejdřív otázku, pak text</h4>
+    <p>U dlouhých úryvků víš, co v textu hledat. Ušetří to minuty.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">3. Vylučuj možnosti</h4>
+    <p>Když si nejsi jistý, vyškrtni dvě zjevně špatné. Zbytek je 50 : 50.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">4. Nic neprázdno</h4>
+    <p>Za chybu se neodečítá. Vždy něco napiš — i tip je lepší než nic.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">5. Sleduj čas</h4>
+    <p>Na úlohu zhruba 2 minuty. Pokud se zasekneš, označ si ji a jdi dál.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">6. Kontroluj arch</h4>
+    <p>Posledních 5 minut věnuj kontrole, jestli ses někam netrefil vedle.</p>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Nejčastější chyba maturantů:</strong> špatně přepsaná odpověď do záznamového archu. V sešitě máš správně, ale do archu jsi přepsal o řádek níž. Po napsání <em>vždy</em> zkontroluj, že číslo úlohy v sešitě odpovídá číslu v archu.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 02 DRUHY -->
+<section class="section" id="druhy">
+<div class="section-header"><span class="section-num">II</span><h2>Literární druhy a žánry</h2></div>
+
+<p>V testu se téměř jistě objeví otázka typu „<em>o jaký literární druh/žánr se jedná?</em>“. Tři druhy si musíš umět bezpečně rozlišit.</p>
+
+<h3>Tři literární druhy</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Lyrika</h4>
+    <p><strong>Pocity, nálady, úvahy.</strong> Bez děje. Psáno obvykle veršem. Subjektivní. — <em>báseň, píseň, óda, elegie, epigram</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Epika</h4>
+    <p><strong>Má děj a vypravěče.</strong> Veršem i prózou. Postavy, prostředí, čas. — <em>román, povídka, novela, pohádka, balada, epos</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Drama</h4>
+    <p><strong>Určeno k jevištnímu provedení.</strong> Dialogy, scénické poznámky. — <em>tragédie, komedie, činohra</em></p>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Pozor — hybridní žánry:</strong> <em>balada</em> je <strong>lyricko-epická</strong> (má děj i silnou náladu), <em>bajka</em> je epika (má děj, i když krátký), <em>poéma</em> je lyricko-epická báseň.
+</div>
+
+<h3>Žánry lyrické</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Óda</div>
+    <div class="trope-example">Oslavná báseň</div>
+    <div class="trope-note">Vznešený tón, chválí něco vysokého (národ, bůh, osobnost, svoboda).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Elegie</div>
+    <div class="trope-example">Žalozpěv</div>
+    <div class="trope-note">Smutná, melancholická báseň. Lítost nad ztrátou, nad časem.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hymnus</div>
+    <div class="trope-example">Vznešená chvalozpěv</div>
+    <div class="trope-note">Slavnostní báseň oslavující božstvo, vlast, ideál. Patetický styl.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epigram</div>
+    <div class="trope-example">Krátká satirická báseň</div>
+    <div class="trope-note">Vtipná pointa, výsměch, kritika. Proslavil K. H. Borovský.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Sonet</div>
+    <div class="trope-example">14 veršů, 4+4+3+3</div>
+    <div class="trope-note">Přesná forma. Petrarkovský × shakespearovský. Milostná tematika.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Píseň</div>
+    <div class="trope-example">Zpěvní báseň</div>
+    <div class="trope-note">Pravidelný rytmus, často refrén. Určena ke zpěvu.</div>
+  </div>
+</div>
+
+<h3>Žánry epické</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Epos</div>
+    <div class="trope-example">Rozsáhlá veršovaná epika</div>
+    <div class="trope-note">Hrdinský děj. <em>Ilias, Odyssea, Píseň o Nibelunzích.</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Balada</div>
+    <div class="trope-example">Chmurný veršovaný příběh</div>
+    <div class="trope-note">Tragický konec, nadpřirozené síly. Erben — <em>Kytice</em>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Román</div>
+    <div class="trope-example">Rozsáhlá próza</div>
+    <div class="trope-note">Mnoho postav, více dějových linií. Psychologický, historický, dobrodružný.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Novela</div>
+    <div class="trope-example">Střední próza</div>
+    <div class="trope-note">Jedna hlavní dějová linie, překvapivý zvrat, sevřená kompozice.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Povídka</div>
+    <div class="trope-example">Krátká próza</div>
+    <div class="trope-note">Jedna událost, málo postav. <em>Smrt krásných srnců</em> — soubor povídek.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Pohádka</div>
+    <div class="trope-example">Fantastický příběh</div>
+    <div class="trope-note">Dobro vítězí nad zlem. Lidová × autorská (Erben × Wilde).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Bajka</div>
+    <div class="trope-example">Alegorický příběh se zvířaty</div>
+    <div class="trope-note">Zvířata mluví a jednají jako lidé. Mravní poučení. Ezop, Krylov.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Legenda</div>
+    <div class="trope-example">Příběh ze života světce</div>
+    <div class="trope-note">Středověký žánr, zázraky, mučednictví.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Kronika</div>
+    <div class="trope-example">Dějiny v chronologickém pořadí</div>
+    <div class="trope-note">Kosmova kronika, Dalimilova kronika.</div>
+  </div>
+</div>
+
+<h3>Žánry dramatické</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Tragédie</div>
+    <div class="trope-example">Hrdina podléhá osudu</div>
+    <div class="trope-note">Vznešené téma, tragický konec. Sofoklés, Shakespeare — <em>Hamlet</em>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Komedie</div>
+    <div class="trope-example">Vyvolává smích</div>
+    <div class="trope-note">Lidské slabosti, šťastný konec. Molière, Plautus.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Činohra</div>
+    <div class="trope-example">Vážná hra bez tragického konce</div>
+    <div class="trope-note">Moderní žánr mezi tragédií a komedií.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Tragikomedie</div>
+    <div class="trope-example">Míchá tragické a komické</div>
+    <div class="trope-note">Havel — <em>Zahradní slavnost</em>. Beckett — <em>Čekání na Godota</em>.</div>
+  </div>
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 03 OBDOBI -->
+<section class="section" id="obdobi">
+<div class="section-header"><span class="section-num">III</span><h2>Literární období · přehled</h2></div>
+
+<p>V testu se typicky objeví úryvek, u kterého máš rozpoznat období. Nemusíš znát data do roku — stačí poznat <strong>typické rysy</strong> a zařadit.</p>
+
+<table class="compare-table">
+  <tr>
+    <th>Období</th><th>Zhruba</th><th>Typické rysy</th>
+  </tr>
+  <tr>
+    <td>Antika</td>
+    <td>8. st. př. n. l. – 5. st. n. l.</td>
+    <td>Hrdinové, bohové, osud. Homér, Sofoklés, Vergilius, Ovidius. <strong>Eposy, tragédie, mýty.</strong></td>
+  </tr>
+  <tr>
+    <td>Středověk</td>
+    <td>5.–15. st.</td>
+    <td>Náboženství, latinsky i národními jazyky. Legendy, kroniky, duchovní písně. Dante, Villon, Hus.</td>
+  </tr>
+  <tr>
+    <td>Renesance a humanismus</td>
+    <td>14.–17. st.</td>
+    <td><strong>Návrat k antice, člověk ve středu.</strong> Petrarka, Boccaccio, Shakespeare, Cervantes.</td>
+  </tr>
+  <tr>
+    <td>Baroko</td>
+    <td>16.–18. st.</td>
+    <td>Marnost, smrt, Bůh. <strong>Protiklady, alegorie, ozdobnost.</strong> Komenský, Bridel, Milton.</td>
+  </tr>
+  <tr>
+    <td>Klasicismus</td>
+    <td>17.–18. st.</td>
+    <td>Rozum, řád, antické vzory. Pravidlo 3 jednot. Molière, Corneille, Racine.</td>
+  </tr>
+  <tr>
+    <td>Osvícenství</td>
+    <td>18. st.</td>
+    <td>Rozum a vzdělání. Encyklopedisté — Diderot, Voltaire, Rousseau.</td>
+  </tr>
+  <tr>
+    <td>Preromantismus</td>
+    <td>konec 18. st.</td>
+    <td>Cit, příroda, individualita. Goethe — <em>Utrpení mladého Werthera</em>.</td>
+  </tr>
+  <tr>
+    <td>Romantismus</td>
+    <td>1. pol. 19. st.</td>
+    <td><strong>Cit, sen, exotika, osamělý hrdina v rozporu se světem.</strong> Hugo, Byron, Puškin, Mácha.</td>
+  </tr>
+  <tr>
+    <td>Realismus</td>
+    <td>2. pol. 19. st.</td>
+    <td><strong>Pravdivý obraz skutečnosti, typické postavy.</strong> Balzac, Flaubert, Tolstoj, Dostojevskij, Dickens.</td>
+  </tr>
+  <tr>
+    <td>Naturalismus</td>
+    <td>konec 19. st.</td>
+    <td>Extrémní realismus — biologie, dědičnost, prostředí. Zola.</td>
+  </tr>
+  <tr>
+    <td>Moderna / symbolismus</td>
+    <td>přelom 19. a 20. st.</td>
+    <td>Symbol, metafora, mnohovýznamnost. Baudelaire, Rimbaud, Verlaine, Březina.</td>
+  </tr>
+  <tr>
+    <td>Meziválečná avantgarda</td>
+    <td>1918–1938</td>
+    <td>Futurismus, kubismus, surrealismus, poetismus. Nezval, Seifert, Teige.</td>
+  </tr>
+  <tr>
+    <td>Existencialismus</td>
+    <td>po 1945</td>
+    <td>Úzkost, absurdita, svoboda a zodpovědnost. Sartre, Camus, Kafka (předchůdce).</td>
+  </tr>
+  <tr>
+    <td>Postmoderna</td>
+    <td>od 60. let</td>
+    <td>Hra, ironie, mísení stylů, intertextualita. Eco, Kundera, Márquez.</td>
+  </tr>
+</table>
+
+<div class="memo">
+<strong>Jak poznat období z úryvku:</strong> <em>Hodně božstev a hrdinů</em> → antika. <em>Zdobný styl, Bůh, marnost</em> → baroko. <em>Sen, osamělec, příroda</em> → romantismus. <em>Popis chudoby v detailu</em> → realismus. <em>Absurdita, tlak, úzkost</em> → existencialismus / moderna.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+
+<!-- 04 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">IV</span><h2>Tropy a figury</h2></div>
+
+<p>Tropy = <strong>přenesená pojmenování</strong> (slovo znamená něco jiného než obvykle). Figury = <strong>zvláštní větné konstrukce</strong> (stejná slova, ale jiná skladba). V testu se ptají nejčastěji na metaforu, přirovnání, personifikaci, metonymii a anaforu.</p>
+
+<h3>Tropy — přenášení významu</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Metafora</div>
+    <div class="trope-example">„hvězdy očí"</div>
+    <div class="trope-note">Přenos na základě <strong>vnější podobnosti</strong>. Bez spojky „jako". Oči jsou jako hvězdy → hvězdy očí.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přirovnání</div>
+    <div class="trope-example">„hbitá jako laň"</div>
+    <div class="trope-note">Výslovné srovnání <strong>se spojkou „jako", „jak", „než"</strong>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">„vítr si povídá s listím"</div>
+    <div class="trope-note">Neživé věci / zvířata dostávají <strong>lidské vlastnosti</strong>. Speciální typ metafory.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Metonymie</div>
+    <div class="trope-example">„vypil celou sklenici"</div>
+    <div class="trope-note">Přenos na základě <strong>vnitřní souvislosti</strong> (nádoba místo obsahu, autor místo díla — „čtu Čapka").</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Synekdocha</div>
+    <div class="trope-example">„pod jednou střechou"</div>
+    <div class="trope-note">Část místo celku / celek místo části. Druh metonymie.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epiteton</div>
+    <div class="trope-example">„bílá lilie"</div>
+    <div class="trope-note">Básnický přívlastek. <strong>Constans</strong> (ustálený) × <strong>ornans</strong> (ozdobný, neotřelý).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">„umírám hlady"</div>
+    <div class="trope-note"><strong>Nadsázka</strong>, zveličení skutečnosti.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Litotes</div>
+    <div class="trope-example">„není to zlé"</div>
+    <div class="trope-note">Zjemnění přes dvojí zápor (= je to dobré). Opak hyperboly.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">„ty jsi ale génius"</div>
+    <div class="trope-note">Opak toho, co autor myslí. <strong>Sarkasmus</strong> = tvrdá, zraňující ironie.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Oxymóron</div>
+    <div class="trope-example">„mrtvé milenky cit"</div>
+    <div class="trope-note"><strong>Spojení slov, která se významem vylučují.</strong> Proslavil Mácha.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Alegorie</div>
+    <div class="trope-example">Celá bajka</div>
+    <div class="trope-note">Jinotaj — celé dílo má skrytý význam (bajka, podobenství).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Holubice = mír</div>
+    <div class="trope-note">Konkrétní obraz zastupující <strong>abstraktní pojem</strong>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Eufemismus</div>
+    <div class="trope-example">„odešel" místo zemřel</div>
+    <div class="trope-note">Jemnější výraz místo tvrdého.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Dysfemismus</div>
+    <div class="trope-example">„chcípl"</div>
+    <div class="trope-note">Hrubý výraz místo neutrálního. Opak eufemismu.</div>
+  </div>
+</div>
+
+<h3>Figury — opakování a zvláštní konstrukce</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Anafora</div>
+    <div class="trope-example">Stejné slovo na ZAČÁTKU veršů</div>
+    <div class="trope-note">„<em>Už</em> nejsem sám, <em>už</em> jdu k tobě, <em>už</em> tě vidím."</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epifora</div>
+    <div class="trope-example">Stejné slovo na KONCI veršů</div>
+    <div class="trope-note">Opak anafory. <em>Epi</em> = konec.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epanastrofa</div>
+    <div class="trope-example">Konec verše = začátek dalšího</div>
+    <div class="trope-note">„…v duši <em>mé</em>. / <em>Mé</em> duše hlas…"</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Epizeuxis</div>
+    <div class="trope-example">Opakování slova hned za sebou</div>
+    <div class="trope-note">„Nikdy, nikdy, nikdy."</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Paralelismus</div>
+    <div class="trope-example">Opakování stejné stavby</div>
+    <div class="trope-note">„Moře je klidné, nebe je jasné, srdce je plné."</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Inverze</div>
+    <div class="trope-example">Neobvyklý slovosled</div>
+    <div class="trope-note">„Země česká, domov můj." (místo „moje česká země").</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Řečnická otázka</div>
+    <div class="trope-example">Otázka bez odpovědi</div>
+    <div class="trope-note">„Kdo by to byl čekal?" (neptá se, jen zdůrazňuje).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Apostrofa</div>
+    <div class="trope-example">Oslovení nepřítomného</div>
+    <div class="trope-note">„Ó vlasti má!" — oslovuje něco, co neodpoví.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Gradace</div>
+    <div class="trope-example">Stupňování</div>
+    <div class="trope-note">„Přišel, viděl, zvítězil." Od nejslabšího k nejsilnějšímu.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Aliterace</div>
+    <div class="trope-example">Stejné hlásky na začátku slov</div>
+    <div class="trope-note">„Plynoucí proudy Ponorné Polomské…"</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Onomatopoie</div>
+    <div class="trope-example">Zvukomalba</div>
+    <div class="trope-note">„Bzučelo bzučadlo", „syčel had" — slova napodobují zvuk.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Elipsa</div>
+    <div class="trope-example">Vynechání slova</div>
+    <div class="trope-note">„Já domů." (vynecháno „jdu"). Čtenář si domyslí.</div>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Rozlišení metafora × metonymie:</strong> metafora stojí na <em>podobnosti</em> (oči jako hvězdy — vnější podobnost tvaru, lesku). Metonymie stojí na <em>souvislosti</em> (sklenice — obsah je v nádobě, je to věcná souvislost, ne podobnost).
+</div>
+
+<div class="memo">
+<strong>Metafora × přirovnání:</strong> přirovnání <em>vždy</em> má „jako / jak / než". Metafora tuto spojku nemá — přenos je přímý.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 05 VERSE -->
+<section class="section" id="verse">
+<div class="section-header"><span class="section-num">V</span><h2>Verš, rým, stopa</h2></div>
+
+<p>Pokud je v testu báseň, téměř jistě se objeví otázka na <strong>druh rýmu</strong> nebo <strong>druh verše</strong>. To se dá naučit rychle a jistě to tam bude.</p>
+
+<h3>Druhy rýmu</h3>
+<table class="compare-table">
+  <tr>
+    <th>Typ rýmu</th><th>Schéma</th><th>Popis</th>
+  </tr>
+  <tr>
+    <td>Sdružený</td>
+    <td><code>a a b b</code></td>
+    <td>Řádky po dvou se rýmují. 1–2, 3–4.</td>
+  </tr>
+  <tr>
+    <td>Střídavý</td>
+    <td><code>a b a b</code></td>
+    <td>Liché s lichými, sudé se sudými.</td>
+  </tr>
+  <tr>
+    <td>Obkročný</td>
+    <td><code>a b b a</code></td>
+    <td>První a poslední se rýmují, uprostřed dva jiné.</td>
+  </tr>
+  <tr>
+    <td>Přerývaný</td>
+    <td><code>a b c b</code></td>
+    <td>Rýmují se jen některé verše.</td>
+  </tr>
+  <tr>
+    <td>Tirádový</td>
+    <td><code>a a a a</code></td>
+    <td>Všechny verše se rýmují stejně.</td>
+  </tr>
+</table>
+
+<h3>Druhy veršů podle pravidelnosti</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Vázaný verš</h4>
+    <p>Pravidelný rytmus, stopa, počet slabik, rým. Klasická poezie.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Volný verš</h4>
+    <p><strong>Bez pravidelného rýmu, rytmu i délky.</strong> Typické pro moderní poezii 20. stol.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Blankvers</h4>
+    <p>Nerýmovaný pětistopý jamb. Typický pro Shakespearova dramata.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Hexametr</h4>
+    <p>Šestistopý antický verš. Homér, Vergilius.</p>
+  </div>
+</div>
+
+<h3>Stopy — jak si je zapamatovat</h3>
+<p>Stopa = <strong>rytmický vzorec</strong> přízvučné a nepřízvučné slabiky. V češtině nejčastější:</p>
+
+<table class="compare-table">
+  <tr>
+    <th>Stopa</th><th>Vzorec</th><th>Poznámka</th>
+  </tr>
+  <tr>
+    <td>Trochej</td>
+    <td><span class="pattern-box">– U</span></td>
+    <td><strong>má-</strong>ma, <strong>tá-</strong>ta. Česká poezie začíná přízvučně → trochej je v češtině nejpřirozenější.</td>
+  </tr>
+  <tr>
+    <td>Jamb</td>
+    <td><span class="pattern-box">U –</span></td>
+    <td>Pro češtinu umělý — čeština má přízvuk na 1. slabice. Typický pro angličtinu.</td>
+  </tr>
+  <tr>
+    <td>Daktyl</td>
+    <td><span class="pattern-box">– U U</span></td>
+    <td><strong>vy-</strong>so-ce, <strong>je-</strong>de-me. Trojslabičná stopa.</td>
+  </tr>
+  <tr>
+    <td>Anapest</td>
+    <td><span class="pattern-box">U U –</span></td>
+    <td>ne-ro-<strong>zu-</strong>mím (stoupavá trojslabičná stopa).</td>
+  </tr>
+  <tr>
+    <td>Spondej</td>
+    <td><span class="pattern-box">– –</span></td>
+    <td>Vzácný — v češtině se vyskytuje jen zřídka.</td>
+  </tr>
+</table>
+
+<div class="memo">
+<strong>Pomůcka pro stopy:</strong> trochej = <em>TÁ-ta</em>, jamb = <em>ta-TÁ</em>, daktyl = <em>TÁ-ta-ta</em>, anapest = <em>ta-ta-TÁ</em>. Prostě si to zamumlej a schéma ti vyjede.
+</div>
+
+<h3>Strofy (sloky)</h3>
+<ul>
+  <li><strong>Distichon</strong> — dvouverší</li>
+  <li><strong>Tercet (tercína)</strong> — tříverší</li>
+  <li><strong>Kvartet</strong> — čtyřverší (nejběžnější)</li>
+  <li><strong>Sextet</strong> — šestiverší</li>
+  <li><strong>Oktáva</strong> — osmiverší</li>
+  <li><strong>Sonet</strong> — 14 veršů (2 kvartety + 2 tercety)</li>
+</ul>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+
+<!-- 06 STYLY -->
+<section class="section" id="styly">
+<div class="section-header"><span class="section-num">VI</span><h2>Funkční styly</h2></div>
+
+<p>V testu je typická otázka: „<em>O jaký funkční styl se jedná?</em>“. Odpovědí je skoro vždy jeden ze šesti základních stylů. Každý má jiný účel a jazykové znaky.</p>
+
+<div class="tropes-grid">
+  <div class="trope-card" style="border-top:3px solid var(--river)">
+    <div class="trope-name">1 · Prostěsdělovací (hovorový)</div>
+    <div class="trope-example">Běžná komunikace</div>
+    <div class="trope-note">Dopis kamarádovi, SMS, vyprávění. <strong>Spontánní, osobní, obecná čeština.</strong> Citoslovce, kontaktové výrazy („víš co", „jakoby").</div>
+  </div>
+  <div class="trope-card" style="border-top:3px solid var(--gold)">
+    <div class="trope-name">2 · Odborný</div>
+    <div class="trope-example">Věda, výuka</div>
+    <div class="trope-note">Učebnice, článek, odborná kniha. <strong>Termíny, přesnost, neosobnost</strong> (často 3. osoba, trpný rod). Citace zdrojů, tabulky.</div>
+  </div>
+  <div class="trope-card" style="border-top:3px solid var(--moss)">
+    <div class="trope-name">3 · Publicistický</div>
+    <div class="trope-example">Noviny, zpravodajství</div>
+    <div class="trope-note">Zpráva, reportáž, fejeton. <strong>Aktuálnost, čtivost, atraktivní titulky</strong>, klišé („v horké atmosféře"), názor + fakta.</div>
+  </div>
+  <div class="trope-card" style="border-top:3px solid var(--sun)">
+    <div class="trope-name">4 · Umělecký</div>
+    <div class="trope-example">Literatura</div>
+    <div class="trope-note">Próza, poezie, drama. <strong>Estetická funkce</strong>, tropy, figury, expresivní slova, archaismy, dialekty.</div>
+  </div>
+  <div class="trope-card" style="border-top:3px solid var(--earth)">
+    <div class="trope-name">5 · Administrativní</div>
+    <div class="trope-example">Úřady, formuláře</div>
+    <div class="trope-note">Žádost, životopis, smlouva, protokol. <strong>Šablonovitost, přesnost, neosobnost</strong>, ustálené obraty („tímto žádám o…").</div>
+  </div>
+  <div class="trope-card" style="border-top:3px solid var(--deer)">
+    <div class="trope-name">6 · Řečnický</div>
+    <div class="trope-example">Veřejné projevy</div>
+    <div class="trope-note">Projev, kázání, soudní řeč. <strong>Působí na posluchače</strong>, řečnické otázky, gradace, apostrofy, opakování.</div>
+  </div>
+</div>
+
+<h3>Jak poznat styl z úryvku</h3>
+<table class="compare-table">
+  <tr><th>Indicie v textu</th><th>Styl</th></tr>
+  <tr><td>Termíny, neosobnost, citace, graf</td><td>Odborný</td></tr>
+  <tr><td>Titulek, aktuálnost, atraktivní úvod</td><td>Publicistický</td></tr>
+  <tr><td>Obrazná řeč, metafory, expresivita, děj</td><td>Umělecký</td></tr>
+  <tr><td>Šablonovité obraty, nadpisy typu „Žádost o…"</td><td>Administrativní</td></tr>
+  <tr><td>Oslovení publika, řečnické otázky</td><td>Řečnický</td></tr>
+  <tr><td>Citoslovce, hovorovost, slang, obecná čeština</td><td>Prostěsdělovací</td></tr>
+</table>
+
+<div class="memo">
+<strong>Pozor:</strong> někdy se ve stejném textu mísí více stylů. V odpovědi vyber ten, který v textu <em>převažuje</em>. V publicistickém fejetonu bývá prvky uměleckého stylu — ale to je pořád publicistika.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 07 UTVARY -->
+<section class="section" id="utvary">
+<div class="section-header"><span class="section-num">VII</span><h2>Slohové útvary</h2></div>
+
+<p>Slohové útvary jsou konkrétní typy textů v rámci stylů. Často se v testu ptají, o jaký útvar se jedná — to je něco konkrétnějšího než styl.</p>
+
+<h3>Vyprávěcí útvary</h3>
+<div class="genre-card" style="--genre-color:var(--river)">
+  <div class="genre-name">Vyprávění</div>
+  <div class="genre-desc"><strong>Zachycuje děj v čase.</strong> Zápletka, vyvrcholení, rozuzlení. Préteritum (minulý čas), dějová slovesa. Umělecké nebo osobní.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--gold)">
+  <div class="genre-name">Reportáž</div>
+  <div class="genre-desc"><strong>Vyprávění z místa děje</strong> s publicistickým cílem. Autor tam byl. Smyslové detaily, dialogy, citace, autentičnost.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--moss)">
+  <div class="genre-name">Zpráva</div>
+  <div class="genre-desc"><strong>Stručná informace o události.</strong> Odpovídá na otázky kdo, co, kdy, kde, jak, proč. Bez emocí, bez autorova názoru.</div>
+</div>
+
+<h3>Popisné útvary</h3>
+<div class="genre-card" style="--genre-color:var(--river)">
+  <div class="genre-name">Popis prostý</div>
+  <div class="genre-desc">Nezaujaté popisuje věc / osobu / jev. Od celku k detailům. <strong>Přídavná jména, přítomný čas.</strong></div>
+</div>
+<div class="genre-card" style="--genre-color:var(--sun)">
+  <div class="genre-name">Umělecký popis (líčení)</div>
+  <div class="genre-desc"><strong>Popis zabarvený emocemi a fantazií.</strong> Metafory, personifikace. Popis krajiny, nálady.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--earth)">
+  <div class="genre-name">Odborný popis</div>
+  <div class="genre-desc">Přesný popis předmětu / postupu. Termíny, přesné údaje. Návod, popis přístroje, pracovního postupu.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--deer)">
+  <div class="genre-name">Charakteristika</div>
+  <div class="genre-desc">Popis <strong>vnitřních vlastností</strong> osoby. <strong>Přímá</strong> (autor to řekne přímo) × <strong>nepřímá</strong> (vyplyne z chování, jednání, řeči postavy).</div>
+</div>
+
+<h3>Úvahové útvary</h3>
+<div class="genre-card" style="--genre-color:var(--river)">
+  <div class="genre-name">Úvaha</div>
+  <div class="genre-desc"><strong>Zamyšlení nad problémem</strong>, hledání odpovědi. Argumenty, vlastní názor. 1. osoba, řečnické otázky, obecná tvrzení.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--gold)">
+  <div class="genre-name">Fejeton</div>
+  <div class="genre-desc"><strong>Krátký sloupek v novinách</strong> na aktuální téma. Lehký, vtipný styl, osobní pohled. Vrchol žánru — Neruda, Čapek.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--deer)">
+  <div class="genre-name">Esej</div>
+  <div class="genre-desc">Rozsáhlejší úvahová forma. Autor rozvíjí vlastní myšlenky, mísí odborné a umělecké prvky.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--earth)">
+  <div class="genre-name">Recenze / kritika</div>
+  <div class="genre-desc">Hodnotí umělecké dílo. Obsahuje popis + argumentované hodnocení.</div>
+</div>
+
+<h3>Výkladové útvary</h3>
+<div class="genre-card" style="--genre-color:var(--moss)">
+  <div class="genre-name">Výklad</div>
+  <div class="genre-desc"><strong>Vysvětluje souvislosti, příčiny a následky.</strong> Odborný styl, logická návaznost, termíny. Učebnicový text.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--gold)">
+  <div class="genre-name">Odborný článek</div>
+  <div class="genre-desc">Pojednává o odborném tématu pro širší publikum. Mezi výkladem a populárně-naučným textem.</div>
+</div>
+<div class="genre-card" style="--genre-color:var(--river)">
+  <div class="genre-name">Referát</div>
+  <div class="genre-desc">Shrnuje a prezentuje odborné informace. Často ústně, před publikem.</div>
+</div>
+
+<h3>Administrativní útvary</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Žádost</h4>
+    <p>Formální dopis s konkrétním požadavkem. Oslovení, předmět, odůvodnění, závěr.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Životopis (strukturovaný)</h4>
+    <p>Přehled osobních údajů, vzdělání, praxe, dovedností. Bodový, stručný.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Motivační dopis</h4>
+    <p>Doplněk k žádosti — proč právě já. Souvislý text, 1 strana A4.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Inzerát</h4>
+    <p>Stručné sdělení s nabídkou / poptávkou. Heslovitě, bez zbytečných slov.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Protokol / zápis</h4>
+    <p>Zachycuje průběh jednání. Kdo, co řekl, k jakému závěru se došlo.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Pozvánka</h4>
+    <p>Kdo zve, koho, kdy, kam, na co, jak přijít. Jedna A4.</p>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Úvaha × výklad:</strong> <em>úvaha</em> je subjektivní, autor v ní klade otázky a hledá odpovědi. <em>Výklad</em> je objektivní, vysvětluje, co už je známo. „<em>Proč lidé lžou?</em>“ = úvaha. „<em>Jak funguje fotosyntéza.</em>“ = výklad.
+</div>
+
+<div class="memo">
+<strong>Zpráva × reportáž:</strong> <em>zpráva</em> jen informuje fakty. <em>Reportáž</em> přidává zážitek, detaily, atmosféru — autor tam byl a ukazuje, jak to vypadalo.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+
+<!-- 08 PRAVOPIS -->
+<section class="section" id="pravopis">
+<div class="section-header"><span class="section-num">VIII</span><h2>Pravopis · i/y, s/z, mě/mně</h2></div>
+
+<p>Pravopisná úloha je v testu jistojistě. Většina chyb padá na těchto čtyřech místech: <strong>vyjmenovaná slova, shoda podmětu s přísudkem, předpony s-/z-/vz-, dvojice mě/mně, ji/jí, tě/tebe</strong>.</p>
+
+<h3>Vyjmenovaná slova — kořen</h3>
+<p>Po obojetných souhláskách <strong>B F L M P S V Z</strong> se píše <strong>Y</strong> pouze ve vyjmenovaných slovech a slovech od nich odvozených. Jinde <strong>I</strong>.</p>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po B</span>
+  <div class="rule-body">
+    <strong>Být</strong>, <strong>bydlet</strong>, <strong>obyvatel</strong>, <strong>byt</strong>, <strong>příbytek</strong>, <strong>nábytek</strong>, <strong>dobytek</strong>, <strong>obyčej</strong>, <strong>bystrý</strong>, <strong>bylina</strong>, <strong>kobyla</strong>, <strong>býk</strong>, <strong>Bydžov</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po L</span>
+  <div class="rule-body">
+    <strong>Slyšet</strong>, <strong>mlýn</strong>, <strong>blýskat se</strong>, <strong>polykat</strong>, <strong>plynout</strong>, <strong>plýtvat</strong>, <strong>vzlykat</strong>, <strong>lysý</strong>, <strong>lýtko</strong>, <strong>lýko</strong>, <strong>lyže</strong>, <strong>pelyněk</strong>, <strong>plyš</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po M</span>
+  <div class="rule-body">
+    <strong>My</strong>, <strong>mýt</strong>, <strong>myslit</strong>, <strong>mýlit se</strong>, <strong>myš</strong>, <strong>hmyz</strong>, <strong>myrta</strong>, <strong>mýtit</strong>, <strong>zamykat</strong>, <strong>smýkat</strong>, <strong>dmýchat</strong>, <strong>chmýří</strong>, <strong>nachomýtnout se</strong>, <strong>Litomyšl</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po P</span>
+  <div class="rule-body">
+    <strong>Pýcha</strong>, <strong>pytel</strong>, <strong>pysk</strong>, <strong>netopýr</strong>, <strong>slepýš</strong>, <strong>pyl</strong>, <strong>kopyto</strong>, <strong>klopýtat</strong>, <strong>třpytit se</strong>, <strong>zpytovat</strong>, <strong>pykat</strong>, <strong>pýr</strong>, <strong>pýřit se</strong>, <strong>čepýřit se</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po S</span>
+  <div class="rule-body">
+    <strong>Syn</strong>, <strong>sytý</strong>, <strong>sýr</strong>, <strong>syrový</strong>, <strong>sychravý</strong>, <strong>usychat</strong>, <strong>sýkora</strong>, <strong>sýček</strong>, <strong>sysel</strong>, <strong>syčet</strong>, <strong>sypat</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po V</span>
+  <div class="rule-body">
+    <strong>Vy</strong>, <strong>vysoký</strong>, <strong>výt</strong>, <strong>výskat</strong>, <strong>zvykat</strong>, <strong>žvýkat</strong>, <strong>vydra</strong>, <strong>výr</strong>, <strong>vyžle</strong>, <strong>povyk</strong>, <strong>výheň</strong> a slova s předponou <strong>vy-/vý-</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Vyjmenovaná slova po Z</span>
+  <div class="rule-body">
+    <strong>Brzy</strong>, <strong>jazyk</strong>, <strong>nazývat</strong>, <strong>Ruzyně</strong>.
+  </div>
+</div>
+
+<div class="memo">
+<strong>Zrádné dvojice:</strong><br>
+<em>být (existovat) × bít (tlouct)</em> · <em>mýt (umývat) × mít (vlastnit)</em> · <em>výt (vyje vlk) × vít (plést věnec)</em> · <em>výr (sova) × vír (ve vodě)</em> · <em>sýr × sir (pán)</em> · <em>mlýn × mlít</em>
+</div>
+
+<h3>Shoda podmětu s přísudkem v minulém čase</h3>
+<p>Nejčastěji chybí v testu i v životě. Pravidlo je jednoduché, ale má výjimky.</p>
+
+<table class="compare-table">
+  <tr>
+    <th>Rod podmětu</th><th>Koncovka</th><th>Příklad</th>
+  </tr>
+  <tr>
+    <td>Rod mužský životný</td>
+    <td><span class="pattern-box">-i</span></td>
+    <td>Chlapci běžel<strong>i</strong>. Muži vyhrál<strong>i</strong>.</td>
+  </tr>
+  <tr>
+    <td>Rod mužský neživotný</td>
+    <td><span class="pattern-box">-y</span></td>
+    <td>Stromy padal<strong>y</strong>. Stoly stál<strong>y</strong>.</td>
+  </tr>
+  <tr>
+    <td>Rod ženský</td>
+    <td><span class="pattern-box">-y</span></td>
+    <td>Ženy zpíval<strong>y</strong>. Knihy ležel<strong>y</strong>.</td>
+  </tr>
+  <tr>
+    <td>Rod střední</td>
+    <td><span class="pattern-box">-a</span></td>
+    <td>Děti běžel<strong>a</strong>. Zvířata utíkal<strong>a</strong>.</td>
+  </tr>
+</table>
+
+<h4>Několik podmětů v různých rodech</h4>
+<div class="card highlight">
+  <p><strong>Pokud je mezi podměty alespoň jeden mužský životný → končí na -I.</strong></p>
+  <div class="examples">
+    <div class="ex-ok">Chlapec a dívka se smál<strong>i</strong>. (chlapec = muž. živ. → převažuje)</div>
+    <div class="ex-ok">Matka, otec a dítě seděl<strong>i</strong> u stolu. (otec = muž. živ.)</div>
+  </div>
+  <p style="margin-top:12px"><strong>Když žádný muž. živ. není → podle dalších pravidel:</strong> muž. neživotný + ženský → <strong>-y</strong>; se středním může být <strong>-a</strong>.</p>
+  <div class="examples">
+    <div class="ex-ok">Stoly a židle stál<strong>y</strong> u zdi. (neživ. + žen.)</div>
+    <div class="ex-ok">Ženy a děti plakal<strong>y</strong>. (žen. + stř. — převažuje ženské -y)</div>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Chyták:</strong> „Děti běžely ven." → děti = rod střední → <strong>-a</strong>, správně: <em>děti běžel<strong>a</strong></em>. Ale pozor: „<em>Tři děti běžel<strong>y</strong></em>" už lidé často píšou intuitivně jinak — maturitní test však chce spisovnou shodu.
+</div>
+
+<h3>Předpony s-, z-, vz-</h3>
+
+<div class="rule">
+  <span class="rule-label">Předpona S-</span>
+  <div class="rule-body">
+    <strong>Dohromady, shora dolů, z povrchu pryč.</strong><br>
+    <span class="pattern-box">shromáždit</span>
+    <span class="pattern-box">spojit</span>
+    <span class="pattern-box">sejít</span>
+    <span class="pattern-box">sbalit</span>
+    <span class="pattern-box">setřít</span>
+    <span class="pattern-box">spadnout</span>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Předpona Z-</span>
+  <div class="rule-body">
+    <strong>Dokončení děje, změna stavu</strong> — něco se <em>stane</em>, z něčeho něco <em>vznikne</em>.<br>
+    <span class="pattern-box">zmoknout</span>
+    <span class="pattern-box">zkrátit</span>
+    <span class="pattern-box">zmodrat</span>
+    <span class="pattern-box">zkoumat</span>
+    <span class="pattern-box">ztvrdnout</span>
+    <span class="pattern-box">zničit</span>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Předpona VZ-</span>
+  <div class="rule-body">
+    <strong>Směr nahoru nebo vzhůru, vzdor.</strong><br>
+    <span class="pattern-box">vzlétnout</span>
+    <span class="pattern-box">vztyčit</span>
+    <span class="pattern-box">vzkříšení</span>
+    <span class="pattern-box">vzbouřit se</span>
+    <span class="pattern-box">vzkaz</span>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Pozor na dvojice stejně znějící:</strong><br>
+<em>sbít</em> (stlouct, shromáždit bitím) × <em>zbít</em> (udělat něčemu zbití, dokončit bití)<br>
+<em>sběh</em> (shromáždění, sběh lidu) × <em>zběh</em> (kdo utekl od armády)<br>
+<em>správa</em> (úřední řízení) × <em>zpráva</em> (informace)<br>
+<em>slézt</em> (dolů ze skály) × <em>zlézt</em> (dokončit výstup — zlézt horu)
+</div>
+
+<h3>Mě × mně</h3>
+<p>Tohle je věčný kámen úrazu. Dvě jednoduchá pravidla to řeší téměř vždy.</p>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">U zájmena „já"</div>
+  <p>Test: nahraď si v duchu slovem <strong>„tobě" / „tebe"</strong>.</p>
+  <ul>
+    <li>Pokud ti tam sedí <strong>„tobě"</strong> → napiš <strong>mně</strong> (oba tvary jsou 3 pád. / 6. pád.).<br><em>Dej <strong>mně</strong> tu knihu.</em> (dej tobě tu knihu)</li>
+    <li>Pokud ti tam sedí <strong>„tebe" / „tebou"</strong> → napiš <strong>mě</strong>.<br><em>Vidíš <strong>mě</strong>?</em> (vidíš tebe?)</li>
+  </ul>
+</div>
+
+<table class="compare-table">
+  <tr><th>Pád</th><th>Ty</th><th>Já</th></tr>
+  <tr><td>2. koho, čeho</td><td>tebe</td><td><strong>mě</strong></td></tr>
+  <tr><td>3. komu, čemu</td><td>tobě</td><td><strong>mně</strong></td></tr>
+  <tr><td>4. koho, co</td><td>tebe</td><td><strong>mě</strong></td></tr>
+  <tr><td>6. o kom, o čem</td><td>o tobě</td><td>o <strong>mně</strong></td></tr>
+  <tr><td>7. s kým</td><td>s tebou</td><td>se <strong>mnou</strong></td></tr>
+</table>
+
+<div class="memo">
+<strong>Rychlá mnemonika:</strong> <em>„tobě → mně, tebe → mě"</em>. Když si to zapamatuješ jako dvojici, nikdy se nespleteš.
+</div>
+
+<h3>Ji × jí, ni × ní</h3>
+<div class="card highlight">
+  <p><strong>Jí, ní</strong> (dlouhé) = 2., 3., 6., 7. pád zájmena ona. — <em>dal jsem <strong>jí</strong> knihu</em> (komu — 3. p.), <em>bez <strong>ní</strong></em> (bez koho — 2. p.).</p>
+  <p><strong>Ji, ni</strong> (krátké) = jen 4. pád. — <em>vidím <strong>ji</strong></em> (koho — 4. p.), <em>za <strong>ni</strong></em> (za koho — 4. p.).</p>
+  <p><strong>Trik:</strong> nahraď si <em>její / ní</em> → sedí tam „<em>tou</em>" / „<em>té</em>" = dlouhé <strong>jí/ní</strong>. Sedí „<em>tu</em>" = krátké <strong>ji/ni</strong>.</p>
+</div>
+
+<h3>Další tvrdé pravopisné oříšky</h3>
+<details>
+  <summary>Psaní n / nn</summary>
+  <p><strong>Jedno N:</strong> když přídavné jméno vzniklo jinak než z podstatného -N- ve kmeni. <em>raněný</em>, <em>zelený</em>, <em>cenný?</em> → cena má N ve kmeni, ale -n- + přípona -ný → <strong>cenný</strong> (NN).<br>
+  <strong>Dvě NN:</strong> když se setkává N z kořene + N z přípony. <em>cenný</em> (cen-ný), <em>povinný</em> (povin-ný), <em>denní</em> (den-ní), <em>vinný</em> (vin-ný), <em>ranní</em> (ran-ní — ranní × raný — jiná slova!). <em>Raný</em> (= brzký) = jedno N.</p>
+</details>
+
+<details>
+  <summary>Psaní ú / ů</summary>
+  <p><strong>Ú</strong> — na začátku slova a po předponě. <em>úloha, úkol, ústa, trojúhelník, zúčastnit se</em>.<br>
+  <strong>Ů</strong> — uvnitř a na konci slov. <em>dům, domů, kůň, můj, stůl, vůl</em>.</p>
+</details>
+
+<details>
+  <summary>Souhláskové skupiny při výslovnosti jinak, než píšeme</summary>
+  <p>Pozor — spodoba znělosti na konci a uvnitř slov. Vyslovíme jinak, než napíšeme:<br>
+  <em>dub</em> [dup], <em>led</em> [let], <em>hřib</em> [hřip], <em>nehty</em> [nechty], <em>přijďte</em> [přiťte], <em>s kamarádem</em> [zkamarádem].<br>
+  <strong>Správně pište podle tvaru v 2. pádě / podle příbuzných slov:</strong> du<strong>b</strong>y, le<strong>d</strong>ový, hři<strong>b</strong>y.</p>
+</details>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+
+<!-- 09 VELKA -->
+<section class="section" id="velka">
+<div class="section-header"><span class="section-num">IX</span><h2>Velká písmena · zkratky · čárky</h2></div>
+
+<h3>Velká písmena</h3>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Vždy velkým</div>
+  <ul>
+    <li><strong>Vlastní jména osob a zvířat:</strong> Jan Novák, Alík, Micka</li>
+    <li><strong>Názvy států, území, hor, moří, řek:</strong> Česká republika, Alpy, Vltava</li>
+    <li><strong>Názvy měst, vesnic, ulic:</strong> Praha, Kladno, Václavské náměstí</li>
+    <li><strong>Názvy institucí a organizací:</strong> Národní divadlo, Senát, Ministerstvo školství</li>
+    <li><strong>Názvy svátků a historických událostí:</strong> Vánoce, Velikonoce, Sametová revoluce, Pražské jaro</li>
+    <li><strong>Knihy, filmy, časopisy, písně:</strong> Babička, Saturnin, Mladá fronta Dnes</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--star)">Pozor — jen první slovo velké!</div>
+  <p>U víceslovných názvů se velké píše <strong>jen první slovo</strong> (+ vlastní jména uvnitř).</p>
+  <div class="examples">
+    <div class="ex-ok">Národní divadlo</div>
+    <div class="ex-bad">Národní Divadlo</div>
+  </div>
+  <div class="examples">
+    <div class="ex-ok">Karlova univerzita</div>
+    <div class="ex-bad">Karlova Univerzita</div>
+  </div>
+  <div class="examples">
+    <div class="ex-ok">Václavské náměstí</div>
+    <div class="ex-bad">Václavské Náměstí</div>
+  </div>
+  <p style="margin-top:10px"><strong>Výjimka:</strong> pokud je uvnitř vlastní jméno, píše se velké: <em>Vysoká škola <strong>K</strong>arlova</em>, <em>náměstí <strong>M</strong>íru</em> → zde „Míru" je vlastní jméno náměstí.</p>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Speciální případy</div>
+  <ul>
+    <li><strong>Ulice:</strong> <em>ulice Na Příkopě</em>, <em>ulice V Jámě</em> — předložky se na začátku názvu píší s velkým.</li>
+    <li><strong>Národy a obyvatelé:</strong> <em>Čech, Němec, Evropan</em> — velké. Ale <em>česky, německy</em> — malé.</li>
+    <li><strong>Přídavná jména od vlastních jmen:</strong> <em>Novákův pes</em> (přivlastňovací — velké), <em>novákovské zvyky</em> (druhové — malé).</li>
+    <li><strong>Oslovení v dopise:</strong> <em>Vážený pane, vážená paní</em> — první slovo velké vždy. Osobní <strong>Ty, Vy</strong> v dopise se píše velkým na znamení úcty (nepovinné).</li>
+  </ul>
+</div>
+
+<h3>Čárky ve větě</h3>
+
+<div class="rule">
+  <span class="rule-label">1 · Oddělujeme jimi věty v souvětí</span>
+  <div class="rule-body">
+    Mezi větami v souvětí se dává čárka <strong>téměř vždy</strong> — kromě spojení, která čárku ruší.<br>
+    <div class="examples">
+      <div class="ex-ok">Přišel jsem, viděl jsem, zvítězil jsem.</div>
+      <div class="ex-ok">Protože pršelo, zůstali jsme doma.</div>
+      <div class="ex-ok">Nevěděl, co má říct.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">2 · Spojky, PŘED kterými se čárka NEPÍŠE</span>
+  <div class="rule-body">
+    Před <strong>a, i, ani, nebo, či</strong> se čárka <strong>nepíše</strong>, když spojují větné členy nebo věty v poměru slučovacím.<br>
+    <div class="examples">
+      <div class="ex-ok">Koupil jsem chleba a máslo.</div>
+      <div class="ex-ok">Přišla Eva i Jana.</div>
+      <div class="ex-ok">Pršelo a foukalo.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">3 · ALE pozor — jiný poměr = čárka BÝT má</span>
+  <div class="rule-body">
+    Pokud spojky <strong>a, i</strong> spojují věty v poměru jiném než slučovacím (stupňovací, odporovací, důsledkový), čárka SE píše.<br>
+    <div class="examples">
+      <div class="ex-ok">Byl jsem unavený, a přesto jsem pokračoval. <em>(odporovací)</em></div>
+      <div class="ex-ok">Neviděl ho, a tak zavolal. <em>(důsledkový)</em></div>
+      <div class="ex-ok">Nejenže přišel, a dokonce přivedl kamaráda. <em>(stupňovací)</em></div>
+    </div>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">4 · Před spojkami ale, avšak, však, nýbrž, však, zato</span>
+  <div class="rule-body">
+    Vždy čárka <strong>ANO</strong> — odporovací spojky ji žádají.<br>
+    <div class="examples">
+      <div class="ex-ok">Snažil se, ale nestihl to.</div>
+      <div class="ex-ok">Nepřijel vlakem, nýbrž autem.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">5 · Vsuvka a oslovení</span>
+  <div class="rule-body">
+    <strong>Vsuvka</strong> = odbočka od hlavní věty. <strong>Oddělujeme z obou stran čárkou.</strong><br>
+    <div class="examples">
+      <div class="ex-ok">Jan, jak víš, je můj bratr.</div>
+      <div class="ex-ok">Ahoj, Petře, jak se máš?</div>
+      <div class="ex-ok">Ta kniha, bohužel, už není k sehnání.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">6 · Přívlastek volný × těsný</span>
+  <div class="rule-body">
+    <strong>Volný přívlastek</strong> (nepodstatný, lze vynechat) — oddělujeme čárkami.<br>
+    <strong>Těsný přívlastek</strong> (nezbytný, mění význam) — bez čárek.<br>
+    <div class="examples">
+      <div class="ex-ok">Petr, unavený dlouhou cestou, šel spát. <em>(volný — unavení je doplňující)</em></div>
+      <div class="ex-ok">Studenti přihlášení k maturitě dostanou pokyny. <em>(těsný — jen tito studenti, ne všichni)</em></div>
+    </div>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Nejčastější chyba:</strong> lidé píšou čárku před „<em>a</em>" vždycky. NE! Před „a" v běžném slučovacím spojení se čárka nepíše. „<em>Koupil jsem chleba, a sýr.</em>" je chybně. Správně „<em>Koupil jsem chleba a sýr.</em>"
+</div>
+
+<h3>Zkratky a interpunkce</h3>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Zkratky</div>
+  <ul>
+    <li><strong>tzv.</strong> = takzvaný · <strong>atd.</strong> = a tak dále · <strong>apod.</strong> = a podobně · <strong>resp.</strong> = respektive · <strong>tj.</strong> = to jest · <strong>např.</strong> = například</li>
+    <li><strong>s.</strong> = strana · <strong>tj.</strong> = to jest · <strong>č.</strong> = číslo · <strong>str.</strong> = strana (novější)</li>
+    <li><strong>Iniciálové zkratky (akronymy)</strong> — píší se velkými bez teček: ČR, USA, OSN, SSSR, NATO</li>
+    <li><strong>Zkratky akademických titulů</strong> — před jménem: Mgr., Ing., MUDr., RNDr., PhDr. Za jménem: Ph.D., CSc., DrSc.</li>
+  </ul>
+</div>
+
+<h3>Psaní uvozovek a přímé řeči</h3>
+<div class="card highlight">
+  <p>V češtině se používají <strong>„dolní uvozovky v úvodu, horní na konci"</strong>. Přímá řeč:</p>
+  <ul>
+    <li>„Půjdu domů,“ řekl Petr. <em>(uvozovka, čárka, uvozovka, sloveso)</em></li>
+    <li>Petr řekl: „Půjdu domů." <em>(dvojtečka, uvozovka, tečka, uvozovka)</em></li>
+    <li>„Půjdu," řekl Petr, „a nevrátím se." <em>(rozdělená přímá řeč)</em></li>
+  </ul>
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+
+<!-- 10 TVAROSLOVI -->
+<section class="section" id="tvarosl">
+<div class="section-header"><span class="section-num">X</span><h2>Tvarosloví · slovní druhy</h2></div>
+
+<p>Test často obsahuje úlohu: „<em>Kolik je v textu podstatných jmen?</em>“ nebo „<em>Určete mluvnické kategorie slova…</em>“. Musíš bezpečně poznat všech 10 slovních druhů a umět určit kategorie.</p>
+
+<h3>Deset slovních druhů</h3>
+<table class="compare-table">
+  <tr><th>#</th><th>Druh</th><th>Otázka / znak</th><th>Příklady</th></tr>
+  <tr><td>1.</td><td><strong>Podstatná jména</strong></td><td>Kdo? Co?</td><td>dům, matka, štěstí, psaní</td></tr>
+  <tr><td>2.</td><td><strong>Přídavná jména</strong></td><td>Jaký? Který? Čí?</td><td>krásný, dubový, matčin</td></tr>
+  <tr><td>3.</td><td><strong>Zájmena</strong></td><td>Zastupují jméno</td><td>já, ty, on, můj, tento, kdo</td></tr>
+  <tr><td>4.</td><td><strong>Číslovky</strong></td><td>Kolik? Kolikátý?</td><td>pět, pátý, dvojnásobek</td></tr>
+  <tr><td>5.</td><td><strong>Slovesa</strong></td><td>Co dělá? Co se děje?</td><td>psát, běžet, být</td></tr>
+  <tr><td>6.</td><td><strong>Příslovce</strong></td><td>Kde? Kdy? Jak? Proč?</td><td>doma, včera, rychle, proto</td></tr>
+  <tr><td>7.</td><td><strong>Předložky</strong></td><td>Stojí před jménem</td><td>na, v, před, kolem, díky</td></tr>
+  <tr><td>8.</td><td><strong>Spojky</strong></td><td>Spojují věty / členy</td><td>a, ale, protože, kdyby</td></tr>
+  <tr><td>9.</td><td><strong>Částice</strong></td><td>Modifikují význam věty</td><td>ať, kéž, snad, prý, ano</td></tr>
+  <tr><td>10.</td><td><strong>Citoslovce</strong></td><td>Zvuky, nálady</td><td>ach, haf, bum, hurá</td></tr>
+</table>
+
+<h3>Mluvnické kategorie jmenné</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Pád</h4>
+    <p>1. nom., 2. gen., 3. dat., 4. ak., 5. vok., 6. lok., 7. instr. (kdo, koho, komu, koho, oslovení, o kom, s kým)</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Číslo</h4>
+    <p>Jednotné (singulár) × množné (plurál).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Rod</h4>
+    <p>Mužský životný / neživotný, ženský, střední.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Vzor</h4>
+    <p>Pán, hrad, muž, stroj, předseda, soudce · žena, růže, píseň, kost · město, moře, kuře, stavení.</p>
+  </div>
+</div>
+
+<h3>Mluvnické kategorie slovesné</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Osoba</h4>
+    <p>1. (já, my), 2. (ty, vy), 3. (on, ona, ono, oni).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Číslo</h4>
+    <p>Jednotné × množné.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Čas</h4>
+    <p>Minulý, přítomný, budoucí.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Způsob</h4>
+    <p>Oznamovací (píšu), rozkazovací (piš!), podmiňovací (psal bych).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Rod (slovesný)</h4>
+    <p><strong>Činný</strong> (podmět dělá děj — <em>Petr píše dopis</em>) × <strong>trpný</strong> (podmět je dějem zasažen — <em>Dopis je psán Petrem</em>).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--forest)">
+    <h4 style="color:var(--forest)">Vid</h4>
+    <p><strong>Dokonavý</strong> (napsat, vyhrát — konečný) × <strong>nedokonavý</strong> (psát, vyhrávat — probíhající).</p>
+  </div>
+</div>
+
+<h3>Druhy zájmen</h3>
+<ul>
+  <li><strong>Osobní:</strong> já, ty, on, ona, ono, my, vy, oni, se</li>
+  <li><strong>Přivlastňovací:</strong> můj, tvůj, jeho, její, náš, váš, jejich, svůj</li>
+  <li><strong>Ukazovací:</strong> ten, tento, tamten, onen, takový, týž, sám</li>
+  <li><strong>Tázací:</strong> kdo, co, jaký, který, čí</li>
+  <li><strong>Vztažná:</strong> kdo, co, jaký, který, čí, jenž (stejná jako tázací, ale uvádějí vedlejší větu)</li>
+  <li><strong>Neurčitá:</strong> někdo, něco, leckdo, kdosi, cosi</li>
+  <li><strong>Záporná:</strong> nikdo, nic, nijaký, ničí, žádný</li>
+</ul>
+
+<h3>Druhy číslovek</h3>
+<ul>
+  <li><strong>Základní:</strong> jeden, dva, pět, sto — kolik?</li>
+  <li><strong>Řadové:</strong> první, druhý, pátý — kolikátý? (píší se s tečkou: 1.)</li>
+  <li><strong>Druhové:</strong> dvojí, trojí — kolikerý?</li>
+  <li><strong>Násobné:</strong> dvakrát, pětkrát, dvojnásobek — kolikrát?</li>
+</ul>
+
+<div class="memo">
+<strong>Rozlišit spojku od částice:</strong> <em>spojka</em> něco spojuje (a, ale, že, aby, kdyby). <em>Částice</em> stojí často na začátku věty a vyjadřuje postoj (ať, kéž, snad, prý, možná). Někdy jde o stejné slovo v různé funkci — „<em>Ať jde!</em>“ = částice (rozkaz) × „<em>Řekl jsem, ať jde.</em>“ = spojka (uvádí větu).
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 11 SKLADBA -->
+<section class="section" id="skladba">
+<div class="section-header"><span class="section-num">XI</span><h2>Skladba · věta jednoduchá a souvětí</h2></div>
+
+<h3>Větné členy</h3>
+<table class="compare-table">
+  <tr><th>Člen</th><th>Otázka</th><th>Příklad</th></tr>
+  <tr><td><strong>Podmět</strong></td><td>Kdo? Co?</td><td><em>Petr</em> píše dopis.</td></tr>
+  <tr><td><strong>Přísudek</strong></td><td>Co dělá podmět?</td><td>Petr <em>píše</em> dopis.</td></tr>
+  <tr><td><strong>Předmět</strong></td><td>Koho, co? (a jiné pády)</td><td>Petr píše <em>dopis</em>.</td></tr>
+  <tr><td><strong>Přívlastek</strong></td><td>Jaký? Který? Čí?</td><td>Petrův <em>dlouhý</em> dopis.</td></tr>
+  <tr><td><strong>Příslovečné určení</strong></td><td>Kde, kdy, jak, proč…</td><td>Petr píše <em>ráno</em> / <em>v pokoji</em>.</td></tr>
+  <tr><td><strong>Doplněk</strong></td><td>Jaký? V jaké roli?</td><td>Petr se vrátil <em>unavený</em>.</td></tr>
+</table>
+
+<h3>Typy podmětu a přísudku</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Podmět</div>
+  <ul>
+    <li><strong>Vyjádřený</strong> — stojí ve větě: <em>Petr píše.</em></li>
+    <li><strong>Nevyjádřený</strong> — známe jej z koncovky: <em>Píšu dopis.</em> (podmět = já)</li>
+    <li><strong>Všeobecný</strong> — neurčitá osoba: <em>Říkají, že…</em></li>
+  </ul>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Přísudek</div>
+  <ul>
+    <li><strong>Slovesný</strong> — sloveso plnovýznamové: <em>Petr <strong>běžel</strong>.</em></li>
+    <li><strong>Slovesně-jmenný</strong> — spona (být, stát se, bývat) + jméno: <em>Petr <strong>je studentem</strong>.</em></li>
+    <li><strong>Jmenný beze spony</strong> — ve zvoláních: <em>Mladost — <strong>radost</strong>.</em></li>
+  </ul>
+</div>
+
+<h3>Druhy vedlejších vět</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Podmětná</div>
+    <div class="trope-example">„Kdo to udělal, je hrdina."</div>
+    <div class="trope-note">Zastupuje podmět. Ptám se: <em>kdo je hrdina?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísudková</div>
+    <div class="trope-example">„Otec je, jaký je."</div>
+    <div class="trope-note">Zastupuje jmennou část přísudku. Vzácná.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Předmětná</div>
+    <div class="trope-example">„Věděl, že přijde."</div>
+    <div class="trope-note">Zastupuje předmět. <em>Věděl CO? → že přijde.</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přívlastková</div>
+    <div class="trope-example">„Dům, který koupil…"</div>
+    <div class="trope-note">Rozvíjí podstatné jméno.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Doplňková</div>
+    <div class="trope-example">„Viděl ho, jak jde…"</div>
+    <div class="trope-note">Vyjadřuje doplněk ve větě.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. místní</div>
+    <div class="trope-example">„Šel, kam ho srdce vedlo."</div>
+    <div class="trope-note">Otázka: <em>kam, kde, odkud, kudy?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. časová</div>
+    <div class="trope-example">„Přišel, když pršelo."</div>
+    <div class="trope-note">Otázka: <em>kdy?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. způsobová</div>
+    <div class="trope-example">„Udělal to, jak řekl."</div>
+    <div class="trope-note">Otázka: <em>jak?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. příčinná</div>
+    <div class="trope-example">„Nepřišel, protože byl nemocný."</div>
+    <div class="trope-note">Otázka: <em>proč?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. účelová</div>
+    <div class="trope-example">„Přišel, aby pomohl."</div>
+    <div class="trope-note">Otázka: <em>za jakým účelem? proč?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. podmínková</div>
+    <div class="trope-example">„Přijdu, jestli budu moct."</div>
+    <div class="trope-note">Otázka: <em>za jaké podmínky?</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Přísloveč. přípustková</div>
+    <div class="trope-example">„Přišel, ačkoli pršelo."</div>
+    <div class="trope-note">Ačkoli, i když, třebaže.</div>
+  </div>
+</div>
+
+<h3>Poměry mezi hlavními větami (souřadné souvětí)</h3>
+<table class="compare-table">
+  <tr><th>Poměr</th><th>Typické spojky</th><th>Příklad</th></tr>
+  <tr><td>Slučovací</td><td>a, i, ani, nebo, či</td><td>Koupil chleba <strong>a</strong> přinesl ho domů.</td></tr>
+  <tr><td>Stupňovací</td><td>ba, ba i, dokonce, nejen–ale i</td><td>Přišel, <strong>ba dokonce</strong> přivedl i kamaráda.</td></tr>
+  <tr><td>Odporovací</td><td>ale, avšak, však, nýbrž, zato</td><td>Snažil se, <strong>ale</strong> nestihl to.</td></tr>
+  <tr><td>Vylučovací</td><td>nebo, anebo, buď–anebo</td><td><strong>Buď</strong> půjdeš, <strong>nebo</strong> zůstaneš.</td></tr>
+  <tr><td>Příčinný (důvodový)</td><td>neboť, vždyť, totiž</td><td>Zůstal doma, <strong>neboť</strong> pršelo.</td></tr>
+  <tr><td>Důsledkový</td><td>proto, a proto, tedy, tudíž</td><td>Pršelo, <strong>proto</strong> zůstali doma.</td></tr>
+</table>
+
+<div class="memo">
+<strong>Chytrý test:</strong> „<em>nýbrž</em>" = vždy odporovací. „<em>neboť</em>" = vždy příčinný důvod (proč). „<em>proto, tedy</em>" = vždy důsledek. Když se v testu ptají, jaký je poměr, tyhle spojky ti to prozradí ihned.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+
+<!-- 12 SLOVOTVORBA -->
+<section class="section" id="slovotvorba">
+<div class="section-header"><span class="section-num">XII</span><h2>Slovotvorba a význam slov</h2></div>
+
+<h3>Způsoby tvoření slov</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Odvozování</h4>
+    <p>Přidáme <strong>předponu, příponu nebo koncovku</strong>. Nejčastější způsob. <em>les → lesík, lesník, pralesní.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Skládání</h4>
+    <p>Dvě slova se spojí v jedno. <em>vodopád, velkoměsto, modrooký, zeměkoule.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Zkracování</h4>
+    <p>Z počátečních písmen. <em>ČR, Čedok (Česká dopravní kancelář), OSN.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Přejímání</h4>
+    <p>Slova z jiných jazyků. <em>počítač (kalk.) × computer (přejaté), džus, mobil, garáž.</em></p>
+  </div>
+</div>
+
+<h3>Stavba slova</h3>
+<p>Každé slovo má <strong>kořen</strong>, k němu se mohou přidat <strong>předpona</strong>, <strong>přípona</strong> a <strong>koncovka</strong>.</p>
+
+<div class="card highlight">
+  <p>Příklad: <strong>přeběhnout</strong> = <em>pře</em> (předpona) + <em>běh</em> (kořen) + <em>nou</em> (přípona) + <em>t</em> (koncovka infinitivu).</p>
+  <p>Příklad: <strong>nejkrásnější</strong> = <em>nej</em> (předpona 3. stupně) + <em>krás</em> (kořen) + <em>nějš</em> (přípona) + <em>í</em> (koncovka).</p>
+</div>
+
+<h3>Významové vztahy mezi slovy</h3>
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Synonyma</div>
+    <div class="trope-example">Slova stejného významu</div>
+    <div class="trope-note"><em>krásný — hezký — pěkný</em> · <em>dům — stavení</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Antonyma</div>
+    <div class="trope-example">Slova opačného významu</div>
+    <div class="trope-note"><em>den × noc</em> · <em>dobrý × zlý</em> · <em>začátek × konec</em></div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Homonyma</div>
+    <div class="trope-example">Stejně zní, jiný význam</div>
+    <div class="trope-note"><em>kolo</em> (jízdní × mlýnské) · <em>raketa</em> (tenisová × kosmická). Nemají žádnou souvislost významů.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Homofony</div>
+    <div class="trope-example">Stejně zní, jinak píše</div>
+    <div class="trope-note"><em>být × bít</em> · <em>mě × mně</em> · <em>vůz × vůs</em> (neexistuje, pozor na spodobu).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Homografy</div>
+    <div class="trope-example">Stejně píše, jinak zní</div>
+    <div class="trope-note">V češtině vzácné, spíš v angličtině (<em>lead</em> = vést × olovo).</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Paronyma</div>
+    <div class="trope-example">Podobná, často zaměňovaná</div>
+    <div class="trope-note"><em>historický × historický</em>, <em>efektní × efektivní</em>, <em>legislativní × legitimní</em>.</div>
+  </div>
+</div>
+
+<h3>Vrstvy slovní zásoby</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Spisovné</h4>
+    <p>Standardní jazyk. <em>peníze, chlapec, běžet, krásný.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Hovorové</h4>
+    <p>Spisovné, ale neformální. <em>kluk, holka, koukat.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Nespisovné — obecná čeština</h4>
+    <p>Mimo spisovný jazyk, ale obecně užívané. <em>dobrej, mladej, ty vole.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Nářečí (dialekt)</h4>
+    <p>Regionální varianta. Moravská, chodská, hanácká.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Slang</h4>
+    <p>Vázaný na skupinu zájmů / profesi. <em>kšíry (policie), maturák, stud-life.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--forest)">
+    <h4 style="color:var(--forest)">Argot</h4>
+    <p>Tajný jazyk podsvětí / vězení. Často neznámý pro veřejnost.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Archaismy</h4>
+    <p>Zastaralá slova, která mají náhradu. <em>škarohlíd (pesimista), rokytí (rákosí).</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--star)">
+    <h4 style="color:var(--star)">Historismy</h4>
+    <p>Označují věci, které už neexistují. <em>rytíř, panoš, groš, vozka.</em></p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Neologismy</h4>
+    <p>Nová slova. <em>influencer, covid, startup, fakenews.</em></p>
+  </div>
+</div>
+
+<div class="memo">
+<strong>Archaismus × historismus:</strong> <em>archaismus</em> je staré slovo pro věc, která dnes existuje — jen se tomu říká jinak (<em>škarohlíd → pesimista</em>). <em>Historismus</em> je slovo pro věc, která <strong>zanikla</strong> — dnes nemáme <em>panoše</em> ani <em>pandury</em>.
+</div>
+
+<h3>Frazeologie</h3>
+<div class="card highlight">
+  <div class="card-title" style="color:var(--river)">Co to je</div>
+  <p><strong>Frazém</strong> = ustálené spojení slov se zvláštním významem. Význam frazému ≠ součet významů jednotlivých slov.</p>
+  <ul>
+    <li><strong>Přirovnání:</strong> silný jako býk, chytrý jako opice</li>
+    <li><strong>Rčení:</strong> pustit někomu žilou, hodit flintu do žita, mlít pantem</li>
+    <li><strong>Přísloví:</strong> <em>Bez práce nejsou koláče.</em> · <em>Kdo jinému jámu kopá, sám do ní padá.</em></li>
+    <li><strong>Pořekadlo:</strong> kratší výrok bez mravního poučení: <em>Konec dobrý, všechno dobré.</em></li>
+    <li><strong>Pranostika:</strong> předpověď o počasí: <em>Studený máj — v stodole ráj.</em></li>
+  </ul>
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 13 CTEN -->
+<section class="section" id="cten">
+<div class="section-header"><span class="section-num">XIII</span><h2>Práce s textem · čtení s porozuměním</h2></div>
+
+<p>Téměř polovina úloh v testu pracuje s konkrétním úryvkem. Musíš umět <strong>rychle přečíst</strong>, <strong>pochopit hlavní myšlenku</strong> a <strong>dohledat detail</strong>. To je dovednost, kterou se dá naučit.</p>
+
+<h3>Typické otázky k textu</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Hlavní myšlenka</h4>
+    <p>„Která z možností nejlépe vystihuje hlavní myšlenku textu?" Odpověď: to, co je ve VĚTŠINĚ odstavců, ne detail.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Význam slova v kontextu</h4>
+    <p>„Co znamená slovo X v kontextu?" Odpověď: ne slovníkový význam, ale ten, který dává smysl v té větě.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Funkční styl</h4>
+    <p>„Z jakého funkčního stylu pochází úryvek?" Odpověď: podle znaků — viz sekce Styly.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Autor — názor × fakt</h4>
+    <p>„Které z tvrzení vyjadřuje autorovu úvahu?" Úvaha má hodnotové výrazy, subjektivitu, neověřitelnost.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Odpovídá textu?</h4>
+    <p>„Které tvrzení odpovídá textu?" Čti <em>přesně</em>. „Často" ≠ „vždy". „Některé" ≠ „všechny".</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--forest)">
+    <h4 style="color:var(--forest)">Doplnění / seřazení</h4>
+    <p>„Přiřaďte věty do správného pořadí." Sleduj logické spojky, časová příslovce (nejprve, poté, nakonec).</p>
+  </div>
+</div>
+
+<h3>Strategie čtení</h3>
+<div class="card highlight">
+  <ol style="padding-left:22px">
+    <li><strong>První přečtení — rychle.</strong> Chytni celkovou myšlenku. Nečti slovo od slova.</li>
+    <li><strong>Přečti otázky.</strong> Teď víš, co v textu hledat.</li>
+    <li><strong>Druhé čtení — cílené.</strong> Zaškrtávej si v textu místa, kde jsou odpovědi.</li>
+    <li><strong>Odpověz.</strong> U každé možnosti si ověř, jestli ji text podporuje, nebo popírá.</li>
+    <li><strong>Ověřuj.</strong> Při pochybnosti se vrať do textu — hledej konkrétní větu, která potvrzuje odpověď.</li>
+  </ol>
+</div>
+
+<div class="memo">
+<strong>Nejčastější chyba:</strong> lidé odpoví podle vlastní zkušenosti, ne podle textu. <em>Odpovídej vždy podle textu.</em> I když si myslíš něco jiného, maturitní test testuje, co říká text — ne co si myslíš ty.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 14 CHYTAKY -->
+<section class="section" id="chytaky">
+<div class="section-header"><span class="section-num">XIV</span><h2>Typické chytáky v testu</h2></div>
+
+<p>Některé chyby dělá každý rok spousta maturantů. Když je znáš, snadno se jim vyhneš.</p>
+
+<div class="rule">
+  <span class="rule-label">Chyták 1 · Všechno × některé</span>
+  <div class="rule-body">
+    V textu stojí: „<em>Mnoho umělců té doby trpělo nedostatkem.</em>“ Otázka: „<em>Trpěli všichni umělci nedostatkem?</em>“ → Text říká „<em>mnoho</em>“, ne „<em>všichni</em>“. Odpověď: NE. Sleduj kvantifikátory: <strong>všichni, někteří, nikdo, mnoho, málo, většina</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 2 · Podobně znějící odpovědi</span>
+  <div class="rule-body">
+    Možnosti A a B se liší jedním slovem. Přečti je <strong>přesně</strong>. „<em>Autor kritizuje válku.</em>“ × „<em>Autor popisuje válku.</em>“ To je obrovský rozdíl.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 3 · Autor × vypravěč × postava</span>
+  <div class="rule-body">
+    V literárním textu říkají věci <strong>postavy</strong> skrze <strong>vypravěče</strong>. Nelze z jejich výroků dělat závěr o <strong>autorovi</strong>. Pokud v románu postava řekne „<em>Láska je iluze</em>“, neznamená to, že si to myslí autor.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 4 · Slovo v kontextu</span>
+  <div class="rule-body">
+    Slovo <strong>ostrý</strong> může znamenat:
+    <ul>
+      <li>fyzicky ostrý (ostrý nůž)</li>
+      <li>přísný (ostrý pohled)</li>
+      <li>výrazný (ostrá chuť)</li>
+      <li>hlasitý (ostrý výkřik)</li>
+    </ul>
+    V testu je správná odpověď ta, která sedí <em>do věty v textu</em>, ne první, co tě napadne.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 5 · Zdvojené negace</span>
+  <div class="rule-body">
+    „<em>Nelze říci, že by nebyl talentovaný.</em>“ → dvě záporky se ruší. Znamená to, že <strong>byl talentovaný</strong>. Pozor na takové věty, snadno zamotají.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 6 · Shoda v trpném rodě</span>
+  <div class="rule-body">
+    „<em>Děti byly pochválen___.</em>“ Rod střední + minulý čas = <strong>-a</strong>. Ale v trpném rodě je jmenný tvar přídavného jména → děti byly <strong>pochváleny</strong>. V množném čísle vždy <strong>-y</strong>, nebo pro muž. živ. <strong>-i</strong>.
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 7 · Přejatá slova</span>
+  <div class="rule-body">
+    Některá přejatá slova se skloňují a píší podle českých pravidel, jiná zachovávají původní podobu. <em>počítač</em> (počeštěné) × <em>computer</em> (ponecháno anglicky). V testu se ptají na rod (<em>laptop</em> = muž. neživ., <em>esej</em> = ženský rod v češtině, i když píšeme s jedním s).
+  </div>
+</div>
+
+<div class="rule">
+  <span class="rule-label">Chyták 8 · Ich-forma × er-forma</span>
+  <div class="rule-body">
+    <strong>Ich-forma</strong> = 1. osoba (já — <em>Šel jsem domů</em>). <strong>Er-forma</strong> = 3. osoba (on — <em>Šel domů</em>). Vypravěč v ich-formě je <strong>vždy součást příběhu</strong> (postava). Vypravěč v er-formě je obvykle nad příběhem, může být všestranný (vševědoucí).
+  </div>
+</div>
+
+<div class="memo">
+<strong>Zlaté pravidlo testu:</strong> když si mezi dvěma odpověďmi nejsi jistý, <em>vrať se do textu</em> a najdi konkrétní větu, která podporuje jednu z odpovědí. Ta, kterou najdeš přímo v textu, je správně.
+</div>
+</section>
+
+<div class="river-divider">≈ ✦ ≈</div>
+
+<!-- 15 DENPRED -->
+<section class="section" id="denpred">
+<div class="section-header"><span class="section-num">XV</span><h2>Den před testem · checklist</h2></div>
+
+<h3>Večer před testem</h3>
+<div class="card highlight">
+  <ul>
+    <li><strong>Neučit se nové věci.</strong> Mozek potřebuje utřídit, ne přetížit.</li>
+    <li><strong>Projdi si rychle tropy a figury.</strong> To bývá v testu jistojistě.</li>
+    <li><strong>Projdi si shody a mě/mně.</strong> Nejčastější pravopisné chyby.</li>
+    <li><strong>Připrav si tašku</strong> — průkaz, modré pero (2 ks!), svačinu, vodu.</li>
+    <li><strong>Lehni si včas.</strong> Spánek je důležitější než další hodina učení.</li>
+  </ul>
+</div>
+
+<h3>Ráno před testem</h3>
+<div class="card key">
+  <ul>
+    <li><strong>Snídej.</strong> Krev musí jít do mozku, ne do žaludku.</li>
+    <li><strong>Nepanikař.</strong> Úspěšnost 44 % znamená, že nemusíš být perfektní.</li>
+    <li><strong>Buď ve škole dřív.</strong> Stres z pozdního příchodu ti ubere body.</li>
+    <li><strong>Vezmi si vodu.</strong> 75 minut je dlouhá doba.</li>
+  </ul>
+</div>
+
+<h3>Během testu — mantra</h3>
+<div class="memory-frame" style="background:var(--bg-card-alt);border:1px solid var(--sepia);padding:24px 30px;margin:24px 0;position:relative;font-family:'Lora',serif;font-style:italic;color:var(--heading);font-size:16px;line-height:1.8;text-align:center">
+Dýchej. Čti pozorně. Nejdřív otázku, pak text.<br>
+Když nevíš, vyluč. Když pořád nevíš, tipni.<br>
+Nic nenech prázdné.<br>
+Před odevzdáním zkontroluj záznamový arch.
+</div>
+
+<h3>Co si zapamatovat nade vše</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--sun)">
+    <h4 style="color:var(--sun)">Tři druhy</h4>
+    <p>Lyrika (pocity) · Epika (děj) · Drama (jeviště).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--river)">
+    <h4 style="color:var(--river)">Tropy vs figury</h4>
+    <p>Tropy = přenos významu. Figury = stavba věty.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--moss)">
+    <h4 style="color:var(--moss)">Šest funkčních stylů</h4>
+    <p>Prostěsd., odborný, publicist., umělec., admin., řečnický.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--gold)">
+    <h4 style="color:var(--gold)">Mě × mně</h4>
+    <p>Tobě → mně. Tebe → mě.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--deer)">
+    <h4 style="color:var(--deer)">Shoda</h4>
+    <p>Muž. živ. → -i. Jinak -y (mimo stř. → -a).</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--earth)">
+    <h4 style="color:var(--earth)">Čárka před a</h4>
+    <p>Slučovací = bez čárky. Jinak = s čárkou.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--forest)">
+    <h4 style="color:var(--forest)">Velká písmena</h4>
+    <p>Ve víceslovných názvech jen první slovo.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--star)">
+    <h4 style="color:var(--star)">Čti text, ne sebe</h4>
+    <p>Odpovídej podle toho, co stojí v textu. Ne podle své zkušenosti.</p>
+  </div>
+</div>
+
+<div class="memory-frame" style="margin-top:40px">Didaktický test neověřuje, jak moc miluješ literaturu.<br>Ověřuje, jestli rozumíš jazyku a pravidlům.<br>Kdo čte pozorně a zná systém —<br>ten projde.<span class="memory-source">Závěr · pomůcka k didaktickému testu</span></div>
+</section>
+
+<div class="river-divider" style="margin-top:50px">≈ ✦ ≈</div>
+
+</div>
+</body>
+</html>

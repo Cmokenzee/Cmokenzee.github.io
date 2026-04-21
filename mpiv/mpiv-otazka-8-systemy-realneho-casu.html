@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPIV – Otázka 8: Systémy reálného času, spolehlivost</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+    --accent-8: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #2e0f1a 40%, #0f1a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 25% 50%, rgba(248,113,113,0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(96,165,250,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-5); margin-bottom: 16px; position: relative; }
+  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(26px, 5vw, 42px); color: var(--heading); font-weight: 700; line-height: 1.2; position: relative; }
+  .hero p { color: var(--text-muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 48px; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-8); margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero) ' '; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 12px; margin-right: 6px; }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-8); }
+
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; min-width: 24px; }
+  .section-header h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--heading); font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--heading); margin: 28px 0 12px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--accent-1); margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: rgba(96,165,250,0.1); color: var(--accent-1); padding: 2px 6px; border-radius: 4px; }
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .device-card { background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  .steps { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(42,46,61,0.5); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-3); min-width: 24px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--heading); padding: 10px 0; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details summary::before { content: '▸'; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-8); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .cli { background: #0d0f14; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; margin: 14px 0; overflow-x: auto; color: var(--text-muted); }
+  .cli .cmd { color: var(--accent-3); }
+  .cli .comment { color: #4b5563; }
+  .cli .kw { color: var(--accent-4); }
+  .cli .val { color: var(--accent-6); }
+  .cli .reg { color: var(--accent-1); }
+
+  .formula {
+    background: rgba(96,165,250,0.08);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    text-align: center;
+    color: var(--accent-1);
+    font-weight: 600;
+  }
+  .formula .f-small { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 6px; }
+
+  /* Classification severity visual */
+  .severity-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .severity-card {
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .severity-icon { font-size: 32px; margin-bottom: 8px; }
+  .severity-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .severity-name { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+  .severity-miss { font-size: 12px; opacity: 0.8; }
+  .severity-example { font-size: 11px; opacity: 0.6; margin-top: 6px; }
+
+  /* Timeline visual */
+  .timeline-visual {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    overflow-x: auto;
+  }
+  .tl-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
+
+  /* Task param visual */
+  .task-param {
+    display: flex;
+    gap: 16px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+  }
+  .tp-box {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .tp-box .tp-symbol { font-size: 24px; font-weight: 700; display: block; }
+  .tp-box .tp-name { font-size: 11px; margin-top: 4px; opacity: 0.7; }
+
+  /* Laxity visual */
+  .laxity-bar {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 14px 0;
+  }
+  .lb-row {
+    display: flex;
+    height: 28px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .lb-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0 8px;
+  }
+
+  /* TMR visual */
+  .tmr-visual {
+    background: #0d0f14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .tmr-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
+  .tmr-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .tmr-box {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 80px;
+  }
+  .tmr-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* Pros/Cons grid */
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .pros-cons .pros { background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.2); border-radius: 8px; padding: 16px 18px; }
+  .pros-cons .cons { background: rgba(248,113,113,0.06); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 16px 18px; }
+  .pros-cons h4 { margin: 0 0 8px; font-size: 12px; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .severity-grid { grid-template-columns: 1fr; }
+    .task-param { flex-direction: column; }
+    .tmr-row { flex-direction: column; }
+    .pros-cons { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">MPIV</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">MPIV – Maturitní otázka č. 8</div>
+  <h1>Systémy reálného času, spolehlivost</h1>
+  <p>Hard / Firm / Soft RT • Úloha • Deadline • Laxita • RM / EDF • TMR • Watchdog</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#co-je-rts">Co je systém reálného času</a></li>
+    <li><a href="#klasifikace">Klasifikace – Hard / Firm / Soft</a></li>
+    <li><a href="#uloha">Úloha (Task) a její parametry</a></li>
+    <li><a href="#davka">Dávka (Job), Deadline, Laxita</a></li>
+    <li><a href="#staticke">Statické plánování – Rate Monotonic</a></li>
+    <li><a href="#dynamicke">Dynamické plánování – EDF, LLF</a></li>
+    <li><a href="#srovnani-plan">Srovnání RM vs EDF</a></li>
+    <li><a href="#spolehlivost">Spolehlivost – pojmy a metriky</a></li>
+    <li><a href="#redundance">Hardwarová a informační redundance</a></li>
+    <li><a href="#watchdog">Watchdog, Checkpointing, Degradace</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- 01 CO JE RTS -->
+<section class="section" id="co-je-rts">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>Co je systém reálného času</h2>
+  </div>
+
+  <p><strong>Real-Time System (RTS)</strong> je systém, kde správnost výsledku závisí nejen na logické správnosti výpočtu, ale <strong>TAKÉ na čase</strong>, kdy je výsledek produkován. Nestačí vypočítat správný výsledek – musí být hotový <strong>DO DEADLINE</strong>!</p>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Klíčový rozdíl od běžných systémů</div>
+    <p><strong>Běžný systém:</strong> „Spočítej 2+2" → výsledek 4 je správný kdykoli.</p>
+    <p style="margin-bottom:0"><strong>RTS:</strong> „Spočítej 2+2 do 10 ms" → výsledek 4 po 11 ms je <strong>CHYBA!</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Kde se RTS používá</div>
+    <ul>
+      <li><strong>Automotive</strong> – airbag musí vybuchnout do 20 ms po nárazu</li>
+      <li><strong>Letectví</strong> – fly-by-wire, kontrola křídel každých 10 ms</li>
+      <li><strong>Průmysl</strong> – robotické rameno, CNC stroje</li>
+      <li><strong>Medicína</strong> – kardiostimulátor, infuzní pumpy</li>
+      <li><strong>Telekomunikace</strong> – zpracování packetů, switching</li>
+      <li><strong>Multimedia</strong> – audio/video streaming (16.7 ms @ 60 FPS)</li>
+    </ul>
+  </div>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Co NENÍ RTS</div>
+    <p>RTS ≠ „rychlý systém". RTS je o <strong>PŘEDVÍDATELNOSTI</strong>, ne jen o rychlosti. Supercomputer může být velmi rychlý (petaflops), ale <strong>NENÍ</strong> RTS, protože čas není garantovaný.</p>
+  </div>
+</section>
+
+<!-- 02 KLASIFIKACE -->
+<section class="section" id="klasifikace">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Klasifikace – Hard / Firm / Soft</h2>
+  </div>
+
+  <div class="severity-grid">
+    <div class="severity-card" style="background:rgba(248,113,113,0.1);color:var(--accent-5)">
+      <div class="severity-icon">💀</div>
+      <div class="severity-type">HARD REAL-TIME</div>
+      <div class="severity-name">Miss = Katastrofa</div>
+      <div class="severity-miss">Deadline MUSÍ být splněn</div>
+      <div class="severity-example">Airbag, ABS, kardiostimulátor</div>
+    </div>
+    <div class="severity-card" style="background:rgba(251,191,36,0.1);color:var(--accent-4)">
+      <div class="severity-icon">🗑️</div>
+      <div class="severity-type">FIRM REAL-TIME</div>
+      <div class="severity-name">Miss = Zahoď</div>
+      <div class="severity-miss">Pozdní výsledek je bezcenný</div>
+      <div class="severity-example">Video frame, VoIP packet</div>
+    </div>
+    <div class="severity-card" style="background:rgba(96,165,250,0.1);color:var(--accent-1)">
+      <div class="severity-icon">📉</div>
+      <div class="severity-type">SOFT REAL-TIME</div>
+      <div class="severity-name">Miss = Degradace</div>
+      <div class="severity-miss">Výsledek stále použitelný</div>
+      <div class="severity-example">YouTube lag, web latency</div>
+    </div>
+  </div>
+
+  <h3>Hard Real-Time</h3>
+  <p>Deadline <strong>MUSÍ</strong> být splněn. Nedodržení = katastrofa/selhání systému.</p>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Příklady Hard RT</div>
+    <ul>
+      <li><strong>Airbag</strong> – musí vybuchnout do 20 ms. Po 30 ms je pozdě → smrt</li>
+      <li><strong>ABS brzdy</strong> – kontrola každých 10 ms. Zpoždění → smyk, nehoda</li>
+      <li><strong>Kardiostimulátor</strong> – stimulace musí být přesná. Zpoždění → úmrtí</li>
+      <li><strong>Fly-by-wire</strong> – kontrola křídel každých 10 ms. Miss → pád</li>
+      <li><strong>Nuclear reactor</strong> – monitoring každých 100 ms. Miss → meltdown</li>
+    </ul>
+    <p style="margin-bottom:0">Vyžaduje: <strong>WCET</strong> (Worst-Case Execution Time) musí být známý, matematicky ověřitelné (schedulability analysis).</p>
+  </div>
+
+  <h3>Firm Real-Time</h3>
+  <p>Deadline by měl být splněn. Občasné nedodržení tolerovatelné, ale výsledek je pak <strong>BEZCENNÝ</strong>.</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Příklady Firm RT</div>
+    <ul>
+      <li><strong>Video streaming</strong> – frame musí být ready každých 16.7 ms (60 FPS). Pozdní frame se skipne → občasné škubání OK</li>
+      <li><strong>Voice over IP</strong> – packet po deadline zahozený. Občasný výpadek → crackling</li>
+      <li><strong>Online gaming</strong> – input po deadline ignorován → hráč pocítí lag</li>
+    </ul>
+  </div>
+
+  <h3>Soft Real-Time</h3>
+  <p>Deadline je žádoucí. Nedodržení snižuje kvalitu, ale výsledek je stále <strong>POUŽITELNÝ</strong>.</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Příklady Soft RT</div>
+    <ul>
+      <li><strong>YouTube video</strong> – buffer může čekat, video se přehraje později</li>
+      <li><strong>Webový server</strong> – stránka za 500 ms místo 100 ms. Pomalejší, ale funkční</li>
+      <li><strong>Email notifikace</strong> – přijde o 5 sekund později. OK</li>
+      <li><strong>UI refresh</strong> – displej updated každých 100 ms místo 50 ms. Méně responsivní</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 ÚLOHA -->
+<section class="section" id="uloha">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Úloha (Task) a její parametry</h2>
+  </div>
+
+  <p><strong>Task</strong> je jednotka práce, která má být vykonána. V RTS má task <strong>časové požadavky</strong> (deadline, perioda).</p>
+
+  <div class="task-param">
+    <div class="tp-box" style="background:rgba(96,165,250,0.12);color:var(--accent-1)">
+      <span class="tp-symbol">C</span>
+      <span class="tp-name">Computation time</span>
+      <span class="tp-name">Doba vykonání (WCET)</span>
+    </div>
+    <div class="tp-box" style="background:rgba(248,113,113,0.12);color:var(--accent-5)">
+      <span class="tp-symbol">D</span>
+      <span class="tp-name">Deadline</span>
+      <span class="tp-name">Čas do kdy MUSÍ být hotový</span>
+    </div>
+    <div class="tp-box" style="background:rgba(52,211,153,0.12);color:var(--accent-3)">
+      <span class="tp-symbol">T</span>
+      <span class="tp-name">Period</span>
+      <span class="tp-name">Jak často se opakuje</span>
+    </div>
+    <div class="tp-box" style="background:rgba(167,139,250,0.12);color:var(--accent-2)">
+      <span class="tp-symbol">R</span>
+      <span class="tp-name">Release time</span>
+      <span class="tp-name">Kdy je task ready</span>
+    </div>
+  </div>
+
+  <h3>Typy tasků</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Periodický task</h4>
+      <p>Opakuje se pravidelně každých T ms. Příklad: čtení teploty každou sekundu (T=1000, C=5, D=1000).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Aperiodický task</h4>
+      <p>Objevuje se nepravidelně, nelze předpovědět kdy. Příklad: stisk tlačítka uživatelem.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">Sporadický task</h4>
+      <p>Jako aperiodický, ale s <strong>minimálním intervalem</strong> mezi výskyty. Příklad: interrupt handler (min. každých 10 ms).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DÁVKA, DEADLINE, LAXITA -->
+<section class="section" id="davka">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Dávka (Job), Deadline, Laxita</h2>
+  </div>
+
+  <h3>Dávka (Job/Instance)</h3>
+  <p><strong>Job</strong> je JEDNO VYKONÁNÍ tasku. Periodický task generuje nekonečně mnoho jobů.</p>
+
+  <div class="timeline-visual">
+    <div class="tl-label">PERIODICKÝ TASK – JOBY</div>
+    <div style="font-size:12px;text-align:center;line-height:2">
+      <span style="color:var(--text-muted)">Task: „Čti teplotu každou sekundu"</span><br>
+      <span style="color:var(--accent-1)">Job 1</span><span style="color:var(--text-muted)"> @ t=0 ms&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;</span>
+      <span style="color:var(--accent-3)">Job 2</span><span style="color:var(--text-muted)"> @ t=1000 ms&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;</span>
+      <span style="color:var(--accent-6)">Job 3</span><span style="color:var(--text-muted)"> @ t=2000 ms&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;...</span>
+    </div>
+  </div>
+
+  <h3>Deadline</h3>
+  <p>Deadline je <strong>absolutní časový limit</strong> do kdy MUSÍ být job dokončen.</p>
+
+  <table class="compare-table">
+    <tr><th>Typ</th><th>Podmínka</th><th>Popis</th></tr>
+    <tr><td><strong>Implicit</strong></td><td>D = T</td><td>Deadline = perioda (nejčastější)</td></tr>
+    <tr><td><strong>Constrained</strong></td><td>D ≤ T</td><td>Deadline před dalším release</td></tr>
+    <tr><td><strong>Arbitrary</strong></td><td>D &gt; T</td><td>Může být i po dalším release</td></tr>
+  </table>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Příklad výpočtu deadline</div>
+    <p>Task: T=100 ms, D=100 ms (implicit)</p>
+    <p>Job 1 release: t=0 → deadline = 0+100 = <strong>100 ms</strong></p>
+    <p style="margin-bottom:0">Job 2 release: t=100 → deadline = 100+100 = <strong>200 ms</strong></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Laxita (Slack Time)</h3>
+  <p><strong>Laxita</strong> je čas, o který lze zpozdit start tasku <strong>BEZ porušení deadline</strong>. Kolik „volného času" máme.</p>
+
+  <div class="formula">
+    Laxita = (Deadline − Current_Time) − Remaining_Execution_Time
+    <div class="f-small">L = (D − t) − C_remaining</div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Praktický příklad laxity</div>
+    <p>Task: C=20 ms, D=100 ms, current time t=30 ms</p>
+    <p>Zbývající čas do deadline: 100 − 30 = <strong>70 ms</strong></p>
+    <p>Potřebný čas: <strong>20 ms</strong></p>
+    <p style="margin-bottom:0">Laxita: 70 − 20 = <strong>50 ms</strong> → Task můžeme zdržet o 50 ms a stále stihneme deadline.</p>
+  </div>
+
+  <!-- Laxity visual bar -->
+  <div class="laxity-bar">
+    <div class="tl-label">VIZUALIZACE LAXITY</div>
+    <div style="font-size:10px;font-family:'JetBrains Mono',monospace;display:flex;justify-content:space-between;color:var(--text-muted);margin-bottom:4px">
+      <span>t=30 (now)</span>
+      <span>t=100 (deadline)</span>
+    </div>
+    <div class="lb-row">
+      <div class="lb-seg" style="width:71%;background:rgba(52,211,153,0.25);color:var(--accent-3)">Laxita = 50 ms (volný čas)</div>
+      <div class="lb-seg" style="width:29%;background:rgba(96,165,250,0.3);color:var(--accent-1)">C = 20 ms</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Interpretace laxity</div>
+    <ul>
+      <li><strong>Laxita = 0</strong> → task musí běžet TEĎ nebo miss deadline</li>
+      <li><strong>Laxita &gt; 0</strong> → ještě můžeme čekat</li>
+      <li><strong>Laxita &lt; 0</strong> → deadline už nemožné splnit!</li>
+      <li>Použití v <strong>Least Laxity First (LLF)</strong> scheduling</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 05 STATICKÉ PLÁNOVÁNÍ -->
+<section class="section" id="staticke">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>Statické plánování – Rate Monotonic</h2>
+  </div>
+
+  <p><strong>Statické plánování (offline):</strong> Schedule vytvoříme PŘED spuštěním systému. Tasky, časy a pořadí jsou známé dopředu. Schedule je pak <strong>fixní</strong> – neměnný za běhu.</p>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h4 style="color:var(--accent-3)">VÝHODY</h4>
+      <ul>
+        <li>Předvídatelné – víme co kdy běží</li>
+        <li>Nízký overhead</li>
+        <li>Snadné testování</li>
+        <li>Vhodné pro certifikaci</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4 style="color:var(--accent-5)">NEVÝHODY</h4>
+      <ul>
+        <li>Nepružné – nelze reagovat na změny</li>
+        <li>Špatné pro aperiodické tasky</li>
+        <li>Neoptimální využití CPU</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Rate Monotonic (RM)</h3>
+  <p>Fixní priorita založená na periodě. <strong>Kratší perioda = vyšší priorita.</strong></p>
+
+  <div class="formula">
+    Priority(Task_i) = 1 / Period(Task_i)
+    <div class="f-small">Nejkratší perioda → nejvyšší priorita</div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Příklad RM plánování</div>
+    <table class="compare-table">
+      <tr><th>Task</th><th>C (výpočet)</th><th>T (perioda)</th><th>Priorita</th></tr>
+      <tr><td><strong>Task A</strong></td><td>2 ms</td><td>5 ms</td><td style="color:var(--accent-5)">1 (nejvyšší)</td></tr>
+      <tr><td><strong>Task B</strong></td><td>3 ms</td><td>10 ms</td><td style="color:var(--accent-4)">2</td></tr>
+      <tr><td><strong>Task C</strong></td><td>2 ms</td><td>20 ms</td><td style="color:var(--accent-3)">3 (nejnižší)</td></tr>
+    </table>
+  </div>
+
+  <div class="timeline-visual">
+    <div class="tl-label">RM TIMELINE (ZJEDNODUŠENĚ)</div>
+    <div style="font-size:11px;line-height:2;text-align:center">
+      <span style="color:var(--accent-5)">0–2: A</span><span style="color:var(--text-muted)"> │ </span>
+      <span style="color:var(--accent-4)">2–5: B</span><span style="color:var(--text-muted)"> │ </span>
+      <span style="color:var(--accent-5)">5–7: A</span><span style="color:var(--text-muted)"> (preemptuje B) │ </span>
+      <span style="color:var(--accent-3)">7–9: C</span><span style="color:var(--text-muted)"> │ </span>
+      <span style="color:var(--accent-4)">9–10: B done</span><span style="color:var(--text-muted)"> │ </span>
+      <span style="color:var(--accent-5)">10–12: A</span><span style="color:var(--text-muted)"> │ ...</span>
+    </div>
+  </div>
+
+  <h3>RM Schedulability Test</h3>
+
+  <div class="formula">
+    U = Σ(C_i / T_i) ≤ n × (2^(1/n) − 1)
+    <div class="f-small">Kde n = počet tasků. Pokud U pod limitem → všechny deadlines zaručeně splněny</div>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Počet tasků (n)</th><th>Max utilization</th></tr>
+    <tr><td>1</td><td>100%</td></tr>
+    <tr><td>2</td><td><strong>82.8%</strong></td></tr>
+    <tr><td>3</td><td>78.0%</td></tr>
+    <tr><td>5</td><td>74.3%</td></tr>
+    <tr><td>∞</td><td><strong>69.3%</strong> (ln 2)</td></tr>
+  </table>
+
+  <details>
+    <summary>Příklad výpočtu utilization</summary>
+    <div class="cli">
+      <span class="comment">// Task A: C=2, T=5; Task B: C=3, T=10; Task C: C=2, T=20</span><br>
+      <span class="reg">U</span> = <span class="val">2/5</span> + <span class="val">3/10</span> + <span class="val">2/20</span><br>
+      <span class="reg">U</span> = <span class="val">0.4</span> + <span class="val">0.3</span> + <span class="val">0.1</span> = <span class="cmd">0.8</span> (80%)<br><br>
+      <span class="comment">// n=3 → limit = 3 × (2^(1/3) − 1) = 0.780 (78%)</span><br>
+      <span class="comment">// U=0.8 > 0.78 → test NEPROŠEL (sufficient, ne necessary!)</span><br>
+      <span class="comment">// Ale stále MŮŽE fungovat – potřeba přesnější analýza</span>
+    </div>
+  </details>
+</section>
+
+<!-- 06 DYNAMICKÉ PLÁNOVÁNÍ -->
+<section class="section" id="dynamicke">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>Dynamické plánování – EDF, LLF</h2>
+  </div>
+
+  <p><strong>Dynamické plánování (online):</strong> Scheduling rozhodnutí děláme ZA BĚHU. Priority se mění dynamicky podle aktuální situace.</p>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h4 style="color:var(--accent-3)">VÝHODY</h4>
+      <ul>
+        <li>Flexibilní – reaguje na změny</li>
+        <li>Lepší využití CPU</li>
+        <li>Zvládá aperiodické tasky</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4 style="color:var(--accent-5)">NEVÝHODY</h4>
+      <ul>
+        <li>Runtime overhead</li>
+        <li>Složitější analýza</li>
+        <li>Méně předvídatelné</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Earliest Deadline First (EDF)</h3>
+  <p>Dynamická priorita podle <strong>absolutního deadline</strong>. Nejbližší deadline = nejvyšší priorita.</p>
+
+  <div class="formula">
+    Priority = Deadline (čím nižší číslo, tím vyšší priorita)
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Příklad EDF</div>
+    <p>Task A: C=2, T=5, D=5 &nbsp;│&nbsp; Task B: C=3, T=10, D=10</p>
+    <p>t=0: A.deadline=5, B.deadline=10 → <strong>běží A</strong> (bližší deadline)</p>
+    <p>t=2: A done → <strong>běží B</strong></p>
+    <p style="margin-bottom:0">t=5: Nový A job, A.deadline=10, B.deadline=10 → stejné, pokračuje B...</p>
+  </div>
+
+  <h3>EDF Schedulability Test</h3>
+
+  <div class="formula">
+    U = Σ(C_i / T_i) ≤ 1.0 (100%)
+    <div class="f-small">EDF je OPTIMÁLNÍ – pokud nějaký algoritmus dokáže schedule, EDF taky!</div>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">EDF je optimální!</div>
+    <p style="margin-bottom:0">RM max <strong>69%</strong> utilization, EDF až <strong>100%</strong> → EDF má výrazně lepší využití CPU. Pokud existuje schedule pro danou task sadu, EDF ho najde.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Least Laxity First (LLF)</h3>
+  <p>Priorita podle <strong>laxity</strong>. Nejmenší laxita = nejvyšší priorita = nejnaléhavější.</p>
+
+  <div class="formula">
+    Laxita = (Deadline − Current_Time) − Remaining_Time
+    <div class="f-small">Nejmenší laxita → nejdříve běží</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">LLF vlastnosti</div>
+    <ul>
+      <li><strong>Výhoda:</strong> detekuje deadline miss DŘÍVE než EDF</li>
+      <li><strong>Nevýhoda:</strong> více context switches (častěji přepočítává priority)</li>
+      <li>Také <strong>optimální</strong> (jako EDF) pro preemptivní systémy</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 SROVNÁNÍ -->
+<section class="section" id="srovnani-plan">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>Srovnání RM vs EDF</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Vlastnost</th><th>Rate Monotonic (RM)</th><th>Earliest Deadline First (EDF)</th></tr>
+    <tr><td>Typ</td><td><strong>Statický</strong> (fixní priorita)</td><td><strong>Dynamický</strong> (měnící se priorita)</td></tr>
+    <tr><td>Pravidlo</td><td>Kratší perioda = vyšší priorita</td><td>Bližší deadline = vyšší priorita</td></tr>
+    <tr><td>Max utilization</td><td style="color:var(--accent-4)"><strong>69.3%</strong> (ln 2)</td><td style="color:var(--accent-3)"><strong>100%</strong></td></tr>
+    <tr><td>Optimalita</td><td>Optimální v třídě fixních priorit</td><td><strong>Globálně optimální</strong></td></tr>
+    <tr><td>Overhead</td><td style="color:var(--accent-3)">Nízký</td><td style="color:var(--accent-5)">Vyšší (runtime přepočítávání)</td></tr>
+    <tr><td>Předvídatelnost</td><td style="color:var(--accent-3)">Vysoká</td><td>Nižší</td></tr>
+    <tr><td>Certifikace</td><td style="color:var(--accent-3)"><strong>Vhodný</strong> (automotive, letectví)</td><td>Složitější</td></tr>
+    <tr><td>Aperiodické tasky</td><td style="color:var(--accent-5)">Špatně</td><td style="color:var(--accent-3)">Dobře</td></tr>
+  </table>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-8);">Kdy co použít?</div>
+    <p><strong>RM</strong> – certifikované systémy (automotive, letectví), jednoduché, předvídatelné, low overhead.</p>
+    <p style="margin-bottom:0"><strong>EDF</strong> – maximální využití CPU, flexibilní systémy, když RM nestačí (U &gt; 69%).</p>
+  </div>
+</section>
+
+<!-- 08 SPOLEHLIVOST -->
+<section class="section" id="spolehlivost">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Spolehlivost – pojmy a metriky</h2>
+  </div>
+
+  <p><strong>Reliability (spolehlivost)</strong> = pravděpodobnost, že systém bude fungovat správně po určitou dobu za daných podmínek.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">Klíčové pojmy</div>
+    <ul>
+      <li><strong>Failure</strong> (selhání) – systém neposkytuje správnou službu</li>
+      <li><strong>Fault</strong> (porucha) – příčina selhání (HW defekt, SW bug)</li>
+      <li><strong>Error</strong> (chyba) – část systému ve špatném stavu</li>
+    </ul>
+  </div>
+
+  <h3>Typy poruch</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">Permanent Fault</h4>
+      <p>Trvalá porucha, trvá dokud se fyzicky neopraví. Příklad: spálený transistor, přeražený vodič.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Transient Fault</h4>
+      <p>Dočasná, sama zmizí. Příklad: kosmické záření (bit flip v RAM), EMI interference.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Intermittent Fault</h4>
+      <p>Objevuje se a mizí nepředvídatelně. Příklad: špatné spojení (cold solder joint), přehřívání.</p>
+    </div>
+  </div>
+
+  <h3>Metriky spolehlivosti</h3>
+
+  <table class="compare-table">
+    <tr><th>Metrika</th><th>Význam</th><th>Příklad</th></tr>
+    <tr><td><code>MTTF</code></td><td><strong>Mean Time To Failure</strong> – průměrná doba do první poruchy (neopravitelné systémy)</td><td>LED: MTTF = 50 000 h</td></tr>
+    <tr><td><code>MTTR</code></td><td><strong>Mean Time To Repair</strong> – průměrná doba opravy</td><td>Server: MTTR = 4 h</td></tr>
+    <tr><td><code>MTBF</code></td><td><strong>Mean Time Between Failures</strong> – pro opravitelné systémy. MTBF = MTTF + MTTR</td><td></td></tr>
+  </table>
+
+  <div class="formula">
+    Availability = MTTF / (MTTF + MTTR) = MTTF / MTBF
+    <div class="f-small">Příklad: MTTF=1000 h, MTTR=10 h → A = 1000/1010 = <strong>99%</strong></div>
+  </div>
+</section>
+
+<!-- 09 REDUNDANCE -->
+<section class="section" id="redundance">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>Hardwarová a informační redundance</h2>
+  </div>
+
+  <p><strong>Redundance</strong> = přidání extra komponent/dat pro toleranci chyb. Hlavní technika odolnosti proti poruchám.</p>
+
+  <h3>A) Hardware Redundance</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">DMR (Dual Modular)</h4>
+      <p>2 stejné moduly, porovnání výstupů. Neshodují se → <strong>error detected</strong>. Příklad: dva senzory teploty, rozdíl &gt;5°C → alarm.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">TMR (Triple Modular)</h4>
+      <p>3 stejné moduly + <strong>majority voter</strong>. 2 ze 3 musí souhlasit. Toleruje JEDNU chybu. Letectví, spacecraft.</p>
+    </div>
+  </div>
+
+  <!-- TMR Visual -->
+  <div class="tmr-visual">
+    <div class="tmr-label">TRIPLE MODULAR REDUNDANCY (TMR)</div>
+    <div class="tmr-row">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="tmr-box" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">Module A<div style="font-size:9px;opacity:0.7">Výsledek = 42 ✓</div></div>
+        <div class="tmr-box" style="background:rgba(52,211,153,0.15);color:var(--accent-3)">Module B<div style="font-size:9px;opacity:0.7">Výsledek = 42 ✓</div></div>
+        <div class="tmr-box" style="background:rgba(248,113,113,0.15);color:var(--accent-5)">Module C<div style="font-size:9px;opacity:0.7">Výsledek = 37 ✗</div></div>
+      </div>
+      <div class="tmr-arrow">→</div>
+      <div class="tmr-box" style="background:rgba(251,191,36,0.15);color:var(--accent-4);min-width:100px">
+        Majority<br>Voter
+        <div style="font-size:9px;opacity:0.7">2 ze 3 říkají 42</div>
+      </div>
+      <div class="tmr-arrow">→</div>
+      <div class="tmr-box" style="background:rgba(52,211,153,0.2);color:var(--accent-3);min-width:80px">
+        Output<br><strong>42 ✓</strong>
+      </div>
+    </div>
+  </div>
+
+  <h3>B) Informační redundance</h3>
+  <p>Extra bity pro detekci/korekci chyb v datech.</p>
+
+  <table class="compare-table">
+    <tr><th>Metoda</th><th>Schopnost</th><th>Použití</th></tr>
+    <tr><td><strong>Parity bit</strong></td><td>Detekuje lichý počet chyb, <strong>NEKORRIGUJE</strong></td><td>UART komunikace</td></tr>
+    <tr><td><strong>CRC</strong> (Cyclic Redundancy Check)</td><td>Detekuje burst errors. CRC-8/16/32</td><td>Ethernet, UART, CAN</td></tr>
+    <tr><td><strong>ECC</strong> (Error Correcting Code)</td><td>Detekuje A OPRAVÍ chyby (SECDED)</td><td>ECC RAM, Flash memory</td></tr>
+  </table>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">SECDED</div>
+    <p style="margin-bottom:0"><strong>Single Error Correct, Double Error Detect</strong> – Hamming code. Opraví 1-bit chybu, detekuje 2-bit chybu. Standardní v ECC RAM.</p>
+  </div>
+
+  <h3>C) Časová redundance</h3>
+  <p>Opakování operace. Pokud transient fault → druhý pokus uspěje.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Příklad</div>
+    <p style="margin-bottom:0">Přečti ADC <strong>3×</strong> a udělej <strong>median</strong>. Noise spike ignorován. Jednoduché a efektivní proti transient faults.</p>
+  </div>
+</section>
+
+<!-- 10 WATCHDOG A DALŠÍ -->
+<section class="section" id="watchdog">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>Watchdog, Checkpointing, Degradace</h2>
+  </div>
+
+  <h3>Watchdog Timer</h3>
+  <p>Hardware timer, který musí být periodicky resetován softwarem. Pokud SW zamrzne → watchdog vyvolá <strong>reset</strong>.</p>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Princip Watchdogu</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Watchdog timer běží kontinuálně</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">SW musí „kicknout" watchdog každých X ms</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Pokud timeout → systém RESET</div><div class="step-desc">SW zamrzl → watchdog zachrání systém automatickým restartem</div></div></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>Příklad kódu (AVR Watchdog)</summary>
+    <div class="cli">
+      <span class="cmd">wdt_enable</span>(<span class="val">WDTO_1S</span>);  <span class="comment">// Enable 1 second watchdog</span><br><br>
+      <span class="kw">while</span>(<span class="val">1</span>) {<br>
+      &nbsp;&nbsp;<span class="cmd">do_work</span>();<br>
+      &nbsp;&nbsp;<span class="cmd">wdt_reset</span>();  <span class="comment">// Kick watchdog – jsem naživu!</span><br>
+      }
+    </div>
+  </details>
+
+  <div class="divider"></div>
+
+  <h3>Checkpointing</h3>
+  <p>Periodicky uložit <strong>stav systému</strong>. Po selhání → obnova z posledního checkpointu.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Příklad</div>
+    <p style="margin-bottom:0">Databáze každých 10 min uloží transaction log. Crash → <strong>rollback</strong> k poslednímu uloženému stavu. Ztráta max 10 min dat.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Graceful Degradation</h3>
+  <p>Systém pokračuje v <strong>omezeném režimu</strong> místo úplného selhání.</p>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Příklad: Auto</h4>
+      <p>ABS selhání → deaktivuj ABS, ale brzdění stále funguje manuálně.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">Příklad: Dron</h4>
+      <p>GPS selhání → přepni na barometric altitude hold. Omezená navigace, ale bezpečný let.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Fail-Safe vs Fail-Operational</h3>
+
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Fail-Safe</h4>
+      <p>Při selhání přejdi do <strong>BEZPEČNÉHO stavu</strong> (vypni, zastav). Příklad: výtah – porucha → brzdy aktivují, výtah zastaví.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">Fail-Operational</h4>
+      <p>Při selhání <strong>POKRAČUJ</strong> v provozu (redundance to umožní). Příklad: letadlo – jeden engine fail → létá na druhém.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Self-Healing</h3>
+  <p>Systém automaticky detekuje a opravuje chyby.</p>
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-3);">Příklady</div>
+    <ul>
+      <li><strong>Flash memory</strong> – wear leveling přesouvá data z opotřebených bloků</li>
+      <li><strong>RAID</strong> – disk failure → automatická rebuild z parity dat</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SYSTÉM REÁLNÉHO ČASU</p>
+    <ul>
+      <li>Správnost = logika + <strong>ČAS</strong>. Výsledek po deadline = CHYBA</li>
+      <li>RTS ≠ rychlý systém. RTS = <strong>předvídatelný</strong> systém</li>
+      <li><strong>Hard RT</strong> – miss = katastrofa (airbag, ABS, kardiostimulátor)</li>
+      <li><strong>Firm RT</strong> – miss = zahoď výsledek (video frame, VoIP packet)</li>
+      <li><strong>Soft RT</strong> – miss = degradace (YouTube lag, web latency)</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">ZÁKLADNÍ POJMY</p>
+    <ul>
+      <li><strong>Task</strong> – jednotka práce (C = výpočet, D = deadline, T = perioda, R = release)</li>
+      <li><strong>Job</strong> – jedno vykonání tasku (instance)</li>
+      <li><strong>Deadline typy:</strong> implicit (D=T), constrained (D≤T), arbitrary (D&gt;T)</li>
+      <li><strong>Laxita:</strong> L = (D − t) − C_remaining. L=0 → teď! L&lt;0 → nemožné</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">PLÁNOVÁNÍ</p>
+    <ul>
+      <li><strong>Statické (RM):</strong> fixní priorita, kratší perioda = vyšší. Max U ≤ 69%. Certifikace</li>
+      <li><strong>Dynamické (EDF):</strong> bližší deadline = vyšší priorita. Optimální, U ≤ 100%</li>
+      <li><strong>LLF:</strong> nejmenší laxita = nejvyšší priorita. Optimální, více context switches</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">SPOLEHLIVOST</p>
+    <ul>
+      <li><strong>Fault typy:</strong> permanent (trvalá), transient (dočasná), intermittent (občasná)</li>
+      <li><strong>Metriky:</strong> MTTF (do poruchy), MTTR (oprava), MTBF = MTTF + MTTR</li>
+      <li><strong>Availability</strong> = MTTF / MTBF</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">ODOLNOST PROTI PORUCHÁM</p>
+    <ul>
+      <li><strong>HW redundance:</strong> DMR (detekce), <strong>TMR</strong> (korekce – 2 ze 3 voter)</li>
+      <li><strong>Info redundance:</strong> Parity (detekce), CRC (burst), ECC/SECDED (korekce)</li>
+      <li><strong>Time redundance:</strong> opakování (median filter z 3 čtení)</li>
+      <li><strong>Watchdog timer</strong> – detekuje freeze, automatický reset</li>
+      <li><strong>Checkpointing</strong> – uložení stavu, rollback po selhání</li>
+      <li><strong>Graceful degradation</strong> – omezený režim místo crash</li>
+      <li><strong>Fail-safe</strong> (bezpečný stav) vs <strong>Fail-operational</strong> (pokračování s redundancí)</li>
+    </ul>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Zlatá pravidla</div>
+    <ul>
+      <li><strong>RTS:</strong> čas je ČÁST správnosti! Nejde jen o rychlost, jde o garance</li>
+      <li><strong>EDF</strong> je optimální (100%), <strong>RM</strong> jednodušší (69%) – vhodný pro certifikaci</li>
+      <li><strong>TMR</strong> toleruje 1 chybu (2 ze 3 voter). Letectví, vesmír</li>
+      <li><strong>Watchdog</strong> zachrání freeze. Vždy používat v embedded!</li>
+      <li><strong>Redundance</strong> = cesta k spolehlivosti na všech úrovních (HW, data, čas)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

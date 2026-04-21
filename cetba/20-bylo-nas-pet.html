@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturitní rozbor – Karel Poláček: Bylo nás pět</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#181412;
+  --bg-card:#221c18;
+  --bg-card-alt:#2a231e;
+  --border:#3a2f28;
+  --text:#c4b8a0;
+  --text-muted:#7a6b58;
+  --heading:#e8dcc0;
+  --accent-1:#b8783a;     /* cihlová stará škola */
+  --accent-2:#c49848;     /* mosazný zvonek */
+  --accent-3:#7a5438;     /* sepie vzpomínky */
+  --accent-4:#8a9a5a;     /* zeleň zahrady */
+  --accent-5:#b83a3a;     /* červená propisovačka */
+  --accent-6:#5a7a88;     /* modř inkoustu */
+  --accent-7:#4a5a3a;     /* tmavá zeleň kaštanu */
+  --accent-8:#d4a658;     /* zlato koláčků */
+  --brick:#b8783a;        /* cihla */
+  --brass:#c49848;        /* mosaz */
+  --sepia:#a8885a;        /* sépie */
+  --garden:#8a9a5a;       /* zahrada */
+  --red-ink:#b83a3a;      /* červený inkoust */
+  --ink:#5a7a88;          /* inkoust */
+  --chestnut:#4a5a3a;     /* kaštan */
+  --honey:#d4a658;        /* koláčky */
+  --parchment:#c4a868;    /* pergamen */
+  --slate:#6a6050;        /* břidlice tabule */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Crimson Pro',serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  background-image:
+    radial-gradient(ellipse at top,rgba(184,120,58,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at bottom,rgba(196,152,72,.04) 0%,transparent 60%);
+  background-attachment:fixed;
+}
+
+/* HERO — prvorepubliková nostalgie */
+.hero{
+  background:
+    linear-gradient(180deg,rgba(24,20,18,.3) 0%,rgba(24,20,18,.92) 100%),
+    linear-gradient(135deg,#2a1e14 0%,#34261a 30%,#1c1612 65%,#14100c 100%);
+  border-bottom:3px solid var(--brick);
+  padding:90px 24px 80px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(184,120,58,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 20%,rgba(212,166,88,.08) 0%,transparent 50%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--brick) 20%,
+    var(--honey) 50%,
+    var(--brick) 80%,
+    transparent 100%);
+  opacity:.6;
+}
+.hero-symbol{
+  display:inline-block;
+  font-size:42px;
+  line-height:1;
+  margin-bottom:26px;
+  color:var(--honey);
+  opacity:.85;
+  position:relative;
+  filter:drop-shadow(0 0 20px rgba(212,166,88,.3));
+  letter-spacing:12px;
+}
+.hero-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:5px;
+  text-transform:uppercase;
+  color:var(--sepia);
+  margin-bottom:22px;position:relative;
+  opacity:.9;
+}
+.hero h1{
+  font-family:'Lora',serif;
+  font-size:clamp(40px,7vw,68px);
+  color:var(--heading);
+  font-weight:700;
+  line-height:1.1;
+  position:relative;
+  letter-spacing:.5px;
+  text-shadow:0 2px 30px rgba(184,120,58,.2);
+  font-style:italic;
+}
+.hero h1 em{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-weight:400;
+  color:var(--sepia);
+  font-size:.3em;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  opacity:.8;
+  font-style:normal;
+}
+.hero h1 .sub-title{
+  display:block;
+  font-family:'Crimson Pro',serif;
+  font-size:.38em;
+  font-style:italic;
+  color:var(--honey);
+  letter-spacing:2.5px;
+  margin-top:16px;
+  font-weight:500;
+  opacity:.9;
+}
+.hero .author{
+  font-family:'Lora',serif;
+  color:var(--sepia);
+  margin-top:30px;
+  font-size:22px;
+  position:relative;
+  letter-spacing:2px;
+  font-weight:600;
+}
+.hero .subtitle{
+  color:var(--text-muted);
+  margin-top:12px;
+  font-size:13px;
+  position:relative;
+  font-style:italic;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+}
+.hero-quote{
+  font-family:'Lora',serif;
+  color:var(--heading);
+  font-size:18px;
+  margin:40px auto 0;
+  max-width:620px;
+  font-style:italic;
+  position:relative;
+  letter-spacing:.5px;
+  line-height:1.6;
+  opacity:.9;
+  padding:22px 28px;
+  border-top:1px solid var(--brick);
+  border-bottom:1px solid var(--brick);
+}
+.hero-quote em{
+  display:block;
+  font-size:.7em;
+  color:var(--text-muted);
+  margin-top:12px;
+  font-style:normal;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.container{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+
+/* OBSAH — školní sešit */
+.toc{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--brick);
+  padding:30px 36px;margin-bottom:52px;
+  position:relative;
+}
+.toc::before{
+  content:'✎';
+  position:absolute;
+  top:-14px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--honey);
+  font-size:22px;
+  opacity:.85;
+}
+.toc h2{
+  font-family:'Lora',serif;
+  font-size:14px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--honey);
+  margin-bottom:20px;text-align:center;
+  font-weight:600;
+}
+.toc ol{list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+.toc li{
+  counter-increment:toc;
+  padding:5px 0;font-size:15px;
+  break-inside:avoid;
+}
+.toc li::before{
+  content:counter(toc,decimal-leading-zero) ' · ';
+  font-family:'JetBrains Mono',monospace;
+  color:var(--brick);
+  font-size:11px;margin-right:6px;
+  font-weight:500;
+  opacity:.85;
+}
+.toc a{color:var(--text);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--honey)}
+
+/* SEKCE */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:baseline;gap:20px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.section-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:120px;height:2px;
+  background:linear-gradient(90deg,var(--brick),var(--honey));
+  opacity:.7;
+}
+.section-num{
+  font-family:'Lora',serif;
+  font-size:36px;color:var(--brick);
+  font-weight:700;
+  min-width:70px;opacity:.65;
+  line-height:1;
+  letter-spacing:1px;
+  font-style:italic;
+}
+.section-header h2{
+  font-family:'Lora',serif;
+  font-size:26px;color:var(--heading);
+  font-weight:700;
+  letter-spacing:.5px;
+  font-style:italic;
+}
+
+h3{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin:32px 0 14px;
+  font-style:italic;
+}
+h4{
+  font-family:'Lora',serif;
+  font-size:14px;font-weight:700;
+  color:var(--heading);margin:20px 0 10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+p{margin-bottom:14px}
+
+/* KARTY */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:22px 26px;margin:18px 0;
+  position:relative;
+}
+.card.highlight{border-left:3px solid var(--brick);background:rgba(184,120,58,.05)}
+.card.key{border-left:3px solid var(--honey);background:rgba(212,166,88,.05)}
+.card.warn{border-left:3px solid var(--red-ink);background:rgba(184,58,58,.05)}
+.card.earth{border-left:3px solid var(--sepia);background:rgba(168,136,90,.05)}
+.card.garden{border-left:3px solid var(--garden);background:rgba(138,154,90,.05)}
+.card.ink{border-left:3px solid var(--ink);background:rgba(90,122,136,.05)}
+
+.card-title{
+  font-family:'Lora',serif;
+  font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+ul{padding-left:22px;margin:10px 0 16px}
+ul li{margin-bottom:6px;line-height:1.7}
+ul li::marker{color:var(--brick)}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  background:rgba(184,120,58,.1);
+  color:var(--brick);
+  padding:2px 7px;border-radius:1px;
+}
+
+strong{color:var(--heading);font-weight:600}
+em{color:var(--honey);font-style:italic}
+
+/* Dělič — vlnovky */
+.river-divider{
+  text-align:center;
+  margin:48px 0;
+  color:var(--brick);
+  opacity:.55;
+  font-family:'Lora',serif;
+  font-size:22px;
+  letter-spacing:6px;
+}
+.river-divider::before,.river-divider::after{
+  content:'';
+  display:inline-block;
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--brick),transparent);
+  vertical-align:middle;
+  margin:0 14px;
+}
+
+/* GRID KARET */
+.device-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0;
+}
+.device-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:20px 22px;position:relative;
+}
+.device-card h4{margin:0 0 8px;font-size:13px}
+.device-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6}
+
+/* POSTAVY */
+.character{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:24px 28px;margin:18px 0;
+  position:relative;overflow:hidden;
+}
+.character::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;width:4px;height:100%;
+  background:var(--character-color,var(--brick));
+}
+.character::after{
+  content:attr(data-symbol);
+  position:absolute;
+  top:50%;right:22px;
+  transform:translateY(-50%);
+  font-size:58px;
+  opacity:.06;
+  pointer-events:none;
+  font-family:'Lora',serif;
+}
+.character .char-name{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:4px;
+  letter-spacing:.5px;
+  font-style:italic;
+}
+.character .char-name em{
+  font-family:'Crimson Pro',serif;
+  font-size:14px;
+  color:var(--text-muted);
+  font-weight:400;
+  margin-left:8px;
+  font-style:italic;
+  letter-spacing:0;
+}
+.character .char-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--character-color,var(--brick));
+  margin-bottom:14px;
+}
+
+/* CITACE */
+.quote-block{
+  background:var(--bg-card-alt);
+  border-left:3px solid var(--honey);
+  padding:20px 28px;
+  margin:18px 0;
+  font-family:'Lora',serif;
+  font-size:17px;
+  font-style:italic;
+  color:var(--heading);
+  line-height:1.7;
+  position:relative;
+}
+.quote-block::before{
+  content:'„';
+  position:absolute;
+  top:-8px;left:10px;
+  font-size:44px;
+  color:var(--honey);
+  opacity:.35;
+}
+.quote-source{
+  display:block;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--text-muted);
+  font-style:normal;text-transform:uppercase;
+}
+
+/* PARTA KARETIČKY — pětice kluků */
+.stories-catalog{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:12px;
+  margin:24px 0;
+}
+.story-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:3px solid var(--story-color,var(--brick));
+  padding:18px 20px;
+  position:relative;
+}
+.story-num{
+  font-family:'Lora',serif;
+  font-size:28px;
+  color:var(--story-color,var(--brick));
+  font-weight:700;
+  font-style:italic;
+  line-height:1;
+  margin-bottom:6px;
+  opacity:.7;
+}
+.story-title{
+  font-family:'Lora',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  margin-bottom:8px;
+  line-height:1.3;
+}
+.story-desc{
+  font-size:13px;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+
+/* SCÉNA */
+.scene{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;
+  padding:26px 30px;margin:24px 0;
+  position:relative;
+}
+.scene::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--brick),var(--honey),var(--brick));
+  opacity:.5;
+}
+.scene-label{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brick);
+  background:rgba(184,120,58,.08);
+  padding:5px 12px;border-radius:1px;
+  margin-bottom:16px;
+  border:1px solid rgba(184,120,58,.3);
+  font-weight:500;
+}
+.scene-title{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:700;
+  color:var(--heading);
+  margin-bottom:16px;
+  font-style:italic;
+}
+.scene-text{
+  font-family:'Lora',serif;
+  font-size:16.5px;
+  font-style:italic;
+  color:var(--heading);
+  margin:16px 0;
+  padding:16px 22px;
+  border-left:2px solid var(--honey);
+  background:rgba(212,166,88,.03);
+  line-height:1.85;
+  white-space:pre-line;
+}
+.scene-context{
+  font-size:15px;
+  color:var(--text-muted);
+  margin-top:14px;
+  line-height:1.7;
+}
+.scene-context strong{color:var(--sepia)}
+.scene-meaning{
+  font-size:14.5px;
+  color:var(--text);
+  margin-top:12px;
+  padding:12px 16px;
+  background:rgba(184,120,58,.05);
+  border-left:2px solid var(--brick);
+  border-radius:0 1px 1px 0;
+}
+.scene-meaning strong{color:var(--brick)}
+
+/* TABULKA */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:20px 0;font-size:14px;
+}
+.compare-table th{
+  font-family:'Lora',serif;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--brick);text-align:left;
+  padding:12px 16px;
+  border-bottom:2px solid var(--brick);
+  font-weight:700;
+}
+.compare-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* TROPY */
+.tropes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;margin:18px 0;
+}
+.trope-card{
+  background:var(--bg-card-alt);
+  border:1px solid var(--border);
+  border-radius:1px;padding:18px 20px;
+  position:relative;
+}
+.trope-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--brick),transparent);
+  opacity:.7;
+}
+.trope-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--brick);margin-bottom:8px;
+  font-weight:600;
+}
+.trope-example{
+  font-family:'Lora',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;margin-bottom:6px;
+}
+.trope-note{
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* LOKACE */
+.locations{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:22px 26px;
+  margin:20px 0;
+}
+.locations-title{
+  font-family:'Lora',serif;
+  font-size:13px;
+  color:var(--brick);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  text-align:center;
+  font-weight:700;
+}
+.locations-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+.location-item{
+  padding:12px 14px;
+  background:var(--bg-card-alt);
+  border-left:2px solid var(--loc-color,var(--brick));
+  border-radius:0 1px 1px 0;
+}
+.location-name{
+  font-family:'Lora',serif;
+  font-size:15px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+.location-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-top:4px;
+  font-style:italic;
+}
+
+/* MOTIVY-GRID */
+.motifs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin:20px 0;
+}
+.motif-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-top:2px solid var(--motif-color,var(--brick));
+  padding:14px 12px;
+  text-align:center;
+}
+.motif-icon{
+  font-size:22px;
+  color:var(--motif-color,var(--brick));
+  margin-bottom:6px;
+  opacity:.8;
+}
+.motif-name{
+  font-family:'Lora',serif;
+  font-size:13px;
+  color:var(--heading);
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  margin:24px 0;
+  padding-left:26px;
+  border-left:2px solid var(--border);
+}
+.timeline-step{
+  padding:14px 0 14px 22px;
+  position:relative;
+}
+.timeline-step::before{
+  content:'';position:absolute;
+  left:-9px;top:22px;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--brick);
+  background:var(--bg);
+}
+.timeline-step.tragic::before{
+  border-color:var(--red-ink);
+  background:rgba(184,58,58,.3);
+}
+.timeline-step.happy::before{
+  border-color:var(--honey);
+  background:rgba(212,166,88,.2);
+}
+.timeline-step .ts-title{
+  font-family:'Lora',serif;
+  font-weight:700;color:var(--heading);
+  font-size:17px;font-style:italic;
+}
+.timeline-step .ts-desc{
+  color:var(--text-muted);
+  font-size:14.5px;margin-top:4px;
+}
+.timeline-step .ts-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--brick);
+  display:inline-block;
+  margin-right:10px;
+  opacity:.85;
+  font-weight:600;
+}
+
+/* VZPOMÍNKOVÝ RÁMEČEK */
+.memory-frame{
+  background:var(--bg-card-alt);
+  border:1px solid var(--sepia);
+  padding:24px 30px;
+  margin:24px 0;
+  position:relative;
+  font-family:'Lora',serif;
+  font-style:italic;
+  color:var(--heading);
+  font-size:16px;
+  line-height:1.8;
+  text-align:center;
+}
+.memory-frame::before{
+  content:'✎ VZPOMÍNKA ✎';
+  position:absolute;
+  top:-11px;left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);
+  padding:0 16px;
+  color:var(--sepia);
+  font-family:'Lora',serif;
+  font-size:11px;
+  letter-spacing:4px;
+  font-weight:600;
+  text-transform:uppercase;
+  font-style:normal;
+}
+.memory-source{
+  display:block;
+  margin-top:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-style:normal;
+}
+
+/* DETAILS */
+details{
+  margin:14px 0;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:1px;padding:4px 20px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;color:var(--heading);
+  padding:14px 0;font-size:16px;
+  list-style:none;display:flex;
+  align-items:center;gap:10px;
+  font-family:'Lora',serif;
+  font-style:italic;
+}
+details summary::before{
+  content:'▸';
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--brick);
+  transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details summary::-webkit-details-marker{display:none}
+details > *:not(summary){padding-bottom:14px}
+
+@media(max-width:640px){
+  .toc ol{columns:1}
+  .device-grid{grid-template-columns:1fr}
+  .tropes-grid{grid-template-columns:1fr}
+  .locations-list{grid-template-columns:1fr}
+  .motifs-grid{grid-template-columns:repeat(2,1fr)}
+  .stories-catalog{grid-template-columns:1fr}
+  .hero{padding:60px 20px 50px}
+  .container{padding:28px 16px 60px}
+  .card,.scene,.character{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">Maturitní četba</a></nav>
+
+
+<div class="hero">
+  <div class="hero-symbol">✎ ❦ ✎</div>
+  <div class="hero-label">Maturitní rozbor · Česká literatura · Humoristický román</div>
+  <h1><em>Humoristický román · 1946</em>Bylo<br>nás pět<span class="sub-title">aneb Péťa Bajza a jeho parta</span></h1>
+  <div class="author">Karel Poláček</div>
+  <div class="subtitle">Stará Říše · Reálka · Profesor Šnajdr</div>
+  <div class="hero-quote">Bylo nás pět. Éda Kemlink, Antonín Bejval, Čeněk Jirsák, Šimon Tolar a já, Petr Bajza. Přátelé navěky. Kamarádi na život a na smrt. Aspoň jsme si to mysleli.<em>— Úvodní představení party</em></div>
+</div>
+
+<div class="container">
+
+<nav class="toc"><h2>Obsah rozboru</h2>
+<ol>
+  <li><a href="#kontext">Zasazení do kontextu díla</a></li>
+  <li><a href="#tema">Téma a motiv</a></li>
+  <li><a href="#casoprostor">Časoprostor · Stará Říše</a></li>
+  <li><a href="#kompozice">Kompoziční výstavba</a></li>
+  <li><a href="#parta">Pětice kamarádů</a></li>
+  <li><a href="#druh">Literární druh a žánr</a></li>
+  <li><a href="#vypravec">Vypravěč · Péťa Bajza</a></li>
+  <li><a href="#postavy">Postavy</a></li>
+  <li><a href="#zpusoby">Vyprávěcí způsoby</a></li>
+  <li><a href="#jazyk">Jazykové prostředky</a></li>
+  <li><a href="#tropy">Tropy, figury a humor</a></li>
+  <li><a href="#autor">Kontext autorovy tvorby</a></li>
+  <li><a href="#literarni">Literární a kulturní kontext</a></li>
+  <li><a href="#pasaze">Nejznámější pasáže z díla</a></li>
+  <li><a href="#vyznam">Význam a aktuálnost díla</a></li>
+</ol>
+</nav>
+
+<!-- 01 KONTEXT -->
+<section class="section" id="kontext">
+<div class="section-header"><span class="section-num">I</span><h2>Zasazení výňatku do kontextu díla</h2></div>
+
+<p><strong>Bylo nás pět</strong> je <strong>humoristický román</strong> Karla Poláčka, <strong>dokončený v roce 1940</strong>, v době nacistické okupace, a <strong>publikovaný posmrtně v roce 1946</strong> — v době, kdy už jeho autor nežil. Poláček byl jako Žid <strong>deportován do Terezína a posléze do Osvětimi</strong>, kde v roce 1944 zahynul. Nikdy neviděl svou knihu vytištěnou.</p>
+
+<p>Dílo má <strong>chronologickou výstavbu</strong> sledující jeden školní rok party chlapců. Typický výňatek může pocházet z různých epizod — lumpáren ve škole, konfliktů s učiteli, plánů party, dobrodružství ve městě, rodinných scén, nebo piklů s děvčaty.</p>
+
+<p>Typický výňatek může pocházet z:</p>
+
+<div class="timeline">
+  <div class="timeline-step happy">
+    <div class="ts-title"><span class="ts-year">Začátek</span> Představení party</div>
+    <div class="ts-desc">Péťa Bajza popisuje své kamarády — <em>Éda, Toník, Síla, Čeněk a já</em></div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Podzim</span> Školní lumpárny</div>
+    <div class="ts-desc">Profesor Šnajdr, třídní cavyky, poznámky a pětky</div>
+  </div>
+  <div class="timeline-step happy">
+    <div class="ts-title"><span class="ts-year">Zima</span> Pikle a dobrodružství</div>
+    <div class="ts-desc">Rychterka, plány party, klukovské úvahy</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title"><span class="ts-year">Jaro</span> Konflikty a smíření</div>
+    <div class="ts-desc">Rodinné scény, tatínek, maminka, vztahy ve třídě</div>
+  </div>
+  <div class="timeline-step happy">
+    <div class="ts-title"><span class="ts-year">Léto</span> Konec školního roku</div>
+    <div class="ts-desc">Vysvědčení, prázdniny, celé léto před námi</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Časový rámec</div>
+  <p style="margin-bottom:0">Dílo pokrývá <strong>jeden školní rok</strong> v životě pětičlenné klukovské party na začátku 20. let 20. století. Vypravěč je dospělý Péťa Bajza, který <strong>retrospektivně vzpomíná</strong> na své dětství v malém městě.</p>
+</div>
+</section>
+
+<!-- 02 TEMA -->
+<section class="section" id="tema">
+<div class="section-header"><span class="section-num">II</span><h2>Téma a motiv</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Hlavní témata</div>
+  <p style="margin-bottom:0"><strong>Dětství jako zlatý věk života, přátelství pěti kamarádů, školní rok na reálce, klukovské lumpárny a dobrodružství, konflikty s autoritou (učiteli, rodiči), první lásky, generační střet, život v malém městě za první republiky, humor jako pohled na svět, nostalgická vzpomínka na ztracené dětství.</strong></p>
+</div>
+
+<h3>Motivy díla</h3>
+<div class="motifs-grid">
+  <div class="motif-card" style="--motif-color:var(--honey)">
+    <div class="motif-icon">❋</div>
+    <div class="motif-name">Pětka kamarádů</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--slate)">
+    <div class="motif-icon">✎</div>
+    <div class="motif-name">Reálka</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--red-ink)">
+    <div class="motif-icon">✗</div>
+    <div class="motif-name">Profesor Šnajdr</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--brick)">
+    <div class="motif-icon">☀</div>
+    <div class="motif-name">Maminka</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--garden)">
+    <div class="motif-icon">✿</div>
+    <div class="motif-name">Rychterka</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--sepia)">
+    <div class="motif-icon">⌂</div>
+    <div class="motif-name">Stará Říše</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--ink)">
+    <div class="motif-icon">✦</div>
+    <div class="motif-name">Lumpárny</div>
+  </div>
+  <div class="motif-card" style="--motif-color:var(--parchment)">
+    <div class="motif-icon">♦</div>
+    <div class="motif-name">1. republika</div>
+  </div>
+</div>
+
+<h3>Další motivy</h3>
+<ul>
+  <li><strong>Cavyky</strong> — typická klukovská hantýrka, nezbednosti</li>
+  <li><strong>Tatínek</strong> — přísná, ale spravedlivá autorita</li>
+  <li><strong>Vysvědčení</strong> — strach z pětek, radost z jedniček</li>
+  <li><strong>Prázdniny</strong> — nekonečné léto dětství</li>
+  <li><strong>Koláčky od maminky</strong> — motiv domova a bezpečí</li>
+  <li><strong>Poznámky</strong> — klukovské následky</li>
+  <li><strong>Sny o budoucnosti</strong> — kdo co bude, až vyroste</li>
+  <li><strong>Humor</strong> — jemný, laskavý, nezlomyslný</li>
+  <li><strong>Nostalgie</strong> — za dětstvím, za 1. republikou</li>
+</ul>
+</section>
+
+<!-- 03 CASOPROSTOR -->
+<section class="section" id="casoprostor">
+<div class="section-header"><span class="section-num">III</span><h2>Časoprostor · Stará Říše</h2></div>
+
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--honey)">
+    <h4 style="color:var(--honey)">Čas</h4>
+    <p><strong>20. léta 20. století, 1. republika (1918–1938).</strong> Jeden školní rok. Retrospektivní vyprávění — dospělý Péťa vzpomíná na své dětství.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--brick)">
+    <h4 style="color:var(--brick)">Prostor</h4>
+    <p><strong>Stará Říše</strong> — fiktivní malé východočeské město, inspirované <strong>Rychnovem nad Kněžnou</strong>, kde Poláček sám vyrůstal.</p>
+  </div>
+</div>
+
+<div class="locations">
+  <div class="locations-title">◆ Klíčová místa ◆</div>
+  <div class="locations-list">
+    <div class="location-item" style="--loc-color:var(--sepia)">
+      <div class="location-name">Stará Říše</div>
+      <div class="location-note">Fiktivní malé město — alter ego Rychnova nad Kněžnou</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--slate)">
+      <div class="location-name">Reálka</div>
+      <div class="location-note">Střední škola — království profesora Šnajdra</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--brick)">
+      <div class="location-name">Bajzův dům</div>
+      <div class="location-note">Péťův domov, obchod, maminka a tatínek</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--honey)">
+      <div class="location-name">Ulice města</div>
+      <div class="location-note">Kulisy dobrodružství party</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--garden)">
+      <div class="location-name">Okolí města</div>
+      <div class="location-note">Výlety, kluci mimo dozor dospělých</div>
+    </div>
+    <div class="location-item" style="--loc-color:var(--chestnut)">
+      <div class="location-name">Náměstí</div>
+      <div class="location-note">Srdce maloměsta, dějiště setkání</div>
+    </div>
+  </div>
+</div>
+
+<div class="card earth">
+  <div class="card-title" style="color:var(--sepia)">Genius loci — maloměsto 1. republiky</div>
+  <p style="margin-bottom:0"><strong>Stará Říše</strong> je téměř samostatnou postavou díla. Malé české město s jeho rytmem — <strong>obchody, škola, kostel, náměstí, ulice</strong>, kde se všichni znají. Poláček zde vzpomíná na Rychnov nad Kněžnou, kde vyrůstal. <strong>Kluci znají každý kout</strong> — to je ta dětská důvěrná topografie, kterou si každý čtenář přeloží do svého vlastního rodiště. Maloměsto je <strong>ztracený ráj první republiky</strong> — svět, který v době psaní románu (1940) už neexistoval.</p>
+</div>
+</section>
+
+<!-- 04 KOMPOZICE -->
+<section class="section" id="kompozice">
+<div class="section-header"><span class="section-num">IV</span><h2>Kompoziční výstavba</h2></div>
+
+<h3>Způsob řazení</h3>
+<ul>
+  <li><strong>Chronologický postup</strong> — sleduje školní rok od podzimu do léta</li>
+  <li><strong>Epizodická struktura</strong> — série samostatných příběhů party</li>
+  <li><strong>Retrospektivní vyprávění</strong> — dospělý Péťa vzpomíná na dětství</li>
+  <li><strong>Bez formálních kapitol</strong> — epizody plynule navazují</li>
+</ul>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--honey)">Struktura románu</div>
+  <p style="margin-bottom:0">Román <strong>není formálně rozdělen na kapitoly</strong>. Epizody plynule navazují, ale každá má svou vlastní <strong>pointu</strong> — malou školní katastrofu, lumpárnu, milostné zklamání, rodinný konflikt. Celkově tvoří <strong>obraz školního roku</strong> a zároveň <strong>obraz dětství jako takového</strong>.</p>
+</div>
+
+<h3>Vnitřní struktura — oblouk díla</h3>
+<div class="timeline">
+  <div class="timeline-step happy">
+    <div class="ts-title">1. Představení party a prostředí</div>
+    <div class="ts-desc">Péťa Bajza, Éda, Toník, Síla, Čeněk — a Stará Říše</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">2. Série lumpáren a dobrodružství</div>
+    <div class="ts-desc">Klukovské plány, cavyky, nezbednosti</div>
+  </div>
+  <div class="timeline-step tragic">
+    <div class="ts-title">3. Konflikty s učiteli</div>
+    <div class="ts-desc">Profesor Šnajdr, poznámky, strach z vyvolání</div>
+  </div>
+  <div class="timeline-step happy">
+    <div class="ts-title">4. Pikle s děvčaty</div>
+    <div class="ts-desc">Rychterka, první lásky, něha i humor</div>
+  </div>
+  <div class="timeline-step">
+    <div class="ts-title">5. Rodinné scény</div>
+    <div class="ts-desc">Maminka a tatínek, jídlo, výprasky, láska</div>
+  </div>
+  <div class="timeline-step happy">
+    <div class="ts-title">6. Konec školního roku</div>
+    <div class="ts-desc">Vysvědčení, prázdniny, celé léto plné dobrodružství</div>
+  </div>
+</div>
+</section>
+
+<!-- 05 PARTA -->
+<section class="section" id="parta">
+<div class="section-header"><span class="section-num">V</span><h2>Pětice kamarádů · „Bylo nás pět"</h2></div>
+
+<p>Páteří celého díla je <strong>pětice chlapců</strong>. Každý má svou roli v partě — <strong>vypravěč, lídr, silák, vtipálek a věrný kamarád</strong>. Dohromady tvoří ten typický <strong>archetyp klukovské party</strong>, který zná každý čtenář z vlastního dětství.</p>
+
+<div class="stories-catalog">
+  <div class="story-card" style="--story-color:var(--brick)">
+    <div class="story-num">I</div>
+    <div class="story-title">Petr Bajza <em>— Péťa</em></div>
+    <div class="story-desc"><strong>Vypravěč a hrdina.</strong> Alter ego samotného Karla Poláčka. Průměrný student, vnímavý pozorovatel, zamilovaný do Rychterky.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--ink)">
+    <div class="story-num">II</div>
+    <div class="story-title">Éda Kemlink</div>
+    <div class="story-desc"><strong>Mozek party.</strong> Nejchytřejší, vymýšlí plány, čte knihy. Neformální lídr skupiny.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--chestnut)">
+    <div class="story-num">III</div>
+    <div class="story-title">Antonín Bejval <em>— Toník</em></div>
+    <div class="story-desc"><strong>Silák party.</strong> Trochu pomalejší, zato nesmírně loajální a srdečný. Kamarád, na kterého je spoleh.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--honey)">
+    <div class="story-num">IV</div>
+    <div class="story-title">Šimon Tolar <em>— Síla</em></div>
+    <div class="story-desc"><strong>Vtipálek a žertéř.</strong> Nejčastěji dělá cavyky — a nejčastěji končí v průšvihu. Energie celé party.</div>
+  </div>
+  <div class="story-card" style="--story-color:var(--garden)">
+    <div class="story-num">V</div>
+    <div class="story-title">Čeněk Jirsák</div>
+    <div class="story-desc"><strong>Pátý člen.</strong> Spolehlivý, tichý kamarád, který partu doplňuje — bez něj by to prostě nebylo pět.</div>
+  </div>
+</div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Přátelství jako jádro díla</div>
+  <p style="margin-bottom:0"><em>„Jeden za všechny, všichni za jednoho."</em> Parta funguje jako <strong>jednotka</strong> — společně plánují, společně zlobí, společně nesou následky. Když má jeden problém, všichni pomáhají. Toto <strong>dětské pojetí solidarity</strong> — inspirované mušketýry — je nadčasovým jádrem románu a důvodem, proč ho dodnes čtou generace.</p>
+</div>
+</section>
+
+<!-- 06 DRUH A ZANR -->
+<section class="section" id="druh">
+<div class="section-header"><span class="section-num">VI</span><h2>Literární druh a žánr</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Literární druh</div>
+  <p style="margin-bottom:0"><strong>Epika</strong> — rozsáhlé dílo s dějem, vyprávění vzpomínek.</p>
+</div>
+
+<h3>Literární žánr — vícenásobné zařazení</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--brick)">
+    <h4 style="color:var(--brick)">Humoristický román</h4>
+    <p>Humor je základním prvkem — v každé scéně, v každé větě. Humor laskavý, nikdy zlomyslný.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--honey)">
+    <h4 style="color:var(--honey)">Chlapecký román</h4>
+    <p>Typický žánr — parta kluků, lumpárny, škola, dobrodružství. Klasika českého podání.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Autobiografický román</h4>
+    <p>Péťa Bajza je alter ego Karla Poláčka, Stará Říše je Rychnov nad Kněžnou.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--garden)">
+    <h4 style="color:var(--garden)">Nostalgický román</h4>
+    <p>Vzpomínka na dětství, na první republiku — na svět, který v roce psaní už neexistoval.</p>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--honey)">Zdůvodnění žánru</div>
+  <ul style="margin:0">
+    <li><strong>Rozsáhlé epické dílo</strong> — román, nikoli povídka</li>
+    <li><strong>Humor v každé scéně</strong> — základní prvek poetiky</li>
+    <li><strong>Typicky „chlapecký" příběh</strong> — parta, škola, lumpárny</li>
+    <li><strong>Autobiografické prvky</strong> — Poláček vyrůstal v Rychnově</li>
+    <li><strong>Nostalgická vzpomínka na mládí</strong> — psáno za okupace (1940)</li>
+  </ul>
+</div>
+</section>
+
+<!-- 07 VYPRAVEC -->
+<section class="section" id="vypravec">
+<div class="section-header"><span class="section-num">VII</span><h2>Vypravěč · Péťa Bajza</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Typ</div>
+  <p style="margin-bottom:0"><strong>Ich-forma</strong> — Péťa Bajza vypráví vlastní zážitky v 1. osobě. Zároveň je <strong>alter egem autora</strong>.</p>
+</div>
+
+<h3>Vyprávěcí rovina</h3>
+<ul>
+  <li><strong>Personální vypravěč</strong> — Péťa vypráví v 1. osobě, subjektivní pohled</li>
+  <li><strong>Retrospektivní vyprávění</strong> — dospělý Péťa vzpomíná na dětství</li>
+  <li><strong>Dvojí perspektiva</strong> — dětský pohled uvnitř scén + jemný odstup dospělého</li>
+</ul>
+
+<h3>Charakteristika vypravěče</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Petr Bajza</strong> — hlavní postava a vypravěč</li>
+    <li>Vzpomíná <strong>s humorem, ale ne sentimentálně</strong></li>
+    <li><strong>Sebeironický</strong> — umí si dělat legraci sám ze sebe</li>
+    <li>Pozorný k <strong>absurditám</strong> světa dospělých</li>
+    <li>Milující k ostatním postavám — i k autoritám</li>
+    <li>Hodný kluk (většinou) — ale umí zlobit</li>
+    <li>Zamilovaný do <strong>Rychterky</strong>, miluje maminku, bojí se tatínka</li>
+    <li><strong>Alter ego Karla Poláčka</strong> — dětský pohled spisovatele</li>
+  </ul>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--honey)">Dvojí pohled: dítě a dospělý</div>
+  <p style="margin-bottom:0">Péťův vypravěč <strong>zachovává perspektivu dítěte</strong> — naivitu, úžas, dětskou logiku, dramatické přehánění. Ale občas probleskne <strong>jemný úsměv dospělého</strong>, který už ví, jak to skončilo. Toto <strong>prolínání dvou pohledů</strong> dává románu jeho teplotu — čtenář cítí, že dětství je <strong>vzpomínka na něco, co už není</strong>, a tato ztráta dává scénám jejich nostalgickou vážnost i pod povrchem humoru.</p>
+</div>
+</section>
+
+<!-- 08 POSTAVY -->
+<section class="section" id="postavy">
+<div class="section-header"><span class="section-num">VIII</span><h2>Postavy</h2></div>
+
+<p>Vedle pětičlenné <strong>party kluků</strong> tvoří svět románu <strong>rodina Bajzových, profesor Šnajdr a další postavy</strong> maloměsta. Všechny jsou vykresleny s <strong>laskavým humorem</strong> — i přísné autority.</p>
+
+<div class="character" style="--character-color:var(--brick)" data-symbol="P">
+  <div class="char-name">Petr Bajza <em>(Péťa)</em></div>
+  <div class="char-role">Hlavní postava · Vypravěč · Alter ego autora</div>
+  <ul style="margin:0">
+    <li><strong>Člen party, průměrný student</strong></li>
+    <li>Vnímavý pozorovatel, hodný kluk (většinou)</li>
+    <li><strong>Zamilovaný do Rychterky</strong></li>
+    <li>Miluje maminku, bojí se tatínka a profesorů</li>
+    <li><strong>Sebeironický</strong>, pozorný k detailům</li>
+    <li>Alter ego Karla Poláčka</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--ink)" data-symbol="E">
+  <div class="char-name">Éda Kemlink</div>
+  <div class="char-role">Člen party · Mozek · Lídr</div>
+  <ul style="margin:0">
+    <li><strong>Nejchytřejší z party</strong></li>
+    <li>Vynálezce plánů a cavyků</li>
+    <li>Vzdělaný, <strong>čte knihy</strong></li>
+    <li>Neformální <strong>lídr skupiny</strong></li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--chestnut)" data-symbol="T">
+  <div class="char-name">Antonín Bejval <em>(Toník)</em></div>
+  <div class="char-role">Člen party · Silák · Loajální</div>
+  <ul style="margin:0">
+    <li><strong>Silák party</strong></li>
+    <li>Trochu pomalejší v myšlení</li>
+    <li><strong>Loajální kamarád</strong>, srdečný</li>
+    <li>Spolehlivá ruka v každé šarvátce</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--honey)" data-symbol="S">
+  <div class="char-name">Šimon Tolar <em>(Síla)</em></div>
+  <div class="char-role">Člen party · Vtipálek · Průšvihář</div>
+  <ul style="margin:0">
+    <li><strong>Žertéř, vtipálek party</strong></li>
+    <li>Dělá cavyky a nezbednosti</li>
+    <li><strong>Často v průšvizích</strong></li>
+    <li>Motor dobrodružství</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--garden)" data-symbol="Č">
+  <div class="char-name">Čeněk Jirsák</div>
+  <div class="char-role">Člen party · Spolehlivý kamarád</div>
+  <ul style="margin:0">
+    <li><strong>Pátý člen</strong> — bez něj by to nebylo pět</li>
+    <li>Spolehlivý, věrný</li>
+    <li>Doplňuje partu</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--red-ink)" data-symbol="✗">
+  <div class="char-name">Profesor Šnajdr</div>
+  <div class="char-role">Antagonista · Přísný učitel češtiny</div>
+  <ul style="margin:0">
+    <li><strong>Přísný učitel češtiny</strong> — tyran třídy</li>
+    <li>Vysoký, hubený, s brýlemi</li>
+    <li><strong>Děsí studenty</strong> — vyvolání „je horší než smrt"</li>
+    <li>Ale v jádru <strong>spravedlivý</strong></li>
+    <li>Zároveň <strong>komická i tragická postava</strong></li>
+    <li>Archetyp přísného učitele v české literatuře</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--sepia)" data-symbol="♥">
+  <div class="char-name">Maminka</div>
+  <div class="char-role">Vedlejší · Kladná · Symbol lásky</div>
+  <ul style="margin:0">
+    <li><strong>Péťův „anděl"</strong> — ochránkyně před tatínkem</li>
+    <li>Vždycky má dobré slovo a <strong>koláčky</strong></li>
+    <li>Milující, starostlivá</li>
+    <li><em>„Voněla domovem."</em></li>
+    <li>Symbol <strong>laskavosti, bezpečí, domova</strong></li>
+    <li>Idealizovaná z dětské perspektivy</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--slate)" data-symbol="⚐">
+  <div class="char-name">Tatínek</div>
+  <div class="char-role">Vedlejší · Autorita · Přísný, ale spravedlivý</div>
+  <ul style="margin:0">
+    <li><strong>Přísný otec</strong> — trestá za průšvihy</li>
+    <li>Pětka = zákaz vycházení, lumpárna = výprask</li>
+    <li>Péťa se ho <strong>bojí, ale ví, že ho má rád</strong></li>
+    <li>Typický otec té doby</li>
+    <li>Za přísností se skrývá láska</li>
+  </ul>
+</div>
+
+<div class="character" style="--character-color:var(--garden)" data-symbol="✿">
+  <div class="char-name">Rychterka</div>
+  <div class="char-role">Vedlejší · Symbol první lásky</div>
+  <ul style="margin:0">
+    <li>Dívka, do které jsou <strong>zamilovaní všichni kluci</strong></li>
+    <li><strong>Copánky a modré oči</strong></li>
+    <li>Nedostupná kráska</li>
+    <li><em>„Byly jsme pro ni neviditelní."</em></li>
+    <li>Symbol <strong>prvních lásek</strong> a klukovské idealizace</li>
+  </ul>
+</div>
+</section>
+
+<!-- 09 VYPRAVECI ZPUSOBY -->
+<section class="section" id="zpusoby">
+<div class="section-header"><span class="section-num">IX</span><h2>Vyprávěcí způsoby a typy promluv</h2></div>
+
+<h3>Vyprávěcí způsoby</h3>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--honey)">Přímá řeč · Dialogy</div>
+  <div class="quote-block" style="margin:0">„Dnes uděláme cavyky!" řekl Éda.<br>„Ale co když nás chytne Šnajdr?" bál jsem se.<span class="quote-source">Typická ukázka klukovského dialogu</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="color:var(--brick)">Nepřímá řeč</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Maminka mi řekla, že musím být hodný a že tatínek už je doma.</p>
+</div>
+
+<div class="card earth">
+  <div class="card-title" style="color:var(--sepia)">Vnitřní monolog · Myšlenky</div>
+  <p style="font-style:italic;color:var(--text-muted);padding-left:18px;border-left:2px solid var(--border);margin-bottom:0">Bál jsem se, že mě profesor vyvolá. Co když neumím? Co když dostanu pětku? Maminka by byla smutná.</p>
+</div>
+
+<h3>Typy promluv</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--brick)"><h4 style="color:var(--brick)">Pásmo vypravěče</h4><p>Péťovo vyprávění s nostalgií — převažující forma.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--honey)"><h4 style="color:var(--honey)">Dialog</h4><p><strong>Živé rozhovory</strong> kluků, učitelů, rodičů — autentická dětská mluva.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)"><h4 style="color:var(--sepia)">Vnitřní monolog</h4><p>Péťovy úvahy, <strong>strachy</strong>, dětské dilemata.</p></div>
+  <div class="device-card" style="border-top:2px solid var(--garden)"><h4 style="color:var(--garden)">Popis</h4><p>Města, školy, postav — <strong>s láskou k detailu</strong>.</p></div>
+</div>
+
+<div class="card ink">
+  <div class="card-title" style="color:var(--ink)">Poláčkovský styl</div>
+  <p style="margin-bottom:0"><strong>Jemný humor, ironie a nostalgie</strong> jsou tři pilíře Poláčkova stylu. Jeho vypravěč nikdy nekřičí, nikdy nemoralizuje. Jen <strong>pozoruje, popisuje a jemně se usmívá</strong>. Výsledkem je próza, která čtenáře <strong>obejme jako stará fotografie</strong> — teplá, důvěrná, zároveň trochu smutná.</p>
+</div>
+</section>
+
+<!-- 10 JAZYK -->
+<section class="section" id="jazyk">
+<div class="section-header"><span class="section-num">X</span><h2>Jazykové prostředky a jejich funkce</h2></div>
+
+<h3>Dětská řeč</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Autentický jazyk dětí</strong> — hantýrka party</li>
+    <li><em>„Cavyky"</em>, <em>„Šnajdr"</em>, <em>„Rychterka"</em></li>
+    <li>Zkomoleniny a domácí přezdívky</li>
+    <li><strong>Dětská logika</strong> v syntaxi</li>
+  </ul>
+</div>
+
+<h3>Humor</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Jemný, nikdy vulgární</strong></li>
+    <li>Situační komika — klukovské nehody</li>
+    <li>Charakterový humor — typy postav (Šnajdr!)</li>
+    <li>Slovní humor — dětské zkreslení, naivní formulace</li>
+  </ul>
+</div>
+
+<h3>Nostalgie</h3>
+<div class="card earth">
+  <ul style="margin:0">
+    <li><strong>Láska k minulosti</strong> — k dětství i k 1. republice</li>
+    <li>Teplo vzpomínek — <em>„Aspoň jsme si to mysleli."</em></li>
+    <li><strong>Ale bez sentimentality</strong> — Poláček není slzavý</li>
+    <li>Za humor probleskuje melancholie ztráty</li>
+  </ul>
+</div>
+
+<h3>Poláčkovská čeština</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>Bohatá, expresivní čeština</strong></li>
+    <li>Charakteristická, nezaměnitelná</li>
+    <li>Detaily, nadsázky, výčty</li>
+    <li>Typické <strong>dětsky vážné tónování</strong> nedůležitých věcí</li>
+    <li>Srovnání s <strong>Haškem a Hrabalem</strong> — tradice hovorové literární češtiny</li>
+  </ul>
+</div>
+
+<h3>Ironie</h3>
+<ul>
+  <li><strong>Jemná sebeironie</strong> — Péťa se umí smát sám sobě</li>
+  <li>Humor k autoritám — <strong>ale s respektem</strong></li>
+  <li>Ne satira, ne kousavost — spíš <em>úsměvné pochopení</em></li>
+</ul>
+
+<h3>Dobové reálie</h3>
+<ul>
+  <li><strong>1. republika</strong> — atmosféra doby</li>
+  <li><strong>Reálka, profesor, vysvědčení</strong> — školská terminologie</li>
+  <li>Maloměstské obchody, gymnazistické šaty, zvyky</li>
+  <li>Autentičnost doby — <strong>jazyk jako stroj času</strong></li>
+</ul>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Funkce jazykových prostředků</div>
+  <ul style="margin:0">
+    <li><strong>Dětská řeč</strong> vytváří autenticitu a důvěrnost</li>
+    <li><strong>Humor</strong> je jádro díla — pohled na svět, ne jen dekorace</li>
+    <li><strong>Nostalgie</strong> dojímá, ale nepláče</li>
+    <li><strong>Poláčkovský styl</strong> je nezaměnitelný — jako rukopis</li>
+    <li><strong>Dobové reálie</strong> zachovávají ztracený svět</li>
+  </ul>
+</div>
+</section>
+
+<!-- 11 TROPY -->
+<section class="section" id="tropy">
+<div class="section-header"><span class="section-num">XI</span><h2>Tropy, figury a humor</h2></div>
+
+<div class="tropes-grid">
+  <div class="trope-card">
+    <div class="trope-name">Humor (hlavní!)</div>
+    <div class="trope-example">Jemný, laskavý, teplý</div>
+    <div class="trope-note"><strong>Humor je duše díla.</strong> Směje se, ale ne zlomyslně. Ironizuje, ale něžně. Humor s empatií.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Ironie</div>
+    <div class="trope-example">Sebeironie vypravěče</div>
+    <div class="trope-note">Jemná sebeironie, humor k autoritám — ale s respektem. Nikdy kousavost.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Hyperbola</div>
+    <div class="trope-example">„Horší než smrt"</div>
+    <div class="trope-note">Dětské přehánění — kluci vidí vše <strong>dramaticky</strong>. Vyvolání u Šnajdra je katastrofa kosmických rozměrů.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Personifikace</div>
+    <div class="trope-example">Město jako postava</div>
+    <div class="trope-note">Stará Říše jako <strong>živá bytost</strong> s duší, s pamětí, s tajemstvími.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Nostalgie</div>
+    <div class="trope-example">Zlaté časy</div>
+    <div class="trope-note"><strong>Vzpomínka na dětství</strong> — zlatý věk, který se nikdy nevrátí.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Charakterizace</div>
+    <div class="trope-example">Výrazné typy</div>
+    <div class="trope-note">Šnajdr, maminka, každý kluk — všichni jsou <strong>archetypálně přesní</strong>.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Anekdota</div>
+    <div class="trope-example">Epizoda jako historka</div>
+    <div class="trope-note">Každá scéna má <strong>strukturu vyprávěné historky</strong> — zápletka, pointa, úsměv.</div>
+  </div>
+  <div class="trope-card">
+    <div class="trope-name">Symbol</div>
+    <div class="trope-example">Parta · Maminka · Škola</div>
+    <div class="trope-note">Parta = přátelství. Maminka = láska. Škola = svět autority. 1. republika = ztracený ráj.</div>
+  </div>
+</div>
+
+<div class="card key">
+  <div class="card-title" style="color:var(--honey)">Humor s láskou</div>
+  <p style="margin-bottom:0">Poláčkův humor patří k <strong>nejjemnější tradici české literatury</strong> — vedle Haška, Hrabala, Wericha. Ale kde Hašek je ostrý, Poláček je <strong>teplý</strong>. Směje se, ale <strong>neubližuje</strong>. Jeho humor je <strong>obejmutí, ne šťouchnutí</strong>. Tatínek, který trestá, maminka, která chrání, profesor, který děsí — všichni jsou <strong>vykresleni s pochopením</strong>. To je důvod, proč je dílo tak milované.</p>
+</div>
+
+<div class="card warn">
+  <div class="card-title" style="color:var(--red-ink)">Funkce tropů a figur</div>
+  <p style="margin-bottom:0"><strong>Humor</strong> baví i dojímá. <strong>Nostalgie</strong> připomíná každému čtenáři vlastní dětství. <strong>Symboly</strong> nesou hlubší významy — parta jako solidarita, maminka jako domov, 1. republika jako ztracený ráj. Poláček pracuje <strong>jemně, bez patosu</strong>. Nechce čtenáře dojmout, chce ho <strong>usadit k sobě do paměti</strong>.</p>
+</div>
+</section>
+
+<!-- 12 AUTOR -->
+<section class="section" id="autor">
+<div class="section-header"><span class="section-num">XII</span><h2>Kontext autorovy tvorby</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Karel Poláček (1892–1944)</div>
+  <p>Narozen <strong>22. března 1892 v Rychnově nad Kněžnou</strong> v <strong>židovské rodině</strong> obchodníka. Maloměsto jeho dětství se později stane <strong>Starou Říší</strong> v románu <em>Bylo nás pět</em>. Studoval v Praze, pracoval jako <strong>novinář a spisovatel</strong>. Byl členem <strong>pátečnického kroužku</strong> Karla Čapka — spolu s bratry Čapkovými, Ferdinandem Peroutkou, Eduardem Bassem a dalšími. Psal fejetony do <em>Lidových novin</em>, humoristické romány, soudničky. <strong>Jeden z nejpopulárnějších českých spisovatelů 20. a 30. let.</strong> Po roce 1939 nesměl jako Žid publikovat. <strong>V letech 1940–43 psal „do šuplíku"</strong> — mimo jiné právě <em>Bylo nás pět</em>. <strong>V červenci 1943</strong> byl deportován do <strong>Terezína</strong>, později do <strong>Osvětimi</strong>. <strong>Zahynul v lednu 1944</strong> — pravděpodobně při pochodu smrti nebo v plynové komoře v Osvětimi. Nikdy neviděl svůj poslední román vytištěný — ten vyšel až <strong>v roce 1946, dva roky po jeho smrti</strong>.</p>
+</div>
+
+<h3>Zařazení v autorově tvorbě</h3>
+<ul>
+  <li><strong>Poslední dokončené dílo</strong> Karla Poláčka (1940)</li>
+  <li><strong>Vrchol jeho humoristické tvorby</strong></li>
+  <li>Autobiografické vzpomínky na Rychnov</li>
+  <li>Psáno <strong>za okupace</strong>, v nejistotě, se smrtí na obzoru</li>
+  <li><strong>Publikováno posmrtně</strong> (1946)</li>
+</ul>
+
+<h3>Další Poláčkova díla</h3>
+
+<h4>Humoristická próza</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Edudant a Francimor</strong></td><td>1923</td><td>Absurdní humoristická kniha pro děti</td></tr>
+  <tr><td><strong>Michelup a motocykl</strong></td><td>1928</td><td>Humoristický román o maloměstském úředníkovi</td></tr>
+  <tr><td><strong>Hostinec U kamenného stolu</strong></td><td>1929</td><td>Lázeňská humoreska</td></tr>
+  <tr><td><strong>Muži v offsidu</strong></td><td>1931</td><td>Slavný román o sparťanských fanoušcích</td></tr>
+  <tr><td><strong>Hráči</strong></td><td>1931</td><td>Groteska ze světa karbaníků</td></tr>
+</table>
+
+<h4>Židovská a maloměstská tematika</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Dům na předměstí</strong></td><td>1928</td><td>Román o maloměstském životě</td></tr>
+  <tr><td><strong>Okresní město</strong></td><td>1936</td><td>První díl pentalogie o Rychnově — malé město, Židé</td></tr>
+  <tr><td><strong>Hrdinové táhnou do boje</strong></td><td>1936</td><td>Druhý díl pentalogie</td></tr>
+  <tr><td><strong>Podzemní město</strong></td><td>1937</td><td>Třetí díl pentalogie</td></tr>
+  <tr><td><strong>Vyprahlé touhy</strong></td><td>1939</td><td>Čtvrtý díl pentalogie</td></tr>
+</table>
+
+<h4>Vydaná posmrtně</h4>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Rok</th><th>Charakteristika</th></tr>
+  <tr><td><strong>Bylo nás pět</strong></td><td>1946</td><td><strong>Vrcholné dílo, humoristický román o dětství</strong></td></tr>
+  <tr><td><strong>Vyprodáno</strong></td><td>nedokončeno</td><td>Mělo být pokračováním <em>Bylo nás pět</em></td></tr>
+  <tr><td><strong>Soudničky</strong></td><td>různě</td><td>Jeho novinářská tvorba vydávaná v souborech</td></tr>
+</table>
+
+<h3>Poláčkův styl</h3>
+<ul>
+  <li><strong>Jemný humor</strong> s láskou k postavám</li>
+  <li><strong>Nostalgie</strong> bez sentimentu</li>
+  <li><strong>Láska k malému městu</strong> — Rychnov jako mýtus</li>
+  <li>Občas <strong>židovská tematika</strong> (pentalogie)</li>
+  <li><strong>Bohatá, expresivní čeština</strong></li>
+  <li>Charakteristické <strong>typy postav</strong></li>
+  <li>Detaily, nadsázky, autentické dialogy</li>
+</ul>
+</section>
+
+<!-- 13 LITERARNI KONTEXT -->
+<section class="section" id="literarni">
+<div class="section-header"><span class="section-num">XIII</span><h2>Literární a obecně kulturní kontext</h2></div>
+
+<h3>Historické zařazení</h3>
+<div class="card">
+  <ul style="margin:0">
+    <li><strong>Napsáno 1940</strong> — za nacistické okupace</li>
+    <li><strong>Publikováno 1946</strong> — dva roky po Poláčkově smrti</li>
+    <li>Vzpomínka na <strong>1. republiku (20. léta)</strong></li>
+    <li><strong>Nostalgie za svobodou</strong>, která už neexistovala</li>
+    <li>Ironický kontrast: <strong>veselá kniha psaná v nejtemnější době</strong></li>
+  </ul>
+</div>
+
+<h3>Meziválečná humoristická próza</h3>
+<div class="card key">
+  <div class="card-title" style="color:var(--honey)">Charakteristika proudu</div>
+  <ul style="margin:0">
+    <li><strong>Demokratický proud</strong> 1. republiky</li>
+    <li>Humor, satira, groteska</li>
+    <li>Realismus s nadsázkou</li>
+    <li>Sociální témata — obyčejný člověk</li>
+    <li><strong>Optimismus a kritičnost zároveň</strong></li>
+  </ul>
+</div>
+
+<h3>Historický kontext — 1. republika</h3>
+<div class="card earth">
+  <ul style="margin:0">
+    <li><strong>1918–1938</strong> — doba vzniku Československa</li>
+    <li>Demokracie, svoboda, rozvoj</li>
+    <li><strong>Ekonomický i kulturní rozkvět</strong></li>
+    <li><em>„Zlatá éra"</em> českých dějin</li>
+    <li>Zničena Mnichovem a okupací</li>
+    <li><strong>Nostalgie po ztraceném ráji</strong> — kontext Poláčkova díla</li>
+  </ul>
+</div>
+
+<h3>Česká humoristická próza — současníci</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Společné rysy</th></tr>
+  <tr><td><strong>Jaroslav Hašek</strong></td><td><em>Švejk</em></td><td>Humor, lidový jazyk, česká tradice smíchu</td></tr>
+  <tr><td><strong>Eduard Bass</strong></td><td><em>Cirkus Humberto</em></td><td>Vzpomínková próza, maloměsto, epika</td></tr>
+  <tr><td><strong>Karel Čapek</strong></td><td><em>Cestopisy</em>, fejetony</td><td>Humor, fejetonistický styl, pátečníci</td></tr>
+  <tr><td><strong>Vladislav Vančura</strong></td><td><em>Rozmarné léto</em></td><td>Humor, maloměsto, ironický nadhled</td></tr>
+</table>
+
+<h3>Tradice chlapeckých románů</h3>
+<table class="compare-table">
+  <tr><th>Autor</th><th>Dílo</th><th>Společné rysy</th></tr>
+  <tr><td><strong>Erich Kästner</strong></td><td><em>Emil a detektivové</em> (1929)</td><td>Parta kluků, dobrodružství, humor</td></tr>
+  <tr><td><strong>Mark Twain</strong></td><td><em>Tom Sawyer</em></td><td>Archetyp kluka-dobrodruha</td></tr>
+  <tr><td><strong>Jaroslav Foglar</strong></td><td><em>Rychlé šípy</em>, <em>Hoši od Bobří řeky</em></td><td>Česká parta kluků, skautské ideály</td></tr>
+  <tr><td><strong>Karel Poláček</strong></td><td><em>Bylo nás pět</em></td><td><strong>Klasika žánru — humor, nostalgie, pravdivost</strong></td></tr>
+</table>
+
+<h3>Téma dětství v literatuře</h3>
+<ul>
+  <li><strong>Božena Němcová</strong> — <em>Babička</em> (ideál dětství u babičky)</li>
+  <li><strong>Alois Jirásek</strong> — <em>Z mých pamětí</em></li>
+  <li><strong>Ota Pavel</strong> — <em>Smrt krásných srnců</em> (vzpomínka na otce)</li>
+  <li><strong>Vladislav Vančura</strong> — <em>Obrazy z dějin národa českého</em></li>
+  <li><strong>Univerzální téma</strong> — zlatý věk, ztracený ráj, nostalgie</li>
+</ul>
+
+<details>
+  <summary>Tragický kontrast: humoristický román a Osvětim</summary>
+  <p>Jednou z nejtragičtějších ironií české literatury je fakt, že <strong>Poláček psal tento veselý, něžný román v době, kdy už mu šlo o život</strong>. V roce 1940 byl jako Žid zbaven zaměstnání, v roce 1941 musel nosit Davidovu hvězdu, v roce 1943 byl deportován. <strong>Dílo je z pera muže, který věděl, že svět, o kterém píše, už je pryč — a možná i on bude pryč brzy.</strong> Přesto v něm <strong>není ani stopa po zoufalství</strong>. Je to <strong>humoristický román</strong>, jehož humor je zároveň aktem odporu: <em>dokud se můžu smát vzpomínkám, jsem svobodný.</em></p>
+</details>
+
+<details>
+  <summary>Proč dílo vyšlo až posmrtně?</summary>
+  <p>Poláček dokončil román <strong>v roce 1940</strong>, v době, kdy už nesměl publikovat. Rukopis uschoval. Po jeho deportaci v roce 1943 jej opatrovali přátelé. <strong>Poláček zemřel v Osvětimi v lednu 1944</strong>. Po osvobození 1945 se rukopis dostal do rukou nakladatelství a <strong>kniha vyšla v roce 1946</strong> — ve chvíli, kdy Československo potřebovalo <strong>teplou, laskavou vzpomínku na 1. republiku</strong>. Úspěch byl okamžitý a trvá dodnes.</p>
+</details>
+
+<details>
+  <summary>Filmové a televizní adaptace</summary>
+  <p><strong>Nejznámější je televizní seriál z roku 1994</strong> v režii <strong>Karla Smyczka</strong> — dodnes ho česká televize pravidelně uvádí. Seriál skvěle zachytil atmosféru maloměsta a dětského světa. Péťu Bajzu hrál Jiří Schmitzer (dospělý vypravěč). Seriál je <strong>generační klasika</strong>, kterou si pamatují 90. léta.</p>
+</details>
+</section>
+
+<div class="river-divider">✎ ❦ ✎</div>
+
+<!-- 14 PASAZE -->
+<section class="section" id="pasaze">
+<div class="section-header"><span class="section-num">XIV</span><h2>Nejznámější pasáže z díla</h2></div>
+
+<div class="scene" style="border:2px solid var(--honey)">
+  <span class="scene-label" style="background:rgba(212,166,88,.1);border-color:var(--honey);color:var(--honey)">★ 01 · BYLO NÁS PĚT · ÚVOD ★</span>
+  <div class="scene-title">Představení party</div>
+  <div class="scene-text">Bylo nás pět. Éda Kemlink, Antonín Bejval, Čeněk Jirsák, Šimon Tolar a já, Petr Bajza. Přátelé navěky. Kamarádi na život a na smrt. Aspoň jsme si to mysleli.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Úvodní představení party — Péťa Bajza pojmenuje všech pět členů a dodá dětskou přísahu věčného přátelství, kterou hned relativizuje dospělým dovětkem <em>„aspoň jsme si to mysleli"</em>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Název díla</strong> pochází z této první věty</li>
+      <li>Představení hlavních postav v pořadí</li>
+      <li><strong>Přátelství jako základ</strong> celého románu</li>
+      <li>Dětská přísaha — <em>„navěky"</em>, <em>„na život a na smrt"</em></li>
+      <li><strong>Nostalgický odstup dospělého</strong> — „aspoň jsme si to mysleli"</li>
+      <li>Klíčová dvojí perspektiva celého díla již v prvním odstavci</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--red-ink)">
+  <span class="scene-label" style="background:rgba(184,58,58,.1);border-color:var(--red-ink);color:var(--red-ink)">★ 02 · PROFESOR ŠNAJDR ★</span>
+  <div class="scene-title">Tyran třídy</div>
+  <div class="scene-context"><strong>Kontext:</strong> Charakteristika přísného profesora češtiny. Když vejde do třídy, nastane mrtvé ticho. Každý se bojí, že ho vyvolá — <em>„a to bylo horší než smrt"</em>.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Šnajdr jako symbol přísného učitele</strong> — archetyp české literatury</li>
+      <li>Dětský strach <strong>hyperbolizovaný</strong> do kosmických rozměrů</li>
+      <li><em>„Horší než smrt"</em> — čistá dětská perspektiva</li>
+      <li>Humor <strong>i empatie</strong> zároveň — Šnajdr je komický, ale i tragický</li>
+      <li>Autentická <strong>školní zkušenost</strong>, kterou zná každý čtenář</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--sepia)">
+  <span class="scene-label" style="background:rgba(168,136,90,.1);border-color:var(--sepia);color:var(--sepia)">★ 03 · MAMINKA · LÁSKA A OCHRANA ★</span>
+  <div class="scene-title">Maminka voněla domovem</div>
+  <div class="scene-text">Maminka byla můj anděl. Vždycky mě ochránila před tatínkem. Vždycky měla pro mě dobré slovo. A koláčky. Maminka voněla domovem.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Péťův vztah k mamince — kontrast s přísným tatínkem. Maminka je symbolem bezpečí, lásky a domova.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Idealizace matky</strong> z dětské perspektivy — <em>„anděl"</em></li>
+      <li>Maminka = <strong>bezpečí, láska, koláčky</strong></li>
+      <li><em>„Voněla domovem"</em> — <strong>krásná metafora</strong>, smyslová synestezie</li>
+      <li>Kontrast s přísným tatínkem — typická <strong>rodinná dynamika</strong></li>
+      <li>Nadčasový obraz matky v české literatuře (srov. Babička Němcové)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--ink)">
+  <span class="scene-label" style="background:rgba(90,122,136,.1);border-color:var(--ink);color:var(--ink)">★ 04 · PLÁNY PARTY · CAVYKY ★</span>
+  <div class="scene-title">Dnes uděláme cavyky!</div>
+  <div class="scene-text">„Dnes uděláme cavyky!" oznámil Éda. Měl plán. Vždycky měl plán. A my jsme ho následovali. I když jsme věděli, že to dopadne špatně. Ale to bylo dobrodružství.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Typická situace — Éda jako <strong>mozek party</strong> vymyslí plán, ostatní ho následují, přestože tuší, jak to skončí.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><em>„Cavyky"</em> — <strong>klíčové slovo dětské hantýrky</strong> party</li>
+      <li><strong>Éda jako neformální lídr</strong> party</li>
+      <li>Vědomí rizika, ale touha po dobrodružství</li>
+      <li><strong>Klukovská logika:</strong> dobrodružství > následky</li>
+      <li>Humor v rezignovaně dobrovolné účasti všech</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--garden)">
+  <span class="scene-label" style="background:rgba(138,154,90,.1);border-color:var(--garden);color:var(--garden)">★ 05 · PRVNÍ LÁSKA · RYCHTERKA ★</span>
+  <div class="scene-title">Nejkrásnější holka na světě</div>
+  <div class="scene-text">Rychterka byla nejkrásnější holka na světě. Měla copánky a modré oči. Všichni kluci do ní byli zamilovaní. Ale ona o nás nevěděla. Byly jsme pro ni neviditelní.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Kluci všichni zamilovaní do jediné dívky — Rychterky. Ona o nich neví. Klasické klukovské milostné drama.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>První dětská láska</strong> — archetypální zážitek</li>
+      <li>Idealizace dívky — <em>„nejkrásnější na světě"</em></li>
+      <li><strong>Nedostupnost</strong> jako součást lásky</li>
+      <li><em>„Byly jsme pro ni neviditelní"</em> — realistický konec idealizace</li>
+      <li>Humor <strong>i něha</strong> zároveň — smutná komika</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--slate)">
+  <span class="scene-label" style="background:rgba(106,96,80,.15);border-color:var(--slate);color:var(--slate)">★ 06 · TATÍNEK · PŘÍSNÁ AUTORITA ★</span>
+  <div class="scene-title">Bál jsem se ho. Ale měl mě rád. Myslím.</div>
+  <div class="scene-text">Tatínek byl přísný. Když jsem dostal špatnou známku, nesměl jsem ven. Když jsem udělal lumpárnu, dostal jsem výprask. Bál jsem se ho. Ale věděl jsem, že mě má rád. Myslím.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Vztah Péti k otci — strach, respekt, a přesto pocit lásky. Typická výchova 1. republiky.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Přísná výchova</strong> té doby — výprasky, zákazy</li>
+      <li>Strach i láska zároveň — rozporný vztah</li>
+      <li><em>„Myslím"</em> — <strong>dětská nejistota</strong> a humor v jednom slově</li>
+      <li>Autentické <strong>generační nedorozumění</strong></li>
+      <li>Typický otec první republiky</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--brick)">
+  <span class="scene-label" style="background:rgba(184,120,58,.1);border-color:var(--brick);color:var(--brick)">★ 07 · LUMPÁRNY VE ŠKOLE ★</span>
+  <div class="scene-title">Myš v aktovce</div>
+  <div class="scene-text">Dali jsme do Šnajdrovy aktovky myš. Živou. Čekali jsme, co se stane. Šnajdr otevřel aktovku. Myš vyskočila. Šnajdr vykřikl. My jsme se smáli. Pak jsme dostali poznámku.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Klasická klukovská lumpárna — vložit živou myš do profesorovy aktovky. Fungovala. Následky také přišly.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Archetypální školní nezbednost</strong></li>
+      <li>Humor — nečekaný výkřik Šnajdra</li>
+      <li>Odvaha vs. autorita — malá vzpoura</li>
+      <li><strong>Následky (poznámka)</strong> — ale stálo to za to</li>
+      <li>Autentické — <em>„každý to zná"</em></li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--sepia)">
+  <span class="scene-label" style="background:rgba(168,136,90,.1);border-color:var(--sepia);color:var(--sepia)">★ 08 · STARÁ ŘÍŠE · DOMOV ★</span>
+  <div class="scene-title">Tady jsme byli doma</div>
+  <div class="scene-text">Stará Říše bylo naše město. Znali jsme každou ulici, každý dům. Tady jsme byli doma. Tady se staly všechny naše příběhy.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Popis maloměsta — Stará Říše jako rámec všech příběhů. Pro Poláčka je to literární Rychnov nad Kněžnou.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Město jako postava</strong> díla</li>
+      <li>Domov, bezpečí, důvěrná topografie dětství</li>
+      <li><strong>Nostalgie místa</strong></li>
+      <li>Poláček = Rychnov <strong>(autobiografický základ)</strong></li>
+      <li>Láska k malému městu — typicky česká</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--chestnut)">
+  <span class="scene-label" style="background:rgba(74,90,58,.15);border-color:var(--chestnut);color:var(--chestnut)">★ 09 · KLUKOVSKÉ ÚVAHY ★</span>
+  <div class="scene-title">Čím budeme, až budeme velcí</div>
+  <div class="scene-text">Přemýšleli jsme, co budeme, až budeme velcí. Éda chtěl být vynálezcem. Toník silák v cirkuse. Já jsem chtěl být spisovatelem. Ale to bylo daleko. Teď jsme byli děti. A to bylo dost.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Kluci sedí a fantazírují o budoucnosti. Každý má svůj sen. Péťův sen o spisovateli je autorská ironie — <em>Péťa = Poláček, spisovatelem se stal.</em></div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Dětské sny o budoucnosti</strong></li>
+      <li><strong>Autorská ironie</strong> — <em>„Já jsem chtěl být spisovatelem"</em> (Péťa = Poláček)</li>
+      <li><em>„Teď jsme byli děti. A to bylo dost."</em> — <strong>pochopení ceny přítomnosti</strong></li>
+      <li>Nostalgie a moudrost dospělého vypravěče</li>
+      <li>Jedna z nejcitovanějších pasáží díla</li>
+    </ul>
+  </div>
+</div>
+
+<div class="scene" style="border:2px solid var(--honey);background:rgba(212,166,88,.05)">
+  <span class="scene-label" style="background:rgba(212,166,88,.15);border-color:var(--honey);color:var(--honey)">★ 10 · ZÁVĚR · KONEC ŠKOLNÍHO ROKU ★</span>
+  <div class="scene-title">Celé léto plné dobrodružství</div>
+  <div class="scene-text">Školní rok skončil. Dostali jsme vysvědčení. Někdo dobré, někdo špatné. Ale to už bylo jedno. Byly prázdniny! Celé léto před námi. Celé léto plné dobrodružství.</div>
+  <div class="scene-context"><strong>Kontext:</strong> Poslední scéna — konec školního roku, úleva, radost z prázdnin, nekonečné léto z perspektivy dítěte.</div>
+  <div class="scene-meaning">
+    <strong>Význam:</strong>
+    <ul style="margin:8px 0 0">
+      <li><strong>Úleva po škole</strong> — radost z prázdnin</li>
+      <li><strong>Optimismus dětství</strong></li>
+      <li><em>„Nekonečné léto"</em> — z perspektivy dítěte</li>
+      <li><strong>Happy end</strong> — dílo končí radostí a nadějí</li>
+      <li>Kontrast s osudem autora — Poláček zemře v Osvětimi</li>
+      <li>Ale v románu <strong>léto nikdy neskončí</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="memory-frame">„Teď jsme byli děti. A to bylo dost."<span class="memory-source">Esence díla · Péťa Bajza</span></div>
+</section>
+
+<div class="river-divider">✎ ❦ ✎</div>
+
+<!-- 15 VYZNAM -->
+<section class="section" id="vyznam">
+<div class="section-header"><span class="section-num">XV</span><h2>Význam a aktuálnost díla</h2></div>
+
+<div class="card highlight">
+  <div class="card-title" style="color:var(--brick)">Základní myšlenka díla</div>
+  <p style="margin-bottom:0"><strong>Dětství je nejkrásnější období života.</strong> Přátelství party je <strong>síla, která zvládne všechno</strong>. <strong>Humor pomáhá žít.</strong> Malé město je domov. První republika byla zlatá éra. <strong>Toto vše už neexistuje</strong> — ale žije ve vzpomínkách. A vzpomínky jsou krásné, i když mají hořkou příchuť ztráty.</p>
+</div>
+
+<h3>Hlavní hodnoty díla</h3>
+<div class="device-grid">
+  <div class="device-card" style="border-top:2px solid var(--honey)">
+    <h4 style="color:var(--honey)">Dětství</h4>
+    <p>Zlatý věk života, ke kterému se vracíme vzpomínkou.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--brick)">
+    <h4 style="color:var(--brick)">Přátelství</h4>
+    <p>Parta jako síla — „jeden za všechny, všichni za jednoho".</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--ink)">
+    <h4 style="color:var(--ink)">Humor</h4>
+    <p>Jako pohled na svět. Smích s láskou, ne zlomyslný.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--sepia)">
+    <h4 style="color:var(--sepia)">Nostalgie</h4>
+    <p>Vzpomínka na dětství a 1. republiku.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--garden)">
+    <h4 style="color:var(--garden)">Domov</h4>
+    <p>Malé město jako ztracený ráj, důvěrná topografie dětství.</p>
+  </div>
+  <div class="device-card" style="border-top:2px solid var(--chestnut)">
+    <h4 style="color:var(--chestnut)">Rodina</h4>
+    <p>Maminka a tatínek — láska i autorita, bezpečí.</p>
+  </div>
+</div>
+
+<h3>Poláčkův autobiografický rozměr</h3>
+<details>
+  <summary>Rychnov nad Kněžnou = Stará Říše</summary>
+  <p><strong>Stará Říše je poetickým jménem pro Rychnov nad Kněžnou</strong>, kde se Karel Poláček narodil a vyrůstal. <strong>Péťa Bajza je jeho alter egem.</strong> Obchod Bajzových je ozvěnou obchodu Poláčkových rodičů. Detaily maloměstského života jsou autentické — Poláček píše o tom, co znal. Díky tomu má román <strong>dokumentární hodnotu</strong> pro poznání života v malém českém městě 1. republiky.</p>
+</details>
+
+<h3>Tragický kontext vzniku</h3>
+<details>
+  <summary>Humoristický román psaný v stínu Osvětimi</summary>
+  <p>Jednou z nejmocnějších věcí na <em>Bylo nás pět</em> je <strong>kontext jeho vzniku</strong>. Poláček dokončil dílo <strong>v roce 1940</strong>, když už byl jako Žid zbaven možnosti publikovat, a svět se kolem něj hroutil. <strong>V roce 1943 byl deportován do Terezína</strong>, pak do Osvětimi, kde v <strong>lednu 1944 zahynul</strong>. <strong>Nikdy neviděl svou knihu vytištěnou.</strong> Ironie: <strong>humoristu o dětství zavraždili v plynové komoře.</strong> Kniha, plná tepla a radosti, je <strong>posledním pozdravem spisovatele</strong>, který věděl, že svět jeho dětství už není — a možná ani on brzy nebude. Přesto nepsal trpce. <strong>Napsal humoristický román.</strong> To je akt lidské síly, který dodává dílu <strong>ještě hlubší rozměr</strong>.</p>
+</details>
+
+<h3>Popularita a kulturní vliv</h3>
+<div class="card key">
+  <ul style="margin:0">
+    <li><strong>Klasika české literatury</strong> — od roku 1946 trvale oblíbená</li>
+    <li><strong>Nejoblíbenější český „chlapecký" román</strong></li>
+    <li><strong>Povinná četba</strong> na základních i středních školách</li>
+    <li>Generace čtou, generace si pamatují</li>
+    <li>Televizní seriál <strong>Karla Smyczka (1994)</strong> — dodnes uváděný</li>
+    <li><em>„Bylo nás pět"</em> se stalo <strong>ustáleným spojením</strong> pro klukovskou partu</li>
+    <li><strong>Profesor Šnajdr</strong> = archetyp přísného učitele v češtině</li>
+  </ul>
+</div>
+
+<h3>Aktuálnost</h3>
+<div class="card highlight">
+  <ul style="margin:0">
+    <li><strong>Nadčasové téma dětství</strong> — každá generace se pozná</li>
+    <li>Parta kamarádů — <strong>univerzální zkušenost</strong></li>
+    <li>Lumpárny, první lásky, konflikty s autoritou — <strong>nesmrtelné</strong></li>
+    <li>Humor stále <strong>funguje</strong></li>
+    <li>Nostalgie <strong>vždy rezonuje</strong> — každý má své dětství</li>
+    <li>Obraz 1. republiky — <strong>historicky cenný</strong></li>
+    <li><strong>Připomínka Holocaustu</strong> skrze osud autora</li>
+  </ul>
+</div>
+
+<h3>Srovnání s jinými díly</h3>
+<table class="compare-table">
+  <tr><th>Dílo</th><th>Autor</th><th>Společné rysy</th></tr>
+  <tr><td><em>Emil a detektivové</em></td><td>Erich Kästner</td><td>Parta kluků, dobrodružství, německý paralelní vrchol žánru</td></tr>
+  <tr><td><em>Rychlé šípy</em></td><td>Jaroslav Foglar</td><td>Česká klukovská parta, ale ideálnější (skautské ctnosti)</td></tr>
+  <tr><td><em>Babička</em></td><td>Božena Němcová</td><td>Nostalgie, idealizace dětství, obraz doby</td></tr>
+  <tr><td><em>Smrt krásných srnců</em></td><td>Ota Pavel</td><td>Autobiografická vzpomínka, humor, tragický podtext</td></tr>
+  <tr><td><em>Tom Sawyer</em></td><td>Mark Twain</td><td>Archetyp dobrodružného kluka — zahraniční paralela</td></tr>
+</table>
+
+<details>
+  <summary>Poláčkův odkaz</summary>
+  <p><strong>Humor s láskou. Nostalgie bez sentimentu. Láska k malému městu. Obraz 1. republiky. Tragický osud (Holocaust). Dílo přežilo — autor ne.</strong> Karel Poláček zemřel v Osvětimi, ale jeho kniha žije dodnes a bude žít tak dlouho, dokud budou děti chtít být v partě, dokud budou mít první lásky, dokud budou zlobit ve škole. <strong>Bylo nás pět je vzpomínka na Karla Poláčka — i když to tak ani nezamýšlel.</strong> Je to jeho tichý pomník, napsaný vlastní rukou. <em>Teď jsme byli děti. A to bylo dost.</em></p>
+</details>
+
+<div class="memory-frame" style="margin-top:40px">„Bylo nás pět.<br>Éda Kemlink, Antonín Bejval, Čeněk Jirsák, Šimon Tolar a já, Petr Bajza.<br>Přátelé navěky.<br>Aspoň jsme si to mysleli."<span class="memory-source">Esence díla · Karel Poláček · 1940</span></div>
+</section>
+
+<div class="river-divider" style="margin-top:50px">✎ ❦ ✎</div>
+
+</div>
+</body>
+</html>

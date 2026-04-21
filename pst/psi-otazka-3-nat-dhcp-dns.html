@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI – Otázka 3: NAT, DHCP a DNS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #181b24;
+    --bg-card-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #c8cdd8;
+    --text-muted: #6b7280;
+    --heading: #e8ecf4;
+    --accent-1: #60a5fa;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --accent-4: #fbbf24;
+    --accent-5: #f87171;
+    --accent-6: #fb923c;
+    --accent-7: #f472b6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a2e1d 50%, #1e2815 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(52,211,153,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(251,191,36,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-3);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--heading);
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+  }
+  .hero p {
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-size: 15px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .toc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+  }
+  .toc h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    margin-bottom: 16px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li {
+    counter-increment: toc;
+    padding: 4px 0;
+    font-size: 14px;
+    break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero) ' ';
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-right: 6px;
+  }
+  .toc a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--accent-1); }
+
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    min-width: 24px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--heading);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 28px 0 12px;
+  }
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin: 20px 0 8px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .card.highlight { border-left: 3px solid var(--accent-1); }
+  .card.key { border-left: 3px solid var(--accent-4); background: rgba(251,191,36,0.04); }
+  .card.warn { border-left: 3px solid var(--accent-5); background: rgba(248,113,113,0.04); }
+  .card.green { border-left: 3px solid var(--accent-3); background: rgba(52,211,153,0.04); }
+  .card.purple { border-left: 3px solid var(--accent-2); background: rgba(167,139,250,0.04); }
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  ul { padding-left: 20px; margin: 8px 0 14px; }
+  li { margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--text-muted); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(96,165,250,0.1);
+    color: var(--accent-1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .compare-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .steps { margin: 14px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42,46,61,0.5);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-3);
+    min-width: 20px;
+    padding-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 600; color: var(--heading); font-size: 14px; }
+  .step-desc { color: var(--text-muted); font-size: 13px; margin-top: 3px; }
+
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .device-card {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .device-card h4 { margin: 0 0 6px; font-size: 14px; }
+  .device-card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  details { margin: 12px 0; }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--heading);
+    padding: 10px 0;
+    font-size: 14px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details summary::before {
+    content: '▸';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-1);
+    transition: transform 0.2s;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  strong { color: var(--heading); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .tag-udp { background: rgba(96,165,250,0.15); color: var(--accent-1); }
+
+  .flow-chain {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .flow-item {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .flow-arrow { color: var(--text-muted); font-size: 16px; }
+
+  .mnemonic {
+    background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(251,191,36,0.08));
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .mnemonic .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-3);
+    margin-bottom: 8px;
+  }
+  .mnemonic .phrase {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--heading);
+  }
+
+  /* NAT translation visual */
+  .nat-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .nat-box {
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .nat-arrow {
+    font-size: 20px;
+    color: var(--accent-3);
+  }
+
+  /* DORA visual */
+  .dora-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .dora-step {
+    text-align: center;
+    padding: 14px 10px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .dora-step .dora-letter {
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .dora-step .dora-name {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+  .dora-step .dora-dir {
+    font-size: 10px;
+    margin-top: 4px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 640px) {
+    .toc ol { columns: 1; }
+    .device-grid { grid-template-columns: 1fr; }
+    .flow-chain { flex-direction: column; }
+    .nat-visual { flex-direction: column; }
+    .dora-flow { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<style>
+.maturita-topnav{position:sticky;top:0;z-index:1000;background:rgba(15,17,23,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:11px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.maturita-topnav a{color:#c8cdd8;text-decoration:none;transition:color .2s}
+.maturita-topnav a:hover{color:#fff}
+.maturita-topnav .mt-sep{color:#6b7280;font-weight:300}
+</style>
+<nav class="maturita-topnav"><a href="../index.html">← Maturita</a><span class="mt-sep">·</span><a href="./index.html">PST</a></nav>
+
+
+<div class="hero">
+  <div class="hero-label">PSI – Maturitní otázka č. 3</div>
+  <h1>NAT, DHCP a DNS</h1>
+  <p>Network Address Translation • Dynamic Host Configuration • Domain Name System</p>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Obsah</h2>
+  <ol>
+    <li><a href="#nat-intro">NAT – co je a proč existuje</a></li>
+    <li><a href="#nat-how">Jak NAT funguje</a></li>
+    <li><a href="#nat-types">Druhy NAT (Static, Dynamic, PAT)</a></li>
+    <li><a href="#port-forward">Port Forwarding</a></li>
+    <li><a href="#nat-pros-cons">NAT – výhody a nevýhody</a></li>
+    <li><a href="#dhcp-intro">DHCP – co je a proč existuje</a></li>
+    <li><a href="#dhcp-dora">DHCP proces (DORA)</a></li>
+    <li><a href="#dhcp-lease">Lease, Renewal, Relay, Reservation</a></li>
+    <li><a href="#dns-intro">DNS – co je a hierarchie</a></li>
+    <li><a href="#dns-query">DNS dotaz – rekurzivní proces</a></li>
+    <li><a href="#dns-records">DNS záznamy</a></li>
+    <li><a href="#dns-security">DNS zabezpečení</a></li>
+    <li><a href="#summary">Shrnutí klíčových bodů</a></li>
+  </ol>
+</nav>
+
+<!-- ========== NAT ========== -->
+
+<!-- 01 NAT INTRO -->
+<section class="section" id="nat-intro">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>NAT – co je a proč existuje</h2>
+  </div>
+
+  <p><strong>NAT</strong> (Network Address Translation) překládá <strong>privátní IP adresy na veřejnou IP</strong> (a naopak). Běží na routeru/firewallu mezi LAN a internet. Umožňuje více zařízením sdílet jednu veřejnou IP.</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Důvody použití NAT</div>
+    <ul>
+      <li><strong>Vyčerpání IPv4</strong> – jen ~4.3 mld adres (2³²). NAT → tisíce zařízení za 1 veřejnou IP</li>
+      <li><strong>Bezpečnost</strong> – privátní IP neviditelné z internetu (security by obscurity)</li>
+      <li><strong>Flexibilita</strong> – změna ISP bez rekonfigurace celé LAN</li>
+      <li><strong>Překrytí adres</strong> – dvě firmy se stejnou 192.168.1.0/24 mohou koexistovat</li>
+    </ul>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Privátní IP rozsahy (RFC 1918)</div>
+    <table class="compare-table">
+      <tr><th>Rozsah</th><th>CIDR</th><th>Adres</th><th>Použití</th></tr>
+      <tr><td><code>10.0.0.0 – 10.255.255.255</code></td><td>10.0.0.0/8</td><td>16.7 mil</td><td>Velké firmy, datacentra</td></tr>
+      <tr><td><code>172.16.0.0 – 172.31.255.255</code></td><td>172.16.0.0/12</td><td>1 mil</td><td>Střední firmy</td></tr>
+      <tr><td><code>192.168.0.0 – 192.168.255.255</code></td><td>192.168.0.0/16</td><td>65 536</td><td>Domácí routery (nejběžnější)</td></tr>
+    </table>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Tyto rozsahy jsou <strong>nerutovatelné</strong> na internetu – vyhrazeny pro privátní použití.</p>
+  </div>
+</section>
+
+<!-- 02 NAT HOW -->
+<section class="section" id="nat-how">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>Jak NAT funguje</h2>
+  </div>
+
+  <p>NAT router vede <strong>translation table</strong> (mapování). Při odchozím paketu přepíše source IP:port, při příchozím přepíše destination IP:port.</p>
+
+  <div class="nat-visual">
+    <div class="nat-box" style="background:rgba(96,165,250,0.1);color:var(--accent-1);">
+      <div style="font-size:10px;opacity:0.7">LAN (privátní)</div>
+      <div style="font-weight:600">192.168.1.100:54321</div>
+    </div>
+    <div class="nat-arrow">→</div>
+    <div class="nat-box" style="background:rgba(52,211,153,0.1);color:var(--accent-3);border:1px solid rgba(52,211,153,0.3);">
+      <div style="font-size:10px;opacity:0.7">NAT Router</div>
+      <div style="font-weight:600">Translation Table</div>
+    </div>
+    <div class="nat-arrow">→</div>
+    <div class="nat-box" style="background:rgba(251,191,36,0.1);color:var(--accent-4);">
+      <div style="font-size:10px;opacity:0.7">Internet (veřejná)</div>
+      <div style="font-weight:600">203.0.113.5:12345</div>
+    </div>
+  </div>
+
+  <details>
+    <summary>Příklad – odchozí komunikace krok za krokem</summary>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">PC (192.168.1.100) chce navštívit google.com (142.250.185.46:80)</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">PC vytvoří paket</div><div class="step-desc">Src: 192.168.1.100:54321 → Dst: 142.250.185.46:80</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">SNAT (Source NAT) na routeru</div><div class="step-desc">Router přepíše source: 192.168.1.100:54321 → 203.0.113.5:12345. Uloží do translation table.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Google odpoví na 203.0.113.5:12345</div><div class="step-desc">Google neví o 192.168.1.100 – vidí jen veřejnou IP routeru.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">DNAT (Destination NAT) na routeru</div><div class="step-desc">Router vyhledá port 12345 v tabulce → přepíše dest na 192.168.1.100:54321.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">PC přijme odpověď</div><div class="step-desc">Celý proces transparentní pro PC i Google.</div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 03 NAT TYPES -->
+<section class="section" id="nat-types">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>Druhy NAT</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">Static NAT (1:1)</h4>
+      <p>Pevné mapování 1 privátní → 1 veřejná IP. Obousměrné. Použití: servery v LAN (web, mail). Nevýhoda: marnotratné – 1 veřejná IP per zařízení.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">Dynamic NAT (Pool)</h4>
+      <p>Pool veřejných IP. Zařízení dostanou IP z poolu dočasně (first-come). Problém: pool vyčerpán → další nemohou ven.</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">PAT / NAT Overload – NEJBĚŽNĚJŠÍ!</div>
+    <p><strong>Všichni sdílí JEDNU veřejnou IP</strong>, ale různé porty. Router rozlišuje spojení podle source port.</p>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg-card-alt);border-radius:6px;padding:14px 18px;margin-top:12px;line-height:2">
+      192.168.1.100:54321 → <span style="color:var(--accent-3)">203.0.113.5</span>:<span style="color:var(--accent-4)">12345</span><br>
+      192.168.1.101:54322 → <span style="color:var(--accent-3)">203.0.113.5</span>:<span style="color:var(--accent-4)">12346</span><br>
+      192.168.1.102:54323 → <span style="color:var(--accent-3)">203.0.113.5</span>:<span style="color:var(--accent-4)">12347</span>
+    </div>
+    <p style="margin-top:12px;margin-bottom:0;font-size:13px">Stejná veřejná IP, různé porty. Až 65 535 současných spojení. <strong>Standard v domácích routerech a malých firmách.</strong></p>
+  </div>
+</section>
+
+<!-- 04 PORT FORWARDING -->
+<section class="section" id="port-forward">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2>Port Forwarding</h2>
+  </div>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém s NAT</div>
+    <p style="margin-bottom:0">NAT funguje pro <strong>odchozí</strong> spojení (PC v LAN iniciuje). Pro <strong>příchozí</strong> spojení z internetu router neví kam poslat – žádné mapování v tabulce!</p>
+  </div>
+
+  <p><strong>Port Forwarding</strong> = pevné pravidlo: provoz na veřejnou IP:port přesměruj na konkrétní privátní IP:port.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Příklad – webserver v LAN</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Konfigurace: external port 80 → 192.168.1.50:80</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Někdo z internetu pošle request na 203.0.113.5:80</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Router přepíše dest: 203.0.113.5:80 → 192.168.1.50:80</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Webserver v LAN odpoví, router přeloží zpět</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Typické použití port forwarding</div>
+    <ul>
+      <li>Webserver (port 80, 443), SSH (port 22), RDP (port 3389)</li>
+      <li>Gaming servery (Minecraft 25565, CS:GO 27015)</li>
+      <li>FTP server (port 21, 20)</li>
+      <li>Port mapping: lze mapovat jiný ext. port → jiný int. port (8080 → 80)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--accent-5)">⚠ Port forwarding otevírá zařízení internetu! Silná hesla, firewall, aktualizace.</p>
+  </div>
+</section>
+
+<!-- 05 NAT PROS/CONS -->
+<section class="section" id="nat-pros-cons">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2>NAT – výhody a nevýhody</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Výhody</h4>
+      <p>Úspora IPv4 adres. Bezpečnost (privátní IP neviditelné). Flexibilita (změna ISP bez rekonfigurace). Jednoduchost správy.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-5)">Nevýhody</h4>
+      <p>Porušuje end-to-end princip. Komplikuje P2P (BitTorrent, VoIP). Příchozí spojení vyžadují port forwarding. Některé protokoly nefungují (FTP active). Performance overhead. IPv6 NAT není potřeba (dostatek adres).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== DHCP ========== -->
+
+<!-- 06 DHCP INTRO -->
+<section class="section" id="dhcp-intro">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2>DHCP – co je a proč existuje</h2>
+  </div>
+
+  <p><strong>DHCP</strong> (Dynamic Host Configuration Protocol) automaticky přiděluje <strong>IP adresy a další síťové parametry</strong> zařízením v síti. Port: <span class="tag tag-udp">UDP</span> 67 (server), 68 (client).</p>
+
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Proč DHCP?</div>
+    <p><strong>Bez DHCP:</strong> admin musí ručně nastavit IP, masku, gateway, DNS na každém zařízení. Tisíce zařízení = nightmare! Riziko IP konfliktů.</p>
+    <p style="margin-bottom:0"><strong>S DHCP:</strong> zařízení se připojí → automaticky dostane vše. Centrální správa, žádné konflikty.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Komponenty</div>
+    <ul>
+      <li><strong>DHCP Server</strong> – přiděluje adresy (router, dedicated server, Windows Server)</li>
+      <li><strong>DHCP Client</strong> – žádá o konfiguraci (PC, mobil, tiskárna)</li>
+      <li><strong>DHCP Relay Agent</strong> – přeposílá DHCP mezi subnety</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 DHCP DORA -->
+<section class="section" id="dhcp-dora">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2>DHCP proces (DORA)</h2>
+  </div>
+
+  <div class="mnemonic">
+    <div class="label">Zapamatuj si zkratku</div>
+    <div class="phrase"><strong>D</strong>iscover → <strong>O</strong>ffer → <strong>R</strong>equest → <strong>A</strong>cknowledge</div>
+  </div>
+
+  <div class="dora-flow">
+    <div class="dora-step" style="background:rgba(96,165,250,0.12);color:var(--accent-1);">
+      <span class="dora-letter">D</span>
+      <span class="dora-name">Discover</span>
+      <span class="dora-dir">klient → broadcast</span>
+    </div>
+    <div class="dora-step" style="background:rgba(52,211,153,0.12);color:var(--accent-3);">
+      <span class="dora-letter">O</span>
+      <span class="dora-name">Offer</span>
+      <span class="dora-dir">server → klient</span>
+    </div>
+    <div class="dora-step" style="background:rgba(251,191,36,0.12);color:var(--accent-4);">
+      <span class="dora-letter">R</span>
+      <span class="dora-name">Request</span>
+      <span class="dora-dir">klient → broadcast</span>
+    </div>
+    <div class="dora-step" style="background:rgba(167,139,250,0.12);color:var(--accent-2);">
+      <span class="dora-letter">A</span>
+      <span class="dora-name">Acknowledge</span>
+      <span class="dora-dir">server → klient</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-1);">1. DISCOVER (klient → broadcast)</div>
+    <p>Nové zařízení (nemá IP!) pošle broadcast: „Potřebuji IP adresu!"</p>
+    <p style="margin-bottom:0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)">Src IP: 0.0.0.0 → Dst IP: 255.255.255.255 | Dst MAC: FF:FF:FF:FF:FF:FF | UDP 67/68</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-3);">2. OFFER (server → klient)</div>
+    <p>DHCP server odpovídá: „Nabízím ti IP 192.168.1.100 + parametry."</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Obsahuje: nabízená IP, subnet mask, lease time, server ID. Více serverů → více OFFER → klient vybere (obvykle první).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">3. REQUEST (klient → broadcast)</div>
+    <p>Klient přijímá nabídku: „Chci IP 192.168.1.100 od serveru 192.168.1.1."</p>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Broadcast – aby informoval ostatní servery, že jejich nabídky odmítá. Src IP stále 0.0.0.0.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">4. ACK (server → klient)</div>
+    <p>Server potvrzuje: „OK, IP 192.168.1.100 je tvoje!" Kompletní konfigurace:</p>
+    <ul>
+      <li><strong>IP address:</strong> 192.168.1.100</li>
+      <li><strong>Subnet mask:</strong> 255.255.255.0</li>
+      <li><strong>Default gateway:</strong> 192.168.1.1</li>
+      <li><strong>DNS servers:</strong> 8.8.8.8, 8.8.4.4</li>
+      <li><strong>Lease time:</strong> 86400 s (24 h)</li>
+      <li><strong>Renewal T1:</strong> 43200 s (50 %) | <strong>Rebinding T2:</strong> 75600 s (87.5 %)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 08 LEASE, RELAY, RESERVATION -->
+<section class="section" id="dhcp-lease">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2>Lease, Renewal, Relay, Reservation</h2>
+  </div>
+
+  <h3>Lease Time a Renewal</h3>
+  <p>IP přidělena <strong>dočasně</strong> (lease). Typicky 24 h, 7 dní, nebo nekonečno. Po vypršení → IP vrácena do poolu.</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-6);">Renewal proces</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">50%</div><div class="step-content"><div class="step-label">Renewal (T1)</div><div class="step-desc">Klient pošle REQUEST unicast na stejný server: „Chci prodloužit." Server odpoví ACK → prodlouženo.</div></div></div>
+      <div class="step"><div class="step-num">87.5%</div><div class="step-content"><div class="step-label">Rebinding (T2)</div><div class="step-desc">Server neodpověděl → klient pošle REQUEST broadcast (hledá jakýkoliv DHCP server).</div></div></div>
+      <div class="step"><div class="step-num">100%</div><div class="step-content"><div class="step-label">Expiration</div><div class="step-desc">Ani rebinding neuspěl → lease vypršel → klient musí přestat používat IP a začít DORA znovu.</div></div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>DHCP Relay Agent</h3>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Problém</div>
+    <p style="margin-bottom:0">DHCP DISCOVER je broadcast (255.255.255.255). Routery <strong>nepropouští broadcast mezi subnety</strong>! DHCP server v jiném subnetu → klient ho nevidí.</p>
+  </div>
+
+  <p><strong>Řešení:</strong> Router funguje jako DHCP Relay (Helper). Přijme broadcast DISCOVER → přepošle jako <strong>unicast</strong> na DHCP server. Přidá pole <strong>GIADDR</strong> (Gateway IP Address) → server ví, ze kterého subnetu request přišel.</p>
+
+  <div class="card green">
+    <div class="card-title" style="color: var(--accent-3);">Výhoda</div>
+    <p style="margin-bottom:0"><strong>Jeden centrální DHCP server pro všechny subnety.</strong> Snazší správa. Cisco konfigurace: <code>ip helper-address 10.0.0.5</code></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>DHCP Reservation (Static Lease)</h3>
+  <p>DHCP server přiřadí <strong>konkrétní IP</strong> zařízení podle jeho <strong>MAC adresy</strong>. Zařízení vždy dostane stejnou IP (jako static, ale přes DHCP).</p>
+  <p><strong>Použití:</strong> servery, tiskárny, IP kamery, NAS, zařízení s port forwarding. Výhoda oproti static IP: centrální správa, automatická konfigurace DNS/gateway.</p>
+</section>
+
+<!-- ========== DNS ========== -->
+
+<!-- 09 DNS INTRO -->
+<section class="section" id="dns-intro">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2>DNS – co je a hierarchie</h2>
+  </div>
+
+  <p><strong>DNS</strong> (Domain Name System) překládá doménová jména (<code>www.google.com</code>) na IP adresy (<code>142.250.185.46</code>). „Telefonní seznam" internetu. Port: <span class="tag tag-udp">UDP</span> 53 (dotazy), TCP 53 (zone transfers, >512 B).</p>
+
+  <h3>Hierarchie doménových jmen</h3>
+  <p><strong>FQDN</strong> (Fully Qualified Domain Name) = kompletní jméno včetně kořene: <code>www.example.com.</code> (tečka na konci = root)</p>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-4);">Hierarchie (zprava doleva)</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.2;padding:10px 0">
+      <span style="color:var(--text-muted)">www</span><span style="color:var(--text-muted)">.</span><span style="color:var(--accent-2)">shop</span><span style="color:var(--text-muted)">.</span><span style="color:var(--accent-1)">example</span><span style="color:var(--text-muted)">.</span><span style="color:var(--accent-4)">com</span><span style="color:var(--accent-3)">.</span>
+    </div>
+    <ul>
+      <li><span style="color:var(--accent-3)"><strong>. (Root)</strong></span> – nejvyšší úroveň, implicitní tečka. Kořenové DNS servery.</li>
+      <li><span style="color:var(--accent-4)"><strong>com (TLD)</strong></span> – Top-Level Domain. gTLD: .com, .org, .net | ccTLD: .cz, .uk, .de</li>
+      <li><span style="color:var(--accent-1)"><strong>example (SLD)</strong></span> – Second-Level Domain. To co si „koupíš" od registrátora.</li>
+      <li><span style="color:var(--accent-2)"><strong>shop, www (subdomény)</strong></span> – vlastník SLD vytváří libovolně, zdarma.</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>DNS servery</h3>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">Root Name Servers</h4>
+      <p>13 logických (A–M), fyzicky stovky (anycast). Znají TLD servery. Jen delegují: „Pro .com jdi na X."</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-4)">TLD Name Servers</h4>
+      <p>Servery pro konkrétní TLD (.com, .cz). Znají autoritativní servery pro SLD. Příklad: .com provozuje Verisign.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">Authoritative</h4>
+      <p>Mají AUTORITATIVNÍ data pro konkrétní doménu. Obsahují DNS záznamy (A, MX, CNAME…). Příklad: ns1.google.com.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">Recursive Resolver</h4>
+      <p>Dotazuje jménem klienta (root → TLD → authoritative). Cachuje odpovědi. Příklad: 8.8.8.8 (Google), 1.1.1.1 (Cloudflare).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 DNS QUERY -->
+<section class="section" id="dns-query">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2>DNS dotaz – rekurzivní proces</h2>
+  </div>
+
+  <p>Scénář: PC chce navštívit <code>www.example.com</code></p>
+
+  <div class="flow-chain">
+    <span class="flow-item" style="background:rgba(244,114,182,0.15);color:var(--accent-7);">PC</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(167,139,250,0.15);color:var(--accent-2);">Resolver</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(52,211,153,0.15);color:var(--accent-3);">Root</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(251,191,36,0.15);color:var(--accent-4);">TLD .com</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(96,165,250,0.15);color:var(--accent-1);">Authoritative</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(167,139,250,0.15);color:var(--accent-2);">Resolver</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-item" style="background:rgba(244,114,182,0.15);color:var(--accent-7);">PC</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color: var(--accent-2);">Podrobný průchod</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Prohlížeč + OS kontrolují cache</div><div class="step-desc">Browser cache, OS cache, hosts file. Pokud nalezeno → hotovo.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Dotaz na Recursive Resolver (8.8.8.8)</div><div class="step-desc">Query: www.example.com, Type A. RD bit = 1 „udělej to za mě!"</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Resolver → Root server</div><div class="step-desc">Root: „Nevím, ale .com spravuje X.X.X.X." → Referral (delegace)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Resolver → TLD server (.com)</div><div class="step-desc">TLD: „example.com spravuje ns1.example.com (Y.Y.Y.Y)." → Referral</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-label">Resolver → Authoritative server</div><div class="step-desc">Authoritative: „www.example.com = 93.184.216.34" → AA bit = 1 (DEFINITIVNÍ!)</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-label">Resolver cachuje (TTL) a odpoví PC</div><div class="step-desc">PC se připojí na 93.184.216.34:80 → stránka se zobrazí.</div></div></div>
+    </div>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Autoritativní vs. non-autoritativní odpověď</div>
+    <p><strong>Autoritativní (AA=1)</strong> – přímo z autoritativního serveru pro doménu. Definitivní, důvěryhodná.</p>
+    <p style="margin-bottom:0"><strong>Non-autoritativní</strong> – z cache resolveru. Platná (pokud TTL nevypršel), ale může být zastaralá. Kontrola: <code>nslookup</code> / <code>dig</code>.</p>
+  </div>
+</section>
+
+<!-- 11 DNS RECORDS -->
+<section class="section" id="dns-records">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2>DNS záznamy (Resource Records)</h2>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Záznam</th><th>Účel</th><th>Příklad</th></tr>
+    <tr><td><strong>A</strong></td><td>Doména → IPv4 adresa (nejběžnější)</td><td><code>example.com A 93.184.216.34</code></td></tr>
+    <tr><td><strong>AAAA</strong></td><td>Doména → IPv6 adresa</td><td><code>example.com AAAA 2606:2800:…</code></td></tr>
+    <tr><td><strong>CNAME</strong></td><td>Alias → jiné doménové jméno</td><td><code>www CNAME example.com</code></td></tr>
+    <tr><td><strong>MX</strong></td><td>Mail servery (s prioritou, nižší = vyšší)</td><td><code>MX 10 mail1.example.com</code></td></tr>
+    <tr><td><strong>NS</strong></td><td>Autoritativní DNS servery pro doménu</td><td><code>NS ns1.example.com</code></td></tr>
+    <tr><td><strong>TXT</strong></td><td>Libovolný text (SPF, DKIM, verifikace)</td><td><code>TXT "v=spf1 …"</code></td></tr>
+    <tr><td><strong>PTR</strong></td><td>Reverzní DNS: IP → doména (anti-spam)</td><td><code>34.216.184.93.in-addr.arpa PTR …</code></td></tr>
+    <tr><td><strong>SOA</strong></td><td>Metadata zóny (primární NS, serial, timers)</td><td>Jeden per zóna</td></tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <h3>TTL (Time To Live)</h3>
+  <p>Doba (v sekundách) jak dlouho může být DNS záznam <strong>cachován</strong>. Po vypršení → resolver musí dotaz zopakovat.</p>
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-6)">Nízké TTL (300 s = 5 min)</h4>
+      <p>Rychlé změny (plánovaná migrace serveru). Více DNS dotazů → vyšší load.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">Vysoké TTL (86400 s = 24 h)</h4>
+      <p>Stabilní záznamy, méně dotazů. Pomalé změny (propagation delay).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12 DNS SECURITY -->
+<section class="section" id="dns-security">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2>DNS zabezpečení</h2>
+  </div>
+
+  <div class="device-grid">
+    <div class="device-card">
+      <h4 style="color:var(--accent-3)">DNSSEC</h4>
+      <p>Kryptografické podpisy DNS záznamů. Ověřuje integritu a autenticitu. Ochrana proti DNS spoofing / cache poisoning.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-1)">DNS over HTTPS (DoH)</h4>
+      <p>DNS dotazy šifrované v HTTPS (port 443). ISP nevidí které domény navštěvuješ.</p>
+    </div>
+    <div class="device-card">
+      <h4 style="color:var(--accent-2)">DNS over TLS (DoT)</h4>
+      <p>DNS přes TLS (port 853). Podobné DoH, ale dedikovaný port.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <h2>Shrnutí klíčových bodů</h2>
+  </div>
+
+  <div class="card key">
+    <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
+    <ul>
+      <li><strong>NAT</strong> překládá privátní ↔ veřejná IP. Důvody: vyčerpání IPv4, bezpečnost, flexibilita</li>
+      <li><strong>Privátní rozsahy RFC 1918:</strong> <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code></li>
+      <li><strong>PAT / NAT Overload</strong> = všichni 1 IP, různé porty – NEJBĚŽNĚJŠÍ (domácí routery)</li>
+      <li><strong>Static NAT</strong> = 1:1 pevné (servery). <strong>Dynamic NAT</strong> = pool IP</li>
+      <li><strong>Port forwarding</strong> = ext port → int IP:port (webserver, SSH, gaming)</li>
+      <li><strong>SNAT</strong> = změna source (ven). <strong>DNAT</strong> = změna destination (dovnitř)</li>
+    </ul>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <ul>
+      <li><strong>DHCP</strong> = automatická konfigurace IP/mask/gateway/DNS. Port UDP 67/68</li>
+      <li><strong>DORA:</strong> Discover (broadcast) → Offer → Request (broadcast) → ACK</li>
+      <li><strong>ACK obsahuje:</strong> IP, mask, gateway, DNS, lease time, renewal T1 (50 %), rebinding T2 (87.5 %)</li>
+      <li><strong>DHCP Relay:</strong> router přeposílá broadcast jako unicast mezi subnety (GIADDR pole)</li>
+      <li><strong>Reservation:</strong> MAC → vždy stejná IP (static přes DHCP, centrální správa)</li>
+    </ul>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <ul>
+      <li><strong>DNS</strong> překládá doménová jména → IP. Port UDP/TCP 53</li>
+      <li><strong>Hierarchie:</strong> Root (13 A–M) → TLD (.com) → SLD (example) → subdoména (www)</li>
+      <li><strong>Dotaz:</strong> PC → Resolver → Root → TLD → Authoritative → cache → PC</li>
+      <li><strong>Záznamy:</strong> A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail + priorita), NS (name servers), TXT (SPF/DKIM), PTR (reverse)</li>
+      <li><strong>TTL</strong> = cache time. Nízké (300 s) = rychlé změny. Vysoké (86400 s) = stabilní</li>
+      <li><strong>AA=1</strong> = autoritativní odpověď (definitivní). Non-authoritative = z cache</li>
+      <li><strong>Zabezpečení:</strong> DNSSEC (podpisy), DoH (HTTPS :443), DoT (TLS :853)</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>
