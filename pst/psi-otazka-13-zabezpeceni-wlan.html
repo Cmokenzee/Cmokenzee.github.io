@@ -140,7 +140,7 @@
 <div class="hero">
   <div class="hero-label">PSI – Maturitní otázka č. 13</div>
   <h1>Zabezpečení WLAN</h1>
-  <p>MAC filter • SSID • WEP/WPA/WPA2/WPA3 • PSK/TKIP/AES/CCMP • 802.1X • EAP • RADIUS</p>
+  <p>CIA • OSA/SKA • OWE/DPP • WEP/WPA/WPA2/WPA3 • PSK/TKIP/AES/CCMP/GCMP • 4-way handshake • 802.1X/EAP/RADIUS/AAA</p>
 </div>
 
 <div class="container">
@@ -149,16 +149,16 @@
 <nav class="toc">
   <h2>Obsah</h2>
   <ol>
-    <li><a href="#pillars">Tři pilíře zabezpečení</a></li>
+    <li><a href="#pillars">CIA triáda pro Wi-Fi</a></li>
     <li><a href="#mac-ssid">MAC filtering a Hidden SSID</a></li>
-    <li><a href="#auth-types">Typy autentifikace (Open, OWE)</a></li>
+    <li><a href="#auth-types">Typy autentifikace (OSA, SKA, Open, OWE)</a></li>
     <li><a href="#personal-enterprise">Osobní vs podnikové zabezpečení</a></li>
     <li><a href="#wep">WEP – broken!</a></li>
     <li><a href="#wpa">WPA – TKIP</a></li>
-    <li><a href="#wpa2">WPA2 – AES-CCMP</a></li>
-    <li><a href="#wpa3">WPA3 – SAE, GCMP</a></li>
+    <li><a href="#wpa2">WPA2 – AES-CCMP + 4-way handshake (PTK)</a></li>
+    <li><a href="#wpa3">WPA3 – SAE, GCMP, DPP (náhrada WPS)</a></li>
     <li><a href="#evolution">Přehled WEP → WPA → WPA2 → WPA3</a></li>
-    <li><a href="#encryption">Šifrování: PSK, TKIP, AES, CCMP</a></li>
+    <li><a href="#encryption">Šifrování: PSK, TKIP, AES, CCMP, GCMP</a></li>
     <li><a href="#8021x">802.1X, EAP, RADIUS, AAA</a></li>
     <li><a href="#eap-types">EAP typy</a></li>
     <li><a href="#example">Příklad: Enterprise WLAN autentifikace</a></li>
@@ -166,28 +166,36 @@
   </ol>
 </nav>
 
-<!-- 01 PILLARS -->
+<!-- 01 CIA -->
 <section class="section" id="pillars">
   <div class="section-header">
     <span class="section-num">01</span>
-    <h2>Tři pilíře zabezpečení</h2>
+    <h2>CIA triáda pro Wi-Fi</h2>
   </div>
 
-  <p>WLAN signál se šíří vzduchem → kdokoli v dosahu může zachytit. Cílem je chránit data před neoprávněným přístupem, odposloucháním a manipulací.</p>
+  <p>WLAN signál se šíří vzduchem → kdokoli v dosahu může zachytit, modifikovat nebo rušit. Bezpečnostní cíle se popisují <strong>CIA triádou</strong> – tři základní vlastnosti, které je třeba chránit.</p>
 
   <div class="device-grid">
     <div class="device-card" style="border-top:3px solid var(--accent-1)">
-      <h4 style="color:var(--accent-1)">Autentifikace</h4>
-      <p><strong>KDO</strong> se připojuje? Ověření totožnosti (heslo, certifikát, 802.1X).</p>
+      <h4 style="color:var(--accent-1)">Confidentiality (Důvěrnost)</h4>
+      <p><strong>Data čte jen oprávněný.</strong> Šifrování provozu: TKIP (slabé), AES-CCMP (WPA2), AES-GCMP (WPA3).</p>
+      <p style="color:var(--accent-5);font-size:12px;margin-top:6px;margin-bottom:0">Hrozby: eavesdropping, sniffing, MITM.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-3)">
-      <h4 style="color:var(--accent-3)">Šifrování</h4>
-      <p><strong>CO</strong> se přenáší? Ochrana obsahu dat v přenosu (AES, TKIP).</p>
+      <h4 style="color:var(--accent-3)">Integrity (Integrita)</h4>
+      <p><strong>Data nikdo nezměnil.</strong> Kontroluje MIC/MAC: Michael (WPA), CBC-MAC (WPA2-CCMP), GCM tag (WPA3-GCMP).</p>
+      <p style="color:var(--accent-5);font-size:12px;margin-top:6px;margin-bottom:0">Hrozby: packet injection, modifikace, replay.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-4)">
-      <h4 style="color:var(--accent-4)">Autorizace</h4>
-      <p><strong>CO SMÍ</strong> přihlášený dělat? Kontrola přístupu (VLAN, bandwidth, pravidla).</p>
+      <h4 style="color:var(--accent-4)">Availability (Dostupnost)</h4>
+      <p><strong>Síť je dostupná legitimním uživatelům.</strong> Ochrana: MFP/802.11w (Management Frame Protection), detekce rogue AP, monitoring rušení.</p>
+      <p style="color:var(--accent-5);font-size:12px;margin-top:6px;margin-bottom:0">Hrozby: jamming, deauth flood, DoS, rušení.</p>
     </div>
+  </div>
+
+  <div class="card highlight" style="margin-top:20px">
+    <div class="card-title" style="color: var(--accent-1);">Doplňkový framework: AAA</div>
+    <p style="margin-bottom:0">Vedle CIA se v enterprise WLAN používá <strong>AAA</strong> (Authentication / Authorization / Accounting) – viz sekce 802.1X. CIA řeší <em>co</em> chráníme, AAA řeší <em>jak</em> spravujeme přístupy.</p>
   </div>
 </section>
 
@@ -226,14 +234,31 @@
     <h2>Typy autentifikace</h2>
   </div>
 
+  <p>802.11 definuje dvě <strong>původní</strong> metody link-layer autentizace (OSA, SKA – WEP éra) a dvě <strong>moderní</strong> (Open, OWE).</p>
+
+  <h3 style="color:var(--accent-6)">Legacy (WEP éra)</h3>
+  <div class="device-grid">
+    <div class="device-card" style="border-top:3px solid var(--accent-6)">
+      <h4 style="color:var(--accent-6)">OSA – Open System Authentication</h4>
+      <p>Originální 802.11. <strong>Klient pošle Auth Request → AP automaticky pošle Auth Response (success)</strong>. Žádné ověření, žádné credentials.</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:6px;margin-bottom:0">Kombinováno s WEP klíčem pro šifrování (klíč ale není ověřen při auth, jen při šifrování dat).</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-5)">
+      <h4 style="color:var(--accent-5)">SKA – Shared Key Authentication</h4>
+      <p>Challenge-response s WEP klíčem: <strong>AP pošle challenge (plaintext) → klient ho zašifruje WEP klíčem → AP ověří</strong>.</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:6px;margin-bottom:0"><strong>Paradox:</strong> SKA je <em>méně</em> bezpečné než OSA + WEP – útočník odchytí challenge i odpověď v jednom okamžiku → snadno spočítá keystream a prolomí síť.</p>
+    </div>
+  </div>
+
+  <h3 style="color:var(--accent-3);margin-top:24px">Moderní</h3>
   <div class="device-grid">
     <div class="device-card">
-      <h4 style="color:var(--accent-5)">Open Authentication</h4>
-      <p><strong>Žádná autentifikace.</strong> Kdokoli se připojí bez hesla. Žádné šifrování (pokud ne OWE/VPN). Příklad: veřejné Wi-Fi. Rizika: MITM, eavesdropping, rogue AP.</p>
+      <h4 style="color:var(--accent-5)">Open (moderní)</h4>
+      <p><strong>Žádná autentifikace, žádné šifrování.</strong> Veřejné Wi-Fi (kavárny, letiště). Rizika: MITM, eavesdropping, rogue AP. Doporučuje se VPN.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-4)">
       <h4 style="color:var(--accent-4)">OWE (Opportunistic Wireless Encryption)</h4>
-      <p><strong>Šifrování BEZ hesla.</strong> Diffie-Hellman key exchange (ECDH) → AES-GCM. Per-session keys. Chrání data, ale NE přístup (kdokoli se připojí). = „Encrypted open."</p>
+      <p><strong>„Encrypted open" – šifrování BEZ hesla.</strong> Diffie-Hellman key exchange (ECDH) → AES-GCM. Per-session keys. Chrání data před odposlechem, ale NE přístup (kdokoli se připojí).</p>
     </div>
   </div>
 </section>
@@ -313,15 +338,25 @@
     </ul>
   </div>
 
-  <details>
-    <summary>4-Way Handshake (WPA2-Personal)</summary>
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">Vytvoření PTK – 4-Way Handshake (WPA2-Personal i Enterprise)</div>
+    <p>Po asociaci klient i AP sdílí <strong>PMK</strong> (Pairwise Master Key) – v Personal odvozený z PSK, v Enterprise z EAP. Cílem 4-cestného handshaku je odvodit <strong>PTK</strong> (Pairwise Transient Key) pro šifrování unicast provozu a doručit <strong>GTK</strong> pro broadcast/multicast.</p>
+
+    <p style="font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(96,165,250,0.08);padding:10px 14px;border-radius:6px;color:var(--text);margin:14px 0">
+      <strong>PSK</strong> = PBKDF2(heslo, SSID, 4096)<br>
+      <strong>PMK</strong> = PSK (Personal) <em>nebo</em> MSK z EAP (Enterprise)<br>
+      <strong>PTK</strong> = PRF(PMK, ANonce, SNonce, AP&nbsp;MAC, STA&nbsp;MAC)
+    </p>
+
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">AP pošle ANonce (random)</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Klient generuje SNonce + odvodí PTK</div><div class="step-desc">PTK z: PSK + ANonce + SNonce + MAC adresy → pošle AP</div></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">AP ověří PTK → pošle GTK (Group Temporal Key) + MIC</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">Klient potvrdí → šifrovaná komunikace</div><div class="step-desc">PTK = unicast, GTK = multicast/broadcast</div></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">EAPOL-Key M1: AP → STA &nbsp;<code>ANonce</code></div><div class="step-desc">AP vygeneruje náhodný ANonce a pošle ho klientovi. Klient nyní zná: PMK, ANonce, AP MAC, STA MAC.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">EAPOL-Key M2: STA → AP &nbsp;<code>SNonce + MIC</code></div><div class="step-desc">Klient vygeneruje SNonce, spočítá <strong>PTK</strong>, pošle SNonce + MIC (Message Integrity Code přes M2 z PTK). AP nyní také spočítá PTK a ověří MIC → potvrzeno, že klient zná PMK.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">EAPOL-Key M3: AP → STA &nbsp;<code>GTK + MIC</code></div><div class="step-desc">AP pošle Group Temporal Key (pro broadcast/multicast), zašifrovaný KEK částí PTK, s MIC. Klient ověří MIC → potvrzeno, že AP zná stejný PMK (mutual auth).</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">EAPOL-Key M4: STA → AP &nbsp;<code>ACK</code></div><div class="step-desc">Klient potvrdí instalaci klíčů. Od teď: <strong>unicast = šifrováno PTK</strong>, <strong>multicast/broadcast = šifrováno GTK</strong>.</div></div></div>
     </div>
-  </details>
+
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)"><strong>PTK části:</strong> KCK (Key Confirmation – MIC), KEK (Key Encryption – wrap GTK), TK (Temporal Key – šifrování dat). KRACK útok cílí na reinstalaci klíče v kroku 3.</p>
+  </div>
 
   <div class="card warn">
     <div class="card-title" style="color: var(--accent-5);">Slabosti WPA2</div>
@@ -342,27 +377,48 @@
 
   <div class="card" style="border-left:3px solid var(--accent-3);background:rgba(52,211,153,0.04)">
     <div class="card-title" style="color: var(--accent-3);">WPA3 – 2018</div>
-    <p>Nejnovější standard. Řeší slabosti WPA2. Wi-Fi 6 vyžaduje WPA3.</p>
+    <p>Nejnovější standard. Řeší slabosti WPA2 (PSK cracking, KRACK, deauth útoky). Wi-Fi 6 vyžaduje WPA3.</p>
     <p><strong>Šifrování:</strong> AES-GCMP (Galois Counter Mode). AES-256 v Enterprise, AES-128 v Personal.</p>
   </div>
 
   <div class="device-grid">
     <div class="device-card" style="border-top:3px solid var(--accent-3)">
       <h4 style="color:var(--accent-3)">SAE (Simultaneous Auth of Equals)</h4>
-      <p>Nahrazuje PSK v Personal. Dragonfly key exchange (jako DH). <strong>Offline cracking NEMOŽNÝ!</strong> I se slabým heslem bezpečný.</p>
+      <p>Nahrazuje PSK v Personal. Dragonfly key exchange (jako DH). <strong>Offline cracking NEMOŽNÝ!</strong> I se slabým heslem bezpečný. Per-session PMK → forward secrecy.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-1)">
       <h4 style="color:var(--accent-1)">Forward Secrecy</h4>
-      <p>Kompromitace hesla neodhalí dříve zachytený provoz. Per-session keys.</p>
+      <p>Kompromitace hesla neodhalí dříve zachytený provoz. Per-session keys generované DH/ECDH.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-4)">
       <h4 style="color:var(--accent-4)">MFP (Management Frame Protection)</h4>
-      <p><strong>Povinné.</strong> Chrání management frames (deauth, disassoc). Řeší deauthentication attacks.</p>
+      <p><strong>Povinné v WPA3.</strong> Chrání management frames (deauth, disassoc) podpisem. Řeší deauthentication útoky.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-2)">
       <h4 style="color:var(--accent-2)">192-bit Suite (Enterprise)</h4>
-      <p>AES-256 + SHA-384 + ECDHE. Vyšší zabezpečení pro kritické prostředí.</p>
+      <p>AES-256 + SHA-384 + ECDHE. Vyšší zabezpečení pro kritické prostředí (vláda, finance).</p>
     </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>DPP – Device Provisioning Protocol (náhrada WPS)</h3>
+
+  <div class="card warn">
+    <div class="card-title" style="color: var(--accent-5);">Proč musel WPS skončit</div>
+    <p style="margin-bottom:0"><strong>WPS</strong> (Wi-Fi Protected Setup) měl usnadnit připojení (PIN, tlačítko, NFC). <strong>8-místný PIN</strong> se ale dělil na dvě poloviny → efektivně jen <strong>11 000 možností</strong> → <strong>Reaver</strong> nebo <strong>Pixie Dust</strong> prolomí PIN za hodiny, někdy minuty. Doporučení: <strong>WPS vypnout</strong>.</p>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-2);background:rgba(167,139,250,0.04)">
+    <div class="card-title" style="color: var(--accent-2);">DPP (Wi-Fi Easy Connect) – moderní náhrada</div>
+    <p>Bezpečné připojení IoT a headless zařízení (bez displeje, bez klávesnice) – kamery, žárovky, čidla.</p>
+    <ul>
+      <li><strong>Bootstrapping:</strong> Veřejný klíč zařízení se zakóduje do <strong>QR kódu</strong> / NFC / Bluetooth advertisement</li>
+      <li><strong>Configurator</strong> (typicky mobilní app) naskenuje kód → ověří public key → pošle credentials</li>
+      <li><strong>Mutual public-key autentizace</strong> (asymetrická kryptografie, ECDH P-256)</li>
+      <li>Funguje i bez SAE/WPA3 – kompatibilní s WPA2 sítí</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Žádný PIN → žádné brute-force riziko. Žádné předem sdílené heslo → žádný offline crack.</p>
   </div>
 </section>
 
@@ -563,16 +619,30 @@
   <div class="card key">
     <div class="card-title" style="color: var(--accent-4);">Na zkoušku si zapamatuj</div>
 
-    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SLABÉ OCHRANY</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">CIA TRIÁDA PRO WIFI</p>
     <ul>
-      <li><strong>MAC filtering + Hidden SSID</strong> = slabé (MAC spoofing, sniffing). Pouze doplněk, ne hlavní ochrana!</li>
+      <li><strong>Confidentiality</strong> = šifrování (AES-CCMP/GCMP) vs. eavesdropping</li>
+      <li><strong>Integrity</strong> = MIC/MAC (CBC-MAC, GCM tag) vs. packet injection</li>
+      <li><strong>Availability</strong> = MFP, monitoring vs. deauth flood, jamming, rogue AP</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">SLABÉ / PROLOMENÉ OCHRANY</p>
+    <ul>
+      <li><strong>MAC filtering + Hidden SSID</strong> = slabé (MAC spoofing, SSID v Probe Request). Pouze doplněk!</li>
+      <li><strong>WPS</strong> = prolomený (Reaver / Pixie Dust). <strong>Vypnout!</strong> Nahrazeno DPP</li>
+      <li><strong>SKA</strong> (Shared Key Auth) = paradoxně slabší než OSA + WEP (útočník vidí challenge i odpověď)</li>
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>
     <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-6);margin-bottom:8px">AUTENTIFIKACE</p>
     <ul>
-      <li><strong>Open:</strong> žádná. <strong>OWE:</strong> „encrypted open" (DH, bez hesla, chrání data ne přístup)</li>
-      <li><strong>Personal = PSK</strong> (jedno heslo). <strong>Enterprise = 802.1X + EAP + RADIUS</strong> (per-user, centrální)</li>
+      <li><strong>OSA</strong> (Open System) = původní 802.11, klient pošle request → AP automaticky accept</li>
+      <li><strong>SKA</strong> (Shared Key) = challenge-response s WEP klíčem (prolomené)</li>
+      <li><strong>Open (moderní):</strong> žádná. <strong>OWE:</strong> „encrypted open" (DH, bez hesla, chrání data ne přístup)</li>
+      <li><strong>DPP</strong> (Easy Connect) = QR/NFC bootstrapping pro IoT, náhrada WPS</li>
+      <li><strong>Personal = PSK</strong> (jedno heslo) → WPA3 nahrazeno <strong>SAE</strong></li>
+      <li><strong>Enterprise = 802.1X + EAP + RADIUS</strong> (per-user, centrální)</li>
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>
@@ -585,10 +655,13 @@
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>
-    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ŠIFROVÁNÍ</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">ŠIFROVÁNÍ + 4-WAY HANDSHAKE</p>
     <ul>
       <li><strong>TKIP</strong> = RC4 + dynamic keys (deprecated). <strong>AES</strong> = gold standard (128/256-bit)</li>
       <li><strong>CCMP</strong> = AES-CTR + CBC-MAC (WPA2). <strong>GCMP</strong> = AES-GCM (WPA3, silnější)</li>
+      <li><strong>PTK = PRF(PMK, ANonce, SNonce, AP MAC, STA MAC)</strong></li>
+      <li><strong>4-way handshake:</strong> M1 ANonce → M2 SNonce+MIC → M3 GTK+MIC → M4 ACK</li>
+      <li>PTK = unicast (KCK + KEK + TK), GTK = multicast/broadcast</li>
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>

@@ -136,7 +136,7 @@
 <div class="hero">
   <div class="hero-label">PSI – Maturitní otázka č. 8</div>
   <h1>Sítě IEEE 802.11<br>Wi-Fi</h1>
-  <p>CSMA/CA • Standardy • OFDM/OFDMA • MIMO • Beamforming • Topologie</p>
+  <p>CSMA/CA • Standardy • HT/VHT/HE/EHT • OFDM/OFDMA • MIMO • Wi-Fi 6/7 • MLO • Topologie</p>
 </div>
 
 <div class="container">
@@ -146,11 +146,12 @@
   <h2>Obsah</h2>
   <ol>
     <li><a href="#csma">Přístup k médiu – CSMA/CA</a></li>
-    <li><a href="#standards">IEEE 802.11 standardy</a></li>
+    <li><a href="#standards">IEEE 802.11 standardy (HT/VHT/HE/EHT)</a></li>
     <li><a href="#modulation">Modulace a kódování</a></li>
     <li><a href="#channels">Kanály a frekvenční pásma</a></li>
     <li><a href="#mimo">MIMO a MU-MIMO</a></li>
     <li><a href="#wifi6">Wi-Fi 6 (802.11ax) – nové technologie</a></li>
+    <li><a href="#wifi7">Wi-Fi 7 (802.11be) – MLO, Multi-RU</a></li>
     <li><a href="#beamforming">Beamforming</a></li>
     <li><a href="#topology">Topologie Wi-Fi sítí</a></li>
     <li><a href="#summary">Shrnutí klíčových bodů</a></li>
@@ -164,28 +165,28 @@
     <h2>Přístup k médiu – CSMA/CA</h2>
   </div>
 
-  <p>Bezdrátové médium je sdílené → více zařízení na stejné frekvenci → možné kolize. Wi-Fi používá <strong>CSMA/CA</strong> (Collision Avoidance).</p>
+  <p>Bezdrátové médium je sdílené → více zařízení na stejné frekvenci → možné kolize. Wi-Fi používá <strong>CSMA/CA</strong> (Carrier Sense Multiple Access with Collision Avoidance).</p>
 
   <div class="card key">
     <div class="card-title" style="color: var(--accent-4);">CSMA/CA vs CSMA/CD</div>
-    <p><strong>Ethernet (CSMA/CD):</strong> Collision Detection – detekuje kolize PŘI přenosu (full-duplex na switchích).</p>
-    <p style="margin-bottom:0"><strong>Wi-Fi (CSMA/CA):</strong> Collision Avoidance – snaží se PŘEDEJÍT kolizím PŘED vysíláním. Wi-Fi je <strong>half-duplex</strong> → nemůže vysílat a přijímat současně → nemůže detekovat kolize během vysílání.</p>
+    <p><strong>Ethernet (CSMA/CD):</strong> Collision <em>Detection</em> – detekuje kolize PŘI přenosu (full-duplex na switchích).</p>
+    <p style="margin-bottom:0"><strong>Wi-Fi (CSMA/CA):</strong> Collision <em>Avoidance</em> – snaží se PŘEDEJÍT kolizím PŘED vysíláním. Wi-Fi je <strong>half-duplex</strong> → nemůže vysílat a přijímat současně → nemůže detekovat kolize během vysílání.</p>
   </div>
 
   <div class="card">
     <div class="card-title" style="color: var(--accent-1);">Jak CSMA/CA funguje</div>
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Carrier Sense – poslouchá médium (CCA)</div><div class="step-desc">Busy → čeká. Free → pokračuje.</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Random Backoff</div><div class="step-desc">I když free, nesmí vysílat okamžitě! Počká náhodný čas → snižuje pravděpodobnost kolize.</div></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Vysílání</div><div class="step-desc">Frame obsahuje Duration field → informuje ostatní, jak dlouho bude médium busy.</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">ACK (Acknowledgment)</div><div class="step-desc">Příjemce potvrdí přijetí. Žádné ACK → předpokládá kolizi → retransmit.</div></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-label">Carrier Sense – poslouchá médium (CCA)</div><div class="step-desc">Busy → čeká. Free → pokračuje na další krok.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-label">Random Backoff</div><div class="step-desc">I když je médium free, nesmí vysílat okamžitě! Počká náhodný čas (contention window) → snižuje pravděpodobnost kolize, když několik stanic čeká současně.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-label">Vysílání</div><div class="step-desc">Frame obsahuje Duration field → informuje ostatní, jak dlouho bude médium busy (NAV – Network Allocation Vector).</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-label">ACK (Acknowledgment)</div><div class="step-desc">Příjemce potvrdí přijetí. Žádné ACK → předpokládá kolizi → retransmit (s větším backoff oknem).</div></div></div>
     </div>
   </div>
 
   <details>
     <summary>RTS/CTS – řešení Hidden Node problému</summary>
-    <p><strong>Problém:</strong> Stanice A a C nevidí navzájem, ale obě vidí AP → mohou vysílat současně → kolize u AP.</p>
-    <p><strong>Řešení:</strong> A pošle <strong>RTS</strong> (Request to Send) → AP odpoví <strong>CTS</strong> (Clear to Send) → všechny stanice slyší CTS → vědí, že mají čekat. Používá se pro velké frames (overhead pro malé).</p>
+    <p><strong>Problém (hidden node):</strong> Stanice A a C nevidí navzájem (jsou mimo dosah), ale obě vidí AP → nevidí, že druhá vysílá → vysílají současně → kolize u AP.</p>
+    <p><strong>Řešení:</strong> A pošle <strong>RTS</strong> (Request to Send) → AP odpoví <strong>CTS</strong> (Clear to Send) → všechny stanice v dosahu AP slyší CTS → vědí, že mají čekat (nastaví NAV). Používá se pro velké frames (overhead je pro malé pakety zbytečný).</p>
   </details>
 </section>
 
@@ -196,17 +197,33 @@
     <h2>IEEE 802.11 standardy</h2>
   </div>
 
+  <p>Označení <strong>IEEE 802.11x</strong> (technické) ↔ <strong>Wi-Fi N</strong> (marketingové od Wi-Fi Alliance, od r. 2018). Každá generace zavádí vlastní PHY (fyzickou vrstvu) – <strong>HT, VHT, HE, EHT</strong>.</p>
+
   <table class="compare-table">
-    <tr><th>Standard</th><th>Název</th><th>Rok</th><th>Pásmo</th><th>Max rychlost</th><th>Klíčové</th></tr>
-    <tr><td>802.11b</td><td>Wi-Fi 1</td><td>1999</td><td>2.4 GHz</td><td>11 Mbps</td><td>DSSS</td></tr>
-    <tr><td>802.11a</td><td>Wi-Fi 2</td><td>1999</td><td>5 GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
-    <tr><td>802.11g</td><td>Wi-Fi 3</td><td>2003</td><td>2.4 GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
-    <tr><td><strong>802.11n</strong></td><td><strong>Wi-Fi 4</strong></td><td>2009</td><td>2.4/5</td><td><strong>600 Mbps</strong></td><td>MIMO, 40 MHz</td></tr>
-    <tr><td><strong>802.11ac</strong></td><td><strong>Wi-Fi 5</strong></td><td>2013</td><td>5 GHz</td><td><strong>6.9 Gbps</strong></td><td>MU-MIMO, 160 MHz, 256-QAM</td></tr>
-    <tr><td><strong>802.11ax</strong></td><td><strong>Wi-Fi 6/6E</strong></td><td>2019</td><td>2.4/5/6</td><td><strong>9.6 Gbps</strong></td><td>OFDMA, 1024-QAM, BSS Coloring</td></tr>
+    <tr><th>Standard</th><th>Wi-Fi</th><th>PHY</th><th>Rok</th><th>Pásmo</th><th>Max rychlost</th><th>Klíčové</th></tr>
+    <tr><td>802.11</td><td>—</td><td>—</td><td>1997</td><td>2.4 GHz</td><td>2 Mbps</td><td>Původní, FHSS/DSSS</td></tr>
+    <tr><td>802.11b</td><td>Wi-Fi 1</td><td>HR/DSSS</td><td>1999</td><td>2.4 GHz</td><td>11 Mbps</td><td>DSSS</td></tr>
+    <tr><td>802.11a</td><td>Wi-Fi 2</td><td>OFDM</td><td>1999</td><td>5 GHz</td><td>54 Mbps</td><td>OFDM</td></tr>
+    <tr><td>802.11g</td><td>Wi-Fi 3</td><td>ERP-OFDM</td><td>2003</td><td>2.4 GHz</td><td>54 Mbps</td><td>OFDM, zpětně kompat. s b</td></tr>
+    <tr><td><strong>802.11n</strong></td><td><strong>Wi-Fi 4</strong></td><td><strong>HT</strong></td><td>2009</td><td>2.4/5</td><td><strong>600 Mbps</strong></td><td>MIMO, 40 MHz, channel bonding</td></tr>
+    <tr><td>802.11ad</td><td>WiGig</td><td>DMG</td><td>2012</td><td>60 GHz</td><td>~7 Gbps</td><td>Krátký dosah (~10 m), line-of-sight, beamforming</td></tr>
+    <tr><td><strong>802.11ac</strong></td><td><strong>Wi-Fi 5</strong></td><td><strong>VHT</strong></td><td>2013</td><td>5 GHz</td><td><strong>6.9 Gbps</strong></td><td>MU-MIMO (down), 160 MHz, 256-QAM</td></tr>
+    <tr><td><strong>802.11ax</strong></td><td><strong>Wi-Fi 6/6E</strong></td><td><strong>HE</strong></td><td>2019</td><td>2.4/5/6</td><td><strong>9.6 Gbps</strong></td><td>OFDMA, 1024-QAM, BSS Coloring, TWT</td></tr>
+    <tr><td><strong>802.11be</strong></td><td><strong>Wi-Fi 7</strong></td><td><strong>EHT</strong></td><td>2024</td><td>2.4/5/6</td><td><strong>46 Gbps</strong></td><td>MLO, 320 MHz, 4096-QAM, Multi-RU, Preamble Puncturing</td></tr>
   </table>
 
-  <p style="font-size:13px;color:var(--text-muted)">Max rychlost = teoretické maximum. Reálné rychlosti: 40–60 % (overhead, interference, vzdálenost).</p>
+  <div class="card highlight">
+    <div class="card-title" style="color: var(--accent-1);">PHY označení (fyzická vrstva)</div>
+    <ul>
+      <li><strong>HT</strong> – High Throughput (802.11n)</li>
+      <li><strong>VHT</strong> – Very High Throughput (802.11ac)</li>
+      <li><strong>HE</strong> – High Efficiency (802.11ax)</li>
+      <li><strong>EHT</strong> – Extremely High Throughput (802.11be)</li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Tyto zkratky se objevují v 802.11 frame headerech, beacons a v nastavení AP (např. „HE mode only").</p>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-muted)">Max rychlost = teoretické maximum (max streamy, nejvyšší modulace, nejširší kanál). Reálné rychlosti: 40–60 % (overhead, interference, vzdálenost).</p>
 </section>
 
 <!-- 03 MODULATION -->
@@ -219,15 +236,19 @@
   <div class="device-grid">
     <div class="device-card">
       <h4 style="color:var(--accent-5)">FHSS</h4>
-      <p>Frequency Hopping Spread Spectrum. Přeskakuje mezi frekvencemi. Max 2 Mbps. <strong>Zastaralé.</strong></p>
+      <p>Frequency Hopping Spread Spectrum. Přeskakuje mezi frekvencemi podle pseudonáhodné sekvence. Původní 802.11 (1997), max 2 Mbps. <strong>Zastaralé.</strong></p>
     </div>
     <div class="device-card">
       <h4 style="color:var(--accent-6)">DSSS</h4>
-      <p>Direct Sequence Spread Spectrum. Rozšíří signál přes 22 MHz (Barker code). 802.11b, 11 Mbps.</p>
+      <p>Direct Sequence Spread Spectrum. Rozšíří signál přes 22 MHz (Barker code / CCK). 802.11b, 11 Mbps.</p>
     </div>
     <div class="device-card" style="border-top:3px solid var(--accent-3)">
       <h4 style="color:var(--accent-3)">OFDM</h4>
-      <p>Orthogonal Frequency Division Multiplexing. Data na desítky/stovky subcarriers. <strong>802.11a/g/n/ac/ax.</strong> Vysoká efektivita, odolné proti multipath.</p>
+      <p>Orthogonal Frequency Division Multiplexing. Data na desítky/stovky subcarriers. <strong>802.11a/g/n/ac/ax/be.</strong> Vysoká efektivita, odolné proti multipath.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-2)">
+      <h4 style="color:var(--accent-2)">OFDMA</h4>
+      <p>OFDM Access. Kanál rozdělen na Resource Units → více uživatelů současně. <strong>Wi-Fi 6/7</strong>. Viz sekce Wi-Fi 6.</p>
     </div>
   </div>
 
@@ -255,7 +276,11 @@
     <div class="qam-item" style="background:rgba(52,211,153,0.12);color:var(--accent-3);">
       <div class="qam-name">1024-QAM</div><div class="qam-bits">10</div><div class="qam-unit">bitů/symbol</div>
     </div>
+    <div class="qam-item" style="background:rgba(244,114,182,0.12);color:var(--accent-7);">
+      <div class="qam-name">4096-QAM</div><div class="qam-bits">12</div><div class="qam-unit">bitů/symbol</div>
+    </div>
   </div>
+  <p style="font-size:13px;color:var(--text-muted)">1024-QAM = Wi-Fi 6 (802.11ax), 4096-QAM = Wi-Fi 7 (802.11be) → +20 % rychlost vs. 1024-QAM (vyžaduje vynikající signál, prakticky jen blízko AP).</p>
 
   <div class="card highlight">
     <div class="card-title" style="color: var(--accent-1);">Trade-off</div>
@@ -306,12 +331,12 @@
   <table class="compare-table">
     <tr><th>Šířka</th><th>Standardy</th><th>Poznámka</th></tr>
     <tr><td><strong>20 MHz</strong></td><td>Všechny</td><td>Základ, nejlepší kompatibilita</td></tr>
-    <tr><td><strong>40 MHz</strong></td><td>n/ac/ax</td><td>2× rychlejší, channel bonding</td></tr>
-    <tr><td><strong>80 MHz</strong></td><td>ac/ax</td><td>4× 20 MHz, pouze 5 GHz</td></tr>
-    <tr><td><strong>160 MHz</strong></td><td>ac/ax</td><td>Nejvyšší rychlosti, pouze 5/6 GHz</td></tr>
-    <tr><td><strong>320 MHz</strong></td><td>Wi-Fi 7</td><td>Budoucnost, pouze 6 GHz</td></tr>
+    <tr><td><strong>40 MHz</strong></td><td>n/ac/ax/be</td><td>2× rychlejší, channel bonding (spojení 2× 20 MHz)</td></tr>
+    <tr><td><strong>80 MHz</strong></td><td>ac/ax/be</td><td>4× 20 MHz, pouze 5/6 GHz</td></tr>
+    <tr><td><strong>160 MHz</strong></td><td>ac/ax/be</td><td>Vysoké rychlosti, pouze 5/6 GHz</td></tr>
+    <tr><td><strong>320 MHz</strong></td><td>be (Wi-Fi 7)</td><td>Pouze 6 GHz, podpora MLO</td></tr>
   </table>
-  <p style="font-size:13px;color:var(--text-muted)">Širší kanál = vyšší rychlost, ALE více interference a méně dostupných kanálů.</p>
+  <p style="font-size:13px;color:var(--text-muted)">Spojování kanálů (channel bonding) = sloučení sousedních 20 MHz kanálů. Širší kanál = vyšší rychlost, ALE více interference a méně non-overlapping kanálů.</p>
 </section>
 
 <!-- 05 MIMO -->
@@ -390,10 +415,63 @@
   </div>
 </section>
 
-<!-- 07 BEAMFORMING -->
-<section class="section" id="beamforming">
+<!-- 07 WIFI 7 -->
+<section class="section" id="wifi7">
   <div class="section-header">
     <span class="section-num">07</span>
+    <h2>Wi-Fi 7 (802.11be) – nové vlastnosti</h2>
+  </div>
+
+  <p>Wi-Fi 7 (EHT – Extremely High Throughput) je nástupce Wi-Fi 6/6E. Hlavní novinky oproti <strong>Wi-Fi 5 (802.11ac)</strong>: nové pásmo 6 GHz, 320 MHz kanály, 4096-QAM a hlavně <strong>MLO</strong> (souběh více pásem).</p>
+
+  <div class="card purple">
+    <div class="card-title" style="color: var(--accent-2);">MLO (Multi-Link Operation)</div>
+    <p>Klient i AP mají několik rádií současně (2.4 + 5 + 6 GHz) → <strong>provoz teče přes víc pásem najednou</strong>.</p>
+    <ul>
+      <li><strong>Vyšší propustnost</strong> – součet kapacity všech linků</li>
+      <li><strong>Nižší latence</strong> – vybere se nejrychlejší link (gaming, AR/VR)</li>
+      <li><strong>Spolehlivost</strong> – když jedno pásmo selže (rušení), provoz pokračuje na druhém</li>
+      <li>Režimy: <strong>Multi-Link Single Radio (MLSR)</strong>, <strong>Enhanced MLSR</strong>, <strong>Simultaneous Tx/Rx (STR)</strong></li>
+    </ul>
+    <p style="margin-bottom:0;font-size:13px;color:var(--text-muted)">Wi-Fi 5/6 = 1 link/klient. Wi-Fi 7 = N linků/klient současně.</p>
+  </div>
+
+  <div class="device-grid" style="margin-top:20px">
+    <div class="device-card" style="border-top:3px solid var(--accent-1)">
+      <h4 style="color:var(--accent-1)">320 MHz kanály</h4>
+      <p>2× vs. Wi-Fi 6 (160 MHz). Pouze 6 GHz pásmo (dost prostoru, žádný legacy). Přímý nárůst PHY rychlosti.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-7)">
+      <h4 style="color:var(--accent-7)">4096-QAM (4K-QAM)</h4>
+      <p>12 bitů/symbol vs. 10 u 1024-QAM. <strong>+20 % rychlost</strong>. Vyžaduje vynikající SNR → prakticky jen blízko AP.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-3)">
+      <h4 style="color:var(--accent-3)">Multi-RU</h4>
+      <p>Wi-Fi 6 měl 1 RU per klient. Wi-Fi 7 přiřadí <strong>více RU jednomu klientovi</strong> → flexibilnější alokace, vyšší propustnost při fragmentaci kanálu.</p>
+    </div>
+    <div class="device-card" style="border-top:3px solid var(--accent-4)">
+      <h4 style="color:var(--accent-4)">Preamble Puncturing</h4>
+      <p>Když je část širokého kanálu rušená (např. radar v DFS pásmu), <strong>vyřízne se</strong> a zbytek kanálu se použije. Wi-Fi 6 musel zahodit celý kanál.</p>
+    </div>
+  </div>
+
+  <table class="compare-table" style="margin-top:20px">
+    <tr><th>Vlastnost</th><th>Wi-Fi 5 (ac)</th><th>Wi-Fi 6 (ax)</th><th>Wi-Fi 7 (be)</th></tr>
+    <tr><td>Pásmo</td><td>5 GHz</td><td>2.4/5/6 GHz</td><td>2.4/5/6 GHz</td></tr>
+    <tr><td>Max šířka kanálu</td><td>160 MHz</td><td>160 MHz</td><td><strong>320 MHz</strong></td></tr>
+    <tr><td>Modulace</td><td>256-QAM</td><td>1024-QAM</td><td><strong>4096-QAM</strong></td></tr>
+    <tr><td>MU-MIMO</td><td>down only, 4 klienti</td><td>down + up, 8 klientů</td><td>down + up, 16 klientů</td></tr>
+    <tr><td>OFDMA</td><td>NE</td><td>ANO (1 RU/klient)</td><td>ANO (Multi-RU)</td></tr>
+    <tr><td>MLO</td><td>NE</td><td>NE</td><td><strong>ANO</strong></td></tr>
+    <tr><td>Preamble Punct.</td><td>NE</td><td>částečně</td><td><strong>ANO</strong></td></tr>
+    <tr><td>Max rychlost</td><td>6.9 Gbps</td><td>9.6 Gbps</td><td><strong>46 Gbps</strong></td></tr>
+  </table>
+</section>
+
+<!-- 08 BEAMFORMING -->
+<section class="section" id="beamforming">
+  <div class="section-header">
+    <span class="section-num">08</span>
     <h2>Beamforming</h2>
   </div>
 
@@ -420,11 +498,11 @@
   <p><strong>Explicit Beamforming</strong> (802.11ac/ax): klient posílá feedback (CSI) → přesné zaměření. <strong>Implicit</strong> (802.11n): AP odhaduje bez feedbacku → méně přesné.</p>
 </section>
 
-<!-- 08 TOPOLOGY -->
+<!-- 09 TOPOLOGY -->
 <section class="section" id="topology">
   <div class="section-header">
-    <span class="section-num">08</span>
-    <h2>Topologie Wi-Fi sítí</h2>
+    <span class="section-num">09</span>
+    <h2>Topologie Wi-Fi sítí (BSS, IBSS, ESS)</h2>
   </div>
 
   <div class="device-grid">
@@ -475,10 +553,10 @@
   </details>
 </section>
 
-<!-- 09 SUMMARY -->
+<!-- 10 SUMMARY -->
 <section class="section" id="summary">
   <div class="section-header">
-    <span class="section-num">09</span>
+    <span class="section-num">10</span>
     <h2>Shrnutí klíčových bodů</h2>
   </div>
 
@@ -487,18 +565,28 @@
 
     <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-5);margin-bottom:8px">CSMA/CA</p>
     <ul>
-      <li><strong>CSMA/CA</strong> = Collision <strong>Avoidance</strong> (ne Detection!). Half-duplex. Poslouchá → backoff → vysílá → ACK</li>
-      <li><strong>RTS/CTS</strong> = řešení hidden node problému</li>
+      <li><strong>CSMA/CA</strong> = Collision <strong>Avoidance</strong> (ne Detection jako u Ethernetu!). Wi-Fi je half-duplex → nemůže detekovat kolize během vysílání</li>
+      <li>Postup: Carrier Sense (CCA) → Random Backoff → vysílá (s Duration/NAV) → ACK. Bez ACK → retransmit</li>
+      <li><strong>RTS/CTS</strong> = řešení hidden node problému (stanice mimo dosah, ale obě vidí AP)</li>
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>
-    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">STANDARDY A MODULACE</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-1);margin-bottom:8px">STANDARDY A PHY</p>
     <ul>
-      <li><strong>802.11n</strong> (Wi-Fi 4) = MIMO, 2.4/5 GHz, 600 Mbps</li>
-      <li><strong>802.11ac</strong> (Wi-Fi 5) = MU-MIMO, 5 GHz only, 6.9 Gbps, 256-QAM, 160 MHz</li>
-      <li><strong>802.11ax</strong> (Wi-Fi 6) = OFDMA, 1024-QAM, BSS Coloring, TWT, 9.6 Gbps</li>
-      <li><strong>OFDM</strong> = více subcarriers (802.11a/g/n/ac/ax). <strong>QAM</strong> = modulace per subcarrier</li>
-      <li>Vyšší QAM = víc bitů/symbol = rychlejší, ale citlivější na šum</li>
+      <li><strong>802.11n</strong> (Wi-Fi 4, <strong>HT</strong>) = MIMO, 2.4/5 GHz, 600 Mbps</li>
+      <li><strong>802.11ad</strong> (WiGig) = 60 GHz, ~7 Gbps, krátký dosah, line-of-sight</li>
+      <li><strong>802.11ac</strong> (Wi-Fi 5, <strong>VHT</strong>) = MU-MIMO, 5 GHz only, 6.9 Gbps, 256-QAM, 160 MHz</li>
+      <li><strong>802.11ax</strong> (Wi-Fi 6, <strong>HE</strong>) = OFDMA, 1024-QAM, BSS Coloring, TWT, 9.6 Gbps</li>
+      <li><strong>802.11be</strong> (Wi-Fi 7, <strong>EHT</strong>) = MLO, 320 MHz, 4096-QAM, Multi-RU, Preamble Puncturing, 46 Gbps</li>
+      <li>PHY zkratky: <strong>HT / VHT / HE / EHT</strong> = High / Very High / High Efficiency / Extremely High Throughput</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-2);margin-bottom:8px">MODULACE</p>
+    <ul>
+      <li><strong>FHSS</strong> (orig. 802.11), <strong>DSSS</strong> (802.11b), <strong>OFDM</strong> (a/g/n/ac/ax/be), <strong>OFDMA</strong> (ax/be – víc uživatelů)</li>
+      <li><strong>QAM</strong> = modulace per subcarrier. Vyšší QAM = víc bitů/symbol = rychlejší, ale citlivější na šum</li>
+      <li>256-QAM (ac), 1024-QAM (ax), <strong>4096-QAM (be)</strong> – +20 % per krok, vyžaduje silnější signál</li>
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>
@@ -514,10 +602,21 @@
     <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-3);margin-bottom:8px">MIMO, WI-FI 6, BEAMFORMING</p>
     <ul>
       <li><strong>MIMO</strong> = více antén → více spatial streams. Konfigurace: T×R:S (např. 4×4:4)</li>
-      <li><strong>SU-MIMO</strong> = 1 klient najednou. <strong>MU-MIMO</strong> = více klientů současně (Wi-Fi 5/6)</li>
+      <li><strong>SU-MIMO</strong> = 1 klient najednou. <strong>MU-MIMO</strong> = více klientů současně (Wi-Fi 5/6/7)</li>
       <li><strong>OFDMA</strong> = kanál rozdělen na RU, více uživatelů současně (ideální IoT)</li>
       <li><strong>BSS Coloring</strong> = ignoruje jiné BSS → spatial reuse</li>
       <li><strong>Beamforming</strong> = zaměřený signál na klienta → vyšší throughput, delší dosah</li>
+    </ul>
+
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent-7);margin-bottom:8px">WI-FI 7 – ROZDÍLY OPROTI WI-FI 5</p>
+    <ul>
+      <li><strong>MLO</strong> = více pásem (2.4/5/6 GHz) <em>současně</em> pro 1 klienta → vyšší propustnost, nižší latence, spolehlivost</li>
+      <li><strong>320 MHz</strong> kanály (pouze 6 GHz, 2× vs. Wi-Fi 5/6)</li>
+      <li><strong>4096-QAM</strong> (12 bitů/symbol, +20 % vs. 1024-QAM)</li>
+      <li><strong>Multi-RU</strong> = víc RU pro jednoho klienta (vs. 1 RU u Wi-Fi 6)</li>
+      <li><strong>Preamble Puncturing</strong> = vyřízne rušenou část kanálu, zbytek použije</li>
+      <li>Wi-Fi 5 → Wi-Fi 7: <strong>6.7×</strong> rychlost (6.9 → 46 Gbps), nové 6 GHz pásmo, OFDMA, MLO</li>
     </ul>
 
     <div style="height:1px;background:var(--border);margin:14px 0"></div>
